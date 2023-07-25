@@ -8,8 +8,8 @@ interface MathTeacherEditProps {
     handleTypeChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
     section: string;
     handleSectionChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
-    response: string;
-    handleResponseChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
+    markdown: string;
+    handleMarkdownChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
     chat: string;
     setChat: (value: string) => void;
     handleChatChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
@@ -26,15 +26,15 @@ interface MathTeacherEditProps {
 
 const MathTeacherEdit: React.FC<MathTeacherEditProps> = ({ ...props }) => {
 
-    const { setChat, response, handleResponseChange } = props;
+    const { setChat, markdown, handleMarkdownChange } = props;
 
-    const handleMarkdownChange = (newMarkdown: string) => {
-        handleResponseChange({ target: { value: newMarkdown } } as React.ChangeEvent<HTMLTextAreaElement>);
+    const onMarkdownChange = (newMarkdown: string) => {
+        handleMarkdownChange({ target: { value: newMarkdown } } as React.ChangeEvent<HTMLTextAreaElement>);
     };
 
     return (
         <>
-            <ProblemManager initialMarkdown={response} setChat={setChat} onMarkdownChange={handleMarkdownChange} />
+            <ProblemManager initialMarkdown={markdown} setChat={setChat} onMarkdownChange={onMarkdownChange} />
         </>
     );
 };
