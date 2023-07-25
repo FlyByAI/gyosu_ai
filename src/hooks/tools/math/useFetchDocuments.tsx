@@ -2,18 +2,7 @@ import { useClerk } from '@clerk/clerk-react';
 import { useState, useEffect } from 'react';
 
 
-export interface Document {
-    id: number;
-    title: string;
-    markdown: string;
-    creator: string;
-    contributors: string[]; // Array of contributors
-    upvotes: number;
-    tips: number;
-    last_modified_by: string;
-    created_at: string; // Using string for simplicity, consider using a date/time library like day.js or luxon for better date/time handling
-    updated_at: string; // Same as above
-}
+import { Document } from '../../../interfaces';
 
 const useFetchDocuments = (endpoint: string) => {
     const { session } = useClerk();

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useDarkMode } from '../hooks/useDarkMode';
-import { SignedIn, SignedOut, UserButton, SignInButton } from '@clerk/clerk-react';
+import { SignedIn, SignedOut, UserButton, SignInButton, useClerk } from '@clerk/clerk-react';
 import { getGyosuClerkTheme } from '../theme/customClerkTheme';
 import TokenButton from './TokenButton';
 
@@ -9,6 +9,8 @@ const Navbar: React.FC = () => {
 
   const { darkMode, setDarkMode, SunIcon, MoonIcon } = useDarkMode();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const { session } = useClerk();
 
 
   return (
@@ -29,12 +31,12 @@ const Navbar: React.FC = () => {
         </div>
       </div>
       <nav className="grid grid-cols-2 gap-2 lg:flex lg:space-x-3 pt-4">
-        <Link to="/blog" className="text-lg text-white hover:underline dark:text-gray-200 lg:justify-self-end block sm:hidden">
-          Blog
+        <Link to="/math-app" className="text-lg text-white hover:underline dark:text-gray-200 lg:justify-self-end block sm:hidden">
+          Generate
         </Link>
-        <Link to="/tools" className="text-lg text-white hover:underline dark:text-gray-200 lg:justify-self-end block sm:hidden">
-          AI Tools
-        </Link>
+        {session && <Link to="/materials" className="text-lg text-white hover:underline dark:text-gray-200 lg:justify-self-end block sm:hidden">
+          My Materials
+        </Link>}
         <Link to="/contact" className="text-lg text-white hover:underline dark:text-gray-200 lg:justify-self-end block sm:hidden">
           Contact
         </Link>
@@ -55,6 +57,10 @@ const Navbar: React.FC = () => {
             <Link to="/math-app" className="text-lg text-white mx-3 hover:underline dark:text-gray-200">
               Generate
             </Link>
+            {session &&
+              <Link to="/materials" className="text-lg text-white hover:underline dark:text-gray-200 lg:justify-self-end block sm:hidden">
+                My Materials
+              </Link>}
             <Link to="/contact" className="text-lg text-white mx-3 hover:underline dark:text-gray-200 mr-4">
               Contact
             </Link>

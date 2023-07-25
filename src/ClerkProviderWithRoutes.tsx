@@ -84,6 +84,19 @@ export default function ClerkProviderWithRoutes() {
                     }
                 />
                 <Route
+                    path="/materials"
+                    element={
+                        <>
+                            <Navbar />
+                            <ContentWrapper>
+                                <MathTeacherApp />
+                                <Footer />
+                            </ContentWrapper>
+
+                        </>
+                    }
+                />
+                <Route
                     path="/contact"
                     element={
                         <>
