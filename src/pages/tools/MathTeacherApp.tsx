@@ -133,6 +133,7 @@ const MathTeacherApp: React.FC = () => {
 
                     </div>
                     {error && <p className="text-red-600 mt-4 text-center">Error: {error}</p>}
+                    {error && !user?.user?.username && <p className="text-red-600 mt-4 text-center">Note: {"Our tools require you to be signed in."}</p>}
                     {isLoading && <p className="dark:text-white">Loading...</p>}
                     {isLoading && (
                         <div className="flex justify-center mt-4">
