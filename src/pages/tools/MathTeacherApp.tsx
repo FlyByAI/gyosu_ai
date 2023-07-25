@@ -17,6 +17,7 @@ import DocumentPreview from '../../components/forms/DocumentPreview';
 import useFetchDocuments from '../../hooks/tools/math/useFetchDocuments';
 import MathTeacherEdit from '../../components/math/MathTeacherEdit';
 import { useUser } from '@clerk/clerk-react';
+import Accordion from '../../components/Accordion';
 
 
 const MathTeacherApp: React.FC = () => {
@@ -29,7 +30,7 @@ const MathTeacherApp: React.FC = () => {
     const [documentType, setDocumentType] = useState<string>(typeOptions[0]);
     const [section, setSection] = useState<string>(Object.keys(textbookSections)[0]);
     const [sourceMaterial, setSourceMaterial] = useState<string>(materialSelectOptions[0]);
-    const [response, setResponse] = useState<string>('');
+    const [markdown, setMarkdown] = useState<string>('');
     const [chat, setChat] = useState<string>('');
     const [numQuestions, setNumQuestions] = useState<number>(3);
     const [highlightedText, setHighlightedText] = useState<string>("");
@@ -38,6 +39,7 @@ const MathTeacherApp: React.FC = () => {
     const [problemType, setProblemType] = useState<string>(problemTypeOptions[0]);
 
     const { documents } = useFetchDocuments(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/documents/recent/`);
+    const { documents: myDocuments } = useFetchDocuments(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/myDocuments/recent/`);
 
     const [documentId, setDocumentId] = useState<number | undefined>(undefined);
 
@@ -63,8 +65,8 @@ const MathTeacherApp: React.FC = () => {
         setSourceMaterial(event.target.value);
     };
 
-    const handleResponseChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-        setResponse(event.target.value);
+    const handleMarkdownChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+        setMarkdown(event.target.value);
     };
 
     const handleChatChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -75,7 +77,7 @@ const MathTeacherApp: React.FC = () => {
 
     useEffect(() => {
         if (data) {
-            setResponse(data.response)
+            setMarkdown(data.markdown)
         }
     }, [data])
 
@@ -94,19 +96,19 @@ const MathTeacherApp: React.FC = () => {
     };
 
     const handleDocumentClick = (markdown: string, index: number) => {
-        setResponse(markdown);
+        setMarkdown(markdown);
         if (documents) {
             setDocumentId(documents[index].id);
             console.log(documents[index].id)
         }
-        //TODO: move the user to the top of the screen
+        window.scrollTo(0, 0)
     };
 
 
     return (
         <>
 
-            {!response ?
+            {!markdown ?
                 <>
                     <div className="flex justify-center items-center">
                         <div className="w-1/2 bg-gray-700 rounded-lg p-8 m-4 shadow-lg">
@@ -140,9 +142,27 @@ const MathTeacherApp: React.FC = () => {
                             <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12"></div>
                         </div>
                     )}
-                    {documents && <div className="flex justify-center items-center">
-                        <div className="w-100 bg-gray-700 rounded-lg p-8 m-4 shadow-lg">
-                            <h1 className="text-2xl text-center text-gray-100">Browse recently created documents by teachers</h1>
+                    {myDocuments && <div className="flex justify-center items-center">
+                        <Accordion title={"Documents created by you"}>
+                            <GridContainer3x3>
+                                {myDocuments.map((doc, index) => {
+                                    return (
+                                        <DocumentPreview
+                                            index={index}
+                                            markdown={doc.markdown}
+                                            creator={doc.creator || user.user?.username || "Anonymous"}
+                                            upvotes={doc.upvotes || 0}
+                                            tips={doc.tips || 0}
+                                            modifiedBy={[]} //TODO: contributors
+                                            onDocumentClick={handleDocumentClick} // passing the method here
+                                        />
+                                    );
+                                })}
+                            </GridContainer3x3>
+                        </Accordion>
+                    </div>}
+                    {documents && <div className="flex justify-center items-center mb-2">
+                        <Accordion title={"Browse recent community created documents"} visible={true}>
                             <GridContainer3x3>
                                 {documents.map((doc, index) => {
                                     return (
@@ -158,10 +178,8 @@ const MathTeacherApp: React.FC = () => {
                                     );
                                 })}
                             </GridContainer3x3>
-                        </div>
+                        </Accordion>
                     </div>}
-
-
                 </>
                 :
                 <>
@@ -177,19 +195,19 @@ const MathTeacherApp: React.FC = () => {
                             numQuestions,
                             problemType
                         }}
-                        response={response}
+                        markdown={markdown}
                         divPrintId={'markdownToPrint'}
                         saved={saved}
                         setSaved={setSaved}
                         setDocumentId={setDocumentId}
                         documentId={documentId}
-                        setResponse={setResponse}
+                        setMarkdown={setMarkdown}
                     />
                     <MathTeacherEdit
                         typeOptions={typeOptions}
                         documentType={documentType} handleTypeChange={handleTypeChange}
                         section={section} handleSectionChange={handleSectionChange}
-                        response={response} handleResponseChange={handleResponseChange}
+                        markdown={markdown} handleMarkdownChange={handleMarkdownChange}
                         chat={chat} handleChatChange={handleChatChange}
                         numQuestions={numQuestions} handleNumQuestionsChange={handleNumQuestionsChange}
                         highlightedText={highlightedText} setHighlightedText={setHighlightedText}
@@ -198,7 +216,7 @@ const MathTeacherApp: React.FC = () => {
                         setChat={setChat}
                     />
                     <div className="flex items-center justify-center">
-                        <AIChat markdown={response} onChatChange={handleChatChange} />
+                        <AIChat markdown={markdown} onChatChange={handleChatChange} />
                     </div>
                 </>
             }
