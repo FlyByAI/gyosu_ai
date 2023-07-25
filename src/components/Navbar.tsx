@@ -73,7 +73,7 @@ const Navbar: React.FC = () => {
           </SignedOut>
         </div>
       </div>
-      <TokenButton tokens={300} />
+      {/* <TokenButton tokens={300} /> */}
     </header>
 
   );
