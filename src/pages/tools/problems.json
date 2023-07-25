@@ -1,0 +1,31 @@
+{
+  "problems": [
+    {
+      "problem_id": 1,
+      "description": "Consider the function f(x) = 2x + 3. Find its inverse function g(x) and evaluate g(5).",
+      "latex": "\\text{Consider the function } f(x) = 2x + 3. \\text{ Find its inverse function } g(x) \\text{ and evaluate } g(5).",
+      "matplotlib_data": {
+        "x_values": [1, 2, 3, 4, 5],
+        "y_values": [5, 7, 9, 11, 13]
+      }
+    },
+    {
+      "problem_id": 2,
+      "description": "Given the function h(x) = \\frac{x - 2}{3}, determine its inverse function f(x) and calculate f(4).",
+      "latex": "\\text{Given the function } h(x) = \\frac{x - 2}{3}. \\text{ Determine its inverse function } f(x) \\text{ and calculate } f(4).",
+      "matplotlib_data": {
+        "x_values": [2, 3, 4, 5, 6],
+        "y_values": [0, 1, 2, 3, 4]
+      }
+    },
+    {
+      "problem_id": 3,
+      "description": "Find the inverse function of the function g(x) = \\sqrt{x - 1} and find the value of g(9).",
+      "latex": "\\text{Find the inverse function of the function } g(x) = \\sqrt{x - 1} \\text{ and find the value of } g(9).",
+      "matplotlib_data": {
+        "x_values": [1, 2, 3, 4, 5],
+        "y_values": [0, 1, 2, 3, 4]
+      }
+    }
+  ]
+}

@@ -1,0 +1,189 @@
+{
+  "name": "AP Precalculus Course and Exam Description",
+  "sections": [
+    {
+      "Section": "1.1",
+      "Concept": "Change in Tandem",
+      "ConceptNote": "The first concept is covariation, or how output values change in tandem with changing input values.",
+      "SkillFocus": {
+        "2.B": "Construct equivalent graphical, numerical, analytical, and verbal representations of functions that are useful in a given mathematical or applied context, with and without technology.",
+        "3.A": "Describe the characteristics of a function with varying levels of precision, depending on the function representation and available mathematical tools."
+      },
+      "LearningObjectives": {
+        "1.1.A": {
+          "description": "Describe how the input and output values of a function vary together by comparing function values.",
+          "EssentialKnowledge": {
+            "1.1.A.1": "A function is a mathematical relation that maps a set of input values to a set of output values such that each input value is mapped to exactly one output value. The set of input values is called the domain of the function, and the set of output values is called the range of the function. The variable representing input values is called the independent variable, and the variable representing output values is called the dependent variable.",
+            "1.1.A.2": "The input and output values of a function vary in tandem according to the function rule, which can be expressed graphically, numerically, analytically, or verbally.",
+            "1.1.A.3": "A function is increasing over an interval of its domain if, as the input values increase, the output values always increase. That is, for all a and b in the interval, if a < b, then f a( ) < f b( ).",
+            "1.1.A.4": "A function is decreasing over an interval of its domain if, as the input values increase, the output values always decrease. That is, for all a and b in the interval, if a < b, then f a( ) > f b( )."
+          }
+        },
+        "1.1.B": {
+          "description": "Construct a graph representing two quantities that vary with respect to each other in a contextual scenario.",
+          "EssentialKnowledge": {
+            "1.1.B.1": "The graph of a function displays a set of input-output pairs and shows how the values of the function’s input and output values vary.",
+            "1.1.B.2": "A verbal description of the way aspects of phenomena change together can be the basis for constructing a graph.",
+            "1.1.B.3": "The graph of a function is concave up on intervals in which the rate of change is increasing.",
+            "1.1.B.4": "The graph of a function is concave down on intervals in which the rate of change is decreasing.",
+            "1.1.B.5": "The graph intersects the x-axis when the output value is zero. The corresponding input values are said to be zeros of the function."
+          }
+        }
+      },
+      "SampleActivity": "Students are given a list of variables such as time, temperature, speed, cost, intensity, length, height, volume, and air flow. The teacher sketches the graph of a function curve with unlabeled axes. In pairs, students develop a situation and story involving two of the variables that can be modeled by the given curve. "
+    },
+    {
+      "Section": "1.2",
+      "Concept": "Rates of Change",
+      "SkillFocus": {
+        "2.A": "Identify information from graphical, numerical, analytical, and verbal representations to answer a question or construct a model, with and without technology.",
+        "3.A": "Describe the characteristics of a function with varying levels of precision, depending on the function representation and available mathematical tools."
+      },
+      "LearningObjectives": {
+        "1.2.A": {
+          "description": "Compare the rates of change at two points using average rates of change near the points.",
+          "EssentialKnowledge": {
+            "1.2.A.1": "The average rate of change of a function over an interval of the function’s domain is the constant rate of change that yields the same change in the output values as the function yielded on that interval of the function’s domain. It is the ratio of the change in the output values to the change in input values over that interval.",
+            "1.2.A.2": "The rate of change of a function at a point quantifies the rate at which output values would change were the input values to change at that point. The rate of change at a point can be approximated by the average rates of change of the function over small intervals containing the point, if such values exist.",
+            "1.2.A.3": "The rates of change at two points can be compared using average rate of change approximations over sufficiently small intervals containing each point, if such values exist."
+          }
+        },
+        "1.2.B": {
+          "description": "Describe how two quantities vary together at different points and over different intervals of a function.",
+          "EssentialKnowledge": {
+            "1.2.B.1": "Rates of change quantify how two quantities vary together.",
+            "1.2.B.2": "A positive rate of change indicates that as one quantity increases or decreases, the other quantity does the same.",
+            "1.2.B.3": "A negative rate of change indicates that as one quantity increases, the other decreases."
+          }
+        }
+      }
+    },
+    {
+      "Section": "1.3",
+      "Concept": "Rates of Change in Linear and Quadratic Functions",
+      "InstructionalPeriods": 2,
+      "SkillFocus": {
+        "3.B": "Apply numerical results in a given mathematical or applied context.",
+        "3.C": "Support conclusions or choices with a logical rationale or appropriate data."
+      },
+      "LearningObjectives": {
+        "1.3.A": {
+          "description": "Determine the average rates of change for sequences and functions, including linear, quadratic, and other function types.",
+          "EssentialKnowledge": {
+            "1.3.A.1": "For a linear function, the average rate of change over any length input-value interval is constant.",
+            "1.3.A.2": "For a quadratic function, the average rates of change over consecutive equal-length input-value intervals can be given by a linear function.",
+            "1.3.A.3": "The average rate of change over the closed interval [a b, ] is the slope of the secant line from the point(a f , (a)) to (b f , (b))."
+          }
+        },
+        "1.3.B": {
+          "description": "Determine the change in the average rates of change for linear, quadratic, and other function types.",
+          "EssentialKnowledge": {
+            "1.3.B.1": "For a linear function, since the average rates of change over consecutive equal-length input-value intervals can be given by a constant function, these average rates of change for a linear function are changing at a rate of zero.",
+            "1.3.B.2": "For a quadratic function, since the average rates of change over consecutive equal-length input-value intervals can be given by a linear function, these average rates of change for a quadratic function are changing at a constant rate.",
+            "1.3.B.3": "When the average rate of change over equal-length input-value intervals is increasing for all small-length intervals, the graph of the function is concave up. When the average rate of change over equal-length input-value intervals is decreasing for all small-length intervals, the graph of the function is concave down."
+          }
+        }
+      }
+    },
+    {
+      "Section": "1.4",
+      "InstructionalPeriods": 2,
+      "Concept": "Polynomial Functions and Rates of Change",
+      "SkillFocus": {
+        "2.A": "Identify information from graphical, numerical, analytical, and verbal representations to answer a question or construct a model, with and without technology.",
+        "3.A": "Describe the characteristics of a function with varying levels of precision, depending on the function representation and available mathematical tools."
+      },
+      "LearningObjectives": {
+        "1.4.A": {
+          "description": "Identify key characteristics of polynomial functions related to rates of change.",
+          "EssentialKnowledge": {
+            "1.4.A.1": "A nonconstant polynomial function of x is any function representation that is equivalent to the analytical form n n−1 n−2 p( ) x = an n x + a −1x + an−2x +… + 2 a2x + a1x a + 0, where n is a positive integer, ai is a real number for each i from 1 to n, and an is nonzero. The polynomial has degree n, the leading term is n anx , and the leading coefficient is an. A constant is also a polynomial function of degree zero.",
+            "1.4.A.2": "Where a polynomial function switches between increasing and decreasing, or at the included endpoint of a polynomial with a restricted domain, the polynomial function will have a local, or relative, maximum or minimum output value. Of all local maxima, the greatest is called the global, or absolute, maximum. Likewise, the least of all local minima is called the global, or absolute, minimum.",
+            "1.4.A.3": "Between every two distinct real zeros of a nonconstant polynomial function, there must be at least one input value corresponding to a local maximum or local minimum.",
+            "1.4.A.4": "Polynomial functions of an even degree will have either a global maximum or a global minimum."
+          }
+        }
+      },
+      "SampleActivity": "Students are given phrases such as 'the function is increasing with a decreasing rate of change', 'the function has an average rate of change of -4 on the interval [2,5]', 'the rates of change of a function are constant', and 'the polynomial function is even and has a local minimum at x = 2'. Students construct a graph that would be consistent with each phrase and compare their results."
+    },
+    { "Section": "1.5", "Concept": "Polynomial Functions and Complex Zeros" },
+    { "Section": "1.6", "Concept": "Polynomial Functions and End Behavior" },
+    { "Section": "1.7", "Concept": "Rational Functions and End Behavior" },
+    { "Section": "1.8", "Concept": "Rational Functions and Zeros" },
+    {
+      "Section": "1.9",
+      "Concept": "Rational Functions and Vertical Asymptotes"
+    },
+    { "Section": "1.10", "Concept": "Rational Functions and Holes" },
+    {
+      "Section": "1.11",
+      "Concept": "Equivalent Representations of Polynomial and Rational Expressions"
+    },
+    { "Section": "1.12", "Concept": "Transformations of Functions" },
+    {
+      "Section": "1.13",
+      "Concept": "Function Model Selection and Assumption Articulation"
+    },
+    {
+      "Section": "1.14",
+      "Concept": "Function Model Construction and Application"
+    },
+    {
+      "Section": "2.1",
+      "Concept": "Change in Arithmetic and Geometric Sequences"
+    },
+    {
+      "Section": "2.2",
+      "Concept": "Change in Linear and Exponential Functions"
+    },
+    { "Section": "2.3", "Concept": "Exponential Functions" },
+    { "Section": "2.4", "Concept": "Exponential Function Manipulation" },
+    {
+      "Section": "2.5",
+      "Concept": "Exponential Function Context and Data Modeling"
+    },
+    { "Section": "2.6", "Concept": "Competing Function Model Validation" },
+    { "Section": "2.7", "Concept": "Composition of Functions" },
+    { "Section": "2.8", "Concept": "Inverse Functions" },
+    { "Section": "2.9", "Concept": "Logarithmic Expressions" },
+    { "Section": "2.10", "Concept": "Inverses of Exponential Functions" },
+    { "Section": "2.11", "Concept": "Logarithmic Functions" },
+    { "Section": "2.12", "Concept": "Logarithmic Function Manipulation" },
+    {
+      "Section": "2.13",
+      "Concept": "Exponential and Logarithmic Equations and Inequalities"
+    },
+    {
+      "Section": "2.14",
+      "Concept": "Logarithmic Function Context and Data Modeling"
+    },
+    { "Section": "2.15", "Concept": "Semi-log Plots" },
+    { "Section": "3.1", "Concept": "Periodic Phenomena" },
+    { "Section": "3.2", "Concept": "Sin, Cosine, and Tangent" },
+    { "Section": "3.3", "Concept": "Sine and Cosine Function Values" },
+    { "Section": "3.4", "Concept": "Sine and Cosine Function Graphs" },
+    { "Section": "3.5", "Concept": "Sinusoidal Functions" },
+    { "Section": "3.6", "Concept": "Sinusoidal Function Transformations" },
+    {
+      "Section": "3.7",
+      "Concept": "Sinusoidal Function Context and Data Modeling"
+    },
+    { "Section": "3.8", "Concept": "The Tangent Function" },
+    { "Section": "3.9", "Concept": "Inverse Trigonometric Functions" },
+    {
+      "Section": "3.10",
+      "Concept": "Trigonometric Equations and Inequalities"
+    },
+    {
+      "Section": "3.11",
+      "Concept": "The Secant, Cosecant, and Cotangent Functions"
+    },
+    {
+      "Section": "3.12",
+      "Concept": "Equivalent Representations of Trigonometric Functions"
+    },
+    { "Section": "3.13", "Concept": "Trigonometry and Polar Coordinates" },
+    { "Section": "3.14", "Concept": "Polar Function Graphs" },
+    { "Section": "3.15", "Concept": "Rates of Change in Polar Functions" }
+  ]
+}
