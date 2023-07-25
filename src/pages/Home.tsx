@@ -28,7 +28,7 @@ export default function Home() {
                 {/* Hero Section */}
                 <div className="text-center py-12 dark:bg-gray-900">
                     <h1 className="text-4xl font-bold dark:text-white">Gyosu AI Beta Release</h1>
-                    <p className="mt-4 text-xl dark:text-gray-300">Use AI to help create a better learning experience.</p>
+                    <p className="mt-4 text-xl dark:text-gray-300">Limited release for beta testers to get access to our new teaching tools.</p>
                     {/* <button
                         className="mt-4 px-4 py-2 text-white bg-yellow-500 rounded"
                         onClick={openModal}
