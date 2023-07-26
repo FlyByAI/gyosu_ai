@@ -191,11 +191,11 @@ const MathTeacherApp: React.FC = () => {
                             </GridContainer3x3>
                         </Accordion>
                     </div> : <>
-                        <Accordion title={"Search Results"} visible={true}>
+                        {dataSearchDocs && <Accordion title={"Search Results"} visible={true}>
                             <div className='text-red-100'>
                                 No results found. Try searching for something else.
                             </div>
-                        </Accordion>
+                        </Accordion>}
                     </>}
                     {myDocuments && <div className="flex justify-center items-center">
                         <Accordion title={"Documents created by you"}>
