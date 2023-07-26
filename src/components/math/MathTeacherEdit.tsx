@@ -13,8 +13,6 @@ interface MathTeacherEditProps {
     chat: string;
     setChat: (value: string) => void;
     handleChatChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
-    numQuestions: number;
-    handleNumQuestionsChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
     highlightedText: string;
     setHighlightedText: React.Dispatch<React.SetStateAction<string>>;
     chatHistory: string[];

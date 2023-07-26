@@ -8,7 +8,6 @@ export interface MathFormData {
     documentType: string;
     chapter?: string;
     section: string;
-    numQuestions: number;
     problemType?: string;
     userInput: string;
     upvotes?: number;

@@ -6,7 +6,6 @@ import useSubmitMathForm from '../../hooks/tools/math/useSubmitMathForm';
 import { notSecretConstants } from '../../constants/notSecretConstants';
 import SectionDropdown, { CourseDescription } from '../../components/forms/SectionDropdown';
 import TypeDropdown from '../../components/forms/TypeDropdown';
-import NumQuestionsInput from '../../components/math/MathFormComponents';
 import SubmitButton from '../../components/forms/SubmitButton';
 import AIChat from '../../components/AIChat';
 import SourceMaterialDropdown from '../../components/forms/SourceMaterialDropdown';
@@ -33,7 +32,6 @@ const MathTeacherApp: React.FC = () => {
     const [sourceMaterial, setSourceMaterial] = useState<string>(materialSelectOptions[0]);
     const [markdown, setMarkdown] = useState<string>('');
     const [chat, setChat] = useState<string>('');
-    const [numQuestions, setNumQuestions] = useState<number>(3);
     const [highlightedText, setHighlightedText] = useState<string>("");
     const [chatHistory, setChatHistory] = useState(['']);
     const [editMode, setEditMode] = useState<boolean>(false);
@@ -53,10 +51,6 @@ const MathTeacherApp: React.FC = () => {
     const creator = user.user?.username
 
     const [saved, setSaved] = useState<boolean>(false);
-
-    const handleNumQuestionsChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setNumQuestions(parseInt(event.target.value));
-    };
 
     const handleTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setDocumentType(event.target.value);
@@ -86,22 +80,22 @@ const MathTeacherApp: React.FC = () => {
     }, [data])
 
     const handleSubmit = () => {
-        const formData = { creator: creator, documentType, section, userInput: chat, numQuestions, problemType, sourceMaterial }
+        const formData = { creator: creator, documentType, section, userInput: chat, problemType, sourceMaterial }
         submitMathForm(formData)
     };
 
     const handleSearch = () => {
-        const formData = { creator: creator, documentType, section, userInput: chat, numQuestions, problemType, sourceMaterial }
+        const formData = { creator: creator, documentType, section, userInput: chat, problemType, sourceMaterial }
         searchMathDocuments(formData)
     };
 
     const handleSubmitTextbook = () => {
-        const formData = { creator: creator, documentType, section: section.split(".")[1], chapter: section.split(".")[0], userInput: chat, numQuestions, problemType, sourceMaterial }
+        const formData = { creator: creator, documentType, section: section.split(".")[1], chapter: section.split(".")[0], userInput: chat, problemType, sourceMaterial }
         submitMathForm(formData)
     };
 
     const handleSearchTextbook = () => {
-        const formData = { creator: creator, documentType, section: section.split(".")[1], chapter: section.split(".")[0], userInput: chat, numQuestions, problemType, sourceMaterial }
+        const formData = { creator: creator, documentType, section: section.split(".")[1], chapter: section.split(".")[0], userInput: chat, problemType, sourceMaterial }
         searchMathDocuments(formData)
     };
 
@@ -130,7 +124,6 @@ const MathTeacherApp: React.FC = () => {
                             {sourceMaterial == materialSelectOptions[1] && <> <TypeDropdown options={typeOptions} value={documentType} handleChange={handleTypeChange} className="form-select block w-full mt-1" />
                                 <SectionDropdown data={preCalcDataObj} value={section} handleChange={handleSectionChange} className="form-select block w-full mt-1" />
                                 <Dropdown data={problemTypeOptions} value={problemType} handleChange={handleChangeProblemType} className="form-select block w-full mt-1" />
-                                <NumQuestionsInput value={numQuestions} handleChange={handleNumQuestionsChange} />
                                 <SubmitButton
                                     buttonText={"Generate New"}
                                     handleClick={handleSubmit}
@@ -143,7 +136,6 @@ const MathTeacherApp: React.FC = () => {
                             {sourceMaterial == materialSelectOptions[0] && <> <TypeDropdown options={typeOptions} value={documentType} handleChange={handleTypeChange} className="form-select block w-full mt-1" />
                                 <SectionDropdown data={textbookSections} value={section} handleChange={handleSectionChange} className="form-select block w-full" />
                                 <Dropdown data={problemTypeOptions} value={problemType} handleChange={handleChangeProblemType} className="form-select block w-full mt-1" />
-                                <NumQuestionsInput value={numQuestions} handleChange={handleNumQuestionsChange} />
                                 <SubmitButton
                                     buttonText={"Generate New"}
                                     handleClick={handleSubmitTextbook}
@@ -247,7 +239,6 @@ const MathTeacherApp: React.FC = () => {
                             section: section.split(".")[1],
                             chapter: section.split(".")[0],
                             userInput: "",
-                            numQuestions,
                             problemType
                         }}
                         markdown={markdown}
@@ -264,7 +255,6 @@ const MathTeacherApp: React.FC = () => {
                         section={section} handleSectionChange={handleSectionChange}
                         markdown={markdown} handleMarkdownChange={handleMarkdownChange}
                         chat={chat} handleChatChange={handleChatChange}
-                        numQuestions={numQuestions} handleNumQuestionsChange={handleNumQuestionsChange}
                         highlightedText={highlightedText} setHighlightedText={setHighlightedText}
                         chatHistory={chatHistory} setChatHistory={setChatHistory}
                         editMode={editMode} setEditMode={setEditMode}
