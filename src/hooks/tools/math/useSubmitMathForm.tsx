@@ -1,4 +1,5 @@
 import { useClerk } from '@clerk/clerk-react';
+import humps from 'humps';
 import { useState } from 'react';
 
 export interface MathFormData {
@@ -34,14 +35,14 @@ const useSubmitMathForm = (endpoint: string) => {
                     'Content-Type': 'application/json',
                     'Authorization': token ? `Bearer ${token}` : '',
                 },
-                body: JSON.stringify({ ...formData, type: formData.documentType, userInput: "verbal and exercise problems" })
+                body: JSON.stringify(humps.decamelizeKeys({ ...formData, type: formData.documentType }))
             });
 
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
 
-            const responseData = await response.json();
+            const responseData = await response.json().then((json) => humps.camelizeKeys(json));
             setData(responseData);
 
             setLoading(false);
