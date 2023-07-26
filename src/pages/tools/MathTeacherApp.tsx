@@ -18,6 +18,7 @@ import useFetchDocuments from '../../hooks/tools/math/useFetchDocuments';
 import MathTeacherEdit from '../../components/math/MathTeacherEdit';
 import { useUser } from '@clerk/clerk-react';
 import Accordion from '../../components/Accordion';
+import useSearchMathDocuments from '../../hooks/tools/math/useSearchDocuments';
 
 
 const MathTeacherApp: React.FC = () => {
@@ -40,6 +41,10 @@ const MathTeacherApp: React.FC = () => {
 
     const { documents } = useFetchDocuments(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/documents/recent/`);
     const { documents: myDocuments } = useFetchDocuments(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/myDocuments/recent/`);
+
+    const { isLoading, error, submitMathForm, data } = useSubmitMathForm(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/generate/`)
+    const { isLoading: isLoadingSearch, error: errorSearch, searchMathDocuments, data: dataSearchDocs } = useSearchMathDocuments(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/search/`)
+
 
     const [documentId, setDocumentId] = useState<number | undefined>(undefined);
 
@@ -73,7 +78,6 @@ const MathTeacherApp: React.FC = () => {
         setChat(event.target.value);
     };
 
-    const { isLoading, error, submitMathForm, data } = useSubmitMathForm(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/generate/`)
 
     useEffect(() => {
         if (data) {
@@ -86,9 +90,19 @@ const MathTeacherApp: React.FC = () => {
         submitMathForm(formData)
     };
 
+    const handleSearch = () => {
+        const formData = { creator: creator, documentType, section, userInput: chat, numQuestions, problemType, sourceMaterial }
+        searchMathDocuments(formData)
+    };
+
     const handleSubmitTextbook = () => {
         const formData = { creator: creator, documentType, section: section.split(".")[1], chapter: section.split(".")[0], userInput: chat, numQuestions, problemType, sourceMaterial }
         submitMathForm(formData)
+    };
+
+    const handleSearchTextbook = () => {
+        const formData = { creator: creator, documentType, section: section.split(".")[1], chapter: section.split(".")[0], userInput: chat, numQuestions, problemType, sourceMaterial }
+        searchMathDocuments(formData)
     };
 
     const handleChangeProblemType = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -118,18 +132,26 @@ const MathTeacherApp: React.FC = () => {
                                 <Dropdown data={problemTypeOptions} value={problemType} handleChange={handleChangeProblemType} className="form-select block w-full mt-1" />
                                 <NumQuestionsInput value={numQuestions} handleChange={handleNumQuestionsChange} />
                                 <SubmitButton
-                                    buttonText={"Generate"}
+                                    buttonText={"Generate New"}
                                     handleClick={handleSubmit}
                                     className=" bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                                /><SubmitButton
+                                    buttonText={"Search"}
+                                    handleClick={handleSearch}
+                                    className=" ms-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                                 /></>}
                             {sourceMaterial == materialSelectOptions[0] && <> <TypeDropdown options={typeOptions} value={documentType} handleChange={handleTypeChange} className="form-select block w-full mt-1" />
                                 <SectionDropdown data={textbookSections} value={section} handleChange={handleSectionChange} className="form-select block w-full" />
                                 <Dropdown data={problemTypeOptions} value={problemType} handleChange={handleChangeProblemType} className="form-select block w-full mt-1" />
                                 <NumQuestionsInput value={numQuestions} handleChange={handleNumQuestionsChange} />
                                 <SubmitButton
-                                    buttonText={"Generate"}
+                                    buttonText={"Generate New"}
                                     handleClick={handleSubmitTextbook}
                                     className=" bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                                /><SubmitButton
+                                    buttonText={"Search"}
+                                    handleClick={handleSearchTextbook}
+                                    className="  ms-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                                 /></>}
                         </div>
 
@@ -142,6 +164,39 @@ const MathTeacherApp: React.FC = () => {
                             <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12"></div>
                         </div>
                     )}
+                    {errorSearch && <p className="text-red-600 mt-4 text-center">Error: {errorSearch}</p>}
+                    {errorSearch && !user?.user?.username && <p className="text-red-600 mt-4 text-center">Note: {"Our tools require you to be signed in."}</p>}
+                    {isLoadingSearch && <p className="dark:text-white">Loading...</p>}
+                    {isLoadingSearch && (
+                        <div className="flex justify-center mt-4">
+                            <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12"></div>
+                        </div>
+                    )}
+                    {dataSearchDocs && dataSearchDocs?.length > 0 ? <div className="flex justify-center items-center">
+                        <Accordion title={"Search Results"} visible={true}>
+                            <GridContainer3x3>
+                                {dataSearchDocs?.map((doc, index) => {
+                                    return (
+                                        <DocumentPreview
+                                            index={index}
+                                            markdown={doc.markdown}
+                                            creator={doc.creator || user.user?.username || "Anonymous"}
+                                            upvotes={doc.upvotes || 0}
+                                            tips={doc.tips || 0}
+                                            modifiedBy={[]} //TODO: contributors
+                                            onDocumentClick={handleDocumentClick}
+                                        />
+                                    );
+                                })}
+                            </GridContainer3x3>
+                        </Accordion>
+                    </div> : <>
+                        <Accordion title={"Search Results"} visible={true}>
+                            <div className='text-red-100'>
+                                No results found. Try searching for something else.
+                            </div>
+                        </Accordion>
+                    </>}
                     {myDocuments && <div className="flex justify-center items-center">
                         <Accordion title={"Documents created by you"}>
                             <GridContainer3x3>
