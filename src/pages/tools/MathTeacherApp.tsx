@@ -127,7 +127,7 @@ const MathTeacherApp: React.FC = () => {
                                 <SubmitButton
                                     buttonText={"Generate New"}
                                     handleClick={handleSubmit}
-                                    className=" bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                                    className=" mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                                 /><SubmitButton
                                     buttonText={"Search"}
                                     handleClick={handleSearch}
@@ -139,7 +139,7 @@ const MathTeacherApp: React.FC = () => {
                                 <SubmitButton
                                     buttonText={"Generate New"}
                                     handleClick={handleSubmitTextbook}
-                                    className=" bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                                    className=" mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                                 /><SubmitButton
                                     buttonText={"Search"}
                                     handleClick={handleSearchTextbook}
