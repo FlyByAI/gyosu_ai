@@ -75,7 +75,7 @@ const MathTeacherApp: React.FC = () => {
 
     useEffect(() => {
         if (data) {
-            setMarkdown(data.markdown)
+            setMarkdown(data.response)
         }
     }, [data])
 
