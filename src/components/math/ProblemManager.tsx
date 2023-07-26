@@ -24,9 +24,9 @@ const ProblemManager: React.FC<ProblemManagerProps> = ({ initialMarkdown, onMark
     }, [initialMarkdown]);
 
     function markdownToProblemsArr(markdown: string) {
-        const spacedMarkdown = markdown.replace(/\n\n\*\*Problem /g, "<br>**Problem ");
+        const spacedMarkdown = markdown.replace(/(\n\n\*\*Problem \d+)/g, "<br>$1");
         const array = spacedMarkdown.split("<br>");
-        return array;
+        return array.slice(1);
     }
 
     const insertProblem = (indexToInsertAfter: number) => {
