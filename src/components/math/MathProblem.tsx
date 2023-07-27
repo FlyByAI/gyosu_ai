@@ -16,9 +16,11 @@ interface MathProblemProps {
     deleteProblem: (index: number) => void;
     insertProblem: (index: number) => void;
     setChat: (value: string) => void;
+    updateProblem: (index: number, newProblem: string) => void
 }
 
-const MathProblem: React.FC<MathProblemProps> = ({ index, problem, handleChange, handleFixLatexFormatting, deleteProblem, insertProblem, setChat }) => {
+const MathProblem: React.FC<MathProblemProps> = ({ updateProblem, index, problem, handleChange, handleFixLatexFormatting, deleteProblem, insertProblem, setChat }) => {
+
     return (
         <div className='flex space-x-4'>
             {/* first section */}
@@ -54,7 +56,7 @@ const MathProblem: React.FC<MathProblemProps> = ({ index, problem, handleChange,
                         </div>
                         <div className="flex flex-row">
                             <div className="mr-2 group relative dark:text-gray-300">
-                                <RefreshResult setChat={setChat} problem={problem} index={index} />
+                                <RefreshResult setChat={setChat} problem={problem} problemIndex={index} updateProblem={updateProblem} />
                                 <div className="hidden group-hover:block group-hover:left-12 absolute bg-gray-700 text-white py-1 px-2 rounded text-l">Reroll Result</div>
                             </div>
                             <div className="group relative dark:text-red-300">
