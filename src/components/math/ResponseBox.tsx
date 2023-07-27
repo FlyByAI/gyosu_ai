@@ -18,7 +18,7 @@ const ResponseBox: React.FC<ResponseBoxProps> = ({ value, handleChange, classNam
         <>
             {edit ? <textarea
                 disabled={!edit}
-                value={value}
+                defaultValue={value}
                 onChange={handleChange}
                 className={className + " form-textarea mt-1 block w-full"}
                 rows={5}

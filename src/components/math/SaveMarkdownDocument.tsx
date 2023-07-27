@@ -20,8 +20,6 @@ const SaveMarkdownDocument: React.FC<SaveMarkdownDocumentProps> = ({ markdown, s
         setSaved(false);
     }, [markdown, setSaved]);
 
-    console.log(documentId)
-
     const handleClick = async () => {
         if (documentId) {
             submitDocument({ markdown: markdown, formData: { ...formData, id: documentId } });
