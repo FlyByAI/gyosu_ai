@@ -7,6 +7,8 @@ import TrashIcon from '../../svg/TrashIcon';
 import PlusIcon from '../../svg/PlusIcon';
 import LatexIcon from '../../svg/LatexIcon';
 import ResponseFeedback from '../ResponseFeedback';
+import MyPlotly from './MyPlotly';
+import GraphResult from './GraphResult';
 
 interface MathProblemProps {
     index: number;
@@ -59,6 +61,10 @@ const MathProblem: React.FC<MathProblemProps> = ({ updateProblem, index, problem
                                 <RefreshResult setChat={setChat} problem={problem} problemIndex={index} updateProblem={updateProblem} />
                                 <div className="hidden group-hover:block group-hover:left-12 absolute bg-gray-700 text-white py-1 px-2 rounded text-l">Reroll Result</div>
                             </div>
+                            {/* <div className="mr-2 group relative dark:text-gray-300">
+                                <GraphResult problem={problem} problemIndex={index} updateProblem={updateProblem} />
+                                <div className="hidden group-hover:block group-hover:left-12 absolute bg-gray-700 text-white py-1 px-2 rounded text-l">Reroll Result</div>
+                            </div> */}
                             <div className="group relative dark:text-red-300">
                                 <button onClick={() => deleteProblem(index)}><TrashIcon /></button>
                                 <div className="hidden group-hover:block group-hover:left-12 absolute bg-gray-700 text-white py-1 px-2 rounded text-l">Delete Problem</div>
@@ -78,7 +84,7 @@ const MathProblem: React.FC<MathProblemProps> = ({ updateProblem, index, problem
                         handleChange={handleChange}
                         className="p-2 bg-gray-100 dark:bg-gray-700 dark:text-white rounded-md"
                     />
-
+                    <MyPlotly problem={problem} updateProblem={updateProblem} problemIndex={index} />
                 </div>
             </div>
         </div>

@@ -116,7 +116,6 @@ const MathTeacherApp: React.FC = () => {
 
     return (
         <>
-
             {!markdown ?
                 <>
                     <div className="flex justify-center items-center">

@@ -1,14 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import ResponseBox from './ResponseBox'; // Replace with your actual import
-import ArrowLeft from '../../svg/ArrowLeftIcon';
-import ArrowRight from '../../svg/ArrowRightIcon';
-import RefreshResult from './RefreshResult';
-import PrintResult from './PrintResult';
-import TrashIcon from '../../svg/TrashIcon';
-import PlusIcon from '../../svg/PlusIcon';
-import LatexIcon from '../../svg/LatexIcon';
 import MathProblem from './MathProblem';
-import ResponseFeedback from '../ResponseFeedback';
+import MyPlotly from './MyPlotly';
 
 interface ProblemManagerProps {
     initialMarkdown: string;
