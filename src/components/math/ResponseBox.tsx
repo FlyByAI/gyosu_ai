@@ -3,6 +3,7 @@ import AIChatSmall from "./AIChatSmall";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
+import { useEffect } from "react";
 
 interface ResponseBoxProps {
     value: string;
@@ -14,11 +15,12 @@ interface ResponseBoxProps {
 
 const ResponseBox: React.FC<ResponseBoxProps> = ({ value, handleChange, className, edit, problemIndex }) => {
 
+
     return (
         <>
             {edit ? <textarea
                 disabled={!edit}
-                defaultValue={value}
+                value={value}
                 onChange={handleChange}
                 className={className + " form-textarea mt-1 block w-full"}
                 rows={5}
