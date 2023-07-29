@@ -1,6 +1,28 @@
-import { useEffect, useState } from 'react';
+import React, { useContext, useState, useEffect, createContext } from 'react';
+
+
+interface DarkModeContextValue {
+    darkMode: boolean;
+    setDarkMode: React.Dispatch<React.SetStateAction<boolean>>;
+    SunIcon: () => JSX.Element;
+    MoonIcon: () => JSX.Element;
+}
+
+interface DarkModeProviderProps {
+    children: React.ReactNode;
+}
+
+const DarkModeContext = createContext<DarkModeContextValue | undefined>(undefined);
 
 export const useDarkMode = () => {
+    const context = useContext(DarkModeContext);
+    if (!context) {
+        throw new Error(`useDarkMode must be used within a DarkModeProvider`);
+    }
+    return context;
+};
+
+export const DarkModeProvider = ({ children }: DarkModeProviderProps) => {
     const [darkMode, setDarkMode] = useState(() => {
         const savedMode = localStorage.getItem('darkMode');
         return savedMode ? JSON.parse(savedMode) : true;
@@ -15,8 +37,14 @@ export const useDarkMode = () => {
         }
     }, [darkMode]);
 
-    return { darkMode, setDarkMode, SunIcon, MoonIcon };
+    return (
+        <DarkModeContext.Provider value={{ darkMode, setDarkMode, SunIcon, MoonIcon }}>
+            {children}
+        </DarkModeContext.Provider>
+    );
 };
+
+// SunIcon, MoonIcon as before...
 
 const SunIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-6 h-6 text-yellow-500">

@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react';
 import './App.css';
+import { DarkModeProvider } from './hooks/useDarkMode';
 
 
 interface AppProps {
@@ -8,8 +9,10 @@ interface AppProps {
 
 function App({ children }: AppProps) {
   return (
-    <div className='pb-12'>
-      {children}
+    <div className=''>
+      <DarkModeProvider>
+        {children}
+      </DarkModeProvider>
     </div>
   );
 }

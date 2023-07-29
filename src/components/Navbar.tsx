@@ -8,7 +8,6 @@ import TokenButton from './TokenButton';
 const Navbar: React.FC = () => {
 
   const { darkMode, setDarkMode, SunIcon, MoonIcon } = useDarkMode();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const { session } = useClerk();
 
