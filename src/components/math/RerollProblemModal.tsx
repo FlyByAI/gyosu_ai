@@ -12,9 +12,10 @@ interface RerollProblemModalProps {
     onClose: () => void;
     updateProblem: (index: number, newProblem: string) => void
     problemIndex: number;
+    error: any;
 }
 
-const RerollProblemModal: React.FC<RerollProblemModalProps> = ({ markdown, newProblem, isOpen, setNewProblem, onClose, problemIndex, updateProblem }) => {
+const RerollProblemModal: React.FC<RerollProblemModalProps> = ({ error, markdown, newProblem, isOpen, setNewProblem, onClose, updateProblem, problemIndex }) => {
     const handleAccept = () => {
         updateProblem(problemIndex, newProblem);
         onClose();
@@ -25,7 +26,7 @@ const RerollProblemModal: React.FC<RerollProblemModalProps> = ({ markdown, newPr
         onClose();
     };
 
-    return isOpen && (
+    return isOpen ? (
         <div className="fixed z-10 inset-0 overflow-y-auto flex items-center justify-center">
             <div className="fixed inset-0 transition-opacity" aria-hidden="true">
                 <div className="absolute inset-0 bg-gray-500 opacity-75 dark:bg-gray-700"></div>
@@ -66,9 +67,10 @@ const RerollProblemModal: React.FC<RerollProblemModalProps> = ({ markdown, newPr
                         </ReactMarkdown>
                         {/* <textarea id="problem" defaultValue={newProblem} className="mt-1 p-2 block w-full border-gray-300 rounded-md dark:bg-gray-700 dark:text-white dark:border-gray-600" readOnly /> */}
                     </div> : <div className='text-green-300'>"Loading..."</div>}
+                    {error && <div className='mb-4 text-red-300'>{"Problem reroll failed, please try again or try a different problem"}</div>}
                 </div>
-                <div className="bg-gray-50 dark:bg-gray-700 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse items-center justify-center">
-                    <button type="button" className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 sm:ml-3 sm:w-auto sm:text-sm" onClick={handleAccept}>
+                <div className=" bg-gray-50 dark:bg-gray-700 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse items-center justify-center">
+                    <button disabled={!!error} type="button" className={`${error ? "bg-gray-500" : "hover:bg-green-700 bg-green-600"} w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 text-base font-medium text-white sm:ml-3 sm:w-auto sm:text-sm`} onClick={handleAccept}>
                         Accept
                     </button>
                     <button onClick={handleReject} type="button" className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 dark:bg-gray-700 dark:text-white dark:border-gray-600 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
@@ -77,7 +79,7 @@ const RerollProblemModal: React.FC<RerollProblemModalProps> = ({ markdown, newPr
                 </div>
             </div>
         </div>
-    );
+    ) : null;
 };
 
 export default RerollProblemModal;
