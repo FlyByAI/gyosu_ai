@@ -19,13 +19,6 @@ interface ProblemManagerProps {
 const ProblemManager: React.FC<ProblemManagerProps> = ({ initialMarkdown, onMarkdownChange, setChat, }) => {
     const [problems, setProblems] = useState<string[]>(markdownToProblemsArr(initialMarkdown));
 
-    useEffect(() => {
-        const updateMarkdown = (problems: string[]) => {
-            onMarkdownChange(problems.join("\n\n"));
-        }
-        updateMarkdown(problems)
-    }, [problems, onMarkdownChange]);
-
     function markdownToProblemsArr(markdown: string) {
         const spacedMarkdown = markdown.replace(/(\*\*Problem \d+\*\*)/g, "<br>$1");
         const array = spacedMarkdown.split("<br>");
@@ -36,11 +29,12 @@ const ProblemManager: React.FC<ProblemManagerProps> = ({ initialMarkdown, onMark
 
     const updateProblems = (newProblems: string[]) => {
         setProblems(newProblems);
+
     }
 
     const updateProblem = (index: number, newProblem: string) => {
         const newProblems = [...problems];
-        newProblems[index] = newProblem.trim();
+        newProblems[index] = newProblem;
         updateProblems(newProblems);
     }
 
