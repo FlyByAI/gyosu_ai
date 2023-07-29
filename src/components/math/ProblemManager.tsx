@@ -1,14 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import ResponseBox from './ResponseBox'; // Replace with your actual import
-import ArrowLeft from '../../svg/ArrowLeftIcon';
-import ArrowRight from '../../svg/ArrowRightIcon';
-import RefreshResult from './RefreshResult';
-import PrintResult from './PrintResult';
-import TrashIcon from '../../svg/TrashIcon';
-import PlusIcon from '../../svg/PlusIcon';
-import LatexIcon from '../../svg/LatexIcon';
 import MathProblem from './MathProblem';
-import ResponseFeedback from '../ResponseFeedback';
 
 interface ProblemManagerProps {
     initialMarkdown: string;
@@ -16,8 +7,15 @@ interface ProblemManagerProps {
     setChat: (value: string) => void;
 }
 
-const ProblemManager: React.FC<ProblemManagerProps> = ({ initialMarkdown, onMarkdownChange, setChat, }) => {
+const ProblemManager: React.FC<ProblemManagerProps> = ({ initialMarkdown, setChat, onMarkdownChange }) => {
     const [problems, setProblems] = useState<string[]>(markdownToProblemsArr(initialMarkdown));
+
+    useEffect(() => {
+        const updateMarkdown = (problems: string[]) => {
+            onMarkdownChange(problems.join("\n\n"));
+        }
+        updateMarkdown(problems)
+    }, [problems, onMarkdownChange]);
 
     function markdownToProblemsArr(markdown: string) {
         const spacedMarkdown = markdown.replace(/(\*\*Problem \d+\*\*)/g, "<br>$1");

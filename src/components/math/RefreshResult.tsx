@@ -29,9 +29,9 @@ const RefreshResult: React.FC<RefreshResultProps> = ({ problem, setChat, problem
     useEffect(() => {
         if (data) {
             setNewProblem(data?.instructions + "\n\n" + data?.problem)
-            // setModalOpen(true);
+            setChat(`${data?.instructions ? data?.instructions + "\n\n" : ""}` + data?.problem)
         }
-    }, [data])
+    }, [data, setChat, setNewProblem])
 
 
 
