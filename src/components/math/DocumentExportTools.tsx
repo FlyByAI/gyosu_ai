@@ -17,7 +17,7 @@ interface DocumentExportProps {
 }
 
 
-const DocumentExport: React.FC<DocumentExportProps> = ({ markdown, divPrintId, saved, setSaved, formData, documentId, setDocumentId, setMarkdown }) => {
+const DocumentExportTools: React.FC<DocumentExportProps> = ({ markdown, divPrintId, saved, setSaved, formData, documentId, setDocumentId, setMarkdown }) => {
 
     const handleBack = () => {
         setMarkdown("");
@@ -25,7 +25,6 @@ const DocumentExport: React.FC<DocumentExportProps> = ({ markdown, divPrintId, s
 
     return (<>
 
-        {markdown && <MathMarkdown markdown={markdown} />}
         <div className="flex flex-row mr-2 relative items-end dark:text-gray-300 justify-between mb-4">
             <button onClick={handleBack} className="ml-2 px-3 py-2 bg-blue-700 text-white rounded-lg">Back</button>
             <div className="flex flex-row">
@@ -41,4 +40,4 @@ const DocumentExport: React.FC<DocumentExportProps> = ({ markdown, divPrintId, s
     </>);
 };
 
-export default DocumentExport;
+export default DocumentExportTools;

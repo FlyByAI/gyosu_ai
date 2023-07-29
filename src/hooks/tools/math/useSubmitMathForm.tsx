@@ -27,8 +27,6 @@ const useSubmitMathForm = (endpoint: string) => {
         try {
             const token = session ? await session.getToken() : "none";
 
-            console.log(formData)
-
             const response = await fetch(endpoint, {
                 method: 'POST',
                 headers: {

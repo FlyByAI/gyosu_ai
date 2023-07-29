@@ -30,6 +30,7 @@ const useSubmitAddGraph = (endpoint: string) => {
             }
 
             const responseData = await response.json().then((json) => humps.camelizeKeys(json));
+            if (typeof (responseData.graph) == "string") responseData.graph = eval(responseData.graph);
             setData(responseData);
             setLoading(false);
         } catch (err: any) {
@@ -38,7 +39,7 @@ const useSubmitAddGraph = (endpoint: string) => {
         }
     };
 
-    return { submitAddGraph, isLoading, error, data };
+    return { submitAddGraph, isLoading, error, data, setData };
 };
 
 export default useSubmitAddGraph;

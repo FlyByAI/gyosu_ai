@@ -10,7 +10,6 @@ import SubmitButton from '../../components/forms/SubmitButton';
 import AIChat from '../../components/AIChat';
 import SourceMaterialDropdown from '../../components/forms/SourceMaterialDropdown';
 import Dropdown from '../../components/forms/Dropdown';
-import DocumentExport from '../../components/math/DocumentExport';
 import GridContainer3x3 from '../../components/grids/GridContainer3x3';
 import DocumentPreview from '../../components/forms/DocumentPreview';
 import useFetchDocuments from '../../hooks/tools/math/useFetchDocuments';
@@ -18,6 +17,8 @@ import MathTeacherEdit from '../../components/math/MathTeacherEdit';
 import { useUser } from '@clerk/clerk-react';
 import Accordion from '../../components/Accordion';
 import useSearchMathDocuments from '../../hooks/tools/math/useSearchDocuments';
+import DocumentExportTools from '../../components/math/DocumentExportTools';
+import ProblemManager from '../../components/math/ProblemManager';
 
 
 const MathTeacherApp: React.FC = () => {
@@ -75,7 +76,6 @@ const MathTeacherApp: React.FC = () => {
 
     useEffect(() => {
         if (data) {
-            console.log(data)
             setMarkdown(data.response)
         }
     }, [data])
@@ -113,6 +113,9 @@ const MathTeacherApp: React.FC = () => {
         window.scrollTo(0, 0)
     };
 
+    const onMarkdownChange = (newMarkdown: string) => {
+        handleMarkdownChange({ target: { value: newMarkdown } } as React.ChangeEvent<HTMLTextAreaElement>);
+    };
 
     return (
         <>
@@ -231,7 +234,7 @@ const MathTeacherApp: React.FC = () => {
                 :
                 <>
 
-                    <DocumentExport
+                    <DocumentExportTools
                         formData={{
                             creator: documents && documents?.filter((doc) => doc.id == documentId)[0]?.creator || creator || "Anonymous",
                             sourceMaterial: sourceMaterial,
@@ -249,17 +252,7 @@ const MathTeacherApp: React.FC = () => {
                         documentId={documentId}
                         setMarkdown={setMarkdown}
                     />
-                    <MathTeacherEdit
-                        typeOptions={typeOptions}
-                        documentType={documentType} handleTypeChange={handleTypeChange}
-                        section={section} handleSectionChange={handleSectionChange}
-                        markdown={markdown} handleMarkdownChange={handleMarkdownChange}
-                        chat={chat} handleChatChange={handleChatChange}
-                        highlightedText={highlightedText} setHighlightedText={setHighlightedText}
-                        chatHistory={chatHistory} setChatHistory={setChatHistory}
-                        editMode={editMode} setEditMode={setEditMode}
-                        setChat={setChat}
-                    />
+                    <ProblemManager initialMarkdown={markdown} setChat={setChat} onMarkdownChange={onMarkdownChange} />
                     <div className="flex items-center justify-center">
                         {/* <AIChat markdown={markdown} onChatChange={handleChatChange} /> */}
                     </div>

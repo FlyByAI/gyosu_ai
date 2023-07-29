@@ -11,6 +11,8 @@ const Chat: React.FC<ChatProps> = ({ sessionId }) => {
     const { chatData, isLoading, error, sendMessage } = useChat(`/chat/${sessionId}`, sessionId);
     const [inputMessage, setInputMessage] = useState('');
 
+
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (inputMessage.trim() !== '') {
