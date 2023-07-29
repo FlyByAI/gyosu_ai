@@ -12,7 +12,7 @@ interface RefreshResultProps {
 }
 
 const RefreshResult: React.FC<RefreshResultProps> = ({ problem, setChat, problemIndex, updateProblem }) => {
-    const { data, submitReroll } = useSubmitReroll(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/reroll/`);
+    const { data, submitReroll, error } = useSubmitReroll(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/reroll/`);
     const [newProblem, setNewProblem] = useState<string>('');
     const [isModalOpen, setModalOpen] = useState(false);
 
@@ -22,7 +22,6 @@ const RefreshResult: React.FC<RefreshResultProps> = ({ problem, setChat, problem
 
     const handleClick = () => {
         setModalOpen(true);
-        console.log("open")
         submitReroll(problem);
     }
 
@@ -38,7 +37,7 @@ const RefreshResult: React.FC<RefreshResultProps> = ({ problem, setChat, problem
     return (<>
         <button onClick={handleClick}><RefreshIcon /> </button>
 
-        {<RerollProblemModal problemIndex={problemIndex} updateProblem={updateProblem} onClose={handleCloseModal} isOpen={isModalOpen} setNewProblem={setNewProblem} markdown={problem} newProblem={newProblem} />}
+        {<RerollProblemModal error={error} problemIndex={problemIndex} updateProblem={updateProblem} onClose={handleCloseModal} isOpen={isModalOpen} setNewProblem={setNewProblem} markdown={problem} newProblem={newProblem} />}
     </>)
 }
 
