@@ -18,7 +18,7 @@ const ProblemManager: React.FC<ProblemManagerProps> = ({ initialMarkdown, setCha
     }, [problems, onMarkdownChange]);
 
     function markdownToProblemsArr(markdown: string) {
-        const spacedMarkdown = markdown.replace(/(\*\*Problem \d+\*\*)/g, "<br>$1");
+        const spacedMarkdown = markdown.replace(/(\*\*Problem #?\d+\*\*)/g, "<br>$1");
         const array = spacedMarkdown.split("<br>");
         return array.slice(1);
     }
@@ -54,6 +54,7 @@ const ProblemManager: React.FC<ProblemManagerProps> = ({ initialMarkdown, setCha
 
     const handleFixLatexFormatting = () => {
         console.log("fix formatting");
+        window.alert("in development, new feature coming soon")
     }
 
     return (
