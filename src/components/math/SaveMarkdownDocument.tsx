@@ -34,8 +34,22 @@ const SaveMarkdownDocument: React.FC<SaveMarkdownDocumentProps> = ({ markdown, s
         }
     }, [documentId, setDocumentId, data])
 
+    useEffect(() => {
+        setSaved(true)
+
+        setTimeout(() => {
+            setSaved(false);
+        }, 5000);
+    }, [setSaved, data])
+
     return (
-        <div>
+        <div className='flex items-center'>
+            {saved && (
+                <p className="me-2 text-green-500 animate-fade-out">Saved!</p>
+            )}
+            {error && (
+                <p className="me-2 text-red-500 animate-fade-out">Error: {error}</p>
+            )}
             <button
                 onClick={handleClick}
                 disabled={isLoading}
@@ -46,7 +60,6 @@ const SaveMarkdownDocument: React.FC<SaveMarkdownDocumentProps> = ({ markdown, s
                 {!saved && !isLoading && <p className='me-2 w-12'>Save </p>}
                 <SaveIcon />
             </button>
-            {error && <p>Error: {error}</p>}
         </div>
     );
 };

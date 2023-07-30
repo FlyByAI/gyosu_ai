@@ -18,6 +18,7 @@ interface RerollProblemModalProps {
 const RerollProblemModal: React.FC<RerollProblemModalProps> = ({ error, markdown, newProblem, isOpen, setNewProblem, onClose, updateProblem, problemIndex }) => {
     const handleAccept = () => {
         updateProblem(problemIndex, newProblem);
+        setNewProblem("");
         onClose();
     };
 
@@ -39,7 +40,6 @@ const RerollProblemModal: React.FC<RerollProblemModalProps> = ({ error, markdown
                         </h3>
                     </div>
                     <div className="mb-4 bg-gray-700 p-2 rounded-l">
-                        <label htmlFor="problem" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Problem</label>
                         <ReactMarkdown
                             remarkPlugins={[remarkGfm, remarkMath]}
                             rehypePlugins={[rehypeKatex]}
@@ -57,7 +57,6 @@ const RerollProblemModal: React.FC<RerollProblemModalProps> = ({ error, markdown
                         </h3>
                     </div>
                     {newProblem ? <div className="mb-4 bg-gray-700 p-2 rounded-l">
-                        <label htmlFor="problem" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Problem</label>
                         <ReactMarkdown
                             remarkPlugins={[remarkGfm, remarkMath]}
                             rehypePlugins={[rehypeKatex]}
