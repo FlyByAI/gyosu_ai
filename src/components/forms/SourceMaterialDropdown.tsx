@@ -11,8 +11,9 @@ const SourceMaterialDropdown: React.FC<SectionProps> = ({ value, handleChange, c
     <>
         <h2 className="text-xl font-bold mb-2 text-white text-left">Select Source Material: {value}</h2>
         <select disabled={disabled} value={value} onChange={handleChange} className={className + " form-select block w-full mt-1"}>
-            <option value="precalc-2a-textbook">Precalculus 2A Textbook</option>
-            <option value="ap-precalculus-college-board-guide">AP Precalculus College Board Guide</option>
+            <option value="precalc-2e-textbook">Precalculus 2e</option>
+            <option value="pre-algebra-2e-textbook">Pre-Algebra 2e</option>
+            <option value="college-algebra-2e-textbook">College-Algebra 2e</option>
         </select>
     </>
 );

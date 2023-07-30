@@ -23,7 +23,7 @@ import useSearchMathDocuments from '../../hooks/tools/math/useSearchDocuments';
 const MathTeacherApp: React.FC = () => {
     // const typeOptions = ["Guided Notes", "Worksheet", "Game", "Quiz", "Test"]
     const typeOptions = ["Worksheet"]
-    const materialSelectOptions = ["precalc-2e-textbook", "algebra-2e-textbook"];
+    const materialSelectOptions = ["precalc-2e-textbook", "pre-algebra-2e-textbook", "college-algebra-2e-textbook"];
     const problemTypeOptions = ["Verbal", "Algebraic", "Graphical", "Numeric", "Technology", "Real-World Applications"];
 
     const preCalcDataObj = preCalcData as CourseDescription;
