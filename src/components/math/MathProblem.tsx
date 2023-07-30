@@ -7,6 +7,7 @@ import TrashIcon from '../../svg/TrashIcon';
 import PlusIcon from '../../svg/PlusIcon';
 import LatexIcon from '../../svg/LatexIcon';
 import ResponseFeedback from '../ResponseFeedback';
+import FixLatex from './FixLatex';
 
 interface MathProblemProps {
     index: number;
@@ -50,7 +51,7 @@ const MathProblem: React.FC<MathProblemProps> = ({ updateProblem, index, problem
                                 <div className="hidden group-hover:block group-hover:left-12 absolute bg-gray-700 text-white py-1 px-2 rounded text-l">Insert Problem</div>
                             </div>
                             <div className="group relative dark:text-yellow-300">
-                                <button onClick={handleFixLatexFormatting}><LatexIcon /></button>
+                                <FixLatex setChat={setChat} problem={problem} problemIndex={index} updateProblem={updateProblem} />
                                 <div className="hidden group-hover:block group-hover:left-12 absolute bg-gray-700 text-white py-1 px-2 rounded text-l">Fix Latex Formatting</div>
                             </div>
                         </div>
