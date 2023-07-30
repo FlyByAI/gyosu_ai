@@ -30,7 +30,7 @@ const ResponseBox: React.FC<ResponseBoxProps> = ({ value, handleChange, classNam
                 disabled={!edit}
                 value={value}
                 onChange={handleChange}
-                className={className + " form-textarea mt-1 block w-full"}
+                className={className + "  resize-none form-textarea mt-1 block w-full"}
                 rows={5}
                 placeholder="Problems appear here"
             />

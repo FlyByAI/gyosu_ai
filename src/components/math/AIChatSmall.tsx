@@ -56,7 +56,7 @@ const AIChatSmall: React.FC<ResponseBoxProps> = ({ className, problemIndex, mark
                     value={smallChatText}
                     onChange={handleSmallChatChange}
                     onKeyDown={handleKeyDown}
-                    className={className + " bg-gray-100 dark:bg-gray-700 rounded dark:text-white form-textarea block w-full"}
+                    className={className + " px-2 resize-none bg-gray-100 dark:bg-gray-700 rounded dark:text-white form-textarea block w-full"}
                     placeholder="Change this problem with AI"
                 />
 
