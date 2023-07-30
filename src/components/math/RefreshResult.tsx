@@ -27,8 +27,8 @@ const RefreshResult: React.FC<RefreshResultProps> = ({ problem, setChat, problem
 
     useEffect(() => {
         if (data) {
-            setNewProblem(data?.instructions + "\n\n" + data?.problem)
-            setChat(`${data?.instructions ? data?.instructions + "\n\n" : ""}` + data?.problem)
+            setNewProblem(data?.problem)
+            setChat(data?.problem)
         }
     }, [data, setChat, setNewProblem])
 

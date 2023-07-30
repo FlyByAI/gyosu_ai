@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import useSubmitFeedback from '../hooks/useSubmitFeedback';
 import FeedbackModal from './FeedbackModal';
 import { IFeedbackData, Rating } from '../interfaces';
@@ -17,7 +17,11 @@ const ResponseFeedback = ({ responseText, toolName, className, size = 10 }: IRes
     const [rating, setRating] = useState<Rating>("");
     const [isModalOpen, setModalOpen] = useState(false);
 
-
+    useEffect(() => {
+        setThumbUpSelected(false);
+        setThumbDownSelected(false);
+        setRating("");
+    }, [responseText])
 
     const { submitFeedback } = useSubmitFeedback(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/response-feedback`);
 
