@@ -13,14 +13,13 @@ interface MathProblemProps {
     index: number;
     problem: string;
     handleChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
-    handleFixLatexFormatting: () => void;
     deleteProblem: (index: number) => void;
     insertProblem: (index: number) => void;
     setChat: (value: string) => void;
     updateProblem: (index: number, newProblem: string) => void
 }
 
-const MathProblem: React.FC<MathProblemProps> = ({ updateProblem, index, problem, handleChange, handleFixLatexFormatting, deleteProblem, insertProblem, setChat }) => {
+const MathProblem: React.FC<MathProblemProps> = ({ updateProblem, index, problem, handleChange, deleteProblem, insertProblem, setChat }) => {
 
     return (
         <div className='flex space-x-4'>

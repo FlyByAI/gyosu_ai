@@ -52,11 +52,6 @@ const ProblemManager: React.FC<ProblemManagerProps> = ({ initialMarkdown, setCha
         updateProblem(index, event.target.value);
     }
 
-    const handleFixLatexFormatting = () => {
-        console.log("fix formatting");
-        window.alert("in development, new feature coming soon")
-    }
-
     return (
         <div>
             {problems.map((problem, index) => (
@@ -65,7 +60,6 @@ const ProblemManager: React.FC<ProblemManagerProps> = ({ initialMarkdown, setCha
                     index={index}
                     problem={problem}
                     handleChange={handleChange(index)}
-                    handleFixLatexFormatting={handleFixLatexFormatting}
                     deleteProblem={deleteProblem}
                     insertProblem={insertProblem}
                     setChat={setChat}
