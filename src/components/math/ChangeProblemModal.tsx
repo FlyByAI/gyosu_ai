@@ -4,7 +4,7 @@ import rehypeKatex from 'rehype-katex';
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
 
-interface RerollProblemModalProps {
+interface ChangeProblemModalProps {
     markdown: string;
     newProblem: string;
     isOpen: boolean;
@@ -15,7 +15,7 @@ interface RerollProblemModalProps {
     error: any;
 }
 
-const RerollProblemModal: React.FC<RerollProblemModalProps> = ({ error, markdown, newProblem, isOpen, setNewProblem, onClose, updateProblem, problemIndex }) => {
+const ChangeProblemModal: React.FC<ChangeProblemModalProps> = ({ error, markdown, newProblem, isOpen, setNewProblem, onClose, updateProblem, problemIndex }) => {
     const handleAccept = () => {
         updateProblem(problemIndex, newProblem);
         setNewProblem("");
@@ -81,4 +81,4 @@ const RerollProblemModal: React.FC<RerollProblemModalProps> = ({ error, markdown
     ) : null;
 };
 
-export default RerollProblemModal;
+export default ChangeProblemModal;
