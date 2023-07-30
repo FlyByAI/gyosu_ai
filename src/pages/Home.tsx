@@ -31,7 +31,7 @@ const Home = () => {
                             <h1 className="text-4xl m-0 font-bold dark:text-white font-mono">Gyosu.ai</h1>
                             <p className="mt-4 text-3xl dark:text-blue-400 italic font-bold ">Beta Release</p>
                             <Link to="/math-app">
-                                <button className="text-xl mt-4 px-8 py-4 text-white bg-purple-700 hover:bg-purple-800 font-mono font-bold rounded-xl">
+                                <button className="glow text-l mt-4 px-8 py-4 text-gray-100 bg-gradient-to-r from-blue-500 to-green-500 hover:from-blue-600 hover:to-green-600 font-mono font-bold rounded-3xl">
                                     Generate Math Worksheets
                                 </button>
                             </Link>
