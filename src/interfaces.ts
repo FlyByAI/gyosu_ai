@@ -2,7 +2,7 @@ export interface Document {
     id: number;
     title: string;
     markdown: string;
-    creator: string;
+    creator?: string;
     contributors: string[]; // Array of contributors
     upvotes: number;
     tips: number;
