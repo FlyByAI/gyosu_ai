@@ -14,6 +14,7 @@ export const getGyosuClerkTheme = () => {
                 colorAlphaShade: 'white', // icons
                 colorText: 'white',
                 colorInputText: 'white',
+                colorInputBackground: '#333', // Added this line for the input background
                 colorShimmer: 'rgba(255,255,255,0.36)',
                 shadowShimmer: '1px 1px 2px rgba(0,0,0,0.36)',
             },
