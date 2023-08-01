@@ -1,14 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import 'tailwindcss/tailwind.css';
-import preCalcData from '../../json/ap-pre-calculus.json';
 import textbookSections from '../../json/pre-calc_json_table_of_contents.json';
 import useSubmitMathForm from '../../hooks/tools/math/useSubmitMathForm';
 import { notSecretConstants } from '../../constants/notSecretConstants';
-import SectionDropdown, { CourseDescription } from '../../components/forms/SectionDropdown';
-import TypeDropdown from '../../components/forms/TypeDropdown';
 import SubmitButton from '../../components/forms/SubmitButton';
-import AIChat from '../../components/AIChat';
-import SourceMaterialDropdown from '../../components/forms/SourceMaterialDropdown';
 import Dropdown from '../../components/forms/Dropdown';
 import DocumentExport from '../../components/math/DocumentExport';
 import GridContainer3x3 from '../../components/grids/GridContainer3x3';
@@ -18,25 +13,24 @@ import MathTeacherEdit from '../../components/math/MathTeacherEdit';
 import { useUser } from '@clerk/clerk-react';
 import Accordion from '../../components/Accordion';
 import useSearchMathDocuments from '../../hooks/tools/math/useSearchDocuments';
+import formOptionsJSON from '../../json/dropdown_data.json';
 
 
 const MathTeacherApp: React.FC = () => {
-    // const typeOptions = ["Guided Notes", "Worksheet", "Game", "Quiz", "Test"]
-    const typeOptions = ["Worksheet"]
-    const materialSelectOptions = ["precalc-2e-textbook", "algebra-2e-textbook"];
-    const problemTypeOptions = ["Verbal", "Algebraic", "Graphical", "Numeric", "Technology", "Real-World Applications"];
-
-    const preCalcDataObj = preCalcData as CourseDescription;
-
-    const [documentType, setDocumentType] = useState<string>(typeOptions[0]);
+    const formOptionsObj = Object(formOptionsJSON);
+    const [sourceMaterial, setSourceMaterial] = useState<string>(Object.keys(formOptionsObj)[0]);
     const [section, setSection] = useState<string>(Object.keys(textbookSections)[0]);
-    const [sourceMaterial, setSourceMaterial] = useState<string>(materialSelectOptions[0]);
+    const [problemType, setProblemType] = useState<string>(formOptionsObj[sourceMaterial][section]['problem_types'][0]);
+
+    const typeOptions = ["Worksheet"]
+    const [documentType, setDocumentType] = useState<string>(typeOptions[0]);
+
+
     const [markdown, setMarkdown] = useState<string>('');
     const [chat, setChat] = useState<string>('');
     const [highlightedText, setHighlightedText] = useState<string>("");
     const [chatHistory, setChatHistory] = useState(['']);
     const [editMode, setEditMode] = useState<boolean>(false);
-    const [problemType, setProblemType] = useState<string>(problemTypeOptions[0]);
 
     const { documents } = useFetchDocuments(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/documents/recent/`);
     const { documents: myDocuments } = useFetchDocuments(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/myDocuments/recent/`);
@@ -81,24 +75,16 @@ const MathTeacherApp: React.FC = () => {
     }, [data])
 
     const handleSubmit = () => {
-        const formData = { creator: creator, documentType, section, userInput: chat, problemType, sourceMaterial }
+        const formData = { documentType, section, userInput: chat, problemType, sourceMaterial }
         submitMathForm(formData)
     };
 
     const handleSearch = () => {
-        const formData = { creator: creator, documentType, section, userInput: chat, problemType, sourceMaterial }
+        const formData = { documentType, section, userInput: chat, problemType, sourceMaterial }
         searchMathDocuments(formData)
     };
 
-    const handleSubmitTextbook = () => {
-        const formData = { creator: creator, documentType, section: section.split(".")[1], chapter: section.split(".")[0], userInput: chat, problemType, sourceMaterial }
-        submitMathForm(formData)
-    };
 
-    const handleSearchTextbook = () => {
-        const formData = { creator: creator, documentType, section: section.split(".")[1], chapter: section.split(".")[0], userInput: chat, problemType, sourceMaterial }
-        searchMathDocuments(formData)
-    };
 
     const handleChangeProblemType = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setProblemType(event.target.value);
@@ -108,11 +94,9 @@ const MathTeacherApp: React.FC = () => {
         setMarkdown(markdown);
         if (documents) {
             setDocumentId(documents[index].id);
-            console.log(documents[index].id)
         }
         window.scrollTo(0, 0)
     };
-
 
     return (
         <>
@@ -121,31 +105,20 @@ const MathTeacherApp: React.FC = () => {
                 <>
                     <div className="flex justify-center items-center">
                         <div className="w-1/2 bg-gray-700 rounded-lg p-8 m-4 shadow-lg">
-                            <SourceMaterialDropdown value={sourceMaterial} handleChange={handleSourceMaterialChange} className="form-select block w-full" />
-                            {sourceMaterial == materialSelectOptions[1] && <> <TypeDropdown options={typeOptions} value={documentType} handleChange={handleTypeChange} className="form-select block w-full mt-1" />
-                                <SectionDropdown data={preCalcDataObj} value={section} handleChange={handleSectionChange} className="form-select block w-full mt-1" />
-                                <Dropdown data={problemTypeOptions} value={problemType} handleChange={handleChangeProblemType} className="form-select block w-full mt-1" />
-                                <SubmitButton
-                                    buttonText={"Generate New"}
-                                    handleClick={handleSubmit}
-                                    className=" mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                                /><SubmitButton
-                                    buttonText={"Search"}
-                                    handleClick={handleSearch}
-                                    className=" ms-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                                /></>}
-                            {sourceMaterial == materialSelectOptions[0] && <> <TypeDropdown options={typeOptions} value={documentType} handleChange={handleTypeChange} className="form-select block w-full mt-1" />
-                                <SectionDropdown data={textbookSections} value={section} handleChange={handleSectionChange} className="form-select block w-full" />
-                                <Dropdown data={problemTypeOptions} value={problemType} handleChange={handleChangeProblemType} className="form-select block w-full mt-1" />
-                                <SubmitButton
-                                    buttonText={"Generate New"}
-                                    handleClick={handleSubmitTextbook}
-                                    className=" mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                                /><SubmitButton
-                                    buttonText={"Search"}
-                                    handleClick={handleSearchTextbook}
-                                    className="  ms-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                                /></>}
+                            <Dropdown options={formOptionsObj} defaultValue={sourceMaterial} handleChange={handleSourceMaterialChange} className="form-select block w-full mt-1" />
+                            <Dropdown options={typeOptions} defaultValue={typeOptions[0]} handleChange={handleSourceMaterialChange} className="form-select block w-full mt-1" />
+                            <Dropdown options={formOptionsObj[sourceMaterial]} defaultValue={section} handleChange={handleSectionChange} className="form-select block w-full mt-1" />
+                            <Dropdown options={formOptionsObj[sourceMaterial][section]['problem_types']} defaultValue={problemType} handleChange={handleChangeProblemType} className="form-select block w-full mt-1" />
+                            <SubmitButton
+                                buttonText={"Generate New"}
+                                handleClick={handleSubmit}
+                                className=" mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                            /><SubmitButton
+                                buttonText={"Search"}
+                                handleClick={handleSearch}
+                                className=" ms-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                            />
+
                         </div>
 
                     </div>
@@ -171,6 +144,7 @@ const MathTeacherApp: React.FC = () => {
                                 {dataSearchDocs?.map((doc, index) => {
                                     return (
                                         <DocumentPreview
+                                            key={index}
                                             index={index}
                                             markdown={doc.markdown}
                                             creator={doc.creator || user.user?.username || "Anonymous"}
@@ -196,6 +170,7 @@ const MathTeacherApp: React.FC = () => {
                                 {myDocuments.map((doc, index) => {
                                     return (
                                         <DocumentPreview
+                                            key={index}
                                             index={index}
                                             markdown={doc.markdown}
                                             creator={doc.creator || user.user?.username || "Anonymous"}
@@ -215,6 +190,7 @@ const MathTeacherApp: React.FC = () => {
                                 {documents.map((doc, index) => {
                                     return (
                                         <DocumentPreview
+                                            key={index}
                                             index={index}
                                             markdown={doc.markdown}
                                             creator={doc.creator || user.user?.username || "Anonymous"}

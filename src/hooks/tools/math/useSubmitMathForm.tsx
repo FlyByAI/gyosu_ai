@@ -4,7 +4,6 @@ import { useState } from 'react';
 
 export interface MathFormData {
     id?: number;
-    creator: string | null | undefined;
     sourceMaterial: string;
     documentType: string;
     chapter?: string;
@@ -27,7 +26,7 @@ const useSubmitMathForm = (endpoint: string) => {
         try {
             const token = session ? await session.getToken() : "none";
 
-            console.log(formData)
+            console.log("key", formData)
 
             const response = await fetch(endpoint, {
                 method: 'POST',
@@ -35,7 +34,7 @@ const useSubmitMathForm = (endpoint: string) => {
                     'Content-Type': 'application/json',
                     'Authorization': token ? `Bearer ${token}` : '',
                 },
-                body: JSON.stringify(humps.decamelizeKeys({ ...formData, type: formData.documentType }))
+                body: JSON.stringify(humps.decamelizeKeys({ ...formData, section: formData.section.split('.')[0], chapter: formData.section.split(".")[1] }))
             });
 
             if (!response.ok) {

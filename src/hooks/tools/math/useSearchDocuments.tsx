@@ -43,7 +43,7 @@ const useSearchMathDocuments = (endpoint: string) => {
                     'Content-Type': 'application/json',
                     Authorization: token ? `Bearer ${token}` : '',
                 },
-                body: JSON.stringify(humps.decamelizeKeys(formData)),
+                body: JSON.stringify(humps.decamelizeKeys({ ...formData, section: formData.section?.split('.')[0], chapter: formData.section?.split('.')[1] })),
             });
 
             if (!response.ok) {
