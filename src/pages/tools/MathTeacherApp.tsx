@@ -210,7 +210,6 @@ const MathTeacherApp: React.FC = () => {
 
                     <DocumentExport
                         formData={{
-                            creator: documents && documents?.filter((doc) => doc.id == documentId)[0]?.creator || creator || "Anonymous",
                             sourceMaterial: sourceMaterial,
                             documentType,
                             section: section.split(".")[1],
