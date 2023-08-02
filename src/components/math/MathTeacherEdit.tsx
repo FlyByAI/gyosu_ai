@@ -19,12 +19,13 @@ interface MathTeacherEditProps {
     setChatHistory: React.Dispatch<React.SetStateAction<string[]>>;
     editMode: boolean;
     setEditMode: React.Dispatch<React.SetStateAction<boolean>>;
+    problemType: string;
 }
 
 
 const MathTeacherEdit: React.FC<MathTeacherEditProps> = ({ ...props }) => {
 
-    const { setChat, markdown, handleMarkdownChange } = props;
+    const { setChat, markdown, handleMarkdownChange, problemType } = props;
 
     const onMarkdownChange = (newMarkdown: string) => {
         handleMarkdownChange({ target: { value: newMarkdown } } as React.ChangeEvent<HTMLTextAreaElement>);
@@ -32,7 +33,7 @@ const MathTeacherEdit: React.FC<MathTeacherEditProps> = ({ ...props }) => {
 
     return (
         <>
-            <ProblemManager initialMarkdown={markdown} setChat={setChat} onMarkdownChange={onMarkdownChange} />
+            <ProblemManager initialMarkdown={markdown} setChat={setChat} onMarkdownChange={onMarkdownChange} problemType={problemType} />
         </>
     );
 };

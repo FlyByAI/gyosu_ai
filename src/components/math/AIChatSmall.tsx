@@ -8,9 +8,10 @@ interface ResponseBoxProps {
     className: string;
     problemIndex: number;
     markdown: string;
+    problemType: string;
 }
 
-const AIChatSmall: React.FC<ResponseBoxProps> = ({ className, problemIndex, markdown }) => {
+const AIChatSmall: React.FC<ResponseBoxProps> = ({ className, problemIndex, markdown, problemType }) => {
 
     const [smallChatText, setSmallChatText] = useState('');
     const formRef = useRef<HTMLFormElement>(null);
@@ -23,7 +24,7 @@ const AIChatSmall: React.FC<ResponseBoxProps> = ({ className, problemIndex, mark
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (typeof smallChatText === 'string' && markdown) {
-            await submitTextWithMarkdown(smallChatText, markdown);
+            await submitTextWithMarkdown(smallChatText, markdown, problemType);
         }
     };
 

@@ -5,9 +5,10 @@ interface ProblemManagerProps {
     initialMarkdown: string;
     onMarkdownChange: (newMarkdown: string) => void;
     setChat: (value: string) => void;
+    problemType: string;
 }
 
-const ProblemManager: React.FC<ProblemManagerProps> = ({ initialMarkdown, setChat, onMarkdownChange }) => {
+const ProblemManager: React.FC<ProblemManagerProps> = ({ initialMarkdown, setChat, onMarkdownChange, problemType }) => {
     const [problems, setProblems] = useState<string[]>(markdownToProblemsArr(initialMarkdown));
 
     useEffect(() => {
@@ -64,6 +65,7 @@ const ProblemManager: React.FC<ProblemManagerProps> = ({ initialMarkdown, setCha
                     insertProblem={insertProblem}
                     setChat={setChat}
                     updateProblem={updateProblem}
+                    problemType={problemType}
 
                 />
 

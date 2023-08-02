@@ -8,9 +8,10 @@ interface AIChatProps {
     onChatChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
     additionalInfo?: string;
     problems?: string[];
+    problemType: string;
 }
 
-const AIChat: React.FC<AIChatProps> = ({ markdown, additionalInfo }) => {
+const AIChat: React.FC<AIChatProps> = ({ markdown, additionalInfo, problemType }) => {
     const [focus, setFocus] = useState(false);
     const formRef = useRef<HTMLFormElement>(null);
 
@@ -38,7 +39,7 @@ const AIChat: React.FC<AIChatProps> = ({ markdown, additionalInfo }) => {
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (typeof chat === 'string' && markdown) {
-            await submitTextWithMarkdown(chat, markdown);
+            await submitTextWithMarkdown(chat, markdown, problemType);
         }
     };
 

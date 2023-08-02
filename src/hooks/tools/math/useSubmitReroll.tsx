@@ -9,13 +9,13 @@ const useSubmitReroll = (endpoint: string) => {
     const [error, setError] = useState<string | null>(null);
     const [data, setData] = useState<any | null>(null);
 
-    const submitReroll = async (problem: string): Promise<void> => {
+    const submitReroll = async (problem: string, problemType: string): Promise<void> => {
         setLoading(true);
         setError(null);
 
         try {
             const token = session ? await session.getToken() : "none";
-            const body = humps.decamelizeKeys({ problem: problem });
+            const body = humps.decamelizeKeys({ problem: problem, problemType: problemType });
             const response = await fetch(endpoint, {
                 method: 'POST',
                 headers: {
