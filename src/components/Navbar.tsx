@@ -15,12 +15,12 @@ const Navbar: React.FC = () => {
   return (
     <header className="px-6 py-4 bg-blue-900 text-white dark:bg-gray-900 dark:text-gray-200">
       {/* mobile */}
-      <div className="container mx-auto grid-cols-2 lg:grid-cols-2 items-center gap-4 block sm:hidden">
+      <div className="flex flex-row container mx-auto grid-cols-2 lg:grid-cols-2 items-center justify-between gap-4 sm:hidden">
         <Link to="/" className="text-3xl font-semibold text-white justify-self-center lg:justify-self-start font-mono">Gyosu.ai</Link>
         <div className="flex items-center justify-self-center sm:block">
-          <button className="justify-self-center lg:justify-self-end p-2 rounded-full bg-gray-200 dark:bg-gray-800 focus:outline-none me-4" onClick={() => setDarkMode(!darkMode)}>
+          {/* <button className="justify-self-center lg:justify-self-end p-2 rounded-full bg-gray-200 dark:bg-gray-800 focus:outline-none me-4" onClick={() => setDarkMode(!darkMode)}>
             {darkMode ? <SunIcon /> : <MoonIcon />}
-          </button>
+          </button> */}
           <SignedIn>
             {darkMode ? <UserButton afterSignOutUrl="http://localhost:5173/" appearance={getGyosuClerkTheme()} /> : <UserButton afterSignOutUrl="http://localhost:5173/" />}
           </SignedIn>
@@ -33,9 +33,9 @@ const Navbar: React.FC = () => {
         <Link to="/math-app" className="text-lg text-white hover:underline dark:text-gray-200 lg:justify-self-end block sm:hidden">
           Generate
         </Link>
-        {session && <Link to="/materials" className="text-lg text-white hover:underline dark:text-gray-200 lg:justify-self-end block sm:hidden">
+        {/* {session && <Link to="/materials" className="text-lg text-white hover:underline dark:text-gray-200 lg:justify-self-end block sm:hidden">
           My Materials
-        </Link>}
+        </Link>} */}
         <Link to="/contact" className="text-lg text-white hover:underline dark:text-gray-200 lg:justify-self-end block sm:hidden">
           Contact
         </Link>
