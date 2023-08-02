@@ -3,7 +3,7 @@ export default function Attributions() {
         <div className="dark:text-white">
             <h3 className="text-xl font-extrabold mb-2">Attributions</h3>
             <hr />
-            <div className=" dark:bg-gray-700 rounded-xl p-4 mt-4">
+            <div className=" dark:bg-gray-700 rounded p-4 mt-4">
                 <p>
                     Textbook: Pre-Calculus 2e<br />
                     Website: OpenStax<br />

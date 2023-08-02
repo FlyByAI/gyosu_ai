@@ -26,7 +26,7 @@ const SaveMarkdown: React.FC<SaveMarkdownProps> = ({ markdown, saved, setSaved }
             <button
                 onClick={handleClick}
                 disabled={isLoading}
-                className="text-white bg-blue-700 rounded-xl p-2 w-auto flex font-bold mr-4"
+                className="text-white bg-blue-700 rounded p-2 w-auto flex font-bold mr-4"
             >
                 {isLoading && <p className='me-2 w-12'>Saving</p>}
                 {saved && !isLoading && <p className='me-2 w-12'>Saved </p>}
