@@ -10,12 +10,13 @@ interface ResponseBoxProps {
     handleChange?: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
     className: string;
     edit?: boolean;
+    showChat?: boolean;
     problemIndex: number;
     problemType: string;
     updateProblem?: (index: number, newProblem: string) => void
 }
 
-const ResponseBox: React.FC<ResponseBoxProps> = ({ value, handleChange, className, edit, problemIndex, problemType, updateProblem }) => {
+const ResponseBox: React.FC<ResponseBoxProps> = ({ value, handleChange, className, edit, problemIndex, problemType, updateProblem, showChat }) => {
     const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
     useEffect(() => {
@@ -23,7 +24,7 @@ const ResponseBox: React.FC<ResponseBoxProps> = ({ value, handleChange, classNam
             textAreaRef.current.style.height = 'auto';
             textAreaRef.current.style.height = textAreaRef.current.scrollHeight + 'px';
         }
-    }, [value]);
+    }, [value, edit]);
 
     return (
         <>
@@ -44,7 +45,7 @@ const ResponseBox: React.FC<ResponseBoxProps> = ({ value, handleChange, classNam
                 >
                     {value}
                 </ReactMarkdown>}
-            {edit && <AIChatSmall className={""} problemIndex={problemIndex} markdown={value} problemType={problemType} updateProblem={updateProblem} />}
+            {showChat && <AIChatSmall className={""} problemIndex={problemIndex} markdown={value} problemType={problemType} updateProblem={updateProblem} />}
         </>)
 };
 

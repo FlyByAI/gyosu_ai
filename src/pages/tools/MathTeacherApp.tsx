@@ -43,8 +43,6 @@ const MathTeacherApp: React.FC = () => {
 
     const user = useUser();
 
-    const creator = user.user?.username
-
     const [saved, setSaved] = useState<boolean>(false);
 
     const handleTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
