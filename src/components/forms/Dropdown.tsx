@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 interface DropdownProps {
     options: (string | { option_text: string })[] | { [key: string]: { option_text: string } };
@@ -6,14 +6,12 @@ interface DropdownProps {
     disabled?: boolean;
     className?: string;
     defaultValue?: string;
+    label: string;
 }
 
-const Dropdown: React.FC<DropdownProps> = ({ options, handleChange, disabled = false, className, defaultValue }) => {
-    let optionsArray: { value: string; label: string }[] = [];
-
+const mapOptions = (options: DropdownProps['options']) => {
     if (Array.isArray(options)) {
-        // If options is an array, it can contain both strings and objects with 'label' field
-        optionsArray = options.map((option, index) => {
+        return options.map((option, index) => {
             if (typeof option === 'string') {
                 return { value: option, label: option };
             } else if ('option_text' in option) {
@@ -23,18 +21,22 @@ const Dropdown: React.FC<DropdownProps> = ({ options, handleChange, disabled = f
             }
         });
     } else {
-        // If options is an object, convert it to an array of objects with 'value' and 'label' fields
-        optionsArray = Object.entries(options).map(([key, value]) => ({
+        return Object.entries(options).map(([key, value]) => ({
             value: key,
             label: value.option_text,
         }));
     }
+};
 
+const Dropdown: React.FC<DropdownProps> = ({ options, handleChange, disabled = false, className, defaultValue, label }) => {
+    const optionsArray = mapOptions(options).filter(key => key.value !== 'option_text');
     const selectedValue = defaultValue ? defaultValue : optionsArray[0]?.value || '';
+
+    console.log(options)
 
     return (
         <>
-            <h2 className="text-xl font-bold mb-2 text-white text-left">Select Problem Type: {selectedValue}</h2>
+            <h2 className="text-xl font-bold mb-2 text-white text-left">{label + ": " + selectedValue}</h2>
             <select
                 disabled={disabled}
                 value={selectedValue}

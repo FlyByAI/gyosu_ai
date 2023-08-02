@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import 'tailwindcss/tailwind.css';
-import textbookSections from '../../json/pre-calc_json_table_of_contents.json';
 import useSubmitMathForm from '../../hooks/tools/math/useSubmitMathForm';
 import { notSecretConstants } from '../../constants/notSecretConstants';
 import SubmitButton from '../../components/forms/SubmitButton';
@@ -19,7 +18,7 @@ import formOptionsJSON from '../../json/dropdown_data.json';
 const MathTeacherApp: React.FC = () => {
     const formOptionsObj = Object(formOptionsJSON);
     const [sourceMaterial, setSourceMaterial] = useState<string>(Object.keys(formOptionsObj)[0]);
-    const [section, setSection] = useState<string>(Object.keys(textbookSections)[0]);
+    const [section, setSection] = useState<string>(Object.keys(formOptionsObj[sourceMaterial]).filter(key => key !== 'option_text')[0]);
     const [problemType, setProblemType] = useState<string>(formOptionsObj[sourceMaterial][section]['problem_types'][0]);
 
     const typeOptions = ["Worksheet"]
@@ -50,11 +49,18 @@ const MathTeacherApp: React.FC = () => {
     };
 
     const handleSectionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setSection(event.target.value);
+        const newSection = event.target.value;
+        // update defaults so they aren't stale
+        setSection(newSection);
+        setProblemType(formOptionsObj[sourceMaterial][newSection]['problem_types'][0])
     };
 
     const handleSourceMaterialChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setSourceMaterial(event.target.value);
+        const newSourceMaterial = event.target.value;
+        // update defaults so they aren't stale
+        setSourceMaterial(newSourceMaterial);
+        setSection(Object.keys(formOptionsObj[newSourceMaterial]).filter(key => key !== 'option_text')[0])
+        setProblemType(formOptionsObj[newSourceMaterial][Object.keys(formOptionsObj[newSourceMaterial]).filter(key => key !== 'option_text')[0]]['problem_types'][0])
     };
 
     const handleMarkdownChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -103,10 +109,10 @@ const MathTeacherApp: React.FC = () => {
                 <>
                     <div className="flex justify-center items-center">
                         <div className="w-full md:w-1/2 bg-gray-700 rounded-lg p-8 m-4 shadow-lg">
-                            <Dropdown options={formOptionsObj} defaultValue={sourceMaterial} handleChange={handleSourceMaterialChange} className="form-select block w-full mt-1" />
-                            <Dropdown options={typeOptions} defaultValue={typeOptions[0]} handleChange={handleSourceMaterialChange} className="form-select block w-full mt-1" />
-                            <Dropdown options={formOptionsObj[sourceMaterial]} defaultValue={section} handleChange={handleSectionChange} className="form-select block w-full mt-1" />
-                            <Dropdown options={formOptionsObj[sourceMaterial][section]['problem_types']} defaultValue={problemType} handleChange={handleChangeProblemType} className="form-select block w-full mt-1" />
+                            <Dropdown label={"Source Material"} options={formOptionsObj} defaultValue={sourceMaterial} handleChange={handleSourceMaterialChange} className="form-select block w-full mt-1" />
+                            <Dropdown label={"Document Type"} options={typeOptions} defaultValue={typeOptions[0]} handleChange={handleSourceMaterialChange} className="form-select block w-full mt-1" />
+                            <Dropdown label={"Section"} options={formOptionsObj[sourceMaterial]} defaultValue={section} handleChange={handleSectionChange} className="form-select block w-full mt-1" />
+                            <Dropdown label={"Problem Type"} options={formOptionsObj[sourceMaterial][section]['problem_types']} defaultValue={problemType} handleChange={handleChangeProblemType} className="form-select block w-full mt-1" />
                             <SubmitButton
                                 buttonText={"Generate New"}
                                 handleClick={handleSubmit}

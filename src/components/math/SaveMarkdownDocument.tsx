@@ -55,9 +55,9 @@ const SaveMarkdownDocument: React.FC<SaveMarkdownDocumentProps> = ({ markdown, s
                 disabled={isLoading}
                 className="text-white bg-blue-700 rounded-xl p-2 w-auto flex font-bold mr-4"
             >
-                {isLoading && <p className='me-2 w-12'>Saving</p>}
-                {saved && !isLoading && <p className='me-2 w-12'>Saved </p>}
-                {!saved && !isLoading && <p className='me-2 w-12'>Save </p>}
+                {isLoading && <p className='me-2 w-12 hidden md:block'>Saving</p>}
+                {saved && !isLoading && <p className='me-2 w-12 hidden md:block'>Saved </p>}
+                {!saved && !isLoading && <p className='me-2 w-12 hidden md:block'>Save </p>}
                 <SaveIcon />
             </button>
         </div>
