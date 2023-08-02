@@ -68,7 +68,6 @@ const ProblemManager: React.FC<ProblemManagerProps> = ({ initialMarkdown, setCha
                     problemType={problemType}
 
                 />
-
             ))}
         </div>
     );

@@ -24,7 +24,7 @@ const MathProblem: React.FC<MathProblemProps> = ({ updateProblem, index, problem
     return (
         <div className='flex space-x-4'>
             {/* first section */}
-            <div className={`flex flex-col px-6 py-4 bg-white dark:bg-gray-900 shadow-md rounded-md space-x-4 mb-2 w-3/5`}>
+            <div className={`flex flex-col p-4 bg-white dark:bg-gray-900 shadow-md rounded-md space-x-4 mb-2 pe-0 w-full md:w-3/5`}>
                 <div className="flex space-y-4 w-full">
                     <div className="flex flex-col w-5/6 space-y-4">
                         <div className="relative" key={index}>
@@ -44,9 +44,9 @@ const MathProblem: React.FC<MathProblemProps> = ({ updateProblem, index, problem
                             </div>
                         </div>
                     </div>
-                    <div className="flex flex-col w-1/6 p-4 space-y-4">
+                    <div className="flex flex-grow flex-col w-1/6 p-4 space-y-4 justify-center items-center">
                         <ResponseFeedback responseText={problem} toolName={'math_app'} className='mt-4' size={6} />
-                        <div className="flex flex-row">
+                        <div className="flex flex-row justify-center items-center">
                             <div className="mr-2 group relative dark:text-green-300">
                                 <button onClick={() => insertProblem(index)}><PlusIcon /></button>
                                 <div className="hidden group-hover:block group-hover:left-12 absolute bg-gray-700 text-white py-1 px-2 rounded text-l">Insert Problem</div>
@@ -56,7 +56,7 @@ const MathProblem: React.FC<MathProblemProps> = ({ updateProblem, index, problem
                                 <div className="hidden group-hover:block group-hover:left-12 absolute bg-gray-700 text-white py-1 px-2 rounded text-l">Fix Latex Formatting</div>
                             </div>
                         </div>
-                        <div className="flex flex-row">
+                        <div className="flex flex-row justify-center items-center">
                             <div className="mr-2 group relative dark:text-gray-300">
                                 <RerollResult setChat={setChat} problem={problem} problemIndex={index} updateProblem={updateProblem} problemType={problemType} />
                                 <div className="hidden group-hover:block group-hover:left-12 absolute bg-gray-700 text-white py-1 px-2 rounded text-l">Reroll Result</div>
@@ -71,7 +71,7 @@ const MathProblem: React.FC<MathProblemProps> = ({ updateProblem, index, problem
                 </div>
             </div>
             {/* SECOND SECTION: This is the preview, and should have the same height as first section */}
-            <div className="flex flex-col px-6 py-4 bg-white dark:bg-gray-900 dark:text-white shadow-md rounded-md space-x-4 mb-2 w-2/5">
+            <div className="hidden md:block flex flex-col px-6 py-4 bg-white dark:bg-gray-900 dark:text-white shadow-md rounded-md space-x-4 mb-2 md:w-2/5">
                 <div className="relative" key={index}>
                     <ResponseBox
                         problemIndex={index}

@@ -104,7 +104,7 @@ const MathTeacherApp: React.FC = () => {
             {!markdown ?
                 <>
                     <div className="flex justify-center items-center">
-                        <div className="w-1/2 bg-gray-700 rounded-lg p-8 m-4 shadow-lg">
+                        <div className="w-full md:w-1/2 bg-gray-700 rounded-lg p-8 m-4 shadow-lg">
                             <Dropdown options={formOptionsObj} defaultValue={sourceMaterial} handleChange={handleSourceMaterialChange} className="form-select block w-full mt-1" />
                             <Dropdown options={typeOptions} defaultValue={typeOptions[0]} handleChange={handleSourceMaterialChange} className="form-select block w-full mt-1" />
                             <Dropdown options={formOptionsObj[sourceMaterial]} defaultValue={section} handleChange={handleSectionChange} className="form-select block w-full mt-1" />
