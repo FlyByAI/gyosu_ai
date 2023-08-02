@@ -3,27 +3,43 @@ import SendIcon from "../../svg/SendIcon";
 import useSubmitTextWithMarkdown from "../../hooks/tools/math/useSubmitTextWithMarkdown";
 import { notSecretConstants } from "../../constants/notSecretConstants";
 import ChatBox from "./ChatBox";
+import ChangeProblemModal from "./ChangeProblemModal";
 
 interface ResponseBoxProps {
     className: string;
     problemIndex: number;
     markdown: string;
     problemType: string;
+    updateProblem?: (index: number, newProblem: string) => void
 }
 
-const AIChatSmall: React.FC<ResponseBoxProps> = ({ className, problemIndex, markdown, problemType }) => {
+const AIChatSmall: React.FC<ResponseBoxProps> = ({ className, problemIndex, markdown, problemType, updateProblem }) => {
 
     const [smallChatText, setSmallChatText] = useState('');
     const formRef = useRef<HTMLFormElement>(null);
     const submitButtonRef = useRef<HTMLButtonElement>(null);
     const textAreaRef = useRef<HTMLTextAreaElement>(null);  // Add this ref
+    const [isModalOpen, setModalOpen] = useState(false);
+    const [newProblem, setNewProblem] = useState<string>('');
 
+    const handleCloseModal = () => {
+        setModalOpen(false);
+        setSmallChatText('');
+    };
 
-    const { isLoading, submitTextWithMarkdown } = useSubmitTextWithMarkdown(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/chat/problem/`)
+    const { error, isLoading, submitTextWithMarkdown, data } = useSubmitTextWithMarkdown(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/chat/problem/`)
+
+    useEffect(() => {
+        if (data) {
+            setNewProblem(data.problem);
+        }
+    }, [data]);
+
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (typeof smallChatText === 'string' && markdown) {
+            setModalOpen(true);
             await submitTextWithMarkdown(smallChatText, markdown, problemType);
         }
     };
@@ -37,7 +53,6 @@ const AIChatSmall: React.FC<ResponseBoxProps> = ({ className, problemIndex, mark
             event.preventDefault();
             // Here we call the submit function when the user hits 'Enter'
             submitButtonRef?.current?.click();
-            setSmallChatText("");
         }
     };
 
@@ -67,6 +82,7 @@ const AIChatSmall: React.FC<ResponseBoxProps> = ({ className, problemIndex, mark
                 </button>
             </div>
             {isLoading && <p className="dark:text-white">Loading...</p>}
+            {updateProblem && <ChangeProblemModal error={error} problemIndex={problemIndex} updateProblem={updateProblem} onClose={handleCloseModal} isOpen={isModalOpen} setNewProblem={setNewProblem} markdown={markdown} newProblem={newProblem} />}
         </form>
     )
 };

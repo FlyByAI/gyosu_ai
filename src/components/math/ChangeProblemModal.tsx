@@ -19,6 +19,7 @@ const ChangeProblemModal: React.FC<ChangeProblemModalProps> = ({ error, markdown
     const handleAccept = () => {
         updateProblem(problemIndex, newProblem);
         setNewProblem("");
+        console.log('set new problem to empty')
         onClose();
     };
 
@@ -28,7 +29,7 @@ const ChangeProblemModal: React.FC<ChangeProblemModalProps> = ({ error, markdown
     };
 
     return isOpen ? (
-        <div className="fixed z-10 inset-0 overflow-y-auto flex items-center justify-center">
+        <div className="fixed z-10 inset-0 overflow-y-auto flex items-center justify-center text-white">
             <div className="fixed inset-0 transition-opacity" aria-hidden="true">
                 <div className="absolute inset-0 bg-gray-500 opacity-75 dark:bg-gray-700"></div>
             </div>

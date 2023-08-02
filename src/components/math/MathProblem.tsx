@@ -2,10 +2,9 @@ import React from 'react';
 import ResponseBox from './ResponseBox';
 import ArrowLeft from '../../svg/ArrowLeftIcon';
 import ArrowRight from '../../svg/ArrowRightIcon';
-import RefreshResult from './RefreshResult';
+import RerollResult from './RerollResult';
 import TrashIcon from '../../svg/TrashIcon';
 import PlusIcon from '../../svg/PlusIcon';
-import LatexIcon from '../../svg/LatexIcon';
 import ResponseFeedback from '../ResponseFeedback';
 import FixLatex from './FixLatex';
 
@@ -36,6 +35,7 @@ const MathProblem: React.FC<MathProblemProps> = ({ updateProblem, index, problem
                                 value={problem}
                                 handleChange={handleChange}
                                 className="p-2 bg-gray-100 dark:bg-gray-700 dark:text-white rounded-md"
+                                updateProblem={updateProblem}
                             />
                             <div className='absolute top-3 right-2 flex bg-black bg-opacity-50 text-white rounded p-1'>
                                 <button className="ms-1" onClick={() => console.log("left")}><ArrowLeft /></button>
@@ -58,7 +58,7 @@ const MathProblem: React.FC<MathProblemProps> = ({ updateProblem, index, problem
                         </div>
                         <div className="flex flex-row">
                             <div className="mr-2 group relative dark:text-gray-300">
-                                <RefreshResult setChat={setChat} problem={problem} problemIndex={index} updateProblem={updateProblem} problemType={problemType} />
+                                <RerollResult setChat={setChat} problem={problem} problemIndex={index} updateProblem={updateProblem} problemType={problemType} />
                                 <div className="hidden group-hover:block group-hover:left-12 absolute bg-gray-700 text-white py-1 px-2 rounded text-l">Reroll Result</div>
                             </div>
                             <div className="group relative dark:text-red-300">
@@ -80,6 +80,7 @@ const MathProblem: React.FC<MathProblemProps> = ({ updateProblem, index, problem
                         value={problem}
                         handleChange={handleChange}
                         className="p-2 bg-gray-100 dark:bg-gray-700 dark:text-white rounded-md"
+                        updateProblem={updateProblem}
                     />
 
                 </div>

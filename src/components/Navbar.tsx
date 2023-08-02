@@ -11,8 +11,6 @@ const Navbar: React.FC = () => {
 
   const { session } = useClerk();
 
-  console.log(session)
-
 
   return (
     <header className="px-6 py-4 bg-blue-900 text-white dark:bg-gray-900 dark:text-gray-200">
