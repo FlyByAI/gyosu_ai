@@ -17,9 +17,10 @@ interface MathProblemProps {
     insertProblem: (index: number) => void;
     setChat: (value: string) => void;
     updateProblem: (index: number, newProblem: string) => void
+    problemType: string;
 }
 
-const MathProblem: React.FC<MathProblemProps> = ({ updateProblem, index, problem, handleChange, deleteProblem, insertProblem, setChat }) => {
+const MathProblem: React.FC<MathProblemProps> = ({ updateProblem, index, problem, handleChange, deleteProblem, insertProblem, setChat, problemType }) => {
 
     return (
         <div className='flex space-x-4'>
@@ -29,6 +30,7 @@ const MathProblem: React.FC<MathProblemProps> = ({ updateProblem, index, problem
                     <div className="flex flex-col w-5/6 space-y-4">
                         <div className="relative" key={index}>
                             <ResponseBox
+                                problemType={problemType}
                                 problemIndex={index}
                                 edit={true}
                                 value={problem}
@@ -50,13 +52,13 @@ const MathProblem: React.FC<MathProblemProps> = ({ updateProblem, index, problem
                                 <div className="hidden group-hover:block group-hover:left-12 absolute bg-gray-700 text-white py-1 px-2 rounded text-l">Insert Problem</div>
                             </div>
                             <div className="group relative dark:text-yellow-300">
-                                <FixLatex setChat={setChat} problem={problem} problemIndex={index} updateProblem={updateProblem} />
+                                <FixLatex setChat={setChat} problem={problem} problemIndex={index} updateProblem={updateProblem} problemType={problemType} />
                                 <div className="hidden group-hover:block group-hover:left-12 absolute bg-gray-700 text-white py-1 px-2 rounded text-l">Fix Latex Formatting</div>
                             </div>
                         </div>
                         <div className="flex flex-row">
                             <div className="mr-2 group relative dark:text-gray-300">
-                                <RefreshResult setChat={setChat} problem={problem} problemIndex={index} updateProblem={updateProblem} />
+                                <RefreshResult setChat={setChat} problem={problem} problemIndex={index} updateProblem={updateProblem} problemType={problemType} />
                                 <div className="hidden group-hover:block group-hover:left-12 absolute bg-gray-700 text-white py-1 px-2 rounded text-l">Reroll Result</div>
                             </div>
                             <div className="group relative dark:text-red-300">
@@ -73,6 +75,7 @@ const MathProblem: React.FC<MathProblemProps> = ({ updateProblem, index, problem
                 <div className="relative" key={index}>
                     <ResponseBox
                         problemIndex={index}
+                        problemType={problemType}
                         edit={false}
                         value={problem}
                         handleChange={handleChange}

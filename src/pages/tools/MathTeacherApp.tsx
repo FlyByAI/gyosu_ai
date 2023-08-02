@@ -235,9 +235,10 @@ const MathTeacherApp: React.FC = () => {
                         chatHistory={chatHistory} setChatHistory={setChatHistory}
                         editMode={editMode} setEditMode={setEditMode}
                         setChat={setChat}
+                        problemType={problemType}
                     />
                     <div className="flex items-center justify-center">
-                        {/* <AIChat markdown={markdown} onChatChange={handleChatChange} /> */}
+                        {/* <AIChat markdown={markdown} onChatChange={handleChatChange} problemType={problemType} /> */}
                     </div>
                 </>
             }

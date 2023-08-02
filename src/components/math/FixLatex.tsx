@@ -10,9 +10,10 @@ interface FixLatexProps {
     setChat: (value: string) => void;
     problemIndex: number;
     updateProblem: (index: number, newProblem: string) => void
+    problemType: string;
 }
 
-const FixLatex: React.FC<FixLatexProps> = ({ problem, setChat, problemIndex, updateProblem }) => {
+const FixLatex: React.FC<FixLatexProps> = ({ problem, setChat, problemIndex, updateProblem, problemType }) => {
     const { data, submitReroll, error } = useSubmitReroll(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/add_latex/`);
     const [newProblem, setNewProblem] = useState<string>('');
     const [isModalOpen, setModalOpen] = useState(false);
@@ -23,7 +24,7 @@ const FixLatex: React.FC<FixLatexProps> = ({ problem, setChat, problemIndex, upd
 
     const handleClick = () => {
         setModalOpen(true);
-        submitReroll(problem);
+        submitReroll(problem, problemType);
     }
 
     useEffect(() => {
