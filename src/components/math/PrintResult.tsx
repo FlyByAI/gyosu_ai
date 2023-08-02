@@ -49,7 +49,7 @@ const PrintResult: React.FC<PrintResultProps> = ({ documentName, workSheetTitle,
             className={`text-white rounded-xl p-2 w-auto flex font-bold bg-blue-700 hover:bg-blue-500`}
             onClick={() => printDiv(divPrintId)}
         >
-            <p className='me-2'>Print</p>
+            <p className='me-2 hidden md:block'>Print</p>
             <PrintIcon />
         </button>
     )
