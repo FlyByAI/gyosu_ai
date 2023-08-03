@@ -1,20 +1,13 @@
-import { useState } from "react";
-import { useAITools } from "../hooks/tools/useAITools";
 import { Link } from "react-router-dom";
-import { IPost, ITool } from "../interfaces";
-import { useRecentPost } from "../hooks/blog/useRecentPost";
-import SubscribeFormModal from "../components/forms/SubscribeFormModal";
 import { useDarkMode } from "../hooks/useDarkMode";
 
 
 
 const Home = () => {
 
-    const blogPosts: IPost[] = useRecentPost();
 
-    const [showAllPosts, setShowAllPosts] = useState(false);
 
-    const { darkMode, SunIcon, MoonIcon, setDarkMode } = useDarkMode()
+    const { darkMode } = useDarkMode()
 
     return (
         <div>
@@ -58,10 +51,6 @@ const Home = () => {
                     </div>
                 </div>
             } */}
-
-
-
-
 
             {/* About Section */}
             <div className="py-12 dark:text-white text-center dark:bg-gray-900">

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import useInitiateCheckout from '../hooks/useInitiateCheckout';
+import useInitiateCheckout from '../hooks/subscription/useInitiateCheckout';
 import { notSecretConstants } from '../constants/notSecretConstants';
 
 const TokenIcon: React.FC = () => {
@@ -29,21 +29,21 @@ const TokenIcon: React.FC = () => {
 };
 
 
-interface TokenButtonProps {
+interface SubscribeButtonProps {
     tokens: number;
 }
 
-const TokenButton: React.FC<TokenButtonProps> = ({ tokens }) => {
+const SubscribeButton: React.FC<SubscribeButtonProps> = ({ tokens }) => {
 
     const { initiateCheckout } = useInitiateCheckout(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/stripe/create-checkout-session/`)
 
     return (
         <div
             onClick={initiateCheckout}
-            className="fixed bottom-4 left-4 bg-blue-500 text-white text-sm rounded-lg h-10 w-28 flex items-center justify-center shadow-2xl cursor-pointer hover:bg-blue-700 transition-colors z-50">
-            <TokenIcon /> {` ${tokens} `} credits
+            className="font-bold fixed bottom-4 left-4 bg-gradient-to-r from-blue-500 to-green-500 hover:from-blue-600 hover:to-green-600 text-white text-sm rounded-lg h-10 w-32 flex items-center justify-center shadow-2xl cursor-pointer transition-colors z-50">
+            <TokenIcon /><p className='ms-2'>Premium</p>
         </div>
     );
 };
 
-export default TokenButton;
+export default SubscribeButton;
