@@ -8,13 +8,13 @@ const useSubmitTextWithMarkdown = (endpoint: string) => {
     const [error, setError] = useState<string | null>(null);
     const [data, setData] = useState<any | null>(null);
 
-    const submitTextWithMarkdown = async (text: string, markdown: string, problemType: string) => {
+    const submitTextWithMarkdown = async (text: string, problem: string, problemType: string) => {
         setLoading(true);
         setError(null);
         try {
             const token = session ? await session.getToken() : "none";
 
-            const body = humps.decamelizeKeys({ text, markdown, problemType });
+            const body = humps.decamelizeKeys({ text, problem, problemType });
 
             const response = await fetch(endpoint, {
                 method: 'POST',
