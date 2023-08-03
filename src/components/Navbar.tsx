@@ -1,16 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useDarkMode } from '../hooks/useDarkMode';
 import { SignedIn, SignedOut, UserButton, SignInButton, useClerk } from '@clerk/clerk-react';
 import { getGyosuClerkTheme } from '../theme/customClerkTheme';
-import TokenButton from './TokenButton';
+import SubscribeButton from './SubscribeButton';
+import useFetchSubscriptionInfo from '../hooks/subscription/useFetchSubscriptionInfo';
+import { notSecretConstants } from '../constants/notSecretConstants';
+import TrialButton from './TrialButton';
+import ManageSubscriptionButton from './ManageSubscriptionButton';
 
 const Navbar: React.FC = () => {
 
-  const { darkMode, setDarkMode, SunIcon, MoonIcon } = useDarkMode();
+  const { darkMode } = useDarkMode();
 
   const { session } = useClerk();
 
+  const { subscriptionInfo, isLoading } = useFetchSubscriptionInfo(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/user_data/get_subscription_info/`)
 
   return (
     <header className="px-6 py-4 bg-blue-900 text-white dark:bg-gray-900 dark:text-gray-200">
@@ -72,7 +77,13 @@ const Navbar: React.FC = () => {
           </SignedOut>
         </div>
       </div>
-      {/* <TokenButton tokens={300} /> */}
+      {!isLoading && subscriptionInfo && <>
+        {!subscriptionInfo?.has_valid_subscription && !subscriptionInfo?.active_trial && <SubscribeButton tokens={300} />}
+        {!subscriptionInfo?.has_valid_subscription && !subscriptionInfo?.has_activated_trial && <TrialButton tokens={300} />}
+        {subscriptionInfo?.has_valid_subscription && <ManageSubscriptionButton tokens={300} />}
+      </>}
+
+
     </header>
 
   );
