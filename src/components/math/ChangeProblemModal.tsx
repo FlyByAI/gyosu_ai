@@ -17,9 +17,12 @@ interface ChangeProblemModalProps {
 
 const ChangeProblemModal: React.FC<ChangeProblemModalProps> = ({ error, markdown, newProblem, isOpen, setNewProblem, onClose, updateProblem, problemIndex }) => {
     const handleAccept = () => {
+        if (!newProblem.includes("Subscription required")) {
+            handleReject();
+            return;
+        }
         updateProblem(problemIndex, newProblem);
         setNewProblem("");
-        console.log('set new problem to empty')
         onClose();
     };
 
@@ -67,7 +70,7 @@ const ChangeProblemModal: React.FC<ChangeProblemModalProps> = ({ error, markdown
                         </ReactMarkdown>
                         {/* <textarea id="problem" defaultValue={newProblem} className="mt-1 p-2 block w-full border-gray-300 rounded-md dark:bg-gray-700 dark:text-white dark:border-gray-600" readOnly /> */}
                     </div> : <div className='text-green-300'>"Loading..."</div>}
-                    {error && <div className='mb-4 text-red-300'>{"Problem reroll failed, please try again or try a different problem"}</div>}
+                    {error && <div className='mb-4 text-red-300'>{error.message || "Failed, please try again or try a different "}</div>}
                 </div>
                 <div className=" bg-gray-50 dark:bg-gray-700 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse items-center justify-center">
                     <button disabled={!!error} type="button" className={`${error ? "bg-gray-500" : "hover:bg-green-700 bg-green-600"} w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 text-base font-medium text-white sm:ml-3 sm:w-auto sm:text-sm`} onClick={handleAccept}>
