@@ -1,13 +1,17 @@
 import { Link } from "react-router-dom";
 import { useDarkMode } from "../hooks/useDarkMode";
+import { useClerk } from "@clerk/clerk-react";
 
 
 
 const Home = () => {
 
 
-
     const { darkMode } = useDarkMode()
+
+    const { openSignIn, session } = useClerk();
+
+    const buttonClasses = "glow text-l mt-4 px-8 py-4 text-gray-100 bg-gradient-to-r from-blue-500 to-green-500 hover:from-blue-600 hover:to-green-600 font-mono font-bold rounded"
 
     return (
         <div>
@@ -23,34 +27,21 @@ const Home = () => {
                         <div className="p-4 inline-block border-spacing-1 border-4 rounded-2xl border-blue-600">
                             <h1 className="text-4xl m-0 font-bold dark:text-white font-mono">Gyosu.ai</h1>
                             <p className="mt-4 text-3xl dark:text-blue-400 italic font-bold ">Beta Release</p>
-                            <Link to="/math-app">
-                                <button className="glow text-l mt-4 px-8 py-4 text-gray-100 bg-gradient-to-r from-blue-500 to-green-500 hover:from-blue-600 hover:to-green-600 font-mono font-bold rounded">
+                            {session ? (
+                                <Link to="/math-app">
+                                    <button className={buttonClasses}>
+                                        Generate Math Worksheets
+                                    </button>
+                                </Link>
+                            ) : (
+                                <button onClick={() => openSignIn()} className={buttonClasses}>
                                     Generate Math Worksheets
                                 </button>
-                            </Link>
+                            )}
                         </div>
                     </div>
                 </div>}
-            {/* {darkMode === false &&
-                <div
-                    className="bg-center bg-fit h-screen flex flex-col justify-center items-center  mb-8"
-                    style={{
-                        backgroundImage: `url("../../images/shownaldo_A_minimalistic__simple_logo_showing_an_open_book_with_21c010c6-e179-4ee7-8a82-cfde4c295a73.png")`
-                    }}
-                >
-                    <div className="text-center py-4 bg-white bg-opacity-80 backdrop-filter rounded-2xl">
-                        <div className=" p-5 inline-block">
-                            <h1 className="text-4xl font-bold dark:text-white">Gyosu AI Beta Release</h1>
-                            <p className="mt-4 text-xl dark:text-gray-300">Limited release for beta testers to get access to our math content here.</p>
-                            <Link to="/math-app">
-                                <button className="text-xl  mt-4 px-4 py-2 rounded bg-blue-300 ">
-                                    Generate Math Worksheets
-                                </button>
-                            </Link>
-                        </div>
-                    </div>
-                </div>
-            } */}
+
 
             {/* About Section */}
             <div className="py-12 dark:text-white text-center dark:bg-gray-900">
