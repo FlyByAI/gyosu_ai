@@ -78,9 +78,10 @@ const Navbar: React.FC = () => {
         </div>
       </div>
       {!isLoading && subscriptionInfo && <>
-        {!subscriptionInfo?.has_valid_subscription && !subscriptionInfo?.active_trial && <SubscribeButton tokens={300} />}
-        {!subscriptionInfo?.has_valid_subscription && !subscriptionInfo?.has_activated_trial && <TrialButton tokens={300} />}
+        {!subscriptionInfo?.has_valid_subscription && subscriptionInfo?.has_activated_trial && !subscriptionInfo?.active_trial && <SubscribeButton tokens={300} />}
+        {!subscriptionInfo?.has_valid_subscription && (subscriptionInfo?.active_trial || !subscriptionInfo?.has_activated_trial) && <TrialButton tokens={300} />}
         {subscriptionInfo?.has_valid_subscription && <ManageSubscriptionButton tokens={300} />}
+        {console.log(subscriptionInfo)}
       </>}
 
 
