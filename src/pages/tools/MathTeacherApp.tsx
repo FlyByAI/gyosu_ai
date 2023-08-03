@@ -9,7 +9,7 @@ import GridContainer3x3 from '../../components/grids/GridContainer3x3';
 import DocumentPreview from '../../components/forms/DocumentPreview';
 import useFetchDocuments from '../../hooks/tools/math/useFetchDocuments';
 import MathTeacherEdit from '../../components/math/MathTeacherEdit';
-import { useUser } from '@clerk/clerk-react';
+import { useClerk, useUser } from '@clerk/clerk-react';
 import Accordion from '../../components/Accordion';
 import useSearchMathDocuments from '../../hooks/tools/math/useSearchDocuments';
 import formOptionsJSON from '../../json/dropdown_data.json';
@@ -23,6 +23,8 @@ const MathTeacherApp: React.FC = () => {
 
     const typeOptions = ["Worksheet"]
     const [documentType, setDocumentType] = useState<string>(typeOptions[0]);
+
+    const { session, openSignIn } = useClerk();
 
 
     const [markdown, setMarkdown] = useState<string>('');
@@ -79,9 +81,21 @@ const MathTeacherApp: React.FC = () => {
     }, [data])
 
     const handleSubmit = () => {
-        const formData = { documentType, section, userInput: chat, problemType, sourceMaterial }
-        submitMathForm(formData)
+        if (session) {
+            const formData = { documentType, section, userInput: chat, problemType, sourceMaterial }
+            submitMathForm(formData)
+        }
+        else {
+            openSignIn()
+        }
+
     };
+
+    useEffect(() => {
+        if (!session) {
+            openSignIn()
+        }
+    }, [session, openSignIn])
 
     const handleSearch = () => {
         const formData = { documentType, section, userInput: chat, problemType, sourceMaterial }
