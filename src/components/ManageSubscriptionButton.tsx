@@ -30,11 +30,8 @@ const TokenIcon: React.FC = () => {
 };
 
 
-interface ManageSubscriptionButtonProps {
-    tokens: number;
-}
 
-const ManageSubscriptionButton: React.FC<ManageSubscriptionButtonProps> = ({ tokens }) => {
+const ManageSubscriptionButton: React.FC = () => {
 
     const { initiateCheckout } = useInitiateCheckout(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/stripe/create-checkout-session/`)
     const manageSubLink = "https://billing.stripe.com/p/login/test_28oeWCcQV0fQ03S144"

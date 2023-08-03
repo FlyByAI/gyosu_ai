@@ -31,11 +31,8 @@ const TokenIcon: React.FC = () => {
 };
 
 
-interface TrialButtonProps {
-    tokens: number;
-}
 
-const TrialButton: React.FC<TrialButtonProps> = ({ tokens }) => {
+const TrialButton: React.FC = () => {
 
     const { trialActivated, activateTrial } = useActivateTrial(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/stripe/activate-trial/`)
     const { subscriptionInfo, isLoading } = useFetchSubscriptionInfo(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/user_data/get_subscription_info/`)

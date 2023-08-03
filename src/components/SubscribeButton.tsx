@@ -29,11 +29,8 @@ const TokenIcon: React.FC = () => {
 };
 
 
-interface SubscribeButtonProps {
-    tokens: number;
-}
 
-const SubscribeButton: React.FC<SubscribeButtonProps> = ({ tokens }) => {
+const SubscribeButton: React.FC = () => {
 
     const { initiateCheckout } = useInitiateCheckout(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/stripe/create-checkout-session/`)
 
