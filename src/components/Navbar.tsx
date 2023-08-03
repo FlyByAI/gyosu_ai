@@ -7,6 +7,7 @@ import SubscribeButton from './SubscribeButton';
 import useFetchSubscriptionInfo from '../hooks/subscription/useFetchSubscriptionInfo';
 import { notSecretConstants } from '../constants/notSecretConstants';
 import TrialButton from './TrialButton';
+import ManageSubscriptionButton from './ManageSubscriptionButton';
 
 const Navbar: React.FC = () => {
 
@@ -79,6 +80,7 @@ const Navbar: React.FC = () => {
       {!isLoading && subscriptionInfo && <>
         {!subscriptionInfo?.has_valid_subscription && !subscriptionInfo?.active_trial && <SubscribeButton tokens={300} />}
         {!subscriptionInfo?.has_valid_subscription && !subscriptionInfo?.has_activated_trial && <TrialButton tokens={300} />}
+        {subscriptionInfo?.has_valid_subscription && <ManageSubscriptionButton tokens={300} />}
       </>}
 
 
