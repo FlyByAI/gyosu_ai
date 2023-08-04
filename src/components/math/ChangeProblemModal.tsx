@@ -17,7 +17,7 @@ interface ChangeProblemModalProps {
 
 const ChangeProblemModal: React.FC<ChangeProblemModalProps> = ({ error, markdown, newProblem, isOpen, setNewProblem, onClose, updateProblem, problemIndex }) => {
     const handleAccept = () => {
-        if (!newProblem.includes("Subscription required")) {
+        if (newProblem.includes("Subscription required")) {
             handleReject();
             return;
         }
