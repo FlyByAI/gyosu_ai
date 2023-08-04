@@ -32,7 +32,7 @@ const useSubmitMathForm = (endpoint: string) => {
                     'Content-Type': 'application/json',
                     'Authorization': token ? `Bearer ${token}` : '',
                 },
-                body: JSON.stringify(humps.decamelizeKeys({ ...formData, section: formData.section.split('.')[0], chapter: formData.section.split(".")[1] }))
+                body: JSON.stringify(humps.decamelizeKeys({ ...formData, chapter: formData.section.split('.')[0], section: formData.section.split(".")[1] }))
             });
 
             if (!response.ok) {
