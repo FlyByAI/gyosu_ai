@@ -28,6 +28,8 @@ const MathTeacherApp: React.FC = () => {
 
 
     const [markdown, setMarkdown] = useState<string>('');
+    const [shared, setShared] = useState<boolean>(true);
+    const [documentName, setDocumentName] = useState<string>(`${typeOptions}-${sourceMaterial}-${section}-${problemType}`);
     const [chat, setChat] = useState<string>('');
     const [highlightedText, setHighlightedText] = useState<string>("");
     const [chatHistory, setChatHistory] = useState(['']);
@@ -82,7 +84,7 @@ const MathTeacherApp: React.FC = () => {
 
     const handleSubmit = () => {
         if (session) {
-            const formData = { documentType, section, userInput: chat, problemType, sourceMaterial }
+            const formData = { shared, documentType, section, userInput: chat, problemType, sourceMaterial }
             submitMathForm(formData)
         }
         else {
@@ -233,7 +235,9 @@ const MathTeacherApp: React.FC = () => {
                             section: section.split(".")[1],
                             chapter: section.split(".")[0],
                             userInput: "",
-                            problemType
+                            problemType,
+                            shared,
+                            documentName
                         }}
                         markdown={markdown}
                         divPrintId={'markdownToPrint'}
@@ -242,6 +246,8 @@ const MathTeacherApp: React.FC = () => {
                         setDocumentId={setDocumentId}
                         documentId={documentId}
                         setMarkdown={setMarkdown}
+                        setShared={setShared}
+                        setDocumentName={setDocumentName}
                     />
                     <MathTeacherEdit
                         typeOptions={typeOptions}

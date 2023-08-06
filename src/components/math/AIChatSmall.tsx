@@ -24,7 +24,7 @@ const AIChatSmall: React.FC<ResponseBoxProps> = ({ className, problemIndex, mark
 
     const handleCloseModal = () => {
         setModalOpen(false);
-        setSmallChatText('');
+        // setSmallChatText('');
     };
 
     const { error, isLoading, submitTextWithMarkdown, data } = useSubmitTextWithMarkdown(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/chat/problem/`)

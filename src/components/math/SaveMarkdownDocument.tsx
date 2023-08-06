@@ -40,27 +40,32 @@ const SaveMarkdownDocument: React.FC<SaveMarkdownDocumentProps> = ({ markdown, s
         setTimeout(() => {
             setSaved(false);
         }, 5000);
+
     }, [setSaved, data])
 
     return (
-        <div className='flex items-center'>
+        <div className='flex items-start relative'>
             {saved && (
-                <p className="me-2 text-green-500 animate-fade-out">Saved!</p>
+                <p className="absolute left-5 me-2 bg-gray-900 text-green-300 animate-fade-out">Saved!</p>
             )}
             {error && (
-                <p className="me-2 text-red-500 animate-fade-out">Error: {error}</p>
+                <p className="absolute left-0 me-2 bg-gray-900 text-red-500 animate-fade-out">Error: {error}</p>
             )}
-            <button
-                onClick={handleClick}
-                disabled={isLoading}
-                className="text-white bg-blue-700 rounded p-2 w-auto flex font-bold mr-4"
-            >
-                {isLoading && <p className='me-2 w-12 hidden md:block'>Saving</p>}
-                {saved && !isLoading && <p className='me-2 w-12 hidden md:block'>Saved </p>}
-                {!saved && !isLoading && <p className='me-2 w-12 hidden md:block'>Save </p>}
-                <SaveIcon />
-            </button>
+            <div className='flex items-center'>
+
+                <button
+                    onClick={handleClick}
+                    disabled={isLoading}
+                    className="text-white bg-blue-700 rounded p-2 w-auto flex font-bold mr-4"
+                >
+                    {isLoading && <p className='me-2 w-12 hidden md:block'>Saving</p>}
+                    {saved && !isLoading && <p className='me-2 w-12 hidden md:block'>Saved </p>}
+                    {!saved && !isLoading && <p className='me-2 w-12 hidden md:block'>Save </p>}
+                    <SaveIcon />
+                </button>
+            </div>
         </div>
+
     );
 };
 
