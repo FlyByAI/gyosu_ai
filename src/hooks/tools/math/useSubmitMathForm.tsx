@@ -12,6 +12,8 @@ export interface MathFormData {
     userInput: string;
     upvotes?: number;
     tips?: number;
+    shared: boolean
+    documentName: string;
 }
 
 const useSubmitMathForm = (endpoint: string) => {

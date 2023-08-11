@@ -5,6 +5,7 @@ interface SubscriptionInfo {
     has_valid_subscription: boolean;
     active_trial: boolean;
     has_activated_trial: boolean;
+    time_left_in_trial?: number;
 }
 
 const useFetchSubscriptionInfo = (endpoint: string) => {

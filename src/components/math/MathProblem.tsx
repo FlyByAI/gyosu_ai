@@ -22,30 +22,12 @@ interface MathProblemProps {
 }
 
 const MathProblem: React.FC<MathProblemProps> = ({ updateProblem, index, problem, handleChange, deleteProblem, insertProblem, setChat, problemType }) => {
-    const [edit, setEdit] = React.useState<boolean>(true);
-
-    const handleResize = () => {
-        if (window.innerWidth < 768) {
-            setEdit(false);
-        } else {
-            setEdit(true);
-        }
-    }
-
-    useEffect(() => {
-        handleResize(); // Set the initial value
-        window.addEventListener('resize', handleResize); // Update the value whenever the window is resized
-
-        // Return a function that will remove the listener when the component is unmounted
-        return () => {
-            window.removeEventListener('resize', handleResize);
-        };
-    }, []);
+    const [edit, setEdit] = React.useState<boolean>(false);
 
     return (
-        <div className='flex'>
+        <div className='flex justify-center'>
             {/* first section */}
-            <div className={`flex flex-col p-4 bg-white dark:bg-gray-900 shadow-md rounded-md mb-2 pe-0 w-full md:w-3/5`}>
+            <div className={` flex flex-col p-4 bg-white dark:bg-gray-900 shadow-md rounded-md mb-2 pe-0 w-full max-w-4xl`}>
                 <div className="flex space-y-4 w-full">
                     <div className="flex flex-col w-5/6 space-y-4">
                         <div className="relative" key={index}>
@@ -59,8 +41,8 @@ const MathProblem: React.FC<MathProblemProps> = ({ updateProblem, index, problem
                                 className="p-2 bg-gray-100 dark:bg-gray-700 dark:text-white rounded-md"
                                 updateProblem={updateProblem}
                             />
-                            <div className='block md:hidden absolute top-3 right-2 flex bg-black bg-opacity-50 text-white rounded p-1'>
-                                <button className='block md:hidden text-white' onClick={() => setEdit(!edit)}>
+                            <div className='absolute top-3 right-2 flex bg-black bg-opacity-50 text-white rounded p-1'>
+                                <button className='block text-white' onClick={() => setEdit(!edit)}>
                                     {!edit ? <EditIcon /> : <ViewIcon />}
                                 </button>
                                 {/* <button className="ms-1" onClick={() => console.log("left")}><ArrowLeft /></button>
@@ -97,7 +79,7 @@ const MathProblem: React.FC<MathProblemProps> = ({ updateProblem, index, problem
                 </div>
             </div>
             {/* SECOND SECTION: This is the preview, and should have the same height as first section */}
-            <div className="ms-4 hidden md:block flex flex-col px-6 py-4 bg-white dark:bg-gray-900 dark:text-white shadow-md rounded-md space-x-4 mb-2 md:w-2/5">
+            <div className="ms-4 hidden flex flex-col px-6 py-4 bg-white dark:bg-gray-900 dark:text-white shadow-md rounded-md space-x-4 mb-2">
                 <div className="relative" key={index}>
                     <ResponseBox
                         problemIndex={index}

@@ -226,3 +226,12 @@ app.post("/api/math_app/document/save", (req, res) => {
     console.log("Sent.");
   }, "2000");
 });
+
+app.get("/api/user_data/get_subscription_info/", (req, res) => {
+  res.json({
+    has_valid_subscription: false,
+    active_trial: false,
+    has_activated_trial: false,
+    time_left_in_trial: 3,
+  });
+});
