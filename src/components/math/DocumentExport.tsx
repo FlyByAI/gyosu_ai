@@ -56,7 +56,7 @@ const DocumentExport: React.FC<DocumentExportProps> = ({ setShared, setDocumentN
                     <span className="text-gray-300 pr-2">Shared</span>
                 </label> */}
                 <div className="group mr-4 relative">
-                    <SaveMarkdownDocument setDocumentName={setDocumentName} setShared={setShared} markdown={markdown} saved={saved} setSaved={setSaved} formData={formData} documentId={documentId} setDocumentId={setDocumentId} />
+                    <SaveMarkdownDocument markdown={markdown} saved={saved} setSaved={setSaved} formData={formData} documentId={documentId} setDocumentId={setDocumentId} />
                 </div>
                 {/* export to doc will go here */}
                 <div className="group relative">

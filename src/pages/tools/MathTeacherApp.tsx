@@ -84,7 +84,7 @@ const MathTeacherApp: React.FC = () => {
 
     const handleSubmit = () => {
         if (session) {
-            const formData = { shared, documentType, section, userInput: chat, problemType, sourceMaterial }
+            const formData = { documentName, shared, documentType, section, userInput: chat, problemType, sourceMaterial }
             submitMathForm(formData)
         }
         else {
