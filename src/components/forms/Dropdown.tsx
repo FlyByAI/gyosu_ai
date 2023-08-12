@@ -32,8 +32,6 @@ const Dropdown: React.FC<DropdownProps> = ({ options, handleChange, disabled = f
     const optionsArray = mapOptions(options).filter(key => key.value !== 'option_text');
     const selectedValue = defaultValue ? defaultValue : optionsArray[0]?.value || '';
 
-    console.log(options)
-
     return (
         <>
             <h2 className="text-xl font-bold mb-2 text-white text-left">{label + ": " + selectedValue}</h2>

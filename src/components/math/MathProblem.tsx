@@ -9,6 +9,7 @@ import ResponseFeedback from '../ResponseFeedback';
 import FixLatex from './FixLatex';
 import EditIcon from '../../svg/Edit';
 import ViewIcon from '../../svg/ViewIcon';
+import { ProblemData } from '../../interfaces';
 
 interface MathProblemProps {
     index: number;
@@ -18,11 +19,13 @@ interface MathProblemProps {
     insertProblem: (index: number) => void;
     setChat: (value: string) => void;
     updateProblem: (index: number, newProblem: string) => void
-    problemType: string;
+    data: ProblemData;
 }
 
-const MathProblem: React.FC<MathProblemProps> = ({ updateProblem, index, problem, handleChange, deleteProblem, insertProblem, setChat, problemType }) => {
+const MathProblem: React.FC<MathProblemProps> = ({ updateProblem, index, problem, handleChange, deleteProblem, insertProblem, setChat, data }) => {
     const [edit, setEdit] = React.useState<boolean>(false);
+
+    const { problemType, section, sourceMaterial, documentType } = data;
 
     return (
         <div className='flex justify-center'>
@@ -32,7 +35,7 @@ const MathProblem: React.FC<MathProblemProps> = ({ updateProblem, index, problem
                     <div className="flex flex-col w-5/6 space-y-4">
                         <div className="relative" key={index}>
                             <ResponseBox
-                                problemType={problemType}
+                                data={data}
                                 problemIndex={index}
                                 edit={edit}
                                 showChat={true}
@@ -53,7 +56,7 @@ const MathProblem: React.FC<MathProblemProps> = ({ updateProblem, index, problem
                     </div>
                     <div className="flex flex-grow flex-col w-1/6 p-4 space-y-4 justify-center items-center">
 
-                        <ResponseFeedback responseText={problem} toolName={'math_app'} className='mt-4' size={6} />
+                        <ResponseFeedback responseText={problem} toolName={'math_app'} data={data} className='mt-4' size={6} />
                         <div className="flex flex-row justify-center items-center">
                             <div className="mr-2 group relative dark:text-green-300">
                                 <button onClick={() => insertProblem(index)}><PlusIcon /></button>
@@ -66,11 +69,17 @@ const MathProblem: React.FC<MathProblemProps> = ({ updateProblem, index, problem
                         </div>
                         <div className="flex flex-row justify-center items-center">
                             <div className="mr-2 group relative dark:text-gray-300">
-                                <RerollResult setChat={setChat} problem={problem} problemIndex={index} updateProblem={updateProblem} problemType={problemType} />
+                                <RerollResult setChat={setChat} problem={problem} problemIndex={index} updateProblem={updateProblem} problemType={problemType}
+                                    section={section} documentType={documentType} sourceMaterial={sourceMaterial}
+                                />
                                 <div className="hidden group-hover:block group-hover:left-12 absolute bg-gray-700 text-white py-1 px-2 rounded text-l">Reroll Result</div>
                             </div>
                             <div className="group relative dark:text-red-300">
-                                <button onClick={() => deleteProblem(index)}><TrashIcon /></button>
+                                <button onClick={() => {
+                                    if (window.confirm('Are you sure you want to delete this problem?')) {
+                                        deleteProblem(index);
+                                    }
+                                }}><TrashIcon /></button>
                                 <div className="hidden group-hover:block group-hover:left-12 absolute bg-gray-700 text-white py-1 px-2 rounded text-l">Delete Problem</div>
                             </div>
                         </div>
@@ -83,7 +92,7 @@ const MathProblem: React.FC<MathProblemProps> = ({ updateProblem, index, problem
                 <div className="relative" key={index}>
                     <ResponseBox
                         problemIndex={index}
-                        problemType={problemType}
+                        data={data}
                         edit={false}
                         showChat={false}
                         value={problem}

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useClerk } from '@clerk/clerk-react';
 import humps from 'humps';
+import { ProblemData } from '../../../interfaces';
 
 
 const useSubmitReroll = (endpoint: string) => {
@@ -9,13 +10,13 @@ const useSubmitReroll = (endpoint: string) => {
     const [error, setError] = useState<string | null>(null);
     const [data, setData] = useState<any | null>(null);
 
-    const submitReroll = async (problem: string, problemType: string): Promise<void> => {
+    const submitReroll = async (problem: string, data: ProblemData): Promise<void> => {
         setLoading(true);
         setError(null);
 
         try {
             const token = session ? await session.getToken() : "none";
-            const body = humps.decamelizeKeys({ problem: problem, problemType: problemType });
+            const body = humps.decamelizeKeys({ problem: problem, ...data, chapter: data.section.split(".")[0], section: data.section.split(".")[1] });
             const response = await fetch(endpoint, {
                 method: 'POST',
                 headers: {

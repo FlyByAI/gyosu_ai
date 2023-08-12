@@ -1,12 +1,11 @@
 import React from 'react';
 import 'tailwindcss/tailwind.css';
 import ProblemManager from './ProblemManager';
+import { ProblemData } from '../../interfaces';
 
 interface MathTeacherEditProps {
     typeOptions: string[];
-    documentType: string;
     handleTypeChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
-    section: string;
     handleSectionChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
     markdown: string;
     handleMarkdownChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
@@ -19,13 +18,13 @@ interface MathTeacherEditProps {
     setChatHistory: React.Dispatch<React.SetStateAction<string[]>>;
     editMode: boolean;
     setEditMode: React.Dispatch<React.SetStateAction<boolean>>;
-    problemType: string;
+    data: ProblemData
 }
 
 
 const MathTeacherEdit: React.FC<MathTeacherEditProps> = ({ ...props }) => {
 
-    const { setChat, markdown, handleMarkdownChange, problemType } = props;
+    const { setChat, markdown, handleMarkdownChange, data } = props;
 
     const onMarkdownChange = (newMarkdown: string) => {
         handleMarkdownChange({ target: { value: newMarkdown } } as React.ChangeEvent<HTMLTextAreaElement>);
@@ -33,7 +32,9 @@ const MathTeacherEdit: React.FC<MathTeacherEditProps> = ({ ...props }) => {
 
     return (
         <>
-            <ProblemManager initialMarkdown={markdown} setChat={setChat} onMarkdownChange={onMarkdownChange} problemType={problemType} />
+            <ProblemManager initialMarkdown={markdown} setChat={setChat} onMarkdownChange={onMarkdownChange}
+                data={data}
+            />
         </>
     );
 };

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { IFeedbackData } from '../interfaces';
+import humps from 'humps';
 
 
 
@@ -14,20 +15,22 @@ const useSubmitFeedback = (endpoint: string) => {
         setLoading(true);
         setError(null);
 
+        const feedbackDataWithChapSec = { ...feedbackData, chapter: feedbackData.section.split(".")[0], section: feedbackData.section.split(".")[1] };
+
         try {
             const response = await fetch(endpoint, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(feedbackData)
+                body: JSON.stringify(humps.decamelizeKeys(feedbackDataWithChapSec))
             });
 
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
 
-            const responseData = await response.json();
+            const responseData = await response.json().then((json) => humps.camelizeKeys(json));
             setData(responseData);
 
             setLoading(false);

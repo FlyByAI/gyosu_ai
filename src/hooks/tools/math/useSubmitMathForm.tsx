@@ -12,7 +12,7 @@ export interface MathFormData {
     userInput: string;
     upvotes?: number;
     tips?: number;
-    shared: boolean
+    shared?: boolean
     documentName: string;
 }
 

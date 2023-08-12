@@ -1,4 +1,5 @@
 import { useClerk } from '@clerk/clerk-react';
+import humps from 'humps';
 import { useState } from 'react';
 
 const useSubmitText = (endpoint: string) => {
@@ -8,6 +9,9 @@ const useSubmitText = (endpoint: string) => {
     const [data, setData] = useState<any | null>(null);
 
     const submitText = async (text: string) => {
+
+        const body = humps.decamelizeKeys({ text });
+
 
         setLoading(true);
         setError(null);
@@ -20,7 +24,7 @@ const useSubmitText = (endpoint: string) => {
                     'Content-Type': 'application/json',
                     'Authorization': token ? `Bearer ${token}` : '',
                 },
-                body: JSON.stringify({ text })
+                body: JSON.stringify(body)
 
             });
 
@@ -28,7 +32,7 @@ const useSubmitText = (endpoint: string) => {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
 
-            const responseData = await response.json();
+            const responseData = await response.json().then((json) => humps.camelizeKeys(json));
             setData(responseData);
 
             setLoading(false);

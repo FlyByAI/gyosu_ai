@@ -4,6 +4,7 @@ import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 import { useEffect, useRef } from "react";
+import { ProblemData } from "../../interfaces";
 
 interface ResponseBoxProps {
     value: string;
@@ -12,11 +13,11 @@ interface ResponseBoxProps {
     edit?: boolean;
     showChat?: boolean;
     problemIndex: number;
-    problemType: string;
     updateProblem?: (index: number, newProblem: string) => void
+    data: ProblemData;
 }
 
-const ResponseBox: React.FC<ResponseBoxProps> = ({ value, handleChange, className, edit, problemIndex, problemType, updateProblem, showChat }) => {
+const ResponseBox: React.FC<ResponseBoxProps> = ({ value, handleChange, className, edit, problemIndex, updateProblem, showChat, data }) => {
     const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
     useEffect(() => {
@@ -45,7 +46,7 @@ const ResponseBox: React.FC<ResponseBoxProps> = ({ value, handleChange, classNam
                 >
                     {value}
                 </ReactMarkdown>}
-            {showChat && <AIChatSmall className={""} problemIndex={problemIndex} markdown={value} problemType={problemType} updateProblem={updateProblem} />}
+            {showChat && <AIChatSmall className={""} problemIndex={problemIndex} markdown={value} problemData={data} updateProblem={updateProblem} />}
         </>)
 };
 

@@ -4,16 +4,17 @@ import useSubmitTextWithMarkdown from "../../hooks/tools/math/useSubmitTextWithM
 import { notSecretConstants } from "../../constants/notSecretConstants";
 import ChatBox from "./ChatBox";
 import ChangeProblemModal from "./ChangeProblemModal";
+import { ProblemData } from "../../interfaces";
 
 interface ResponseBoxProps {
     className: string;
     problemIndex: number;
     markdown: string;
-    problemType: string;
     updateProblem?: (index: number, newProblem: string) => void
+    problemData: ProblemData;
 }
 
-const AIChatSmall: React.FC<ResponseBoxProps> = ({ className, problemIndex, markdown, problemType, updateProblem }) => {
+const AIChatSmall: React.FC<ResponseBoxProps> = ({ className, problemIndex, markdown, updateProblem, problemData }) => {
 
     const [smallChatText, setSmallChatText] = useState('');
     const formRef = useRef<HTMLFormElement>(null);
@@ -40,7 +41,7 @@ const AIChatSmall: React.FC<ResponseBoxProps> = ({ className, problemIndex, mark
         event.preventDefault();
         if (typeof smallChatText === 'string' && markdown) {
             setModalOpen(true);
-            await submitTextWithMarkdown(smallChatText, markdown, problemType);
+            await submitTextWithMarkdown(smallChatText, markdown, problemData);
         }
     };
 

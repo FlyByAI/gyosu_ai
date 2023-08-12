@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import 'tailwindcss/tailwind.css';
 import useSubmitMathForm from '../../hooks/tools/math/useSubmitMathForm';
 import { notSecretConstants } from '../../constants/notSecretConstants';
@@ -21,14 +21,16 @@ const MathTeacherApp: React.FC = () => {
     const [section, setSection] = useState<string>(Object.keys(formOptionsObj[sourceMaterial]).filter(key => key !== 'option_text')[0]);
     const [problemType, setProblemType] = useState<string>(formOptionsObj[sourceMaterial][section]['problem_types'][0]);
 
-    const typeOptions = ["Worksheet"]
+    const typeOptions = useMemo(() => {
+        return ["Worksheet"]
+    }, []);
+
     const [documentType, setDocumentType] = useState<string>(typeOptions[0]);
 
     const { session, openSignIn } = useClerk();
 
 
     const [markdown, setMarkdown] = useState<string>('');
-    const [shared, setShared] = useState<boolean>(true);
     const [documentName, setDocumentName] = useState<string>(`${typeOptions}-${sourceMaterial}-${section}-${problemType}`);
     const [chat, setChat] = useState<string>('');
     const [highlightedText, setHighlightedText] = useState<string>("");
@@ -41,12 +43,31 @@ const MathTeacherApp: React.FC = () => {
     const { isLoading, error, submitMathForm, data } = useSubmitMathForm(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/generate/`)
     const { isLoading: isLoadingSearch, error: errorSearch, searchMathDocuments, data: dataSearchDocs } = useSearchMathDocuments(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/search/`)
 
+    useEffect(() => {
+        setDocumentName(`${typeOptions}-${sourceMaterial}-${section}-${problemType}`)
+    }, [problemType, section, sourceMaterial, typeOptions])
 
     const [documentId, setDocumentId] = useState<number | undefined>(undefined);
 
     const user = useUser();
 
     const [saved, setSaved] = useState<boolean>(false);
+
+    const handleUserLeavingPage = (e: BeforeUnloadEvent) => {
+        if (!saved) { // Check if changes are not saved
+            const message = 'You have unsaved changes! Do you really want to leave?';
+            e.returnValue = message;
+            return message;
+        }
+    };
+
+    useEffect(() => {
+        window.addEventListener('beforeunload', handleUserLeavingPage);
+        return () => {
+            window.removeEventListener('beforeunload', handleUserLeavingPage);
+        };
+    }, [saved]); // Listen to the changes of the saved state
+
 
     const handleTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setDocumentType(event.target.value);
@@ -84,7 +105,7 @@ const MathTeacherApp: React.FC = () => {
 
     const handleSubmit = () => {
         if (session) {
-            const formData = { documentName, shared, documentType, section, userInput: chat, problemType, sourceMaterial }
+            const formData = { documentName, documentType, section, userInput: chat, problemType, sourceMaterial }
             submitMathForm(formData)
         }
         else {
@@ -236,7 +257,6 @@ const MathTeacherApp: React.FC = () => {
                             chapter: section.split(".")[0],
                             userInput: "",
                             problemType,
-                            shared,
                             documentName
                         }}
                         markdown={markdown}
@@ -246,20 +266,19 @@ const MathTeacherApp: React.FC = () => {
                         setDocumentId={setDocumentId}
                         documentId={documentId}
                         setMarkdown={setMarkdown}
-                        setShared={setShared}
                         setDocumentName={setDocumentName}
                     />
                     <MathTeacherEdit
                         typeOptions={typeOptions}
-                        documentType={documentType} handleTypeChange={handleTypeChange}
-                        section={section} handleSectionChange={handleSectionChange}
+                        handleTypeChange={handleTypeChange}
+                        handleSectionChange={handleSectionChange}
                         markdown={markdown} handleMarkdownChange={handleMarkdownChange}
                         chat={chat} handleChatChange={handleChatChange}
                         highlightedText={highlightedText} setHighlightedText={setHighlightedText}
                         chatHistory={chatHistory} setChatHistory={setChatHistory}
                         editMode={editMode} setEditMode={setEditMode}
                         setChat={setChat}
-                        problemType={problemType}
+                        data={{ sourceMaterial, documentType, section, problemType }}
                     />
                     <div className="flex items-center justify-center">
                         {/* <AIChat markdown={markdown} onChatChange={handleChatChange} problemType={problemType} /> */}

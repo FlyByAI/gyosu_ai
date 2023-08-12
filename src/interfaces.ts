@@ -13,6 +13,13 @@ export interface Document {
     chapter: string;
     documentType?: string;
 }
+
+export interface ProblemData {
+    problemType: string;
+    section: string;
+    documentType: string;
+    sourceMaterial: string;
+}
 export interface IPost {
     id: number;
     title: string;
@@ -38,6 +45,10 @@ export interface IFeedbackData {
     responseText: string | null;
     rating: Rating;
     userFeedback: string;
+    section: string;
+    documentType: string;
+    sourceMaterial: string;
+    problemType: string;
 }
 
 export interface ISubscriptionData {

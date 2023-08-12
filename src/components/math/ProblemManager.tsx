@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import MathProblem from './MathProblem';
+import { ProblemData } from '../../interfaces';
 
 interface ProblemManagerProps {
     initialMarkdown: string;
     onMarkdownChange: (newMarkdown: string) => void;
     setChat: (value: string) => void;
-    problemType: string;
+    data: ProblemData;
 }
 
-const ProblemManager: React.FC<ProblemManagerProps> = ({ initialMarkdown, setChat, onMarkdownChange, problemType }) => {
+const ProblemManager: React.FC<ProblemManagerProps> = ({ initialMarkdown, setChat, onMarkdownChange, data }) => {
     const [problems, setProblems] = useState<string[]>(markdownToProblemsArr(initialMarkdown));
 
     useEffect(() => {
@@ -65,8 +66,7 @@ const ProblemManager: React.FC<ProblemManagerProps> = ({ initialMarkdown, setCha
                     insertProblem={insertProblem}
                     setChat={setChat}
                     updateProblem={updateProblem}
-                    problemType={problemType}
-
+                    data={data}
                 />
             ))}
         </div>

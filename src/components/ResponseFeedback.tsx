@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import useSubmitFeedback from '../hooks/useSubmitFeedback';
 import FeedbackModal from './FeedbackModal';
-import { IFeedbackData, Rating } from '../interfaces';
+import { IFeedbackData, ProblemData, Rating } from '../interfaces';
 import { ThumbsDownSvg, ThumbsUpSvg } from '../svg/customSVGs';
 import { notSecretConstants } from '../constants/notSecretConstants';
+
+
 
 interface IResponseFeedbackProps {
     responseText: string | null;
     toolName: string;
     className?: string;
     size?: 6 | 10 | 15;
+    data: ProblemData
 }
-const ResponseFeedback = ({ responseText, toolName, className, size = 10 }: IResponseFeedbackProps) => {
+const ResponseFeedback = ({ responseText, toolName, className, size = 10, data }: IResponseFeedbackProps) => {
     const [thumbUpSelected, setThumbUpSelected] = useState(false);
     const [thumbDownSelected, setThumbDownSelected] = useState(false);
     const [rating, setRating] = useState<Rating>("");
@@ -23,7 +26,7 @@ const ResponseFeedback = ({ responseText, toolName, className, size = 10 }: IRes
         setRating("");
     }, [responseText])
 
-    const { submitFeedback } = useSubmitFeedback(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/response-feedback`);
+    const { submitFeedback } = useSubmitFeedback(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/feedback/problem`);
 
     const handleThumbUpClick = () => {
         setThumbUpSelected(!thumbUpSelected);
@@ -53,12 +56,12 @@ const ResponseFeedback = ({ responseText, toolName, className, size = 10 }: IRes
     return (
         <div className={"flex justify-center" + className}>
             <button onClick={handleThumbUpClick} className="mr-2">
-                <div className={`w-${size}`}>
+                <div className={`w-${size} dark:text-gray-300`}>
                     <ThumbsUpSvg rating={rating} />
                 </div>
             </button>
             <button onClick={handleThumbDownClick} className="">
-                <div className={`w-${size}`}>
+                <div className={`w-${size} dark:text-gray-300`}>
                     <ThumbsDownSvg rating={rating} />
                 </div>
             </button>
@@ -67,8 +70,9 @@ const ResponseFeedback = ({ responseText, toolName, className, size = 10 }: IRes
                 isOpen={isModalOpen}
                 onSubmitFeedback={handleSubmitFeedback}
                 onClose={handleCloseModal}
-                toolName={toolName} // replace this with your actual tool name
-                responseText={responseText} // the user's feedback goes here
+                toolName={toolName}
+                responseText={responseText}
+                data={data}
             />
         </div>
     );
