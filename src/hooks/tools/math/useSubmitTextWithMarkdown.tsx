@@ -2,6 +2,7 @@ import { useClerk } from '@clerk/clerk-react';
 import humps from 'humps';
 import { useState } from 'react';
 import { ProblemData } from '../../../interfaces';
+import { useLanguage } from '../../../contexts/useLanguage';
 
 const useSubmitTextWithMarkdown = (endpoint: string) => {
     const { session } = useClerk();
@@ -9,13 +10,14 @@ const useSubmitTextWithMarkdown = (endpoint: string) => {
     const [error, setError] = useState<string | null>(null);
     const [data, setData] = useState<any | null>(null);
 
-    const submitTextWithMarkdown = async (userInput: string, problem: string, data: ProblemData) => {
+    const submitTextWithMarkdown = async (userInput: string, problem: string, data: ProblemData, options = { language: "en", topic: "none" }) => {
         setLoading(true);
         setError(null);
+
         try {
             const token = session ? await session.getToken() : "none";
 
-            const body = humps.decamelizeKeys({ userInput, problem, ...data, chapter: data.section.split(".")[0], section: data.section.split(".")[1] });
+            const body = humps.decamelizeKeys({ ...options, userInput, problem, ...data, chapter: data.section.split(".")[0], section: data.section.split(".")[1] });
 
             const response = await fetch(endpoint, {
                 method: 'POST',

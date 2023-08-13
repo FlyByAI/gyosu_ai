@@ -3,6 +3,7 @@ import RefreshIcon from '../../svg/RefreshIcon';
 import useSubmitReroll from '../../hooks/tools/math/useSubmitReroll';
 import { notSecretConstants } from '../../constants/notSecretConstants';
 import ChangeProblemModal from './ChangeProblemModal';
+import { useLanguage } from '../../contexts/useLanguage';
 
 interface RerollResultProps {
     problem: string;
@@ -20,13 +21,17 @@ const RerollResult: React.FC<RerollResultProps> = ({ problem, setChat, problemIn
     const [newProblem, setNewProblem] = useState<string>('');
     const [isModalOpen, setModalOpen] = useState(false);
 
+    const { language } = useLanguage();
+
+    const options = { language: language, topic: "none" };
+
     const handleCloseModal = () => {
         setModalOpen(false);
     };
 
     const handleClick = () => {
         setModalOpen(true);
-        submitReroll(problem, problemType, documentType, sourceMaterial, section);
+        submitReroll(problem, { problemType, documentType, sourceMaterial, section }, options);
     }
 
     useEffect(() => {

@@ -5,6 +5,7 @@ import { notSecretConstants } from "../../constants/notSecretConstants";
 import ChatBox from "./ChatBox";
 import ChangeProblemModal from "./ChangeProblemModal";
 import { ProblemData } from "../../interfaces";
+import { useLanguage } from "../../contexts/useLanguage";
 
 interface ResponseBoxProps {
     className: string;
@@ -22,6 +23,10 @@ const AIChatSmall: React.FC<ResponseBoxProps> = ({ className, problemIndex, mark
     const textAreaRef = useRef<HTMLTextAreaElement>(null);  // Add this ref
     const [isModalOpen, setModalOpen] = useState(false);
     const [newProblem, setNewProblem] = useState<string>('');
+
+    const { language } = useLanguage();
+
+    const options = { language: language, topic: "none" };
 
     const handleCloseModal = () => {
         setModalOpen(false);
@@ -41,7 +46,7 @@ const AIChatSmall: React.FC<ResponseBoxProps> = ({ className, problemIndex, mark
         event.preventDefault();
         if (typeof smallChatText === 'string' && markdown) {
             setModalOpen(true);
-            await submitTextWithMarkdown(smallChatText, markdown, problemData);
+            await submitTextWithMarkdown(smallChatText, markdown, problemData, options);
         }
     };
 
