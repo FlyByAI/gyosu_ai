@@ -22,7 +22,7 @@ const LanguageDropdown = ({ className }: LanguageDropdownProps) => {
                 <span className={`flag-icon flag-icon-${language}`}></span>
             </div>
             {showOptions && (
-                <div className="absolute bg-gray-900 border rounded shadow">
+                <div className="absolute bg-gray-900 border rounded shadow z-50">
                     {Object.keys(languageNames).map((lang) => (
                         <div
                             key={lang}
