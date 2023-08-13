@@ -53,21 +53,6 @@ const MathTeacherApp: React.FC = () => {
 
     const [saved, setSaved] = useState<boolean>(false);
 
-    const handleUserLeavingPage = (e: BeforeUnloadEvent) => {
-        if (!saved) { // Check if changes are not saved
-            const message = 'You have unsaved changes! Do you really want to leave?';
-            e.returnValue = message;
-            return message;
-        }
-    };
-
-    useEffect(() => {
-        window.addEventListener('beforeunload', handleUserLeavingPage);
-        return () => {
-            window.removeEventListener('beforeunload', handleUserLeavingPage);
-        };
-    }, [saved]); // Listen to the changes of the saved state
-
 
     const handleTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setDocumentType(event.target.value);

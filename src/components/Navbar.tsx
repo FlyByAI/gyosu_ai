@@ -8,6 +8,7 @@ import useFetchSubscriptionInfo from '../hooks/subscription/useFetchSubscription
 import { notSecretConstants } from '../constants/notSecretConstants';
 import TrialButton from './TrialButton';
 import ManageSubscriptionButton from './ManageSubscriptionButton';
+import LanguageDropdown from './LanguageDropdown';
 
 const Navbar: React.FC = () => {
 
@@ -16,6 +17,7 @@ const Navbar: React.FC = () => {
   const { session } = useClerk();
 
   const { subscriptionInfo, isLoading } = useFetchSubscriptionInfo(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/user_data/get_subscription_info/`)
+
 
   return (
     <header className="px-6 py-4 bg-blue-900 text-white dark:bg-gray-900 dark:text-gray-200">
@@ -26,15 +28,20 @@ const Navbar: React.FC = () => {
           {/* <button className="justify-self-center lg:justify-self-end p-2 rounded-full bg-gray-200 dark:bg-gray-800 focus:outline-none me-4" onClick={() => setDarkMode(!darkMode)}>
             {darkMode ? <SunIcon /> : <MoonIcon />}
           </button> */}
+          <LanguageDropdown className="sm:hidden" />
           <SignedIn>
             {darkMode ? <UserButton afterSignOutUrl="http://localhost:5173/" appearance={getGyosuClerkTheme()} /> : <UserButton afterSignOutUrl="http://localhost:5173/" />}
           </SignedIn>
+
           <SignedOut>
             <SignInButton mode="modal" />
           </SignedOut>
+
         </div>
       </div>
+
       <nav className="grid grid-cols-2 gap-2 lg:flex lg:space-x-3 pt-4">
+
         <Link to="/math-app" className="text-lg text-white hover:underline dark:text-gray-200 lg:justify-self-end block sm:hidden">
           Generate
         </Link>
@@ -46,7 +53,7 @@ const Navbar: React.FC = () => {
         </Link>
       </nav>
       {/* desktop */}
-      <div className="container mx-auto flex justify-between items-center hidden sm:flex">
+      <div className="flex justify-between items-center hidden sm:flex">
         <div className="flex items-center">
           <Link to="/" className="text-3xl font-semibold text-white font-mono">Gyosu.ai</Link>
           {/* <button className="ml-4 p-2 rounded-full bg-gray-200 dark:bg-gray-800 focus:outline-none" onClick={() => setDarkMode(!darkMode)}>
@@ -55,6 +62,7 @@ const Navbar: React.FC = () => {
         </div>
         <div className="flex items-center">
           <nav>
+
             {/* <Link to="/blog" className="text-lg text-white mx-3 hover:underline dark:text-gray-200">
               Blog
             </Link> */}
@@ -68,7 +76,9 @@ const Navbar: React.FC = () => {
             <Link to="/contact" className="text-lg text-white mx-3 hover:underline dark:text-gray-200 mr-4 font-mono font-bold">
               Contact
             </Link>
+
           </nav>
+          <LanguageDropdown className="hidden sm:flex " />
           <SignedIn>
             {darkMode ? <UserButton afterSignOutUrl="/" appearance={getGyosuClerkTheme()} /> : <UserButton afterSignOutUrl="http://localhost:5173/" />}
           </SignedIn>

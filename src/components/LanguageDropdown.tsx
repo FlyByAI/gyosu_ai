@@ -1,0 +1,41 @@
+import React, { useState } from "react";
+import { languageNames } from "../helpers/language";
+import { useLanguage } from "../contexts/useLanguage";
+import 'flag-icon-css/css/flag-icons.min.css';
+
+interface LanguageDropdownProps {
+    className?: string;
+}
+
+const LanguageDropdown = ({ className }: LanguageDropdownProps) => {
+    const { language, setLanguage } = useLanguage();
+    const [showOptions, setShowOptions] = useState(false);
+
+    const handleLanguageChange = (lang: string) => {
+        setLanguage(lang);
+        setShowOptions(false); // Hide options after selection
+    };
+
+    return (
+        <div className={className + ` pe-3`}>
+            <div className="cursor-pointer" onClick={() => setShowOptions(!showOptions)}>
+                <span className={`flag-icon flag-icon-${language}`}></span>
+            </div>
+            {showOptions && (
+                <div className="absolute bg-gray-900 border rounded shadow">
+                    {Object.keys(languageNames).map((lang) => (
+                        <div
+                            key={lang}
+                            className="cursor-pointer hover:bg-gray-700 p-2"
+                            onClick={() => handleLanguageChange(lang)}
+                        >
+                            <span className={`flag-icon flag-icon-${lang}`}></span> {lang}
+                        </div>
+                    ))}
+                </div>
+            )}
+        </div>
+    );
+};
+
+export default LanguageDropdown;

@@ -1,17 +1,20 @@
 import React, { ReactNode } from 'react';
 import './App.css';
 import { DarkModeProvider } from './hooks/useDarkMode';
+import { LanguageProvider } from './contexts/useLanguage';
 
 
 interface AppProps {
-  children: ReactNode;
+  children: any;
 }
 
 function App({ children }: AppProps) {
   return (
     <div className=''>
       <DarkModeProvider>
-        {children}
+        <LanguageProvider>
+          {children}
+        </LanguageProvider>
       </DarkModeProvider>
     </div>
   );
