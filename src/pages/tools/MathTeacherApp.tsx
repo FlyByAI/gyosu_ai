@@ -1,9 +1,6 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import 'tailwindcss/tailwind.css';
-import useSubmitMathForm from '../../hooks/tools/math/useSubmitMathForm';
 import { notSecretConstants } from '../../constants/notSecretConstants';
-import SubmitButton from '../../components/forms/SubmitButton';
-import Dropdown from '../../components/forms/Dropdown';
 import DocumentExport from '../../components/math/DocumentExport';
 import GridContainer3x3 from '../../components/grids/GridContainer3x3';
 import DocumentPreview from '../../components/forms/DocumentPreview';
@@ -11,92 +8,39 @@ import useFetchDocuments from '../../hooks/tools/math/useFetchDocuments';
 import MathTeacherEdit from '../../components/math/MathTeacherEdit';
 import { useClerk, useUser } from '@clerk/clerk-react';
 import Accordion from '../../components/Accordion';
-import useSearchMathDocuments from '../../hooks/tools/math/useSearchDocuments';
-import formOptionsJSON from '../../json/dropdown_data.json';
+import { MathDocument } from '../../hooks/tools/math/useSearchDocuments';
+import MathTeacherForm from '../../components/math/MathTeacherForm';
+import { ProblemData } from '../../interfaces';
 
 
 const MathTeacherApp: React.FC = () => {
-    const formOptionsObj = Object(formOptionsJSON);
-    const [sourceMaterial, setSourceMaterial] = useState<string>(Object.keys(formOptionsObj)[0]);
-    const [section, setSection] = useState<string>(Object.keys(formOptionsObj[sourceMaterial]).filter(key => key !== 'option_text')[0]);
-    const [problemType, setProblemType] = useState<string>(formOptionsObj[sourceMaterial][section]['problem_types'][0]);
-
-    const typeOptions = useMemo(() => {
-        return ["Worksheet"]
-    }, []);
-
-    const [documentType, setDocumentType] = useState<string>(typeOptions[0]);
 
     const { session, openSignIn } = useClerk();
 
-
     const [markdown, setMarkdown] = useState<string>('');
-    const [documentName, setDocumentName] = useState<string>(`${typeOptions}-${sourceMaterial}-${section}-${problemType}`);
-    const [chat, setChat] = useState<string>('');
-    const [highlightedText, setHighlightedText] = useState<string>("");
-    const [chatHistory, setChatHistory] = useState(['']);
-    const [editMode, setEditMode] = useState<boolean>(false);
 
     const { documents } = useFetchDocuments(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/documents/recent/`);
     const { documents: myDocuments } = useFetchDocuments(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/myDocuments/recent/`);
-
-    const { isLoading, error, submitMathForm, data } = useSubmitMathForm(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/generate/`)
-    const { isLoading: isLoadingSearch, error: errorSearch, searchMathDocuments, data: dataSearchDocs } = useSearchMathDocuments(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/search/`)
-
-    useEffect(() => {
-        setDocumentName(`${typeOptions}-${sourceMaterial}-${section}-${problemType}`)
-    }, [problemType, section, sourceMaterial, typeOptions])
+    const [dataSearchDocs, setDataSearchDocs] = useState<MathDocument[] | null>(null)
 
     const [documentId, setDocumentId] = useState<number | undefined>(undefined);
+
+    const [problemData, setProblemData] = useState<ProblemData | null>(null);
+    const [chat, setChat] = useState<string>('');
 
     const user = useUser();
 
     const [saved, setSaved] = useState<boolean>(false);
 
 
-    const handleTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setDocumentType(event.target.value);
-    };
-
-    const handleSectionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        const newSection = event.target.value;
-        // update defaults so they aren't stale
-        setSection(newSection);
-        setProblemType(formOptionsObj[sourceMaterial][newSection]['problem_types'][0])
-    };
-
-    const handleSourceMaterialChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        const newSourceMaterial = event.target.value;
-        // update defaults so they aren't stale
-        setSourceMaterial(newSourceMaterial);
-        setSection(Object.keys(formOptionsObj[newSourceMaterial]).filter(key => key !== 'option_text')[0])
-        setProblemType(formOptionsObj[newSourceMaterial][Object.keys(formOptionsObj[newSourceMaterial]).filter(key => key !== 'option_text')[0]]['problem_types'][0])
-    };
-
     const handleMarkdownChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         setMarkdown(event.target.value);
     };
 
-    const handleChatChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-        setChat(event.target.value);
-    };
 
-
-    useEffect(() => {
-        if (data) {
-            setMarkdown(data.response)
-        }
-    }, [data])
-
-    const handleSubmit = () => {
-        if (session) {
-            const formData = { documentName, documentType, section, userInput: chat, problemType, sourceMaterial }
-            submitMathForm(formData)
-        }
-        else {
-            openSignIn()
-        }
-
+    const handleSubmit = (data: any) => {
+        setMarkdown(data.response);
+        setDocumentId(data.id);
     };
 
     useEffect(() => {
@@ -105,15 +49,8 @@ const MathTeacherApp: React.FC = () => {
         }
     }, [session, openSignIn])
 
-    const handleSearch = () => {
-        const formData = { documentType, section, userInput: chat, problemType, sourceMaterial }
-        searchMathDocuments(formData)
-    };
-
-
-
-    const handleChangeProblemType = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setProblemType(event.target.value);
+    const handleSearch = (data: MathDocument[] | null) => {
+        setDataSearchDocs(data);
     };
 
     const handleDocumentClick = (markdown: string, index: number) => {
@@ -129,41 +66,7 @@ const MathTeacherApp: React.FC = () => {
 
             {!markdown ?
                 <>
-                    <div className="flex justify-center items-center">
-                        <div className="w-full md:w-1/2 bg-gray-700 rounded-lg p-8 m-4 shadow-lg">
-                            <Dropdown label={"Source Material"} options={formOptionsObj} defaultValue={sourceMaterial} handleChange={handleSourceMaterialChange} className="form-select block w-full mt-1" />
-                            <Dropdown label={"Document Type"} options={typeOptions} defaultValue={typeOptions[0]} handleChange={handleSourceMaterialChange} className="form-select block w-full mt-1" />
-                            <Dropdown label={"Section"} options={formOptionsObj[sourceMaterial]} defaultValue={section} handleChange={handleSectionChange} className="form-select block w-full mt-1" />
-                            <Dropdown label={"Problem Type"} options={formOptionsObj[sourceMaterial][section]['problem_types']} defaultValue={problemType} handleChange={handleChangeProblemType} className="form-select block w-full mt-1" />
-                            <SubmitButton
-                                buttonText={"Generate New"}
-                                handleClick={handleSubmit}
-                                className=" mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                            /><SubmitButton
-                                buttonText={"Search"}
-                                handleClick={handleSearch}
-                                className=" ms-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                            />
-
-                        </div>
-
-                    </div>
-                    {error && <p className="text-red-600 mt-4 text-center">Error: {error}</p>}
-                    {error && !user?.user?.username && <p className="text-red-600 mt-4 text-center">Note: {"Our tools require you to be signed in."}</p>}
-                    {isLoading && <p className="dark:text-white">Loading...</p>}
-                    {isLoading && (
-                        <div className="flex justify-center mt-4">
-                            <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12"></div>
-                        </div>
-                    )}
-                    {errorSearch && <p className="text-red-600 mt-4 text-center">Error: {errorSearch}</p>}
-                    {errorSearch && !user?.user?.username && <p className="text-red-600 mt-4 text-center">Note: {"Our tools require you to be signed in."}</p>}
-                    {isLoadingSearch && <p className="dark:text-white">Loading...</p>}
-                    {isLoadingSearch && (
-                        <div className="flex justify-center mt-4">
-                            <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12"></div>
-                        </div>
-                    )}
+                    <MathTeacherForm onSubmit={handleSubmit} onSearch={handleSearch} setProblemData={setProblemData} />
                     {dataSearchDocs && dataSearchDocs?.length > 0 ? <div className="flex justify-center items-center">
                         <Accordion title={"Search Results"} visible={true}>
                             <GridContainer3x3>
@@ -234,37 +137,31 @@ const MathTeacherApp: React.FC = () => {
                 :
                 <>
 
-                    <DocumentExport
-                        formData={{
-                            sourceMaterial: sourceMaterial,
-                            documentType,
-                            section: section.split(".")[1],
-                            chapter: section.split(".")[0],
-                            userInput: "",
-                            problemType,
-                            documentName
-                        }}
-                        markdown={markdown}
-                        divPrintId={'markdownToPrint'}
-                        saved={saved}
-                        setSaved={setSaved}
-                        setDocumentId={setDocumentId}
-                        documentId={documentId}
-                        setMarkdown={setMarkdown}
-                        setDocumentName={setDocumentName}
-                    />
-                    <MathTeacherEdit
-                        typeOptions={typeOptions}
-                        handleTypeChange={handleTypeChange}
-                        handleSectionChange={handleSectionChange}
-                        markdown={markdown} handleMarkdownChange={handleMarkdownChange}
-                        chat={chat} handleChatChange={handleChatChange}
-                        highlightedText={highlightedText} setHighlightedText={setHighlightedText}
-                        chatHistory={chatHistory} setChatHistory={setChatHistory}
-                        editMode={editMode} setEditMode={setEditMode}
-                        setChat={setChat}
-                        data={{ sourceMaterial, documentType, section, problemType }}
-                    />
+                    {problemData && <>
+                        <DocumentExport
+                            formData={{
+                                sourceMaterial: problemData.sourceMaterial,
+                                documentType: problemData.documentType,
+                                section: problemData.section.split(".")[1],
+                                chapter: problemData.section.split(".")[0],
+                                problemType: problemData.problemType,
+                                userInput: "",
+                            }}
+                            markdown={markdown}
+                            divPrintId={'markdownToPrint'}
+                            saved={saved}
+                            setSaved={setSaved}
+                            setDocumentId={setDocumentId}
+                            documentId={documentId}
+                            setMarkdown={setMarkdown}
+                        />
+                        <MathTeacherEdit
+                            markdown={markdown}
+                            handleMarkdownChange={handleMarkdownChange}
+                            setChat={setChat}
+                            data={problemData}
+                        /></>
+                    }
                     <div className="flex items-center justify-center">
                         {/* <AIChat markdown={markdown} onChatChange={handleChatChange} problemType={problemType} /> */}
                     </div>

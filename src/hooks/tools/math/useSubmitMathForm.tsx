@@ -13,7 +13,7 @@ export interface MathFormData {
     upvotes?: number;
     tips?: number;
     shared?: boolean
-    documentName: string;
+    documentName?: string;
 }
 
 const useSubmitMathForm = (endpoint: string) => {
