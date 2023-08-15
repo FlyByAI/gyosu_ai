@@ -26,8 +26,8 @@ const PrintResult: React.FC<PrintResultProps> = ({ documentName, workSheetTitle,
         const myWindow = window.open('', '', 'width=600,height=600');
 
         if (content && myWindow?.document) {
-            myWindow.document.write(`<html><head><title>${documentName || "Print"}</title>`);
-            myWindow.document.write(`</head><body ><h2>${workSheetTitle || "Print"}</h2>`);
+            myWindow.document.write('<html><head><title>&nbsp;</title>');
+            myWindow.document.write(`</head><body><h2>${workSheetTitle || " "}</h2>`);
             myWindow.document.write('<div>');
             myWindow.document.write(content.innerHTML);
             myWindow.document.write('</div>');
