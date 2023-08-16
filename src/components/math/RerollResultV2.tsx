@@ -2,19 +2,16 @@ import React, { useEffect, useState } from 'react';
 import RefreshIcon from '../../svg/RefreshIcon';
 import useSubmitReroll from '../../hooks/tools/math/useSubmitReroll';
 import { notSecretConstants } from '../../constants/notSecretConstants';
-import ChangeProblemModal from './ChangeProblemModal';
+import ChangeProblemModalV2 from './ChangeProblemModalV2';
 import { useLanguage } from '../../contexts/useLanguage';
-import { ProblemData } from '../../interfaces';
+import { Chunk, ProblemData } from '../../interfaces';
 
 interface RerollResultProps {
     problem: string;
     setChat: (value: string) => void;
     problemIndex: number;
-    updateProblem: (index: number, newProblem: string) => void
+    updateProblem: (index: number, newProblem: Chunk) => void
     problemData: ProblemData;
-    section: string;
-    documentType: string;
-    sourceMaterial: string;
 }
 
 const RerollResult: React.FC<RerollResultProps> = ({ problem, setChat, problemIndex, updateProblem, problemData }) => {
@@ -47,7 +44,7 @@ const RerollResult: React.FC<RerollResultProps> = ({ problem, setChat, problemIn
     return (<>
         <button onClick={handleClick}><RefreshIcon /> </button>
 
-        {<ChangeProblemModal error={error} problemIndex={problemIndex} updateProblem={updateProblem} onClose={handleCloseModal} isOpen={isModalOpen} setNewProblem={setNewProblem} markdown={problem} newProblem={newProblem} />}
+        {<ChangeProblemModalV2 error={error} problemIndex={problemIndex} updateProblem={updateProblem} onClose={handleCloseModal} isOpen={isModalOpen} setNewProblem={setNewProblem} markdown={problem} newProblem={newProblem} />}
     </>)
 }
 

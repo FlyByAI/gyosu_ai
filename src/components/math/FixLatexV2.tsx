@@ -3,28 +3,21 @@ import RefreshIcon from '../../svg/RefreshIcon';
 import useSubmitReroll from '../../hooks/tools/math/useSubmitReroll';
 import { notSecretConstants } from '../../constants/notSecretConstants';
 import ChangeProblemModal from './ChangeProblemModal';
-import { useLanguage } from '../../contexts/useLanguage';
-import { ProblemData } from '../../interfaces';
+import LatexIcon from '../../svg/LatexIcon';
+import { Chunk, ProblemData } from '../../interfaces';
 
-interface RerollResultProps {
+interface FixLatexProps {
     problem: string;
     setChat: (value: string) => void;
     problemIndex: number;
-    updateProblem: (index: number, newProblem: string) => void
+    updateProblem: (index: number, newProblem: Chunk) => void
     problemData: ProblemData;
-    section: string;
-    documentType: string;
-    sourceMaterial: string;
 }
 
-const RerollResult: React.FC<RerollResultProps> = ({ problem, setChat, problemIndex, updateProblem, problemData }) => {
-    const { data, submitReroll, error } = useSubmitReroll(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/reroll/`);
+const FixLatex: React.FC<FixLatexProps> = ({ problem, setChat, problemIndex, updateProblem, problemData }) => {
+    const { data, submitReroll, error } = useSubmitReroll(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/add_latex/`);
     const [newProblem, setNewProblem] = useState<string>('');
     const [isModalOpen, setModalOpen] = useState(false);
-
-    const { language } = useLanguage();
-
-    const options = { language: language, topic: "none" };
 
     const handleCloseModal = () => {
         setModalOpen(false);
@@ -32,7 +25,7 @@ const RerollResult: React.FC<RerollResultProps> = ({ problem, setChat, problemIn
 
     const handleClick = () => {
         setModalOpen(true);
-        submitReroll(problem, problemData, options);
+        submitReroll(problem, problemData);
     }
 
     useEffect(() => {
@@ -45,10 +38,10 @@ const RerollResult: React.FC<RerollResultProps> = ({ problem, setChat, problemIn
 
 
     return (<>
-        <button onClick={handleClick}><RefreshIcon /> </button>
+        <button onClick={handleClick}><LatexIcon /> </button>
 
         {<ChangeProblemModal error={error} problemIndex={problemIndex} updateProblem={updateProblem} onClose={handleCloseModal} isOpen={isModalOpen} setNewProblem={setNewProblem} markdown={problem} newProblem={newProblem} />}
     </>)
 }
 
-export default RerollResult;
+export default FixLatex;

@@ -28,6 +28,10 @@ import Footer from './components/Footer.tsx';
 import ContentWrapper from './components/ContentWrapper.tsx';
 import MathTeacherApp from './pages/tools/MathTeacherApp.tsx';
 import Attributions from './pages/Attributions.tsx';
+import MathTeacherAppV2 from './pages/tools/MathTeacherAppV2.tsx';
+import DocumentShelf from './components/math/DocumentShelf.tsx';
+import DocumentDisplay from './pages/tools/DocumentDisplay.tsx';
+import Subscription from './components/Subscription.tsx';
 
 const clerkPubKey = "pk_test_Y2F1c2FsLWJ1bm55LTQ0LmNsZXJrLmFjY291bnRzLmRldiQ";
 
@@ -50,6 +54,7 @@ export default function ClerkProviderWithRoutes() {
                                 <Home />
                                 <Footer />
                             </ContentWrapper>
+                            <Subscription />
                         </>
                     }
                 />
@@ -62,7 +67,6 @@ export default function ClerkProviderWithRoutes() {
                                 <Blog />
                                 <Footer />
                             </ContentWrapper>
-
                         </>
                     }
                 />
@@ -75,23 +79,34 @@ export default function ClerkProviderWithRoutes() {
                                 <MathTeacherApp />
                                 <Footer />
                             </ContentWrapper>
+                            <Subscription />
+                        </>
+                    }
+                />
+                <Route
+                    path="/math-app-v2"
+                    element={
+                        <>
+                            <Navbar />
+                            <MathTeacherAppV2 />
+                            <Footer />
+                            <Subscription />
 
                         </>
                     }
                 />
                 <Route
-                    path="/materials"
+                    path="/math-app-v2/document/:id"
                     element={
                         <>
                             <Navbar />
-                            <ContentWrapper>
-                                <MathTeacherApp />
-                                <Footer />
-                            </ContentWrapper>
+                            <DocumentDisplay />
+                            <Subscription />
 
                         </>
                     }
                 />
+
                 <Route
                     path="/contact"
                     element={
@@ -101,7 +116,6 @@ export default function ClerkProviderWithRoutes() {
                                 <Contact />
                                 <Footer />
                             </ContentWrapper>
-
                         </>
                     }
                 />
@@ -114,7 +128,6 @@ export default function ClerkProviderWithRoutes() {
                                 <PrivacyPolicy />
                                 <Footer />
                             </ContentWrapper>
-
                         </>
                     }
                 />
@@ -127,7 +140,6 @@ export default function ClerkProviderWithRoutes() {
                                 <Terms />
                                 <Footer />
                             </ContentWrapper>
-
                         </>
                     }
                 />
@@ -140,7 +152,6 @@ export default function ClerkProviderWithRoutes() {
                                 <Attributions />
                                 <Footer />
                             </ContentWrapper>
-
                         </>
                     }
                 />

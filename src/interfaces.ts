@@ -1,18 +1,4 @@
-export interface Document {
-    id: number;
-    title: string;
-    markdown: string;
-    creator?: string;
-    contributors: string[]; // Array of contributors
-    upvotes: number;
-    tips: number;
-    last_modified_by: string;
-    created_at: string; // Using string for simplicity, consider using a date/time library like day.js or luxon for better date/time handling
-    updated_at: string; // Same as above
-    section: string;
-    chapter: string;
-    documentType?: string;
-}
+
 
 export interface ProblemData {
     problemType: string;
@@ -96,4 +82,61 @@ export interface Section {
     SkillFocus: any;
     LearningObjectives: any;
     SampleActivity: string;
+}
+
+// new interfaces for the new document format
+
+export interface Document {
+    id?: number;
+    title: string;
+    creator?: string;
+    contributors: string[]; // Array of contributors
+    upvotes: number;
+    tips: number;
+    last_modified_by: string;
+    created_at: string; // Using string for simplicity, consider using a date/time library like day.js or luxon for better date/time handling
+    updated_at: string; // Same as above
+    section: string;
+    chapter: string;
+    documentType?: string;
+    documentAST: DocumentAST;
+}
+export interface DocumentAST {
+    type: "document";
+    content: Chunk[];
+}
+
+export interface Chunk {
+    type: "chunk";
+    content: (Instruction | Problem)[];
+}
+
+export interface Instruction {
+    type: "instruction";
+    content: (Text | Math | Table | Image)[];
+}
+
+export interface Problem {
+    type: "problem";
+    content: (Text | Math | Table | Image)[];
+}
+
+export interface Text {
+    type: "text";
+    value: string;
+}
+
+export interface Math {
+    type: "math";
+    value: string;
+}
+
+export interface Image {
+    type: "image";
+    value: string;
+}
+
+export interface Table {
+    type: "table";
+    content: (Math | Text)[];
 }

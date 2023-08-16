@@ -38,7 +38,7 @@ const MathMarkdown: React.FC<MathMarkdownProps> = ({ markdown }) => {
                                     remarkPlugins={[remarkGfm, remarkMath]}
                                     rehypePlugins={[rehypeKatex]}
                                 >
-                                    {problem}
+                                    {`$$${problem}$$`}
                                 </ReactMarkdown>
                                 <br />
                             </div>

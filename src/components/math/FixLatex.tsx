@@ -4,16 +4,17 @@ import useSubmitReroll from '../../hooks/tools/math/useSubmitReroll';
 import { notSecretConstants } from '../../constants/notSecretConstants';
 import ChangeProblemModal from './ChangeProblemModal';
 import LatexIcon from '../../svg/LatexIcon';
+import { ProblemData } from '../../interfaces';
 
 interface FixLatexProps {
     problem: string;
     setChat: (value: string) => void;
     problemIndex: number;
     updateProblem: (index: number, newProblem: string) => void
-    problemType: string;
+    problemData: ProblemData;
 }
 
-const FixLatex: React.FC<FixLatexProps> = ({ problem, setChat, problemIndex, updateProblem, problemType }) => {
+const FixLatex: React.FC<FixLatexProps> = ({ problem, setChat, problemIndex, updateProblem, problemData }) => {
     const { data, submitReroll, error } = useSubmitReroll(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/add_latex/`);
     const [newProblem, setNewProblem] = useState<string>('');
     const [isModalOpen, setModalOpen] = useState(false);
@@ -24,7 +25,7 @@ const FixLatex: React.FC<FixLatexProps> = ({ problem, setChat, problemIndex, upd
 
     const handleClick = () => {
         setModalOpen(true);
-        submitReroll(problem, problemType);
+        submitReroll(problem, problemData);
     }
 
     useEffect(() => {

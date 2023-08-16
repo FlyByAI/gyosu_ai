@@ -1,19 +1,20 @@
 import ReactMarkdown from "react-markdown";
-import AIChatSmall from "./AIChatSmall";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 import { useEffect, useRef } from "react";
-import { ProblemData } from "../../interfaces";
+import { Chunk, ProblemData } from "../../interfaces";
+import { ChunkComponent, DocumentComponent } from "../AST";
+import AIChatSmallV2 from "./AIChatSmallV2";
 
 interface ResponseBoxProps {
-    value: string
+    value: Chunk
     handleChange?: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
     className: string;
     edit?: boolean;
     showChat?: boolean;
     problemIndex: number;
-    updateProblem?: (index: number, newProblem: string) => void
+    updateProblem?: (index: number, newProblem: Chunk) => void
     data: ProblemData;
 }
 
@@ -27,26 +28,22 @@ const ResponseBox: React.FC<ResponseBoxProps> = ({ value, handleChange, classNam
         }
     }, [value, edit]);
 
+    console.log(value)
+
     return (
         <>
             {edit ? <textarea
                 ref={textAreaRef}
                 disabled={!edit}
-                value={value}
+                value={value.toString()}
                 onChange={handleChange}
                 className={className + "  resize-none form-textarea mt-1 block w-full"}
                 rows={5}
                 placeholder="Problems appear here"
             />
                 :
-                <ReactMarkdown
-                    remarkPlugins={[remarkGfm, remarkMath]}
-                    rehypePlugins={[rehypeKatex]}
-                    className={className + " form-textarea mt-1 block w-full"}
-                >
-                    {value}
-                </ReactMarkdown>}
-            {showChat && <AIChatSmall className={""} problemIndex={problemIndex} markdown={value} problemData={data} updateProblem={updateProblem} />}
+                <ChunkComponent content={value} />}
+            {showChat && <AIChatSmallV2 className={""} problemIndex={problemIndex} markdown={value.toString()} problemData={data} updateProblem={updateProblem} />}
         </>)
 };
 

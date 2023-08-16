@@ -63,7 +63,6 @@ const MathTeacherApp: React.FC = () => {
 
     return (
         <>
-
             {!markdown ?
                 <>
                     <MathTeacherForm onSubmit={handleSubmit} onSearch={handleSearch} setProblemData={setProblemData} />

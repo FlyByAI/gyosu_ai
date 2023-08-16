@@ -1,0 +1,75 @@
+{
+  "type": "document",
+  "content": [
+    {
+      "type": "chunk",
+      "content": [
+        {
+          "type": "problem",
+          "content": [
+            {
+              "type": "text",
+              "value": "What is the difference between a relation and a function?"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "chunk",
+      "content": [
+        {
+          "type": "problem",
+          "content": [
+            {
+              "type": "text",
+              "value": "What is the difference between the input and the output of a function?"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "chunk",
+      "content": [
+        {
+          "type": "problem",
+          "content": [
+            {
+              "type": "text",
+              "value": "Why does the vertical line test tell us whether the graph of a relation represents a function?"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "chunk",
+      "content": [
+        {
+          "type": "problem",
+          "content": [
+            {
+              "type": "text",
+              "value": "How can you determine if a relation is a one-to-one function?"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "chunk",
+      "content": [
+        {
+          "type": "problem",
+          "content": [
+            {
+              "type": "text",
+              "value": "Why does the horizontal line test tell us whether the graph of a function is one-to-one?"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
