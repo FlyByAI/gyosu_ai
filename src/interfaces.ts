@@ -99,7 +99,7 @@ export interface Document {
     section: string;
     chapter: string;
     documentType?: string;
-    documentAST: DocumentAST;
+    content: Chunk[];
 }
 export interface DocumentAST {
     type: "document";

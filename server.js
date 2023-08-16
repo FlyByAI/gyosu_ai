@@ -226,16 +226,16 @@ app.get("/api/user_data/get_subscription_info/", (req, res) => {
 app.post("/api/math_app/document/", (req, res) => {
   setTimeout(() => {
     res.json({
-      document: req.body.document,
+      ...req.body.document,
       id: 1,
     });
   }, 1000);
 });
 
-app.put("/api/math_app/document/", (req, res) => {
+app.patch("/api/math_app/document/", (req, res) => {
   setTimeout(() => {
     res.json({
-      document: req.body.document,
+      ...req.body.document,
       id: 1,
     });
   }, 1000);
@@ -243,7 +243,7 @@ app.put("/api/math_app/document/", (req, res) => {
 
 app.get("/api/math_app/document/:id", (req, res) => {
   res.json({
-    document: mathResponseDoc,
+    ...mathResponseDoc,
     id: 1,
   });
 });

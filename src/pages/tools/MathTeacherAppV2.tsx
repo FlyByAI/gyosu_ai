@@ -36,10 +36,23 @@ const MathTeacherApp: React.FC = () => {
 
     const [saved, setSaved] = useState<boolean>(false);
 
-    const handleSubmit = (data: { response: Chunk[], id?: number }) => {
-        console.log(data)
-        setChunkArr(data.response);
-        setDocumentId(data.id);
+    const handleSubmit = (data: { response: Chunk[] | string; id?: number }) => {
+        let chunkArray: Chunk[] = [];
+
+        if (typeof data.response === 'string') {
+            try {
+                chunkArray = JSON.parse(data.response);
+            } catch (error) {
+                console.error('Failed to parse response:', error);
+            }
+        } else {
+            chunkArray = data.response as Chunk[];
+        }
+
+        setChunkArr(chunkArray);
+        if (data.id) {
+            setDocumentId(data.id);
+        }
     };
 
     useEffect(() => {
