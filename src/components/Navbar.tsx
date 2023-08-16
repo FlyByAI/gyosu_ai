@@ -38,6 +38,9 @@ const Navbar: React.FC = () => {
         <Link to="/math-app" className="text-lg text-white hover:underline dark:text-gray-200 lg:justify-self-end block sm:hidden">
           Generate
         </Link>
+        <Link to="/faq" className="text-lg text-white hover:underline dark:text-gray-200 lg:justify-self-end block sm:hidden">
+          FAQ
+        </Link>
         {/* {session && <Link to="/materials" className="text-lg text-white hover:underline dark:text-gray-200 lg:justify-self-end block sm:hidden">
           My Materials
         </Link>} */}
@@ -61,10 +64,9 @@ const Navbar: React.FC = () => {
             <Link to="/math-app" className="text-lg text-white mx-3 hover:underline dark:text-gray-200 font-mono font-bold">
               Generate
             </Link>
-            {session &&
-              <Link to="/materials" className="text-lg text-white hover:underline dark:text-gray-200 lg:justify-self-end block sm:hidden font-mono font-bold">
-                My Materials
-              </Link>}
+            <Link to="/faq" className="text-lg text-white mx-3 hover:underline dark:text-gray-200 mr-4 font-mono font-bold">
+              FAQ
+            </Link>
             <Link to="/contact" className="text-lg text-white mx-3 hover:underline dark:text-gray-200 mr-4 font-mono font-bold">
               Contact
             </Link>
