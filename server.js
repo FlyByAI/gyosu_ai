@@ -243,7 +243,7 @@ app.put("/api/math_app/document/", (req, res) => {
 
 app.get("/api/math_app/document/:id", (req, res) => {
   res.json({
-    documentAST: mathResponseDoc,
+    document: mathResponseDoc,
     id: 1,
   });
 });
