@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import RefreshIcon from '../../svg/RefreshIcon';
 import useSubmitReroll from '../../hooks/tools/math/useSubmitReroll';
 import { notSecretConstants } from '../../constants/notSecretConstants';
 import ChangeProblemModal from './ChangeProblemModal';
 import LatexIcon from '../../svg/LatexIcon';
-import { ProblemData } from '../../interfaces';
+import { Chunk, ProblemData } from '../../interfaces';
 
 interface FixLatexProps {
     problem: string;
     setChat: (value: string) => void;
     problemIndex: number;
-    updateProblem: (index: number, newProblem: string) => void
+    updateProblem: (index: number, newProblem: Chunk) => void
     problemData: ProblemData;
 }
 

@@ -14,13 +14,16 @@ const DocumentItem: React.FC<DocumentItemProps> = ({ document, onDropChunk }) =>
     const [, dropRef] = useDrop({
         accept: 'MATH_PROBLEM',
         drop: (item: MathProblemDragItem) => {
-            onDropChunk(document.id, item.problem);
+            if (document.id) {
+                onDropChunk(document.id, item.problem);
+            }
         },
     });
 
     const handleClick = () => {
-        navigate(`/math-app-v2/document/${document.id}`);
+        navigate(`/math-app/document/${document.id}`);
     };
+    console.log(document)
 
     return (
         <li ref={dropRef} key={document.id} className="bg-gray-700 text-white h-16 p-2 rounded-md overflow-hidden relative" onClick={handleClick}>
@@ -29,7 +32,7 @@ const DocumentItem: React.FC<DocumentItemProps> = ({ document, onDropChunk }) =>
                 style={{ left: 0 }}
             >
                 {document.title}
-                {document.documentAST.content?.length > 0 && " content count " + document.documentAST.content.length}
+                {document.content?.length > 0 && " content count " + document.content.length}
             </div>
         </li>
     );

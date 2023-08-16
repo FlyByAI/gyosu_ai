@@ -183,11 +183,11 @@ const mathResponseDoc = exampleDoc2;
 
 const documents = [
   {
-    documentAST: exampleDoc,
+    ...exampleDoc,
     id: 1,
   },
   {
-    documentAST: exampleDoc2,
+    ...exampleDoc2,
     id: 2,
   },
 ];
@@ -232,7 +232,7 @@ app.post("/api/math_app/document/", (req, res) => {
   }, 1000);
 });
 
-app.patch("/api/math_app/document/", (req, res) => {
+app.patch("/api/math_app/document/:id", (req, res) => {
   setTimeout(() => {
     res.json({
       ...req.body.document,

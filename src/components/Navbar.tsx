@@ -4,8 +4,6 @@ import { useDarkMode } from '../hooks/useDarkMode';
 import { SignedIn, SignedOut, UserButton, SignInButton, useClerk } from '@clerk/clerk-react';
 import { getGyosuClerkTheme } from '../theme/customClerkTheme';
 import LanguageDropdown from './LanguageDropdown';
-import Subscription from './Subscription';
-import ChevronUp from '../svg/ChevronUp';
 
 const Navbar: React.FC = () => {
 
@@ -39,9 +37,6 @@ const Navbar: React.FC = () => {
           <Link to="/math-app" className="text-lg text-white hover:underline dark:text-gray-200 lg:justify-self-end block sm:hidden">
             Generate
           </Link>
-          <Link to="/math-app-v2" className="text-lg text-white mx-3 hover:underline dark:text-gray-200 font-mono font-bold block sm:hidden">
-            V2
-          </Link>
           <Link to="/contact" className="text-lg text-white hover:underline dark:text-gray-200 lg:justify-self-end block sm:hidden">
             Contact
           </Link>
@@ -53,7 +48,7 @@ const Navbar: React.FC = () => {
         <div className="flex items-center">
           {!isFixed ?
             <Link to="/" className="text-3xl font-semibold text-white font-mono">Gyosu.ai</Link> :
-            <Link to="/math-app-v2" className="text-3xl font-semibold text-white font-mono flex">{"< "} V2</Link>
+            <Link to="/math-app" className="text-3xl font-semibold text-white font-mono flex">{"< "} V2</Link>
           }
         </div>
         <div className="flex items-center">
@@ -61,9 +56,6 @@ const Navbar: React.FC = () => {
             <nav>
               <Link to="/math-app" className="text-lg text-white mx-3 hover:underline dark:text-gray-200 font-mono font-bold">
                 Generate
-              </Link>
-              <Link to="/math-app-v2" className="text-lg text-white mx-3 hover:underline dark:text-gray-200 font-mono font-bold">
-                V2
               </Link>
               <Link to="/contact" className="text-lg text-white mx-3 hover:underline dark:text-gray-200 mr-4 font-mono font-bold">
                 Contact
@@ -75,7 +67,7 @@ const Navbar: React.FC = () => {
               <Link to="/math-app" className="text-lg text-white mx-3 hover:underline dark:text-gray-200 font-mono font-bold">
                 Tool1
               </Link>
-              <Link to="/math-app-v2" className="text-lg text-white mx-3 hover:underline dark:text-gray-200 font-mono font-bold">
+              <Link to="/math-app" className="text-lg text-white mx-3 hover:underline dark:text-gray-200 font-mono font-bold">
                 Tool2
               </Link>
               <Link to="/contact" className="text-lg text-white mx-3 hover:underline dark:text-gray-200 mr-4 font-mono font-bold">

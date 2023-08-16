@@ -5,8 +5,8 @@ import humps from 'humps';
 import { Document } from '../../../interfaces';
 
 interface DocumentData {
-    markdown: string;
-    formData: MathFormData;
+    document: Document;
+    formData?: MathFormData;
 }
 
 const useSubmitDocument = (endpoint: string) => {
@@ -49,8 +49,36 @@ const useSubmitDocument = (endpoint: string) => {
         }
     };
 
+    const updateDocument = async (documentData: DocumentData) => {
+        setLoading(true);
+        setError(null);
+        try {
+            const token = session ? await session.getToken() : "none";
+            const payload = humps.decamelizeKeys({ document: documentData.document, ...documentData.formData });
+            const response = await fetch(`${endpoint}/${documentData.document.id}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': token ? `Bearer ${token}` : '',
+                },
+                body: JSON.stringify(payload)
+            });
 
-    return { submitDocument, isLoading, error, data };
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const responseData = await response.json();
+            setData(humps.camelizeKeys(responseData) as MathFormData);
+            setLoading(false);
+        } catch (err: any) {
+            setError(err.message);
+            setLoading(false);
+        }
+    };
+
+
+    return { submitDocument, updateDocument, isLoading, error, data };
 };
 
 export default useSubmitDocument;

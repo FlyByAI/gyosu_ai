@@ -12,9 +12,7 @@ import {
 import Home from './pages/Home.tsx';
 import Blog from './pages/Blog.tsx';
 import Contact from './pages/Contact.tsx';
-import Post from './components/Post.tsx';
 import Navbar from './components/Navbar.tsx';
-import Tools from './pages/Tools.tsx';
 //Clerk
 import {
     SignIn,
@@ -26,12 +24,10 @@ import PrivacyPolicy from './pages/PrivacyPolicy.tsx';
 import Terms from './pages/Terms.tsx';
 import Footer from './components/Footer.tsx';
 import ContentWrapper from './components/ContentWrapper.tsx';
-import MathTeacherApp from './pages/tools/MathTeacherApp.tsx';
 import Attributions from './pages/Attributions.tsx';
-import MathTeacherAppV2 from './pages/tools/MathTeacherAppV2.tsx';
-import DocumentShelf from './components/math/DocumentShelf.tsx';
 import DocumentDisplay from './pages/tools/DocumentDisplay.tsx';
 import Subscription from './components/Subscription.tsx';
+import MathTeacherApp from './pages/tools/MathTeacherApp.tsx';
 
 const clerkPubKey = "pk_test_Y2F1c2FsLWJ1bm55LTQ0LmNsZXJrLmFjY291bnRzLmRldiQ";
 
@@ -70,7 +66,7 @@ export default function ClerkProviderWithRoutes() {
                         </>
                     }
                 />
-                <Route
+                {/* <Route
                     path="/math-app"
                     element={
                         <>
@@ -82,13 +78,13 @@ export default function ClerkProviderWithRoutes() {
                             <Subscription />
                         </>
                     }
-                />
+                /> */}
                 <Route
-                    path="/math-app-v2"
+                    path="/math-app"
                     element={
                         <>
                             <Navbar />
-                            <MathTeacherAppV2 />
+                            <MathTeacherApp />
                             <Footer />
                             <Subscription />
 
@@ -96,7 +92,7 @@ export default function ClerkProviderWithRoutes() {
                     }
                 />
                 <Route
-                    path="/math-app-v2/document/:id"
+                    path="/math-app/document/:id"
                     element={
                         <>
                             <Navbar />

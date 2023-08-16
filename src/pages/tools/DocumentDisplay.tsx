@@ -4,9 +4,9 @@ import useGetDocument from '../../hooks/tools/math/useGetDocument';
 import { ChunkComponent } from '../../components/AST';
 import { notSecretConstants } from '../../constants/notSecretConstants';
 import DocumentShelf from '../../components/math/DocumentShelf';
-import ProblemManagerV2 from '../../components/math/ProblemManagerV2';
 
 import { Document, ProblemData } from '../../interfaces';
+import ProblemManager from '../../components/math/ProblemManager';
 // interface DocumentParams {
 //     id: string;
 // }
@@ -42,7 +42,7 @@ const DocumentDisplay: React.FC = () => {
             <DocumentShelf />
             <div className="w-5/6">
                 <h1>{document.title}</h1>
-                <ProblemManagerV2
+                <ProblemManager
                     chunkArray={document.content}
                     setChat={setChat}
                     problemData={{} as ProblemData}

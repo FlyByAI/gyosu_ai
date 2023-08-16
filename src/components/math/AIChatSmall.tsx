@@ -2,16 +2,15 @@ import { useEffect, useRef, useState } from "react";
 import SendIcon from "../../svg/SendIcon";
 import useSubmitTextWithMarkdown from "../../hooks/tools/math/useSubmitTextWithMarkdown";
 import { notSecretConstants } from "../../constants/notSecretConstants";
-import ChatBox from "./ChatBox";
-import ChangeProblemModal from "./ChangeProblemModal";
-import { ProblemData } from "../../interfaces";
+import { Chunk, ProblemData } from "../../interfaces";
 import { useLanguage } from "../../contexts/useLanguage";
+import ChangeProblemModal from "./ChangeProblemModal";
 
 interface ResponseBoxProps {
     className: string;
     problemIndex: number;
     markdown: string;
-    updateProblem?: (index: number, newProblem: string) => void
+    updateProblem?: (index: number, newProblem: Chunk) => void
     problemData: ProblemData;
 }
 
@@ -22,7 +21,7 @@ const AIChatSmall: React.FC<ResponseBoxProps> = ({ className, problemIndex, mark
     const submitButtonRef = useRef<HTMLButtonElement>(null);
     const textAreaRef = useRef<HTMLTextAreaElement>(null);  // Add this ref
     const [isModalOpen, setModalOpen] = useState(false);
-    const [newProblem, setNewProblem] = useState<string>('');
+    const [newProblem, setNewProblem] = useState<Chunk>();
 
     const { language } = useLanguage();
 

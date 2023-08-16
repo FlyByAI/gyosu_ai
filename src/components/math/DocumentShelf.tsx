@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import PlusIcon from '../../svg/PlusIcon';
-import { DocumentAST, Document, Chunk } from '../../interfaces';
+import { Document, Chunk } from '../../interfaces';
 import DocumentItem from './DocumentItem';
 import useGetDocuments from '../../hooks/tools/math/useGetDocuments';
 import { notSecretConstants } from '../../constants/notSecretConstants';
-import useSubmitDocument from '../../hooks/tools/math/useSubmitDocumentV2';
+import useSubmitDocument from '../../hooks/tools/math/useSubmitDocument';
 
 
 
@@ -35,10 +35,7 @@ const DocumentShelf: React.FC = () => {
             updated_at: new Date().toISOString(),
             section: '',
             chapter: '',
-            documentAST: {
-                type: 'document',
-                content: [],
-            } as DocumentAST,
+            content: [] as Chunk[],
         };
 
         await submitDocument({ document: newDocument });
@@ -50,18 +47,20 @@ const DocumentShelf: React.FC = () => {
         const documentToUpdate = documents?.find((doc) => doc.id === documentId);
         if (!documentToUpdate) return;
 
+        console.log(documents)
+        console.log(documentToUpdate)
+
+
         const updatedDocument: Document = {
             ...documentToUpdate,
-            documentAST: {
-                ...documentToUpdate.documentAST,
-                content: [...documentToUpdate.documentAST.content, chunk],
-            },
+            content: [...documentToUpdate.content, chunk],
         };
 
         await updateDocument({ document: updatedDocument });
 
         getDocuments();
     };
+
 
 
     return (<>

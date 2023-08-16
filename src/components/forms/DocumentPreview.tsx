@@ -3,37 +3,27 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
+import { Link } from 'react-router-dom';
 
 interface DocumentPreviewProps {
-    markdown: string;
     creator: string;
     upvotes: number;
     tips: number;
     modifiedBy: string[];
     index: number;
-    onDocumentClick: (markdown: string, index: number) => void;
 }
 
-const DocumentPreview: React.FC<DocumentPreviewProps> = ({ markdown, creator, upvotes, tips, modifiedBy, index, onDocumentClick }) => {
+const DocumentPreview: React.FC<DocumentPreviewProps> = ({ creator, upvotes, tips, modifiedBy, index }) => {
     const [isHovering, setIsHovering] = useState(false);
 
     return (
 
-        <div
+        <Link to={`/document/${index}`}
             className='m-2 bg-white rounded-2xl relative'
             onMouseEnter={() => setIsHovering(true)}
             onMouseLeave={() => setIsHovering(false)}
-            onClick={() => onDocumentClick(markdown, index)}
         >
-
             <div className='p-2'>
-                <ReactMarkdown
-                    className="document-body text-left m-4 max-h-32 overflow-hidden overflow-y-scroll"
-                    remarkPlugins={[remarkGfm, remarkMath]}
-                    rehypePlugins={[rehypeKatex]}
-                >
-                    {markdown}
-                </ReactMarkdown>
 
                 <div className="document-footer mt-4 bg-gray-200 p-4 rounded-lg text-sm w-10/12 mx-auto">
                     <h2 className="text-base font-bold">Created by {creator}</h2>
@@ -61,7 +51,7 @@ const DocumentPreview: React.FC<DocumentPreviewProps> = ({ markdown, creator, up
                     }
                 </div>
             </div>
-        </div>)
+        </Link>)
 }
 
 export default DocumentPreview;

@@ -3,32 +3,28 @@ import ReactMarkdown from 'react-markdown';
 import rehypeKatex from 'rehype-katex';
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
+import { Chunk } from '../../interfaces';
 
 interface ChangeProblemModalProps {
     markdown: string;
     newProblem: string;
     isOpen: boolean;
-    setNewProblem: (newProblem: string) => void;
+    setNewProblem: (newProblem: Chunk) => void;
     onClose: () => void;
-    updateProblem: (index: number, newProblem: string) => void
+    updateProblem: (index: number, newProblem: Chunk) => void
     problemIndex: number;
     error: any;
 }
 
-const ChangeProblemModal: React.FC<ChangeProblemModalProps> = ({ error, markdown, newProblem, isOpen, setNewProblem, onClose, updateProblem, problemIndex }) => {
+const ChangeProblemModal: React.FC<ChangeProblemModalProps> = ({ error, markdown, newProblem, isOpen }) => {
     const handleAccept = () => {
-        if (newProblem.includes("Subscription required")) {
-            handleReject();
-            return;
-        }
-        updateProblem(problemIndex, newProblem);
-        setNewProblem("");
-        onClose();
+        console.log("not implemented")
+        return
     };
 
     const handleReject = () => {
-        setNewProblem("");
-        onClose();
+        console.log("not implemented")
+        return
     };
 
     return isOpen ? (

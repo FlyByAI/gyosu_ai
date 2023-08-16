@@ -2,19 +2,16 @@ import React, { useEffect, useState } from 'react';
 import RefreshIcon from '../../svg/RefreshIcon';
 import useSubmitReroll from '../../hooks/tools/math/useSubmitReroll';
 import { notSecretConstants } from '../../constants/notSecretConstants';
-import ChangeProblemModal from './ChangeProblemModal';
 import { useLanguage } from '../../contexts/useLanguage';
-import { ProblemData } from '../../interfaces';
+import { Chunk, ProblemData } from '../../interfaces';
+import ChangeProblemModal from './ChangeProblemModal';
 
 interface RerollResultProps {
     problem: string;
     setChat: (value: string) => void;
     problemIndex: number;
-    updateProblem: (index: number, newProblem: string) => void
+    updateProblem: (index: number, newProblem: Chunk) => void
     problemData: ProblemData;
-    section: string;
-    documentType: string;
-    sourceMaterial: string;
 }
 
 const RerollResult: React.FC<RerollResultProps> = ({ problem, setChat, problemIndex, updateProblem, problemData }) => {
