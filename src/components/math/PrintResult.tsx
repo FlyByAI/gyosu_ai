@@ -7,7 +7,7 @@ interface PrintResultProps {
     divPrintId: string;
 }
 
-const PrintResult: React.FC<PrintResultProps> = ({ documentName, workSheetTitle, divPrintId }) => {
+const PrintResult: React.FC<PrintResultProps> = ({ workSheetTitle, divPrintId }) => {
 
     const printDiv = (divId: string) => {
         const div = document.getElementById(divId);
