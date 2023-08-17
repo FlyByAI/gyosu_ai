@@ -56,7 +56,7 @@ const InstructionComponent: React.FC<InstructionProps> = ({ content }) => (
                         remarkPlugins={[remarkGfm, remarkMath]}
                         rehypePlugins={[rehypeKatex]}
                     >
-                        {`**${item.value}**`}
+                        {`${item.value}`}
                     </ReactMarkdown>;
                 case 'math':
                     return <ReactMarkdown
@@ -64,7 +64,7 @@ const InstructionComponent: React.FC<InstructionProps> = ({ content }) => (
                         remarkPlugins={[remarkGfm, remarkMath]}
                         rehypePlugins={[rehypeKatex]}
                     >
-                        {`$$${item.value}$$`}
+                        {`${item.value}`}
                     </ReactMarkdown>;
                 case 'table':
                     // You can render tables here, or add a custom Table component
