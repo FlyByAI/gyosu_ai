@@ -15,9 +15,9 @@ export interface MathProblemDragItem {
 
 const DocumentShelf: React.FC = () => {
 
-    const endpoint = `${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/documents/`; // Replace with your endpoint
+    const endpoint = `${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/school_document/list/`; // Replace with your endpoint
     const { getDocuments, isLoading, error, documents } = useGetDocuments(endpoint);
-    const endpoint2 = `${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/document/`; // Replace with your endpoint
+    const endpoint2 = `${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/school_document/`; // Replace with your endpoint
     const { submitDocument, updateDocument } = useSubmitDocument(endpoint2);
 
     useEffect(() => {
