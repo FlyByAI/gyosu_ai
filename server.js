@@ -232,7 +232,7 @@ app.post("/api/math_app/document/", (req, res) => {
   }, 1000);
 });
 
-app.patch("/api/math_app/document/:id", (req, res) => {
+app.patch("/api/math_app/document/:id/", (req, res) => {
   setTimeout(() => {
     res.json({
       ...req.body.document,
@@ -241,14 +241,14 @@ app.patch("/api/math_app/document/:id", (req, res) => {
   }, 1000);
 });
 
-app.get("/api/math_app/document/:id", (req, res) => {
+app.get("/api/math_app/document/:id/", (req, res) => {
   res.json({
     ...mathResponseDoc,
     id: 1,
   });
 });
 
-app.get("/api/math_app/documents", (req, res) => {
+app.get("/api/math_app/documents/", (req, res) => {
   setTimeout(() => {
     res.json(documents);
   }, 1000);

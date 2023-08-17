@@ -55,7 +55,7 @@ const useSubmitDocument = (endpoint: string) => {
         try {
             const token = session ? await session.getToken() : "none";
             const payload = humps.decamelizeKeys({ document: documentData.document, ...documentData.formData });
-            const response = await fetch(`${endpoint}/${documentData.document.id}`, {
+            const response = await fetch(`${endpoint}${documentData.document.id}/`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
