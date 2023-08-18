@@ -12,7 +12,7 @@ import {
 import Home from './pages/Home.tsx';
 import Blog from './pages/Blog.tsx';
 import Contact from './pages/Contact.tsx';
-import Navbar from './components/Navbar.tsx';
+import Navbar from './components/navbars/Navbar.tsx';
 //Clerk
 import {
     SignIn,

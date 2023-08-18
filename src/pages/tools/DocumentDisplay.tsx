@@ -3,23 +3,16 @@ import { useParams } from 'react-router-dom';
 import useGetDocument from '../../hooks/tools/math/useGetDocument';
 import { ChunkComponent } from '../../components/AST';
 import { notSecretConstants } from '../../constants/notSecretConstants';
-import DocumentShelf from '../../components/math/DocumentShelf';
+import DocumentShelf from '../../components/document/DocumentShelf';
 
-import { Document, ProblemData } from '../../interfaces';
+import { ProblemData } from '../../interfaces';
 import ProblemManager from '../../components/math/ProblemManager';
-// interface DocumentParams {
-//     id: string;
-// }
 
 const DocumentDisplay: React.FC = () => {
     const { id } = useParams();
-    const { getDocument, isLoading, error, document } = useGetDocument(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/school_document`);
+    const { isLoading, error, document } = useGetDocument(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/school_document`, Number(id));
 
     const [chat, setChat] = useState<string>('');
-
-    useEffect(() => {
-        getDocument(Number(id));
-    }, [id, getDocument]);
 
     useEffect(() => {
         console.log("document", document)
@@ -30,7 +23,7 @@ const DocumentDisplay: React.FC = () => {
     }
 
     if (error) {
-        return <div className="text-white">Error: {error}</div>;
+        return <div className="text-white">Error: {error.message}</div>;
     }
 
     if (!document) {
@@ -38,11 +31,11 @@ const DocumentDisplay: React.FC = () => {
     }
 
     return (
-        <div className='flex'>
+        <div className='flex bg-gray-900'>
             <DocumentShelf />
             <div className="w-5/6">
                 <h1 className="text-white">{Object.entries(document).map(([key, value]) => {
-                    return (<div>
+                    return (<div key={key}>
                         {key}:
                         {value}
                     </div>)

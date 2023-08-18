@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import PrintResult from './PrintResult';
-import SaveMarkdownDocument from './SaveMarkdownDocument';
+import PrintResult from '../math/PrintResult';
+import SaveMarkdownDocument from '../math/SaveMarkdownDocument';
 import { MathFormData } from '../../hooks/tools/math/useSubmitMathForm';
 import MathMarkdown from '../MathMarkdown';
-import PublishMarkdownDocument from './PublishMarkdownDocument';
+import PublishMarkdownDocument from '../math/PublishMarkdownDocument';
 
 
 interface DocumentExportProps {

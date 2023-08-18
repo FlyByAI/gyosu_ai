@@ -8,7 +8,7 @@ import { useClerk, useUser } from '@clerk/clerk-react';
 import Accordion from '../../components/Accordion';
 import { MathDocument } from '../../hooks/tools/math/useSearchDocuments';
 import { Chunk, ProblemData } from '../../interfaces';
-import DocumentShelf from '../../components/math/DocumentShelf';
+import DocumentShelf from '../../components/document/DocumentShelf';
 import ProblemManager from '../../components/math/ProblemManager';
 import MathTeacherForm from '../../components/math/MathTeacherForm';
 

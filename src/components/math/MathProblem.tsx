@@ -5,7 +5,7 @@ import ResponseFeedback from '../ResponseFeedback';
 import EditIcon from '../../svg/Edit';
 import ViewIcon from '../../svg/ViewIcon';
 import { Chunk, ProblemData } from '../../interfaces';
-import { MathProblemDragItem } from './DocumentShelf';
+import { MathProblemDragItem } from '../document/DocumentShelf';
 import { useDrag } from 'react-dnd';
 import FixLatex from './FixLatex';
 import RerollResult from './RerollResult';

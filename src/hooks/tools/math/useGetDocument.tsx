@@ -1,44 +1,48 @@
-import { useCallback, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { useClerk } from '@clerk/clerk-react';
 import humps from 'humps';
 import { Document } from '../../../interfaces';
+import { useEffect } from 'react';
 
-const useGetDocument = (endpoint: string) => {
+const fetchDocument = async (endpoint: string, documentId: number, token: string | null) => {
+    const response = await fetch(`${endpoint}/${documentId}`, {
+        method: 'GET',
+        headers: {
+            'Authorization': token ? `Bearer ${token}` : '',
+        },
+    });
+
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const responseData = await response.json();
+    return humps.camelizeKeys(responseData) as Document;
+};
+
+const useGetDocument = (endpoint: string, documentId: number) => {
     const { session } = useClerk();
-    const [isLoading, setLoading] = useState<boolean>(false);
-    const [error, setError] = useState<string | null>(null);
-    const [document, setDocument] = useState<Document | null>(null);
 
-    const getDocument = useCallback(async (documentId: number) => {
-        setLoading(true);
-        setError(null);
-        try {
-            const token = session ? await session.getToken() : "none";
+    const query = useQuery<Document, Error>(['document', documentId], async () => {
+        const token = session ? await session.getToken() : 'none';
+        return fetchDocument(endpoint, documentId, token);
+    }, {
+        // Optional configuration like staleTime, retry, etc.
+        enabled: !!session, // This will run the query only if session is available
+    });
 
-            const response = await fetch(`${endpoint}/${documentId}`, {
-                method: 'GET',
-                headers: {
-                    'Authorization': token ? `Bearer ${token}` : '',
-                },
-            });
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
-            const responseData = await response.json();
-
-            console.log(responseData)
-
-            setDocument(humps.camelizeKeys(responseData) as Document);
-            setLoading(false);
-        } catch (err: any) {
-            setError(err.message);
-            setLoading(false);
+    useEffect(() => {
+        if (session) {
+            query.refetch();
         }
-    }, [endpoint, session]);
+    }, [session, query]);
 
-    return { getDocument, isLoading, error, document };
+    return {
+        getDocument: query.refetch, // You can use this method to refetch manually if needed
+        isLoading: query.isLoading,
+        error: query.error,
+        document: query.data,
+    };
 };
 
 export default useGetDocument;

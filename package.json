@@ -15,6 +15,7 @@
     "@clerk/clerk-react": "^4.17.0",
     "@stripe/stripe-js": "^1.54.1",
     "@tabler/icons": "^2.25.0",
+    "@tanstack/react-query": "^4.32.6",
     "@testing-library/react": "^14.0.0",
     "@types/humps": "^2.0.2",
     "@types/react-katex": "^3.0.0",

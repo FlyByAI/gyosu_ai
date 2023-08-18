@@ -41,11 +41,9 @@ const ProblemManager: React.FC<ProblemManagerProps> = ({ setChat, chunkArray, pr
         // updateProblem(index, { ...problem, text: event.target.value });
     }
 
-    console.log(chunkArray)
     return (
         <div>
             {chunkArray?.map((chunk, index) => {
-                console.log(chunk)
                 return (
                     <MathProblem
                         key={index}
