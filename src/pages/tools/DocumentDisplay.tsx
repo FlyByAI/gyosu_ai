@@ -13,7 +13,7 @@ import ProblemManager from '../../components/math/ProblemManager';
 
 const DocumentDisplay: React.FC = () => {
     const { id } = useParams();
-    const { getDocument, isLoading, error, document } = useGetDocument(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/document`);
+    const { getDocument, isLoading, error, document } = useGetDocument(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/school_document`);
 
     const [chat, setChat] = useState<string>('');
 
@@ -41,14 +41,19 @@ const DocumentDisplay: React.FC = () => {
         <div className='flex'>
             <DocumentShelf />
             <div className="w-5/6">
-                <h1>{document.title}</h1>
+                <h1 className="text-white">{Object.entries(document).map(([key, value]) => {
+                    return (<div>
+                        {key}:
+                        {value}
+                    </div>)
+                })}</h1>
                 <ProblemManager
                     chunkArray={document.content}
                     setChat={setChat}
                     problemData={{} as ProblemData}
                 />
                 {document && document?.content?.map((chunk, index) => (
-                    <ChunkComponent key={index} content={chunk} />
+                    <ChunkComponent key={index} chunk={chunk} />
                 ))}
             </div>
         </div>

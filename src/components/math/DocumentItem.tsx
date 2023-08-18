@@ -23,7 +23,6 @@ const DocumentItem: React.FC<DocumentItemProps> = ({ document, onDropChunk }) =>
     const handleClick = () => {
         navigate(`/math-app/document/${document.id}`);
     };
-    console.log(document)
 
     return (
         <li ref={dropRef} key={document.id} className="bg-gray-700 text-white h-16 p-2 rounded-md overflow-hidden relative" onClick={handleClick}>

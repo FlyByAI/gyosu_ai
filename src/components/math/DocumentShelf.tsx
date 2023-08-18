@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PlusIcon from '../../svg/PlusIcon';
-import { Document, Chunk } from '../../interfaces';
+import { Document, Chunk, Problem, Instruction, CHUNK_TYPE } from '../../interfaces';
 import DocumentItem from './DocumentItem';
 import useGetDocuments from '../../hooks/tools/math/useGetDocuments';
 import { notSecretConstants } from '../../constants/notSecretConstants';
@@ -43,17 +43,32 @@ const DocumentShelf: React.FC = () => {
         getDocuments();
     };
 
-    const handleDropChunk = async (documentId: number, chunk: Chunk) => {
+    const handleDropNode = async (documentId: number, node: Chunk | Problem | Instruction) => {
         const documentToUpdate = documents?.find((doc) => doc.id === documentId);
         if (!documentToUpdate) return;
 
         console.log(documents)
         console.log(documentToUpdate)
 
+        let contentItem;
+
+        switch (node.type) {
+            case "chunk":
+                contentItem = node;
+                break;
+            case "instruction":
+                contentItem = { type: CHUNK_TYPE, content: [node as Instruction] };
+                break;
+            case "problem":
+                contentItem = { type: CHUNK_TYPE, content: [node as Problem] };
+                break;
+            default:
+                return; // You might want to handle this case specifically
+        }
 
         const updatedDocument: Document = {
             ...documentToUpdate,
-            content: [...documentToUpdate.content, chunk],
+            content: [...documentToUpdate.content, contentItem],
         };
 
         await updateDocument({ document: updatedDocument });
@@ -74,7 +89,7 @@ const DocumentShelf: React.FC = () => {
             </div>
             <ul className="space-y-2">
                 {documents && documents.map((document, index) => (
-                    <DocumentItem key={document.id} document={document} onDropChunk={handleDropChunk} />
+                    <DocumentItem key={document.id} document={document} onDropChunk={handleDropNode} />
                 ))}
             </ul>
         </div>

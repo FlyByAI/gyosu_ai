@@ -86,6 +86,10 @@ export interface Section {
 
 // new interfaces for the new document format
 
+export const CHUNK_TYPE = "chunk" as const; // so that typescript doesn't complain about type string not being type "chunk"
+export const INSTRUCTION_TYPE = "instruction" as const;
+export const PROBLEM_TYPE = "problem" as const;
+
 export interface Document {
     id?: number;
     title: string;

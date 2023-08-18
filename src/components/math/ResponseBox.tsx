@@ -38,7 +38,7 @@ const ResponseBox: React.FC<ResponseBoxProps> = ({ value, handleChange, classNam
                 placeholder="Problems appear here"
             />
                 :
-                <ChunkComponent content={value} />}
+                <ChunkComponent chunk={value} />}
             {showChat && <AIChatSmall className={""} problemIndex={problemIndex} markdown={value.toString()} problemData={data} updateProblem={updateProblem} />}
         </>)
 };
