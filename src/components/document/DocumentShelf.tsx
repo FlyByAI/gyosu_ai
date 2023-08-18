@@ -44,8 +44,12 @@ const DocumentShelf: React.FC = () => {
     };
 
     const handleDropNode = async (documentId: number, node: Chunk | Problem | Instruction) => {
+        console.log("handleDropNode")
         const documentToUpdate = documents?.find((doc) => doc.id === documentId);
-        if (!documentToUpdate) return;
+        if (!documentToUpdate) {
+            console.log("Document not found");
+            return;
+        }
 
         console.log(documents)
         console.log(documentToUpdate)

@@ -1,7 +1,7 @@
 import React from 'react';
 import 'katex/dist/katex.min.css';
 import KaTeX from 'katex';
-import { Chunk, DocumentAST, Instruction, Problem } from '../interfaces';
+import { CHUNK_DRAG_TYPE, CHUNK_TYPE, Chunk, DocumentAST, INSTRUCTION_DRAG_TYPE, INSTRUCTION_TYPE, Instruction, PROBLEM_DRAG_TYPE, PROBLEM_TYPE, Problem } from '../interfaces';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
@@ -29,8 +29,8 @@ interface ChunkProps {
 
 export const ChunkComponent: React.FC<ChunkProps> = ({ chunk }) => {
     const [, ref] = useDrag({
-        type: 'CHUNK',
-        item: { type: 'CHUNK', chunk },
+        type: CHUNK_DRAG_TYPE,
+        item: { type: CHUNK_TYPE, chunk },
     });
 
     return (
@@ -63,8 +63,8 @@ interface InstructionProps {
 
 const InstructionComponent: React.FC<InstructionProps> = ({ instruction }) => {
     const [, ref] = useDrag({
-        type: 'INSTRUCTION',
-        item: { type: 'INSTRUCTION', instruction },
+        type: INSTRUCTION_DRAG_TYPE,
+        item: { type: INSTRUCTION_TYPE, instruction },
     });
 
     return (
@@ -111,8 +111,8 @@ interface ProblemProps {
 
 const ProblemComponent: React.FC<ProblemProps> = ({ problem }) => {
     const [, ref] = useDrag({
-        type: 'PROBLEM',
-        item: { type: 'PROBLEM', problem },
+        type: PROBLEM_DRAG_TYPE,
+        item: { type: PROBLEM_TYPE, problem },
     });
 
     return (

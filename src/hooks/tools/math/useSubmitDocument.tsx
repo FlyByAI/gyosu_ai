@@ -1,8 +1,8 @@
+import { useQueryClient, useMutation } from '@tanstack/react-query';
 import { useClerk } from '@clerk/clerk-react';
-import { useState } from 'react';
-import { MathFormData } from './useSubmitMathForm';
 import humps from 'humps';
 import { Document } from '../../../interfaces';
+import { MathFormData } from './useSubmitMathForm';
 
 interface DocumentData {
     document: Document;
@@ -11,26 +11,19 @@ interface DocumentData {
 
 const useSubmitDocument = (endpoint: string) => {
     const { session } = useClerk();
-    const [isLoading, setLoading] = useState<boolean>(false);
-    const [error, setError] = useState<string | null>(null);
-    const [data, setData] = useState<any | null>(null);
+    const queryClient = useQueryClient();
 
-    const submitDocument = async (documentData: DocumentData) => {
-
-        setLoading(true);
-        setError(null);
-        try {
-            const token = session ? await session.getToken() : "none";
-
-            const payload = humps.decamelizeKeys({ document: documentData.document, ...documentData.formData })
+    const submitDocumentMutation = useMutation<any, Error, DocumentData>(
+        async (documentData: DocumentData) => {
+            const token = session ? await session.getToken() : 'none';
+            const payload = humps.decamelizeKeys({ document: documentData.document, ...documentData.formData });
             const response = await fetch(endpoint, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': token ? `Bearer ${token}` : '',
                 },
-                body: JSON.stringify(payload)
-
+                body: JSON.stringify(payload),
             });
 
             if (!response.ok) {
@@ -38,22 +31,19 @@ const useSubmitDocument = (endpoint: string) => {
             }
 
             const responseData = await response.json();
-
-            setData(humps.camelizeKeys(responseData) as MathFormData);
-
-
-            setLoading(false);
-        } catch (err: any) {
-            setError(err.message);
-            setLoading(false);
+            return humps.camelizeKeys(responseData) as MathFormData;
+        },
+        {
+            onSuccess: () => {
+                // Invalidate 'documents' query when submitting a new document
+                queryClient.invalidateQueries(['documents']);
+            },
         }
-    };
+    );
 
-    const updateDocument = async (documentData: DocumentData) => {
-        setLoading(true);
-        setError(null);
-        try {
-            const token = session ? await session.getToken() : "none";
+    const updateDocumentMutation = useMutation<any, Error, DocumentData>(
+        async (documentData: DocumentData) => {
+            const token = session ? await session.getToken() : 'none';
             const payload = humps.decamelizeKeys({ document: documentData.document, ...documentData.formData });
             const response = await fetch(`${endpoint}${documentData.document.id}/`, {
                 method: 'PATCH',
@@ -61,7 +51,7 @@ const useSubmitDocument = (endpoint: string) => {
                     'Content-Type': 'application/json',
                     'Authorization': token ? `Bearer ${token}` : '',
                 },
-                body: JSON.stringify(payload)
+                body: JSON.stringify(payload),
             });
 
             if (!response.ok) {
@@ -69,16 +59,27 @@ const useSubmitDocument = (endpoint: string) => {
             }
 
             const responseData = await response.json();
-            setData(humps.camelizeKeys(responseData) as MathFormData);
-            setLoading(false);
-        } catch (err: any) {
-            setError(err.message);
-            setLoading(false);
+            return humps.camelizeKeys(responseData) as MathFormData;
+        },
+        {
+            onSuccess: (_, context) => {
+                // Invalidate 'document' query when updating a document
+                // Assuming that context contains the documentData
+                if (context) {
+                    queryClient.invalidateQueries(['document', context.document.id]);
+                }
+            },
         }
+    );
+
+
+    return {
+        submitDocument: submitDocumentMutation.mutate,
+        updateDocument: updateDocumentMutation.mutate,
+        isLoading: submitDocumentMutation.isLoading || updateDocumentMutation.isLoading,
+        error: submitDocumentMutation.error || updateDocumentMutation.error,
+        data: submitDocumentMutation.data || updateDocumentMutation.data,
     };
-
-
-    return { submitDocument, updateDocument, isLoading, error, data };
 };
 
 export default useSubmitDocument;

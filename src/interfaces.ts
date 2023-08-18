@@ -90,6 +90,11 @@ export const CHUNK_TYPE = "chunk" as const; // so that typescript doesn't compla
 export const INSTRUCTION_TYPE = "instruction" as const;
 export const PROBLEM_TYPE = "problem" as const;
 
+//
+export const CHUNK_DRAG_TYPE = "MATH_CHUNK" as const; // so that typescript doesn't complain about type string not being type "chunk"
+export const INSTRUCTION_DRAG_TYPE = "MATH_INSTRUCTION" as const;
+export const PROBLEM_DRAG_TYPE = "MATH_PROBLEM" as const;
+
 export interface Document {
     id?: number;
     title: string;
