@@ -26,13 +26,13 @@ const DocumentItem: React.FC<DocumentItemProps> = ({ document, onDropChunk }) =>
 
     return (
         <li ref={dropRef} key={document.id} className="bg-gray-700 text-white h-16 p-2 rounded-md overflow-hidden relative" onClick={handleClick}>
-            <div
-                className="absolute"
+            {document && document.problemChunks && <div
+                className="absolute text-sm"
                 style={{ left: 0 }}
             >
                 {document.title}
-                {document.content?.length > 0 && " content count " + document.content.length}
-            </div>
+                {document.problemChunks?.length > 0 && " content count " + document.problemChunks.length}
+            </div>}
         </li>
     );
 };

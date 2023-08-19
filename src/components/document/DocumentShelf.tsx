@@ -35,7 +35,7 @@ const DocumentShelf: React.FC = () => {
             updated_at: new Date().toISOString(),
             section: '',
             chapter: '',
-            content: [] as Chunk[],
+            problemChunks: [] as Chunk[],
         };
 
         await submitDocument({ document: newDocument });
@@ -72,7 +72,7 @@ const DocumentShelf: React.FC = () => {
 
         const updatedDocument: Document = {
             ...documentToUpdate,
-            content: [...documentToUpdate.content, contentItem],
+            problemChunks: [...documentToUpdate.problemChunks, contentItem],
         };
 
         await updateDocument({ document: updatedDocument });

@@ -1,7 +1,7 @@
 import React from 'react';
 import 'katex/dist/katex.min.css';
 import KaTeX from 'katex';
-import { CHUNK_DRAG_TYPE, CHUNK_TYPE, Chunk, DocumentAST, INSTRUCTION_DRAG_TYPE, INSTRUCTION_TYPE, Instruction, PROBLEM_DRAG_TYPE, PROBLEM_TYPE, Problem } from '../interfaces';
+import { CHUNK_DRAG_TYPE, CHUNK_TYPE, Chunk, Document, INSTRUCTION_DRAG_TYPE, INSTRUCTION_TYPE, Instruction, PROBLEM_DRAG_TYPE, PROBLEM_TYPE, Problem } from '../interfaces';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
@@ -10,13 +10,13 @@ import { useDrag } from 'react-dnd';
 
 
 interface DocumentASTProps {
-    document: DocumentAST;
+    document: Document;
     edit?: boolean;
 }
 
 export const DocumentComponent: React.FC<DocumentASTProps> = ({ document }) => (
     <div>
-        {document.content.map((chunk, index) => (
+        {document.problemChunks.map((chunk, index) => (
             <ChunkComponent key={index} chunk={chunk} />
         ))}
     </div>
@@ -67,6 +67,16 @@ const InstructionComponent: React.FC<InstructionProps> = ({ instruction }) => {
         item: { type: INSTRUCTION_TYPE, instruction },
     });
 
+    function processLatexString(latex_string: string): string {
+        const result = latex_string.replace(/^\\\(/, '')
+            .replace(/\\\)$/g, '')
+            .replace(/^\\\\$/gm, '')
+            .replace(/\\\\\n/g, '')
+            .replace(/\n/g, '')
+            .trim();
+        return result;
+    }
+
     return (
         <div ref={ref} className="flex">
             {instruction.content.map((item, index) => {
@@ -85,7 +95,7 @@ const InstructionComponent: React.FC<InstructionProps> = ({ instruction }) => {
                             remarkPlugins={[remarkGfm, remarkMath]}
                             rehypePlugins={[rehypeKatex]}
                         >
-                            {`$$${item.value}$$`}
+                            {`$$${processLatexString(item.value)}$$`}
                         </ReactMarkdown>;
                     case 'table':
                         // You can render tables here, or add a custom Table component
@@ -115,9 +125,22 @@ const ProblemComponent: React.FC<ProblemProps> = ({ problem }) => {
         item: { type: PROBLEM_TYPE, problem },
     });
 
+
+
+    function processLatexString(latex_string: string): string {
+        const result = latex_string.replace(/^\\\(/, '')
+            .replace(/\\\)$/g, '')
+            .replace(/^\\\\$/gm, '')
+            .replace(/\\\\\n/g, '')
+            .replace(/\n/g, '')
+            .trim();
+        return result;
+    }
+
     return (
         <div ref={ref} className="flex">
             {problem.content.map((item, index) => {
+
                 switch (item.type) {
                     case 'text':
                         return <span className="bg-yellow-200" key={index}>{item.value}</span>;
@@ -127,7 +150,7 @@ const ProblemComponent: React.FC<ProblemProps> = ({ problem }) => {
                             remarkPlugins={[remarkGfm, remarkMath]}
                             rehypePlugins={[rehypeKatex]}
                         >
-                            {`$$${item.value}$$`}
+                            {`$$${processLatexString(item.value)}$$`}
                         </ReactMarkdown>;
                     case 'image':
                         // You can render images here, or add a custom Image component

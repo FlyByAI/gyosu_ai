@@ -41,11 +41,11 @@ const DocumentDisplay: React.FC = () => {
                     </div>)
                 })}</h1>
                 <ProblemManager
-                    chunkArray={document.content}
+                    chunkArray={document.problemChunks}
                     setChat={setChat}
                     problemData={{} as ProblemData}
                 />
-                {document && document?.content?.map((chunk, index) => (
+                {document && document?.problemChunks?.map((chunk, index) => (
                     <ChunkComponent key={index} chunk={chunk} />
                 ))}
             </div>

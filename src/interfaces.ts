@@ -108,7 +108,7 @@ export interface Document {
     section: string;
     chapter: string;
     documentType?: string;
-    content: Chunk[];
+    problemChunks?: Chunk[];
 }
 export interface DocumentAST {
     type: "document";
