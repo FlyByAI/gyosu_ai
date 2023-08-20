@@ -7,22 +7,12 @@ import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 import { useDrag, useDrop } from 'react-dnd';
+import ToolBadge from './math/ToolBadge';
+import ToolWrapper from './math/ToolWrapper';
 
 
-const borderHoverClasses = " border-gray-100 border-dashed hover:border-2 hover:border-purple-dashed p-1 m-1"
+const borderHoverClasses = " hover:border-gray-100 hover:border-dashed hover:border-2ed p-1 m-1"
 const groupHoverClasses = " group-hover:border-2 group-hover:border-gray-200 group-hover:border-dashed"
-interface DocumentASTProps {
-    document: Document;
-    edit?: boolean;
-}
-
-export const DocumentComponent: React.FC<DocumentASTProps> = ({ document }) => (
-    <div>
-        {document.problemChunks?.map((chunk, index) => (
-            <ChunkComponent key={index} chunk={chunk} />
-        ))}
-    </div>
-);
 
 interface ChunkProps {
     chunk: Chunk;
@@ -39,7 +29,12 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk }) => {
     const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
     const [isHovered, setIsHovered] = useState(false);
 
-
+    const onDelete = (index: number) => {
+        const updatedContent = [...content];
+        updatedContent.splice(index, 1);
+        setContent(updatedContent);
+        setSelectedIndex(null); // Reset selected index after deletion
+    };
 
     const [, drop] = useDrop({
         accept: [INSTRUCTION_DRAG_TYPE, PROBLEM_DRAG_TYPE],
@@ -48,15 +43,11 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk }) => {
         },
         drop: (item: Instruction | Problem) => {
             if (item.type === INSTRUCTION_TYPE || item.type === PROBLEM_TYPE) {
-                // Add the dragged instruction to the chunk's content
-                console.log(item)
                 setContent([...content, item]);
-            }
-            else {
-                console.log("no match")
             }
         },
     });
+
 
     return (
         <div
@@ -65,21 +56,30 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk }) => {
             onMouseLeave={() => isHovered && setIsHovered(false)}
             className={"text-gray-600 p-6 m-2 " + (isHovered ? borderHoverClasses : '')}
         >
-            {content.length}
             {content.map((item, index) => {
-                switch (item.type) {
-                    case 'instruction':
-                        return <InstructionComponent key={`${item.type}-${index}-${content.length}`} instruction={item} onInstructionHover={setIsHovered} />;
-                    case 'problem':
-                        return <ProblemComponent key={`${item.type}-${index}-${content.length}`} problem={item} onInstructionHover={setIsHovered} />;
-                    default:
-                        console.log("NO MATCH", item)
-                        return null;
-                }
+                return (
+                    <ToolWrapper onDelete={() => onDelete(index)} key={`${item.type}-${index}-${content.length}`}>
+                        <div onClick={() => setSelectedIndex(index === selectedIndex ? null : index)}>
+                            {(() => {
+                                switch (item.type) {
+                                    case 'instruction':
+                                        return <InstructionComponent instruction={item} onInstructionHover={setIsHovered} />;
+                                    case 'problem':
+                                        return <ProblemComponent problem={item} onInstructionHover={setIsHovered} />;
+                                    default:
+                                        console.log("NO MATCH", item);
+                                        return null;
+                                }
+                            })()}
+                        </div>
+                    </ToolWrapper>
+                );
             })}
         </div>
     );
+
 };
+
 
 
 interface InstructionProps {
@@ -122,7 +122,7 @@ const InstructionComponent: React.FC<InstructionProps> = ({ instruction, onInstr
                                 case 'text':
                                     return (
                                         <ReactMarkdown
-                                            className={'text-blue-300' + borderHoverClasses + groupHoverClasses}
+                                            className={'text-blue-300 border-2 border-transparent' + borderHoverClasses + groupHoverClasses}
                                             remarkPlugins={[remarkGfm, remarkMath]}
                                             rehypePlugins={[rehypeKatex]}
                                         >
@@ -132,7 +132,7 @@ const InstructionComponent: React.FC<InstructionProps> = ({ instruction, onInstr
                                 case 'math':
                                     return (
                                         <ReactMarkdown
-                                            className={'text-yellow-200' + borderHoverClasses + groupHoverClasses}
+                                            className={'text-yellow-200 border-2 border-transparent' + borderHoverClasses + groupHoverClasses}
                                             remarkPlugins={[remarkGfm, remarkMath]}
                                             rehypePlugins={[rehypeKatex]}
                                         >
@@ -143,7 +143,6 @@ const InstructionComponent: React.FC<InstructionProps> = ({ instruction, onInstr
                                     // You can render tables here, or add a custom Table component
                                     return <span key={index}>Table content here</span>;
                                 default:
-                                    console.log("NO MATCH", item)
                                     return null;
                             }
                         })()}
@@ -197,7 +196,7 @@ const ProblemComponent: React.FC<ProblemProps> = ({ problem, onInstructionHover 
                                 case 'text':
                                     return (
                                         <ReactMarkdown
-                                            className={'text-gray-200' + borderHoverClasses + groupHoverClasses}
+                                            className={'text-gray-200 border-2 border-transparent' + borderHoverClasses + groupHoverClasses}
                                             remarkPlugins={[remarkGfm, remarkMath]}
                                             rehypePlugins={[rehypeKatex]}
                                         >
@@ -207,7 +206,7 @@ const ProblemComponent: React.FC<ProblemProps> = ({ problem, onInstructionHover 
                                 case 'math':
                                     return (
                                         <ReactMarkdown
-                                            className={'text-purple-300 border-gray-100 border-dashed hover:border-2 hover:border-purple-dashed' + borderHoverClasses + groupHoverClasses}
+                                            className={'text-purple-300 border-gray-100 border-dashed hover:border-2 border-2 border-transparent' + borderHoverClasses + groupHoverClasses}
                                             remarkPlugins={[remarkGfm, remarkMath]}
                                             rehypePlugins={[rehypeKatex]}
                                         >

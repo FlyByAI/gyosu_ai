@@ -1,20 +1,20 @@
 import { useEffect, useRef, useState } from "react";
 import SendIcon from "../../svg/SendIcon";
-import useSubmitTextWithMarkdown from "../../hooks/tools/math/useSubmitTextWithMarkdown";
 import { notSecretConstants } from "../../constants/notSecretConstants";
 import { Chunk, ProblemData } from "../../interfaces";
 import { useLanguage } from "../../contexts/useLanguage";
 import ChangeProblemModal from "./ChangeProblemModal";
+import useSubmitTextWithChunk from "../../hooks/tools/math/useSubmitTextWithChunk";
 
 interface ResponseBoxProps {
     className: string;
     problemIndex: number;
-    markdown: string;
+    chunk: Chunk;
     updateProblem?: (index: number, newProblem: Chunk) => void
     problemData: ProblemData;
 }
 
-const AIChatSmall: React.FC<ResponseBoxProps> = ({ className, problemIndex, markdown, updateProblem, problemData }) => {
+const AIChatSmall: React.FC<ResponseBoxProps> = ({ className, problemIndex, chunk, updateProblem, problemData }) => {
 
     const [smallChatText, setSmallChatText] = useState('');
     const formRef = useRef<HTMLFormElement>(null);
@@ -32,7 +32,7 @@ const AIChatSmall: React.FC<ResponseBoxProps> = ({ className, problemIndex, mark
         // setSmallChatText('');
     };
 
-    const { error, isLoading, submitTextWithMarkdown, data } = useSubmitTextWithMarkdown(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/chat/problem/`)
+    const { error, isLoading, submitTextWithChunk, data } = useSubmitTextWithChunk(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/chat/problem/`)
 
     useEffect(() => {
         if (data) {
@@ -43,9 +43,9 @@ const AIChatSmall: React.FC<ResponseBoxProps> = ({ className, problemIndex, mark
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        if (typeof smallChatText === 'string' && markdown) {
+        if (typeof smallChatText === 'string' && chunk) {
             setModalOpen(true);
-            await submitTextWithMarkdown(smallChatText, markdown, problemData, options);
+            await submitTextWithChunk(smallChatText, chunk, problemData, options);
         }
     };
 

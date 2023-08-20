@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { SignedIn, SignedOut, UserButton, SignInButton } from '@clerk/clerk-react';
 import { useDarkMode } from '../../hooks/useDarkMode';
@@ -14,8 +14,12 @@ const DocumentToolbarNav: React.FC = () => {
     const toolbarHeight = "70";
 
     const { id } = useParams();
-    const { isLoading, error, document } = useGetDocument(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/school_document`, Number(id));
+    const { document } = useGetDocument(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/school_document`, Number(id));
 
+
+    useEffect(() => {
+        console.log(id, document)
+    })
     return (
         <>
             <div style={{ height: `${toolbarHeight}px` }}></div> {/* Placeholder */}

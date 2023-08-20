@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import ChatBox from './math/ChatBox';
 import { notSecretConstants } from '../constants/notSecretConstants';
-import useSubmitTextWithMarkdown from '../hooks/tools/math/useSubmitTextWithMarkdown';
+import useSubmitTextWithMarkdown from '../hooks/tools/math/useSubmitTextWithChunk';
 
 interface AIChatProps {
     markdown?: string;

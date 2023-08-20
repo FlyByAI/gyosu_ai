@@ -1,23 +1,23 @@
 import { useClerk } from '@clerk/clerk-react';
 import humps from 'humps';
 import { useState } from 'react';
-import { ProblemData } from '../../../interfaces';
+import { Chunk, ProblemData } from '../../../interfaces';
 import { useLanguage } from '../../../contexts/useLanguage';
 
-const useSubmitTextWithMarkdown = (endpoint: string) => {
+const useSubmitTextWithChunk = (endpoint: string) => {
     const { session } = useClerk();
     const [isLoading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
     const [data, setData] = useState<any | null>(null);
 
-    const submitTextWithMarkdown = async (userInput: string, problem: string, data: ProblemData, options = { language: "en", topic: "none" }) => {
+    const submitTextWithChunk = async (userInput: string, chunk: Chunk, data: ProblemData, options = { language: "en", topic: "none" }) => {
         setLoading(true);
         setError(null);
 
         try {
             const token = session ? await session.getToken() : "none";
 
-            const body = humps.decamelizeKeys({ ...options, userInput, problem, ...data, chapter: data.section.split(".")[0], section: data.section.split(".")[1] });
+            const body = humps.decamelizeKeys({ ...options, userInput, chunk, ...data, chapter: data.section.split(".")[0], section: data.section.split(".")[1] });
 
             const response = await fetch(endpoint, {
                 method: 'POST',
@@ -25,7 +25,7 @@ const useSubmitTextWithMarkdown = (endpoint: string) => {
                     'Content-Type': 'application/json',
                     'Authorization': token ? `Bearer ${token}` : '',
                 },
-                body: JSON.stringify(body)  // Add markdown variable here
+                body: JSON.stringify(body)  // Add Chunk variable here
 
             });
 
@@ -44,7 +44,7 @@ const useSubmitTextWithMarkdown = (endpoint: string) => {
         }
     };
 
-    return { submitTextWithMarkdown, isLoading, error, data };
+    return { submitTextWithChunk, isLoading, error, data };
 };
 
-export default useSubmitTextWithMarkdown;
+export default useSubmitTextWithChunk;
