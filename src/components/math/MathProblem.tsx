@@ -32,25 +32,24 @@ const MathProblem: React.FC<MathProblemProps> = ({ updateProblem, index, problem
     return (
         <div ref={ref} className='flex justify-center'>
             {/* first section */}
-            <div className={` flex flex-col p-4 w-full bg-white dark:bg-gray-900 shadow-md rounded-md mb-2 pe-0  max-w-4xl`}>
+            <div className={` m-4 flex flex-col w-full bg-white dark:bg-gray-900 shadow-md rounded-md mb-2 pe-0  max-w-4xl`}>
                 <div className="flex space-y-4 ">
                     <div className="flex flex-col w-5/6 space-y-4">
-                        <div className="relative" key={index}>
-                            <ResponseBox
-                                data={problemData}
-                                problemIndex={index}
-                                edit={edit}
-                                showChat={true}
-                                value={problem}
-                                handleChange={handleChange}
-                                className="p-2 bg-gray-100 dark:bg-gray-700 dark:text-white rounded-md"
-                                updateProblem={updateProblem}
-                            />
-                            <div className='absolute top-3 right-2 flex bg-black bg-opacity-50 text-white rounded p-1'>
-                                <button className='block text-white' onClick={() => setEdit(!edit)}>
-                                    {!edit ? <EditIcon /> : <ViewIcon />}
-                                </button>
-                            </div>
+                        <ResponseBox
+                            key={index}
+                            data={problemData}
+                            problemIndex={index}
+                            edit={edit}
+                            showChat={true}
+                            value={problem}
+                            handleChange={handleChange}
+                            className=" bg-gray-100 dark:bg-gray-700 dark:text-white rounded-md"
+                            updateProblem={updateProblem}
+                        />
+                        <div className='absolute top-3 right-2 flex bg-black bg-opacity-50 text-white rounded p-1'>
+                            <button className='block text-white' onClick={() => setEdit(!edit)}>
+                                {!edit ? <EditIcon /> : <ViewIcon />}
+                            </button>
                         </div>
                     </div>
                     <div className="flex flex-grow flex-col w-1/6 p-4 space-y-4 justify-center items-center">
@@ -84,19 +83,17 @@ const MathProblem: React.FC<MathProblemProps> = ({ updateProblem, index, problem
                 </div>
             </div>
             <div className="ms-4 hidden flex flex-col px-6 py-4 bg-white dark:bg-gray-900 dark:text-white shadow-md rounded-md space-x-4 mb-2">
-                <div className="relative" key={index}>
-                    <ResponseBox
-                        problemIndex={index}
-                        data={problemData}
-                        edit={false}
-                        showChat={false}
-                        value={problem}
-                        handleChange={handleChange}
-                        className="p-2 bg-gray-100 dark:bg-gray-700 dark:text-white rounded-md"
-                        updateProblem={updateProblem}
-                    />
-
-                </div>
+                <ResponseBox
+                    key={index}
+                    problemIndex={index}
+                    data={problemData}
+                    edit={false}
+                    showChat={false}
+                    value={problem}
+                    handleChange={handleChange}
+                    className="relative bg-gray-100 dark:bg-gray-700 dark:text-white rounded-md"
+                    updateProblem={updateProblem}
+                />
             </div>
         </div>
     )

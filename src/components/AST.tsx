@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import 'katex/dist/katex.min.css';
 import KaTeX from 'katex';
 import { CHUNK_DRAG_TYPE, CHUNK_TYPE, Chunk, Document, INSTRUCTION_DRAG_TYPE, INSTRUCTION_TYPE, Instruction, PROBLEM_DRAG_TYPE, PROBLEM_TYPE, Problem } from '../interfaces';
@@ -16,7 +16,7 @@ interface DocumentASTProps {
 
 export const DocumentComponent: React.FC<DocumentASTProps> = ({ document }) => (
     <div>
-        {document.problemChunks.map((chunk, index) => (
+        {document.problemChunks?.map((chunk, index) => (
             <ChunkComponent key={index} chunk={chunk} />
         ))}
     </div>
@@ -28,20 +28,22 @@ interface ChunkProps {
 }
 
 export const ChunkComponent: React.FC<ChunkProps> = ({ chunk }) => {
-    const [, ref] = useDrag({
-        type: CHUNK_DRAG_TYPE,
-        item: { type: CHUNK_TYPE, chunk },
-    });
+    const [, ref] = useDrag({ type: CHUNK_DRAG_TYPE, item: { type: CHUNK_TYPE, chunk } });
+    const [isHovered, setIsHovered] = useState(false);
 
     return (
-        <div ref={ref} className="bg-gray-600 p-2">
+        <div
+            ref={ref}
+            onMouseEnter={() => !isHovered && setIsHovered(true)}
+            onMouseLeave={() => isHovered && setIsHovered(false)}
+            className={"text-gray-600 p-6 m-2 " + (isHovered ? borderHoverClasses : '')}
+        >
             {chunk.content.map((item, index) => {
                 switch (item.type) {
                     case 'instruction':
-                        return <InstructionComponent key={index} instruction={item} />;
+                        return <InstructionComponent key={index} instruction={item} onInstructionHover={setIsHovered} />;
                     case 'problem':
-                        return <ProblemComponent key={index} problem={item} />;
-                    // Add other cases here if you have other types
+                        return <ProblemComponent key={index} problem={item} onInstructionHover={setIsHovered} />;
                     default:
                         return null;
                 }
@@ -50,7 +52,8 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk }) => {
     );
 };
 
-
+const borderHoverClasses = " border-gray-100 border-dashed hover:border-2 hover:border-purple-dashed p-1 m-1"
+const groupHoverClasses = " group-hover:border-2 group-hover:border-gray-200 group-hover:border-dashed"
 interface InstructionProps {
     instruction: Instruction;
     edit?: boolean;
@@ -59,9 +62,10 @@ interface InstructionProps {
 interface InstructionProps {
     instruction: Instruction;
     edit?: boolean;
+    onInstructionHover: (hovered: boolean) => void; // Function to change the parent's hover state
 }
 
-const InstructionComponent: React.FC<InstructionProps> = ({ instruction }) => {
+const InstructionComponent: React.FC<InstructionProps> = ({ instruction, onInstructionHover }) => {
     const [, ref] = useDrag({
         type: INSTRUCTION_DRAG_TYPE,
         item: { type: INSTRUCTION_TYPE, instruction },
@@ -78,33 +82,46 @@ const InstructionComponent: React.FC<InstructionProps> = ({ instruction }) => {
     }
 
     return (
-        <div ref={ref} className="flex">
-            {instruction.content.map((item, index) => {
-                switch (item.type) {
-                    case 'text':
-                        return <ReactMarkdown
-                            className='bg-purple-100'
-                            remarkPlugins={[remarkGfm, remarkMath]}
-                            rehypePlugins={[rehypeKatex]}
-                        >
-                            {`${item.value}`}
-                        </ReactMarkdown>;
-                    case 'math':
-                        return <ReactMarkdown
-                            className='bg-purple-100'
-                            remarkPlugins={[remarkGfm, remarkMath]}
-                            rehypePlugins={[rehypeKatex]}
-                        >
-                            {`$$${processLatexString(item.value)}$$`}
-                        </ReactMarkdown>;
-                    case 'table':
-                        // You can render tables here, or add a custom Table component
-                        return <span key={index}>Table content here</span>;
-                    default:
-                        return null;
-                }
-            })}
-        </div>
+        <div ref={ref} className="flex group"
+            onMouseEnter={() => onInstructionHover(false)} // Turn off parent's hover state
+            onMouseLeave={() => onInstructionHover(true)} // Turn on parent's hover state
+        >
+            {
+                instruction.content.map((item, index) => (
+                    <div className="me-2" key={index}>
+                        {(() => {
+                            switch (item.type) {
+                                case 'text':
+                                    return (
+                                        <ReactMarkdown
+                                            className={'text-blue-300' + borderHoverClasses + groupHoverClasses}
+                                            remarkPlugins={[remarkGfm, remarkMath]}
+                                            rehypePlugins={[rehypeKatex]}
+                                        >
+                                            {`${item.value}`}
+                                        </ReactMarkdown>
+                                    );
+                                case 'math':
+                                    return (
+                                        <ReactMarkdown
+                                            className={'text-yellow-200' + borderHoverClasses + groupHoverClasses}
+                                            remarkPlugins={[remarkGfm, remarkMath]}
+                                            rehypePlugins={[rehypeKatex]}
+                                        >
+                                            {`$$${processLatexString(item.value)}$$`}
+                                        </ReactMarkdown>
+                                    );
+                                case 'table':
+                                    // You can render tables here, or add a custom Table component
+                                    return <span key={index}>Table content here</span>;
+                                default:
+                                    return null;
+                            }
+                        })()}
+                    </div>
+                ))
+            }
+        </div >
     );
 };
 
@@ -117,9 +134,10 @@ interface ProblemProps {
 interface ProblemProps {
     problem: Problem;
     edit?: boolean;
+    onInstructionHover: (hovered: boolean) => void; // Function to change the parent's hover state
 }
 
-const ProblemComponent: React.FC<ProblemProps> = ({ problem }) => {
+const ProblemComponent: React.FC<ProblemProps> = ({ problem, onInstructionHover }) => {
     const [, ref] = useDrag({
         type: PROBLEM_DRAG_TYPE,
         item: { type: PROBLEM_TYPE, problem },
@@ -138,28 +156,46 @@ const ProblemComponent: React.FC<ProblemProps> = ({ problem }) => {
     }
 
     return (
-        <div ref={ref} className="flex">
-            {problem.content.map((item, index) => {
-
-                switch (item.type) {
-                    case 'text':
-                        return <span className="bg-yellow-200" key={index}>{item.value}</span>;
-                    case 'math':
-                        return <ReactMarkdown
-                            className='bg-purple-200'
-                            remarkPlugins={[remarkGfm, remarkMath]}
-                            rehypePlugins={[rehypeKatex]}
-                        >
-                            {`$$${processLatexString(item.value)}$$`}
-                        </ReactMarkdown>;
-                    case 'image':
-                        // You can render images here, or add a custom Image component
-                        return <img key={index} src={item.value} alt="Problem content" />;
-                    default:
-                        return null;
-                }
-            })}
-        </div>
+        <div ref={ref} className="flex group"
+            onMouseEnter={() => onInstructionHover(false)} // Turn off parent's hover state
+            onMouseLeave={() => onInstructionHover(true)} // Turn on parent's hover state
+        >
+            {
+                problem.content.map((item, index) => (
+                    <div className="me-2" key={index}>
+                        {(() => {
+                            switch (item.type) {
+                                case 'text':
+                                    return (
+                                        <ReactMarkdown
+                                            className={'text-gray-200' + borderHoverClasses + groupHoverClasses}
+                                            remarkPlugins={[remarkGfm, remarkMath]}
+                                            rehypePlugins={[rehypeKatex]}
+                                        >
+                                            {`${item.value}`}
+                                        </ReactMarkdown>
+                                    );
+                                case 'math':
+                                    return (
+                                        <ReactMarkdown
+                                            className={'text-purple-300 border-gray-100 border-dashed hover:border-2 hover:border-purple-dashed' + borderHoverClasses + groupHoverClasses}
+                                            remarkPlugins={[remarkGfm, remarkMath]}
+                                            rehypePlugins={[rehypeKatex]}
+                                        >
+                                            {`$$${processLatexString(item.value)}$$`}
+                                        </ReactMarkdown>
+                                    );
+                                case 'table':
+                                    // You can render tables here, or add a custom Table component
+                                    return <span key={index}>Table content here</span>;
+                                default:
+                                    return null;
+                            }
+                        })()}
+                    </div>
+                ))
+            }
+        </div >
     );
 };
 

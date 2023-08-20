@@ -72,7 +72,7 @@ const DocumentShelf: React.FC = () => {
 
         const updatedDocument: Document = {
             ...documentToUpdate,
-            problemChunks: [...documentToUpdate.problemChunks, contentItem],
+            problemChunks: [...(documentToUpdate.problemChunks || []), contentItem],
         };
 
         await updateDocument({ document: updatedDocument });
