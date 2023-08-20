@@ -44,15 +44,13 @@ const DocumentShelf: React.FC = () => {
     };
 
     const handleDropNode = async (documentId: number, node: Chunk | Problem | Instruction) => {
-        console.log("handleDropNode")
+        console.log("handleDropNode, node:", node)
         const documentToUpdate = documents?.find((doc) => doc.id === documentId);
         if (!documentToUpdate) {
             console.log("Document not found");
             return;
         }
 
-        console.log(documents)
-        console.log(documentToUpdate)
 
         let contentItem;
 
@@ -61,10 +59,10 @@ const DocumentShelf: React.FC = () => {
                 contentItem = node;
                 break;
             case "instruction":
-                contentItem = { type: CHUNK_TYPE, content: [node as Instruction] };
+                contentItem = { type: CHUNK_TYPE, content: [node as Instruction] } as Chunk;
                 break;
             case "problem":
-                contentItem = { type: CHUNK_TYPE, content: [node as Problem] };
+                contentItem = { type: CHUNK_TYPE, content: [node as Problem] } as Chunk;
                 break;
             default:
                 return; // You might want to handle this case specifically
@@ -72,7 +70,7 @@ const DocumentShelf: React.FC = () => {
 
         const updatedDocument: Document = {
             ...documentToUpdate,
-            problemChunks: [...(documentToUpdate.problemChunks || []), contentItem],
+            problemChunks: [...(documentToUpdate.problemChunks || []), contentItem as Chunk],
         };
 
         await updateDocument({ document: updatedDocument });

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import 'katex/dist/katex.min.css';
 import KaTeX from 'katex';
 import { CHUNK_DRAG_TYPE, CHUNK_TYPE, Chunk, Document, INSTRUCTION_DRAG_TYPE, INSTRUCTION_TYPE, Instruction, PROBLEM_DRAG_TYPE, PROBLEM_TYPE, Problem } from '../interfaces';
@@ -6,9 +6,11 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
-import { useDrag } from 'react-dnd';
+import { useDrag, useDrop } from 'react-dnd';
 
 
+const borderHoverClasses = " border-gray-100 border-dashed hover:border-2 hover:border-purple-dashed p-1 m-1"
+const groupHoverClasses = " group-hover:border-2 group-hover:border-gray-200 group-hover:border-dashed"
 interface DocumentASTProps {
     document: Document;
     edit?: boolean;
@@ -28,23 +30,50 @@ interface ChunkProps {
 }
 
 export const ChunkComponent: React.FC<ChunkProps> = ({ chunk }) => {
-    const [, ref] = useDrag({ type: CHUNK_DRAG_TYPE, item: { type: CHUNK_TYPE, chunk } });
+    const [content, setContent] = useState<Chunk['content']>(chunk.content);
+    const [, ref] = useDrag({
+        type: CHUNK_DRAG_TYPE,
+        item: { type: CHUNK_TYPE, content: chunk.content } as Chunk
+    });
+
+    const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
     const [isHovered, setIsHovered] = useState(false);
+
+
+
+    const [, drop] = useDrop({
+        accept: [INSTRUCTION_DRAG_TYPE, PROBLEM_DRAG_TYPE],
+        hover: () => {
+            setIsHovered(true);
+        },
+        drop: (item: Instruction | Problem) => {
+            if (item.type === INSTRUCTION_TYPE || item.type === PROBLEM_TYPE) {
+                // Add the dragged instruction to the chunk's content
+                console.log(item)
+                setContent([...content, item]);
+            }
+            else {
+                console.log("no match")
+            }
+        },
+    });
 
     return (
         <div
-            ref={ref}
+            ref={(node) => ref(drop(node))}
             onMouseEnter={() => !isHovered && setIsHovered(true)}
             onMouseLeave={() => isHovered && setIsHovered(false)}
             className={"text-gray-600 p-6 m-2 " + (isHovered ? borderHoverClasses : '')}
         >
-            {chunk.content.map((item, index) => {
+            {content.length}
+            {content.map((item, index) => {
                 switch (item.type) {
                     case 'instruction':
-                        return <InstructionComponent key={index} instruction={item} onInstructionHover={setIsHovered} />;
+                        return <InstructionComponent key={`${item.type}-${index}-${content.length}`} instruction={item} onInstructionHover={setIsHovered} />;
                     case 'problem':
-                        return <ProblemComponent key={index} problem={item} onInstructionHover={setIsHovered} />;
+                        return <ProblemComponent key={`${item.type}-${index}-${content.length}`} problem={item} onInstructionHover={setIsHovered} />;
                     default:
+                        console.log("NO MATCH", item)
                         return null;
                 }
             })}
@@ -52,8 +81,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk }) => {
     );
 };
 
-const borderHoverClasses = " border-gray-100 border-dashed hover:border-2 hover:border-purple-dashed p-1 m-1"
-const groupHoverClasses = " group-hover:border-2 group-hover:border-gray-200 group-hover:border-dashed"
+
 interface InstructionProps {
     instruction: Instruction;
     edit?: boolean;
@@ -68,7 +96,7 @@ interface InstructionProps {
 const InstructionComponent: React.FC<InstructionProps> = ({ instruction, onInstructionHover }) => {
     const [, ref] = useDrag({
         type: INSTRUCTION_DRAG_TYPE,
-        item: { type: INSTRUCTION_TYPE, instruction },
+        item: { type: INSTRUCTION_TYPE, content: instruction.content } as Instruction,
     });
 
     function processLatexString(latex_string: string): string {
@@ -115,6 +143,7 @@ const InstructionComponent: React.FC<InstructionProps> = ({ instruction, onInstr
                                     // You can render tables here, or add a custom Table component
                                     return <span key={index}>Table content here</span>;
                                 default:
+                                    console.log("NO MATCH", item)
                                     return null;
                             }
                         })()}
@@ -140,7 +169,7 @@ interface ProblemProps {
 const ProblemComponent: React.FC<ProblemProps> = ({ problem, onInstructionHover }) => {
     const [, ref] = useDrag({
         type: PROBLEM_DRAG_TYPE,
-        item: { type: PROBLEM_TYPE, problem },
+        item: { type: PROBLEM_TYPE, content: problem.content } as Problem,
     });
 
 

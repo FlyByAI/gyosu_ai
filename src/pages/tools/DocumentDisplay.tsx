@@ -35,13 +35,20 @@ const DocumentDisplay: React.FC = () => {
             <DocumentShelf />
             <div className="w-5/6">
                 <h1 className="text-white">{Object.entries(document).map(([key, value]) => {
-                    return (<div key={key}>
-                        {key}:
-                        {value}
-                    </div>)
+                    if (typeof (value) == "object")
+                        return (
+                            <div key={key}>
+                                {key}: {value && Object.keys(value).length} entries
+                            </div>)
+                    else {
+                        return (<div key={key}>
+                            {key}{value}
+                        </div>)
+                    }
+
                 })}</h1>
                 <ProblemManager
-                    chunkArray={document.problemChunks}
+                    chunkArray={document.problemChunks ? document.problemChunks : []}
                     setChat={setChat}
                     problemData={{} as ProblemData}
                 />

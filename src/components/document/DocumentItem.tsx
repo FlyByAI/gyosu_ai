@@ -1,6 +1,6 @@
 import { MathProblemDragItem } from "./DocumentShelf";
 import { useDrop } from 'react-dnd';
-import { CHUNK_DRAG_TYPE, Chunk, Document, INSTRUCTION_DRAG_TYPE, PROBLEM_DRAG_TYPE } from '../../interfaces';
+import { CHUNK_DRAG_TYPE, CHUNK_TYPE, Chunk, Document, INSTRUCTION_DRAG_TYPE, Instruction, PROBLEM_DRAG_TYPE, Problem } from '../../interfaces';
 import { useNavigate } from 'react-router-dom';
 
 interface DocumentItemProps {
@@ -13,9 +13,19 @@ const DocumentItem: React.FC<DocumentItemProps> = ({ document, onDropChunk }) =>
 
     const [, dropRef] = useDrop({
         accept: [CHUNK_DRAG_TYPE, PROBLEM_DRAG_TYPE, INSTRUCTION_DRAG_TYPE],
-        drop: (item: MathProblemDragItem) => {
+        drop: (item: Instruction | Problem | Chunk) => {
             if (document.id) {
-                onDropChunk(document.id, item.problem);
+                // If the item is a Chunk, pass it directly to onDropChunk
+                if (item.type === CHUNK_TYPE) {
+                    onDropChunk(document.id, item);
+                } else {
+                    // If the item is an Instruction or Problem, create a Chunk and add the item to its content
+                    const newChunk: Chunk = {
+                        type: "chunk",
+                        content: [item],
+                    };
+                    onDropChunk(document.id, newChunk);
+                }
             }
         },
     });
