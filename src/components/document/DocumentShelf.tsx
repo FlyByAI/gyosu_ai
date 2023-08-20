@@ -13,7 +13,12 @@ export interface MathProblemDragItem {
     problem: Chunk; // Or the specific type you're dragging
 }
 
-const DocumentShelf: React.FC = () => {
+export interface DocumentShelfProps {
+    isExporting: boolean;
+}
+
+
+const DocumentShelf: React.FC<DocumentShelfProps> = ({ isExporting }) => {
 
     const endpoint = `${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/school_document/list/`;
     const { getDocuments, isLoading, error, documents } = useGetDocuments(endpoint);
@@ -91,7 +96,7 @@ const DocumentShelf: React.FC = () => {
             </div>
             <ul className="space-y-2">
                 {documents && documents.map((document, index) => (
-                    <DocumentItem key={document.id} document={document} onDropChunk={handleDropNode} />
+                    <DocumentItem isExporting={isExporting} key={document.id} document={document} onDropChunk={handleDropNode} />
                 ))}
             </ul>
         </div>

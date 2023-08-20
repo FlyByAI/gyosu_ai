@@ -6,9 +6,10 @@ import { useNavigate } from 'react-router-dom';
 interface DocumentItemProps {
     document: Document;
     onDropChunk: (documentId: number, node: Chunk) => void;
+    isExporting: boolean;
 }
 
-const DocumentItem: React.FC<DocumentItemProps> = ({ document, onDropChunk }) => {
+const DocumentItem: React.FC<DocumentItemProps> = ({ document, onDropChunk, isExporting }) => {
     const navigate = useNavigate();
 
     const [, dropRef] = useDrop({
@@ -31,7 +32,7 @@ const DocumentItem: React.FC<DocumentItemProps> = ({ document, onDropChunk }) =>
     });
 
     const handleClick = () => {
-        navigate(`/math-app/document/${document.id}`);
+        navigate(`/math-app/document/${document.id}/${isExporting ? "export" : ""}`);
     };
 
     return (

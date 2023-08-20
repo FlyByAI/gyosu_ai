@@ -28,6 +28,7 @@ import Attributions from './pages/Attributions.tsx';
 import DocumentDisplay from './pages/tools/DocumentDisplay.tsx';
 import Subscription from './components/Subscription.tsx';
 import MathTeacherApp from './pages/tools/MathTeacherApp.tsx';
+import DocumentEditor from './pages/tools/DocumentEditor.tsx';
 
 const clerkPubKey = "pk_test_Y2F1c2FsLWJ1bm55LTQ0LmNsZXJrLmFjY291bnRzLmRldiQ";
 
@@ -102,7 +103,16 @@ export default function ClerkProviderWithRoutes() {
                         </>
                     }
                 />
-
+                <Route
+                    path="/math-app/document/:id/export"
+                    element={
+                        <>
+                            <Navbar />
+                            <DocumentEditor />
+                            <Subscription />
+                        </>
+                    }
+                />
                 <Route
                     path="/contact"
                     element={
