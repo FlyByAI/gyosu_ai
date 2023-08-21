@@ -1,87 +1,136 @@
-import { Editor } from '@tinymce/tinymce-react';
-import React from 'react';
-import { Chunk, Instruction, Problem, Table, Text, Math, Document } from '../../interfaces';
+
+import 'react-quill/dist/quill.core.css';
+import 'react-quill/dist/quill.bubble.css';
+import 'react-quill/dist/quill.snow.css';
+
+import 'katex/dist/katex.min.css'; // Import KaTeX CSS
+
+import { Chunk, Instruction, Problem, Document } from '../../interfaces';
+import ReactMarkdown from 'react-markdown';
+
+import React, { createRef, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import useGetDocument from '../../hooks/tools/math/useGetDocument';
 import { notSecretConstants } from '../../constants/notSecretConstants';
-import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
-import DocumentShelf from '../../components/document/DocumentShelf';
+import DownloadDocx from '../../components/docx/DownloadDocx';
 
+interface ChunkProps {
+    chunk: Chunk;
+}
 
-
-const DocumentEditor: React.FC = () => {
-    const { id } = useParams();
-    const { isLoading, error, document } = useGetDocument(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/school_document`, Number(id));
-
-
-    const renderContent = (content: (Chunk | Instruction | Problem)[]): string => {
-        return content.map((item) => {
-            switch (item.type) {
-                case 'chunk':
-                    return renderChunk(item.content);
-                case 'instruction':
-                    return renderInstruction(item.content);
-                case 'problem':
-                    return renderProblem(item.content);
-                default:
-                    return null;
-            }
-        })
-            .filter(item => item !== null) // Optional: remove null values
-            .join(''); // Join the array into a single string
-    };
-
-    const renderChunk = (content: (Instruction | Problem)[]) => {
-        return renderContent(content); // Reusing renderContent to handle chunks
-    };
-
-    const renderInstruction = (content: (Text | Math)[]) => {
-        return content.map(item => {
-            switch (item.type) {
-                case 'text':
-                    return item.value;
-                case 'math':
-                    return String.raw`$$${item.value}$$`; // Using Math delimiters that you configured with rehypeKatex
-                default:
-                    return '';
-            }
-        }).join('');
-    };
-
-    const renderProblem = (content: (Text | Math)[]) => {
-        return content.map(item => {
-            switch (item.type) {
-                case 'text':
-                    return item.value;
-                case 'math':
-                    return String.raw`$$${item.value}$$`; // Using Math delimiters that you configured with rehypeKatex
-                default:
-                    return '';
-            }
-        }).join('');
-    };
-
-    const content = document?.problemChunks ? renderContent(document.problemChunks) : "";
-
-
+export const PrintableChunkComponent: React.FC<ChunkProps> = ({ chunk }) => {
     return (
-
-        <div className='flex bg-gray-900'>
-            <DocumentShelf isExporting={true} />
-            <div className="w-5/6">
-                {document && document.problemChunks && <Editor
-                    initialValue={content}
-                    init={{
-                        /* Your tinyMCE configuration here */
-                    }}
-                    onChange={() => console.log("onchange tinymce")}
-                />}
-
-            </div>
+        <div>
+            {chunk.content.map((item, index) => (
+                <div key={`${item.type}-${index}-${chunk.content.length}`}>
+                    {(() => {
+                        switch (item.type) {
+                            case 'instruction':
+                                return <PrintableInstructionComponent instruction={item} />;
+                            case 'problem':
+                                return <PrintableProblemComponent problem={item} />;
+                            default:
+                                return null;
+                        }
+                    })()}
+                </div>
+            ))}
         </div>
-
     );
 };
 
-export default DocumentEditor;
+interface InstructionProps {
+    instruction: Instruction;
+}
+
+const PrintableInstructionComponent: React.FC<InstructionProps> = ({ instruction }) => {
+    return (
+        <div>
+            {instruction.content.map((item, index) => (
+                <div key={index}>
+                    {(() => {
+                        switch (item.type) {
+                            case 'text':
+                                return <ReactMarkdown>{`${item.value}`}</ReactMarkdown>;
+                            case 'math':
+                                return <ReactMarkdown>{`$$${item.value}$$`}</ReactMarkdown>;
+                            case 'table':
+                                return <span key={index}>Table content here</span>;
+                            default:
+                                return null;
+                        }
+                    })()}
+                </div>
+            ))}
+        </div>
+    );
+};
+
+interface ProblemProps {
+    problem: Problem;
+}
+
+const PrintableProblemComponent: React.FC<ProblemProps> = ({ problem }) => {
+
+    return (
+        <div>
+            {problem.content.map((item, index) => (
+                <div key={index}>
+                    {(() => {
+                        switch (item.type) {
+                            case 'text':
+                                return <ReactMarkdown>{`${item.value}`}</ReactMarkdown>;
+                            case 'math':
+                                return <ReactMarkdown
+                                    remarkPlugins={[remarkGfm, remarkMath]}
+                                    rehypePlugins={[rehypeKatex]}
+                                >
+                                    {`$$${item.value}$$`}
+                                </ReactMarkdown>;
+                            case 'table':
+                                return <span key={index}>Table content here</span>;
+                            default:
+                                return null;
+                        }
+                    })()}
+                </div>
+            ))}
+        </div>
+    );
+};
+
+
+const PrintableDocumentComponent: React.FC = () => {
+    const { id } = useParams();
+    const { document } = useGetDocument(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/school_document`, Number(id));
+
+    const ref = createRef<HTMLDivElement>();
+    const [html, setHtml] = useState<string>('');
+
+    useEffect(() => {
+        setHtml(ref.current?.innerHTML || '');
+        console.log(ref.current)
+    }, [document, ref])
+
+
+    return (
+        <div>
+            <DownloadDocx html={html} />
+            <div ref={ref} className="flex flex-col items-center">
+                {document ? <div className='bg-white max-w-4xl'>
+                    <p>{document?.title}</p>
+                    <p>Section: {document?.section}</p>
+                    <p>Chapter: {document?.chapter}</p>
+                    {document?.problemChunks?.map((chunk, index) => (
+                        <PrintableChunkComponent key={index} chunk={chunk} />
+                    ))}
+                </div> : null}
+            </div>
+        </div>
+    );
+};
+
+export default PrintableDocumentComponent;
