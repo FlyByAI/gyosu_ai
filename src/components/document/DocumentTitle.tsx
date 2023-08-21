@@ -41,7 +41,7 @@ const DocumentTitle: React.FC<DocumentTitleProps> = ({ document }) => {
             {isEditing ? (
                 <input
                     type="text"
-                    value={document.title || title}
+                    value={title}
                     onChange={handleTitleChange}
                     onBlur={handleTitleBlur}
                     onKeyDown={handleKeyDown}
@@ -49,7 +49,7 @@ const DocumentTitle: React.FC<DocumentTitleProps> = ({ document }) => {
                     className="w-full text-black ps-1"
                 />
             ) : (
-                <h1 onClick={handleTitleClick} className="truncate">{document.title || title}</h1>
+                <h1 onClick={handleTitleClick} className="truncate">{title}</h1>
             )}
         </div>
     );

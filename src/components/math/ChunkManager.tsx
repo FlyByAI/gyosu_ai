@@ -21,6 +21,7 @@ const ChunkManager: React.FC<ChunkManagerProps> = ({ chunkArray, problemData }) 
 
     return (
         <div>
+            <div className="text-xl text-center text-white">Problem Browser</div>
             {chunkArr?.map((chunk, index) => {
                 return (
                     <MathProblem

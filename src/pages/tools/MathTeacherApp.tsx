@@ -10,7 +10,7 @@ import { MathDocument } from '../../hooks/tools/math/useSearchDocuments';
 import { Chunk, ProblemData } from '../../interfaces';
 import DocumentShelf from '../../components/document/DocumentShelf';
 import MathTeacherForm from '../../components/math/MathTeacherForm';
-import ChunkManager from '../../components/math/ProblemManager';
+import ChunkManager from '../../components/math/ChunkManager';
 
 
 const MathTeacherApp: React.FC = () => {

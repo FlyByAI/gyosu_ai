@@ -11,9 +11,6 @@ import ToolBadge from './math/ToolBadge';
 import ToolWrapper from './math/ToolWrapper';
 
 
-const borderHoverClasses = " hover:border-gray-100 border-dashed hover:border-2 hover:border-purple-dashed p-1 m-1"
-const groupHoverClasses = " group-hover:border-2 group-hover:border-gray-200 group-hover:border-dashed"
-
 interface ChunkProps {
     chunk: Chunk;
     edit?: boolean;
@@ -54,7 +51,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk }) => {
             ref={(node) => ref(drop(node))}
             onMouseEnter={() => !isHovered && setIsHovered(true)}
             onMouseLeave={() => isHovered && setIsHovered(false)}
-            className={"border-2 border-transparent text-gray-600 p-6 m-2 " + (isHovered ? borderHoverClasses : '')}
+            className={"border-2 border-transparent p-6 m-2 " + (isHovered ? " hover:border-green-200 border-dashed hover:border-2 hover:border-purple-dashed p-1 m-1" : '')}
         >
             {content.map((item, index) => {
                 return (
@@ -122,7 +119,7 @@ const InstructionComponent: React.FC<InstructionProps> = ({ instruction, onInstr
                                 case 'text':
                                     return (
                                         <ReactMarkdown
-                                            className={'text-blue-300 border-2 border-transparent' + borderHoverClasses + groupHoverClasses}
+                                            className={"text-blue-300 border-2 border-transparent border-dashed hover:border-2 hover:border-purple-dashed p-1 m-1 group-hover:border-2 group-hover:border-blue-500 group-hover:border-dashed"}
                                             remarkPlugins={[remarkGfm, remarkMath]}
                                             rehypePlugins={[rehypeKatex]}
                                         >
@@ -132,7 +129,7 @@ const InstructionComponent: React.FC<InstructionProps> = ({ instruction, onInstr
                                 case 'math':
                                     return (
                                         <ReactMarkdown
-                                            className={'text-yellow-200 border-2 border-transparent' + borderHoverClasses + groupHoverClasses}
+                                            className={"text-yellow-200 border-2 border-transparent border-dashed hover:border-2 hover:border-purple-dashed p-1 m-1 group-hover:border-2 group-hover:border-yellow-300 group-hover:border-dashed"}
                                             remarkPlugins={[remarkGfm, remarkMath]}
                                             rehypePlugins={[rehypeKatex]}
                                         >
@@ -196,7 +193,7 @@ const ProblemComponent: React.FC<ProblemProps> = ({ problem, onInstructionHover 
                                 case 'text':
                                     return (
                                         <ReactMarkdown
-                                            className={'text-gray-200 border-2 border-transparent' + borderHoverClasses + groupHoverClasses}
+                                            className={'text-gray-200 border-2 border-transparent border-dashed hover:border-2 hover:border-purple-dashed p-1 m-1 group-hover:border-2 group-hover:border-white group-hover:border-dashed'}
                                             remarkPlugins={[remarkGfm, remarkMath]}
                                             rehypePlugins={[rehypeKatex]}
                                         >
@@ -206,7 +203,7 @@ const ProblemComponent: React.FC<ProblemProps> = ({ problem, onInstructionHover 
                                 case 'math':
                                     return (
                                         <ReactMarkdown
-                                            className={'text-purple-300 border-gray-100 border-dashed hover:border-2 border-2 border-transparent' + borderHoverClasses + groupHoverClasses}
+                                            className={"text-purple-300 border-gray-100  border-2 border-transparent border-dashed hover:border-2 hover:border-purple-dashed p-1 m-1 group-hover:border-2 group-hover:border-purple-500 group-hover:border-dashed"}
                                             remarkPlugins={[remarkGfm, remarkMath]}
                                             rehypePlugins={[rehypeKatex]}
                                         >

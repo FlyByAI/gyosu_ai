@@ -70,14 +70,14 @@ const AIChatSmall: React.FC<ResponseBoxProps> = ({ className, problemIndex, chun
 
     return (
         <form ref={formRef} onSubmit={handleSubmit}>
-            <div className=" m-2 rounded-l flex">
+            <div className=" rounded-l flex">
                 <textarea
                     ref={textAreaRef}
                     id={`ai-chat-textbox-${problemIndex}`}
                     value={smallChatText}
                     onChange={handleSmallChatChange}
                     onKeyDown={handleKeyDown}
-                    className={className + " px-2 resize-none bg-gray-100 dark:bg-gray-700 rounded dark:text-white form-textarea block w-full"}
+                    className={className + " px-2 resize-none bg-gray-100 dark:bg-gray-800 rounded dark:text-white form-textarea block w-full"}
                     placeholder="Change this problem with AI"
                 />
 

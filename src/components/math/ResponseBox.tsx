@@ -24,11 +24,13 @@ const ResponseBox: React.FC<ResponseBoxProps> = ({ chunk, className, edit, probl
         }
     }, [chunk, edit]);
 
-    return (
+    return (<div className="p-2">
         <div className={className}>
             {chunk && <ChunkComponent chunk={chunk} />}
-            {showChat && <AIChatSmall className="" problemIndex={problemIndex} chunk={chunk} problemData={data} updateProblem={updateProblem} />}
-        </div>)
+        </div>
+        {showChat && <AIChatSmall className="p-1" problemIndex={problemIndex} chunk={chunk} problemData={data} updateProblem={updateProblem} />}
+    </div>)
+
 };
 
 export default ResponseBox;
