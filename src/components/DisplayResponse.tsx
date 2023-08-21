@@ -1,6 +1,4 @@
-import React, { useEffect } from "react";
-import { RestaurantResponseProps } from "./RestaurantResponse";
-import { IRestaurant } from "../interfaces";
+import React from "react";
 
 interface DisplayResponseProps {
   label: string;

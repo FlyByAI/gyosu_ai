@@ -7,7 +7,7 @@ import Dropdown from '../forms/Dropdown';
 import { useClerk, useUser } from '@clerk/clerk-react';
 import useSearchMathDocuments, { MathDocument } from '../../hooks/tools/math/useSearchDocuments';
 import formOptionsJSON from '../../json/dropdown_data.json';
-import { DocumentAST, ProblemData } from '../../interfaces';
+import { ProblemData } from '../../interfaces';
 
 type MathTeacherFormProps = {
     onSubmit: (data: any) => void;
@@ -30,7 +30,7 @@ const MathTeacherForm: React.FC<MathTeacherFormProps> = ({ onSubmit, onSearch, s
     const { session, openSignIn } = useClerk();
 
 
-    const [documentAST, setDocumentAST] = useState<DocumentAST | null>(null);
+    const [documentAST, setDocumentAST] = useState<Document | null>(null);
     const [documentName, setDocumentName] = useState<string>(`${typeOptions}-${sourceMaterial}-${section}-${problemType}`);
 
     const { isLoading, error, submitMathForm, data } = useSubmitMathForm(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/generate/`)

@@ -95,7 +95,7 @@ const DocumentShelf: React.FC<DocumentShelfProps> = ({ isExporting }) => {
                 </button>
             </div>
             <ul className="space-y-2">
-                {documents && documents.map((document, index) => (
+                {documents && documents.map((document) => (
                     <DocumentItem isExporting={isExporting} key={document.id} document={document} onDropChunk={handleDropNode} />
                 ))}
             </ul>

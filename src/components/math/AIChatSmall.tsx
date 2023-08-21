@@ -87,7 +87,7 @@ const AIChatSmall: React.FC<ResponseBoxProps> = ({ className, problemIndex, chun
                 </button>
             </div>
             {isLoading && <p className="dark:text-white">Loading...</p>}
-            {updateProblem && <ChangeProblemModal error={error} problemIndex={problemIndex} updateProblem={updateProblem} onClose={handleCloseModal} isOpen={isModalOpen} setNewProblem={setNewProblem} markdown={markdown} newProblem={newProblem} />}
+            {updateProblem && <ChangeProblemModal error={error} problemIndex={problemIndex} updateProblem={updateProblem} onClose={handleCloseModal} isOpen={isModalOpen} setNewProblem={setNewProblem} markdown={""} newProblem={""} />}
         </form>
     )
 };

@@ -14,7 +14,7 @@ interface ResponseBoxProps {
     data: ProblemData;
 }
 
-const ResponseBox: React.FC<ResponseBoxProps> = ({ chunk, handleChange, className, edit, problemIndex, updateProblem, showChat, data }) => {
+const ResponseBox: React.FC<ResponseBoxProps> = ({ chunk, className, edit, problemIndex, updateProblem, showChat, data }) => {
     const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
     useEffect(() => {
@@ -25,10 +25,10 @@ const ResponseBox: React.FC<ResponseBoxProps> = ({ chunk, handleChange, classNam
     }, [chunk, edit]);
 
     return (
-        <>
+        <div className={className}>
             {chunk && <ChunkComponent chunk={chunk} />}
-            {showChat && <AIChatSmall className={""} problemIndex={problemIndex} chunk={chunk} problemData={data} updateProblem={updateProblem} />}
-        </>)
+            {showChat && <AIChatSmall className="" problemIndex={problemIndex} chunk={chunk} problemData={data} updateProblem={updateProblem} />}
+        </div>)
 };
 
 export default ResponseBox;

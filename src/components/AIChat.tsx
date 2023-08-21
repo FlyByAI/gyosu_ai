@@ -2,22 +2,22 @@ import React, { useState, useEffect, useRef } from 'react';
 import ChatBox from './math/ChatBox';
 import { notSecretConstants } from '../constants/notSecretConstants';
 import useSubmitTextWithMarkdown from '../hooks/tools/math/useSubmitTextWithChunk';
+import useSubmitTextWithChunk from '../hooks/tools/math/useSubmitTextWithChunk';
 
 interface AIChatProps {
     markdown?: string;
     onChatChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
     additionalInfo?: string;
     problems?: string[];
-    problemType: string;
 }
 
-const AIChat: React.FC<AIChatProps> = ({ markdown, additionalInfo, problemType }) => {
+const AIChat: React.FC<AIChatProps> = ({ markdown, additionalInfo }) => {
     const [focus, setFocus] = useState(false);
     const formRef = useRef<HTMLFormElement>(null);
 
     const [chat, setChat] = useState("");
 
-    const { submitTextWithMarkdown, isLoading, error, data } = useSubmitTextWithMarkdown(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/ai_chat/`);
+    const { isLoading, error } = useSubmitTextWithChunk(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/ai_chat/`);
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -39,7 +39,7 @@ const AIChat: React.FC<AIChatProps> = ({ markdown, additionalInfo, problemType }
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (typeof chat === 'string' && markdown) {
-            await submitTextWithMarkdown(chat, markdown, problemType);
+            // await submitTextWithChunk(chat, chunk, problemType);
         }
     };
 

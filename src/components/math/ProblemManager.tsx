@@ -3,21 +3,20 @@ import { ProblemData, Chunk, } from '../../interfaces';
 import MathProblem from './MathProblem';
 
 interface ChunkManagerProps {
-    setChat: (value: string) => void;
     chunkArray: Chunk[];
     problemData?: ProblemData;
 }
 
-const ChunkManager: React.FC<ChunkManagerProps> = ({ setChat, chunkArray, problemData }) => {
+const ChunkManager: React.FC<ChunkManagerProps> = ({ chunkArray, problemData }) => {
     const [chunkArr, setChunkArr] = useState<Chunk[]>(chunkArray); //keep in mind this will not update parent state
 
     console.log(chunkArray)
     const insertChunk = (index: number, chunk: Chunk) => {
-        console.log('test')
+        console.log('test', index, chunk)
     }
 
     const deleteChunk = (index: number) => {
-        console.log('test')
+        console.log('test', index)
     }
 
     return (
@@ -27,7 +26,6 @@ const ChunkManager: React.FC<ChunkManagerProps> = ({ setChat, chunkArray, proble
                     <MathProblem
                         key={index}
                         index={index}
-                        setChat={setChat}
                         problem={chunk}
                         insertChunk={insertChunk}
                         deleteChunk={deleteChunk}

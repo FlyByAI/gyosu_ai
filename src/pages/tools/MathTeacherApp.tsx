@@ -10,7 +10,6 @@ import { MathDocument } from '../../hooks/tools/math/useSearchDocuments';
 import { Chunk, ProblemData } from '../../interfaces';
 import DocumentShelf from '../../components/document/DocumentShelf';
 import MathTeacherForm from '../../components/math/MathTeacherForm';
-import MathProblem from '../../components/math/MathProblem';
 import ChunkManager from '../../components/math/ProblemManager';
 
 
@@ -27,8 +26,6 @@ const MathTeacherApp: React.FC = () => {
     const [dataSearchDocs, setDataSearchDocs] = useState<MathDocument[] | null>(null)
 
     const [problemData, setProblemData] = useState<ProblemData | undefined>(undefined);
-
-    const [chat, setChat] = useState<string>('');
 
     const user = useUser();
 
@@ -51,7 +48,7 @@ const MathTeacherApp: React.FC = () => {
 
     return (
         <div className="flex">
-            <DocumentShelf />
+            <DocumentShelf isExporting={false} />
             <div className="w-5/6">
                 {!(chunkArr.length > 0) ?
                     <>
@@ -124,7 +121,6 @@ const MathTeacherApp: React.FC = () => {
                     <>
                         <div>
                             {problemData && chunkArr.length > 0 && <ChunkManager
-                                setChat={setChat}
                                 chunkArray={chunkArr}
                                 problemData={problemData}
                             />}

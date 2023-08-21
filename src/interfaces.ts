@@ -110,10 +110,10 @@ export interface Document {
     documentType?: string;
     problemChunks?: Chunk[];
 }
-export interface DocumentAST {
-    type: "document";
-    content: Chunk[];
-}
+// export interface DocumentAST {
+//     type: "document";
+//     content: Chunk[];
+// }
 
 export interface Chunk {
     type: "chunk";

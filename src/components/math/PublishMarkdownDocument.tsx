@@ -16,18 +16,19 @@ interface PublishMarkdownDocumentProps {
 }
 
 const PublishMarkdownDocument: React.FC<PublishMarkdownDocumentProps> = ({ markdown, saved, setSaved, formData, documentId, setDocumentId }) => {
-    const { submitDocument, isLoading, error, data } = useSubmitDocument(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/document/save/`);
+    const { isLoading, error, data } = useSubmitDocument(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/document/save/`);
 
     useEffect(() => {
         setSaved(false);
     }, [markdown, setSaved]);
 
     const handleClick = async () => {
-        if (documentId) {
-            submitDocument({ markdown: markdown, formData: { ...formData, id: documentId, shared: true } });
-        } else {
-            submitDocument({ markdown: markdown, formData: { ...formData, shared: true } });
-        }
+        console.log(formData)
+        // if (documentId) {
+        //     submitDocument({  formData: { ...formData, id: documentId, shared: true } });
+        // } else {
+        //     submitDocument({  formData: { ...formData, shared: true } });
+        // }
     }
 
     useEffect(() => {
@@ -51,7 +52,7 @@ const PublishMarkdownDocument: React.FC<PublishMarkdownDocumentProps> = ({ markd
                 <p className="absolute left-5 me-2 bg-gray-900 text-green-300 animate-fade-out">Published!</p>
             )}
             {error && (
-                <p className="absolute left-0 me-2 bg-gray-900 text-red-500 animate-fade-out">Error: {error}</p>
+                <p className="absolute left-0 me-2 bg-gray-900 text-red-500 animate-fade-out">Error: {error.message}</p>
             )}
             <div className='flex items-center'>
 

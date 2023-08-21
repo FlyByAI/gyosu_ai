@@ -14,13 +14,12 @@ import RefreshIcon from '../../svg/RefreshIcon';
 interface MathProblemProps {
     index: number;
     problem: Chunk;
-    setChat: (value: string) => void;
     problemData: ProblemData;
     insertChunk: (index: number, problem: Chunk) => void;
     deleteChunk: (index: number) => void;
 }
 
-const MathProblem: React.FC<MathProblemProps> = ({ index, problem, setChat, problemData, insertChunk, deleteChunk }) => {
+const MathProblem: React.FC<MathProblemProps> = ({ index, problem, problemData, insertChunk, deleteChunk }) => {
 
 
     return (
