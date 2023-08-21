@@ -11,7 +11,7 @@ import ToolBadge from './math/ToolBadge';
 import ToolWrapper from './math/ToolWrapper';
 
 
-const borderHoverClasses = " hover:border-gray-100 hover:border-dashed hover:border-2ed p-1 m-1"
+const borderHoverClasses = " hover:border-gray-100 border-dashed hover:border-2 hover:border-purple-dashed p-1 m-1"
 const groupHoverClasses = " group-hover:border-2 group-hover:border-gray-200 group-hover:border-dashed"
 
 interface ChunkProps {
@@ -54,7 +54,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk }) => {
             ref={(node) => ref(drop(node))}
             onMouseEnter={() => !isHovered && setIsHovered(true)}
             onMouseLeave={() => isHovered && setIsHovered(false)}
-            className={"text-gray-600 p-6 m-2 " + (isHovered ? borderHoverClasses : '')}
+            className={"border-2 border-transparent text-gray-600 p-6 m-2 " + (isHovered ? borderHoverClasses : '')}
         >
             {content.map((item, index) => {
                 return (
