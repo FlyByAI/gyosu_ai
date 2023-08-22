@@ -29,6 +29,7 @@ import DocumentDisplay from './pages/tools/DocumentDisplay.tsx';
 import Subscription from './components/Subscription.tsx';
 import MathTeacherApp from './pages/tools/MathTeacherApp.tsx';
 import DocumentEditor from './pages/tools/DocumentEditor.tsx';
+import LandingPage from './pages/Landing.tsx';
 
 const clerkPubKey = "pk_test_Y2F1c2FsLWJ1bm55LTQ0LmNsZXJrLmFjY291bnRzLmRldiQ";
 
@@ -44,6 +45,16 @@ export default function ClerkProviderWithRoutes() {
             <Routes>
                 <Route
                     path="/"
+                    element={
+                        <>
+                            <Navbar />
+                            <LandingPage />
+                            <Footer />
+                        </>
+                    }
+                />
+                <Route
+                    path="/home"
                     element={
                         <>
                             <Navbar />
