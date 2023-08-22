@@ -24,7 +24,7 @@ const ResponseBox: React.FC<ResponseBoxProps> = ({ chunk, className, edit, probl
         }
     }, [chunk, edit]);
 
-    return (<div className="p-2">
+    return (<div className="">
         <div className={className}>
             {chunk && <ChunkComponent chunk={chunk} />}
         </div>
