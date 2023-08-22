@@ -7,14 +7,14 @@ import { Chunk, ProblemData } from '../interfaces';
 const LandingPage: React.FC = () => {
     return (
         <div>
-            <section className="h-full flex items-center" style={{ backgroundImage: `url('public/png/dark-bg.png')`, backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: '100% auto' }}>
-                <img className="w-1/3 h-auto" src="public/png/teacher1.png" alt="Image 1" />
+            <section className="h-full flex items-center" style={{ backgroundImage: `url('/png/dark-bg.png')`, backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: '100% auto' }}>
+                <img className="w-1/3 h-auto" src="/png/teacher1.png" alt="Image 1" />
                 <div className="ml-20 w-2/3 text-5xl text-gray-300">
-                    <p className="mt-4">Empowering you with</p>
-                    <p className="mt-4">custom AI Tools</p>
-                    <p className="mt-4 text-lg">Quickly create custom content for you students</p>
+                    <p className="font-bold mt-4">Empowering you with</p>
+                    <p className="font-bold mt-4">custom AI math tools</p>
+                    <p className="mt-4 text-lg">Quickly create customized content for your students</p>
                     <Link className="text-sm" to="/math-app">
-                        <button className="bg-orange-500 text-white rounded-3xl flex items-center my-6 p-1 ps-4">
+                        <button className="bg-orange-500 text-white rounded-3xl flex items-center my-6 p-1 pl-4">
                             Try AI Generate
                             <ArrowRightMore className="p-2 text-lg" />
                         </button>
@@ -23,7 +23,7 @@ const LandingPage: React.FC = () => {
             </section>
 
             <section className="h-full bg-gray-100 justify-center py-8 text-gray-700 flex flex-col items-center">
-                <div className='w-full text-center text-5xl mb-4'>
+                <div className='font-bold w-full text-center text-5xl mb-4'>
                     The problems you face
                 </div>
                 <div className='w-full text-center text-xl mb-8'>
@@ -110,13 +110,13 @@ const LandingPage: React.FC = () => {
                     <h1 className="font-bold">just for you</h1>
                     <p className="mt-4 text-lg">Let us be your full time content creation tool</p>
                     <Link className="text-sm" to="/math-app">
-                        <button className="bg-orange-500 text-white rounded-3xl flex items-center my-6 p-1 ps-4">
+                        <button className="bg-orange-500 text-white rounded-3xl flex items-center my-6 p-1 pl-4">
                             Try AI Generate
                             <ArrowRightMore className="p-2 text-lg" />
                         </button>
                     </Link>
                 </div>
-                <img className="w-1/3 h-auto" src="public/png/teacher2.png" alt="Image 1" />
+                <img className="w-1/3 h-auto" src="/png/teacher2.png" alt="Image 1" />
             </section>
         </div>
     );
