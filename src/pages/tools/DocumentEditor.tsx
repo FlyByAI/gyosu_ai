@@ -1,7 +1,4 @@
 
-import 'react-quill/dist/quill.core.css';
-import 'react-quill/dist/quill.bubble.css';
-import 'react-quill/dist/quill.snow.css';
 
 import 'katex/dist/katex.min.css'; // Import KaTeX CSS
 
