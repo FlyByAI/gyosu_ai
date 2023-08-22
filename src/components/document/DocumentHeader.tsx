@@ -27,6 +27,7 @@ const DocumentHeader: React.FC<DocumentHeaderProps> = ({ document }) => {
                     }
                 })}
             </div>
+
         </Accordion>
     );
 };

@@ -16,10 +16,6 @@ const DocumentToolbarNav: React.FC = () => {
     const { id } = useParams();
     const { document } = useGetDocument(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/school_document`, Number(id));
 
-
-    useEffect(() => {
-        console.log(id, document)
-    })
     return (
         <>
             <div style={{ height: `${toolbarHeight}px` }}></div> {/* Placeholder */}
@@ -29,16 +25,11 @@ const DocumentToolbarNav: React.FC = () => {
                         <Link to="/math-app" className="text-3xl font-semibold text-white font-mono flex items-center"><ChevronLeft />Home</Link>
                     </div>
 
+
                     <div className="w-1/6 justify-between flex flex-row">
-                        {/* <nav>
-                            <Link to="/math-app" className="text-white mx-3 hover:underline dark:text-gray-200 font-mono">
-                                Tool1
-                            </Link>
-                            <Link to="/math-app" className="text-white mx-3 hover:underline dark:text-gray-200 font-mono">
-                                Tool2
-                            </Link>
-                        </nav> */}
+                        {document && <Link to={`/math-app/document/${document?.id}/export`} className="text-xl font-semibold text-white font-mono flex items-end">Export</Link>}
                     </div>
+
                     <div className="w-1/6 justify-between flex flex-row">
 
                     </div>

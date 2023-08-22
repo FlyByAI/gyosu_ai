@@ -121,9 +121,7 @@ const PrintableDocumentComponent: React.FC = () => {
             <DownloadDocx html={html} />
             <div ref={ref} className="flex flex-col items-center">
                 {document ? <div className='bg-white max-w-4xl'>
-                    <p>{document?.title}</p>
-                    <p>Section: {document?.section}</p>
-                    <p>Chapter: {document?.chapter}</p>
+                    <p>Document: {document?.title}</p>
                     {document?.problemChunks?.map((chunk, index) => (
                         <PrintableChunkComponent key={index} chunk={chunk} />
                     ))}
