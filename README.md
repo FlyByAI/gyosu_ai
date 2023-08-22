@@ -40,7 +40,6 @@ Run the front end:
 
 ```
 VITE_API_URL=http://localhost:8000/api
-VITE_CLERK_PUBLISHABLE_KEY=pk_test_Y2F1c2FsLWJ1bm55LTQ0LmNsZXJrLmFjY291bnRzLmRldiQ
 ```
 
 4. run `yarn` to install npm dependencies
