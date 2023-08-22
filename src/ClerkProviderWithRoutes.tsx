@@ -29,15 +29,21 @@ import ContentWrapper from './components/ContentWrapper.tsx';
 import MathTeacherApp from './pages/tools/MathTeacherApp.tsx';
 import Attributions from './pages/Attributions.tsx';
 import FAQPage from './pages/FAQPage.tsx';
+import { notSecretConstants } from './constants/notSecretConstants.tsx';
 
-const clerkPubKey = "pk_live_Y2xlcmsuZ3lvc3UuYWkk";
+
 
 export default function ClerkProviderWithRoutes() {
     const navigate = useNavigate();
 
+    const isDevelopment = import.meta.env.MODE === 'development';
+    if (isDevelopment) console.log("Development mode");
+
+    const clerkKey = isDevelopment ? notSecretConstants.clerk.PUBLISHABLE_DEV_KEY : notSecretConstants.clerk.PUBLISHABLE_KEY
+
     return (
         <ClerkProvider
-            publishableKey={clerkPubKey}
+            publishableKey={clerkKey}
             navigate={(to) => navigate(to)}
             appearance={getGyosuClerkTheme()}
         >
