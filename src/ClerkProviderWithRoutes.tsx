@@ -30,7 +30,7 @@ import MathTeacherApp from './pages/tools/MathTeacherApp.tsx';
 import Attributions from './pages/Attributions.tsx';
 import FAQPage from './pages/FAQPage.tsx';
 
-const clerkPubKey = "pk_test_Y2F1c2FsLWJ1bm55LTQ0LmNsZXJrLmFjY291bnRzLmRldiQ";
+const clerkPubKey = "pk_live_Y2xlcmsuZ3lvc3UuYWkk";
 
 export default function ClerkProviderWithRoutes() {
     const navigate = useNavigate();
