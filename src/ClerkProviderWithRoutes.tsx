@@ -27,9 +27,10 @@ import ContentWrapper from './components/ContentWrapper.tsx';
 import Attributions from './pages/Attributions.tsx';
 import DocumentDisplay from './pages/tools/DocumentDisplay.tsx';
 import Subscription from './components/Subscription.tsx';
-import MathTeacherApp from './pages/tools/MathTeacherApp.tsx';
 import DocumentEditor from './pages/tools/DocumentEditor.tsx';
 import LandingPage from './pages/Landing.tsx';
+import MathDocumentSearch from './pages/tools/MathDocumentSearch.tsx';
+import MathGenerate from './pages/tools/MathGenerate.tsx';
 
 const clerkPubKey = "pk_test_Y2F1c2FsLWJ1bm55LTQ0LmNsZXJrLmFjY291bnRzLmRldiQ";
 
@@ -78,28 +79,25 @@ export default function ClerkProviderWithRoutes() {
                         </>
                     }
                 />
-                {/* <Route
-                    path="/math-app"
-                    element={
-                        <>
-                            <Navbar />
-                            <ContentWrapper>
-                                <MathTeacherApp />
-                                <Footer />
-                            </ContentWrapper>
-                            <Subscription />
-                        </>
-                    }
-                /> */}
                 <Route
                     path="/math-app"
                     element={
                         <>
                             <Navbar />
-                            <MathTeacherApp />
+                            <MathGenerate />
                             <Footer />
                             <Subscription />
-
+                        </>
+                    }
+                />
+                <Route
+                    path="/math-app/search"
+                    element={
+                        <>
+                            <Navbar />
+                            <MathDocumentSearch />
+                            <Footer />
+                            <Subscription />
                         </>
                     }
                 />
@@ -110,7 +108,6 @@ export default function ClerkProviderWithRoutes() {
                             <Navbar />
                             <DocumentDisplay />
                             <Subscription />
-
                         </>
                     }
                 />

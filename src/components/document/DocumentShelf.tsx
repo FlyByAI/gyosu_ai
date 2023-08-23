@@ -83,8 +83,6 @@ const DocumentShelf: React.FC<DocumentShelfProps> = ({ isExporting }) => {
         getDocuments();
     };
 
-
-
     return (<>
         <div style={{ marginLeft: '16.6667%' }} />
         <div className="flex flex-col w-1/6 bg-gray-800 p-4 h-screen fixed overflow-y-scroll">

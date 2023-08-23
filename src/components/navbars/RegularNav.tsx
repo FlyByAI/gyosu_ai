@@ -28,6 +28,9 @@ const RegularNavbar: React.FC = () => {
                 <Link to="/math-app" className="text-lg text-white hover:underline dark:text-gray-200 lg:justify-self-end block sm:hidden">
                     Generate
                 </Link>
+                <Link to="/math-app/search" className="text-lg text-white hover:underline dark:text-gray-200 lg:justify-self-end block sm:hidden">
+                    Document Search
+                </Link>
                 <Link to="/contact" className="text-lg text-white hover:underline dark:text-gray-200 lg:justify-self-end block sm:hidden">
                     Contact
                 </Link>
@@ -40,6 +43,9 @@ const RegularNavbar: React.FC = () => {
                     <nav>
                         <Link to="/math-app" className="text-lg text-white mx-3 hover:underline dark:text-gray-200 font-mono font-bold">
                             Generate
+                        </Link>
+                        <Link to="/math-app/search" className="text-lg text-white mx-3 hover:underline dark:text-gray-200 font-mono font-bold">
+                            Document Search
                         </Link>
                         <Link to="/contact" className="text-lg text-white mx-3 hover:underline dark:text-gray-200 mr-4 font-mono font-bold">
                             Contact

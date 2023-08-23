@@ -1,7 +1,5 @@
 import { useClerk } from '@clerk/clerk-react';
 import { useState, useEffect } from 'react';
-
-
 import { Document } from '../../../interfaces';
 
 const useFetchDocuments = (endpoint: string) => {
