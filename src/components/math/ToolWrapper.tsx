@@ -8,20 +8,6 @@ interface ToolWrapperProps {
 
 const ToolWrapper: React.FC<ToolWrapperProps> = ({ onDelete, children }) => {
     const [isHovered, setIsHovered] = useState(false);
-    const [isBadgeHovered, setIsBadgeHovered] = useState(false);
-
-    useEffect(() => {
-        let timeout: NodeJS.Timeout;
-        if (isHovered || isBadgeHovered) {
-            timeout = setTimeout(() => {
-                if (!isBadgeHovered && !isHovered) {
-                    setIsHovered(false);
-                }
-            }, 2000);
-        }
-
-        return () => clearTimeout(timeout);
-    }, [isHovered, isBadgeHovered]);
 
     return (
         <div
@@ -29,7 +15,7 @@ const ToolWrapper: React.FC<ToolWrapperProps> = ({ onDelete, children }) => {
             onMouseLeave={() => setIsHovered(false)}
         >
             {isHovered && (
-                <div onMouseEnter={() => setIsBadgeHovered(true)} onMouseLeave={() => setIsBadgeHovered(false)}>
+                <div>
                     <ToolBadge onDelete={onDelete} />
                 </div>
             )}

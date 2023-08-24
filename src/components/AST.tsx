@@ -46,31 +46,46 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk }) => {
 
 
     return (
-        <div
-            ref={(node) => ref(drop(node))}
-            onMouseEnter={() => !isHovered && setIsHovered(true)}
-            onMouseLeave={() => isHovered && setIsHovered(false)}
-            className={"border-2 border-transparent p-4 mb-2" + (isHovered ? " hover:border-green-200 border-dashed hover:border-2 hover:border-purple-dashed" : '')}
-        >
-            {content.map((item, index) => {
-                return (
-                    <ToolWrapper onDelete={() => onDelete(index)} key={`${item.type}-${index}-${content.length}`}>
-                        <div onClick={() => setSelectedIndex(index === selectedIndex ? null : index)}>
+        <ToolWrapper onDelete={() => console.log("should delete", { type: CHUNK_TYPE, content })}>
+            <div
+                ref={(node) => ref(drop(node))}
+                onMouseEnter={() => !isHovered && setIsHovered(true)}
+                onMouseLeave={() => isHovered && setIsHovered(false)}
+                className={"border-2 border-transparent p-4 mb-2" + (isHovered ? " hover:border-green-200 border-dashed hover:border-2 hover:border-purple-dashed" : '')}
+            >
+                {content.map((item, index) => {
+                    return (
+                        <ToolWrapper onDelete={() => console.log("should delete", { type: INSTRUCTION_TYPE, content: item.content })} key={`${item.type}-${index}-${content.length}`}>
                             {(() => {
                                 switch (item.type) {
                                     case 'instruction':
-                                        return <InstructionComponent instruction={item} onInstructionHover={setIsHovered} />;
+                                        return (
+                                            <ToolWrapper
+                                                onDelete={() => console.log("should delete", { type: INSTRUCTION_TYPE, content: item.content })}
+                                                key={`${item.type}-${index}-${content.length}`}
+                                            >
+                                                <InstructionComponent instruction={item} onInstructionHover={setIsHovered} />
+                                            </ToolWrapper>
+                                        );
                                     case 'problem':
-                                        return <ProblemComponent problem={item} onInstructionHover={setIsHovered} />;
+                                        return (
+                                            <ToolWrapper
+                                                onDelete={() => console.log("should delete", { type: PROBLEM_TYPE, content: item.content })}
+                                                key={`${item.type}-${index}-${content.length}`}
+                                            >
+                                                <ProblemComponent problem={item} onInstructionHover={setIsHovered} />
+                                            </ToolWrapper>
+                                        );
                                     default:
                                         return null;
                                 }
                             })()}
-                        </div>
-                    </ToolWrapper>
-                );
-            })}
-        </div>
+                        </ToolWrapper>
+                    );
+                })}
+            </div>
+        </ToolWrapper>
+
     );
 
 };

@@ -10,7 +10,6 @@ interface ChunkManagerProps {
 const ChunkManager: React.FC<ChunkManagerProps> = ({ chunkArray, problemData }) => {
     const [chunkArr, setChunkArr] = useState<Chunk[]>(chunkArray); //keep in mind this will not update parent state
 
-    console.log(chunkArray)
     const insertChunk = (index: number, chunk: Chunk) => {
         console.log('test', index, chunk)
     }
