@@ -8,6 +8,7 @@ import DocumentShelf from '../../components/document/DocumentShelf';
 import { Chunk, ProblemData } from '../../interfaces';
 import MathProblem from '../../components/math/MathProblem';
 import DocumentHeader from '../../components/document/DocumentHeader';
+import AIChatSmallWrapper from '../../components/math/AIChatSmallWrapper';
 
 const DocumentDisplay: React.FC = () => {
     const { id } = useParams();
@@ -35,29 +36,34 @@ const DocumentDisplay: React.FC = () => {
     }
 
     return (
-        <div className='flex bg-gray-900'>
+        <div className='flex '>
             <DocumentShelf isExporting={false} />
             <div className="w-5/6">
                 <DocumentHeader document={document} />
-
                 {document.problemChunks
                     && document.problemChunks.length > 0
                     && document.problemChunks?.map((chunk, index) => {
                         return (
-                            <MathProblem
-                                insertChunk={insertChunk}
-                                deleteChunk={deleteChunk}
-                                key={index}
-                                index={index}
-                                problem={chunk}
-                                problemData={{} as ProblemData} //fix?
-                            />)
+                            <div className='w-3/4 mx-auto flex flex-row mb-4 bg-gray-900 p-2'>
+                                <div className='w-5/6  rounded-xl'>
+
+                                    <AIChatSmallWrapper chunk={chunk} index={index} >
+                                        <MathProblem
+                                            key={index}
+                                            index={index}
+                                            problem={chunk}
+                                        />
+                                    </AIChatSmallWrapper>
+                                </div>
+                                <div className='w-1/6 bg-gray-900 p-2'>
+                                    <div className='w-full h-full  text-white'>
+                                        test
+                                    </div>
+                                </div>
+
+                            </div>)
                     })
                 }
-
-                {/* {document && document?.problemChunks?.map((chunk, index) => (
-                    <ChunkComponent key={index} chunk={chunk} />
-                ))} */}
             </div>
         </div>
     );

@@ -44,25 +44,27 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk }) => {
         },
     });
 
+    const [isChildHovered, setIsChildHovered] = useState(false);
+
+    useEffect(() => { console.log(isChildHovered) }, [isChildHovered])
 
     return (
-        <ToolWrapper onDelete={() => console.log("should delete", { type: CHUNK_TYPE, content })}>
+        <ToolWrapper chunk={chunk}>
             <div
                 ref={(node) => ref(drop(node))}
                 onMouseEnter={() => !isHovered && setIsHovered(true)}
                 onMouseLeave={() => isHovered && setIsHovered(false)}
-                className={"border-2 border-transparent p-4 mb-2" + (isHovered ? " hover:border-green-200 border-dashed hover:border-2 hover:border-purple-dashed" : '')}
+                className={"border-2 border-transparent p-4 " + (isHovered ? " hover:border-green-200 border-dashed hover:border-2 hover:border-purple-dashed" : '')}
             >
                 {content.map((item, index) => {
                     return (
-                        <ToolWrapper onDelete={() => console.log("should delete", { type: INSTRUCTION_TYPE, content: item.content })} key={`${item.type}-${index}-${content.length}`}>
+                        <div key={`${item.type}-${index}-${content.length}`}>
                             {(() => {
                                 switch (item.type) {
                                     case 'instruction':
                                         return (
                                             <ToolWrapper
-                                                onDelete={() => console.log("should delete", { type: INSTRUCTION_TYPE, content: item.content })}
-                                                key={`${item.type}-${index}-${content.length}`}
+                                                key={`${item.type}-${index}-${content.length}`} chunk={chunk} instruction={item}
                                             >
                                                 <InstructionComponent instruction={item} onInstructionHover={setIsHovered} />
                                             </ToolWrapper>
@@ -70,8 +72,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk }) => {
                                     case 'problem':
                                         return (
                                             <ToolWrapper
-                                                onDelete={() => console.log("should delete", { type: PROBLEM_TYPE, content: item.content })}
-                                                key={`${item.type}-${index}-${content.length}`}
+                                                key={`${item.type}-${index}-${content.length}`} chunk={chunk} problem={item}
                                             >
                                                 <ProblemComponent problem={item} onInstructionHover={setIsHovered} />
                                             </ToolWrapper>
@@ -80,7 +81,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk }) => {
                                         return null;
                                 }
                             })()}
-                        </ToolWrapper>
+                        </div>
                     );
                 })}
             </div>

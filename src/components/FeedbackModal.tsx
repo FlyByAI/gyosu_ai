@@ -8,7 +8,7 @@ interface FeedbackModalProps {
     isOpen: boolean;
     onSubmitFeedback: (feedbackData: IFeedbackData) => void;
     onClose: () => void;
-    data: ProblemData
+    data: ProblemData | null
 }
 
 const FeedbackModal: React.FC<FeedbackModalProps> = ({ rating, toolName, responseText, isOpen, onSubmitFeedback, onClose, data }) => {
@@ -16,7 +16,7 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({ rating, toolName, respons
 
     const handleSubmit = (event: React.FormEvent) => {
         event.preventDefault();
-        const feedbackData: IFeedbackData = { toolName, responseText, rating, userFeedback, ...data }
+        const feedbackData: IFeedbackData = { toolName, responseText, rating, userFeedback, ...data };
         onSubmitFeedback(feedbackData);
     };
 

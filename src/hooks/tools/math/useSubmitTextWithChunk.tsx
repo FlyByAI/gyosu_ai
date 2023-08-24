@@ -10,14 +10,14 @@ const useSubmitTextWithChunk = (endpoint: string) => {
     const [error, setError] = useState<string | null>(null);
     const [data, setData] = useState<any | null>(null);
 
-    const submitTextWithChunk = async (userInput: string, chunk: Chunk, data: ProblemData, options = { language: "en", topic: "none" }) => {
+    const submitTextWithChunk = async (userInput: string, chunk: Chunk, options = { language: "en", topic: "none" }) => {
         setLoading(true);
         setError(null);
 
         try {
             const token = session ? await session.getToken() : "none";
 
-            const body = humps.decamelizeKeys({ ...options, userInput, chunk, ...data, chapter: data.section.split(".")[0], section: data.section.split(".")[1] });
+            const body = humps.decamelizeKeys({ userInput, chunk, ...options });
 
             const response = await fetch(endpoint, {
                 method: 'POST',

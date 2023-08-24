@@ -6,6 +6,12 @@ export interface ProblemData {
     documentType: string;
     sourceMaterial: string;
 }
+
+export interface ChunkInstructionProblem {
+    chunk: Chunk;
+    instruction?: Instruction;
+    Problem?: Problem;
+}
 export interface IPost {
     id: number;
     title: string;
@@ -113,6 +119,7 @@ export interface Document {
 
 
 export interface Chunk {
+    id?: number;
     type: "chunk";
     content: (Instruction | Problem)[];
 }

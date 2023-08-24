@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import useSubmitFeedback from '../hooks/useSubmitFeedback';
 import FeedbackModal from './FeedbackModal';
-import { IFeedbackData, ProblemData, Rating } from '../interfaces';
+import { ChunkInstructionProblem, IFeedbackData, ProblemData, Rating } from '../interfaces';
 import { ThumbsDownSvg, ThumbsUpSvg } from '../svg/customSVGs';
 import { notSecretConstants } from '../constants/notSecretConstants';
 
@@ -12,7 +12,7 @@ interface IResponseFeedbackProps {
     toolName: string;
     className?: string;
     size?: 6 | 10 | 15;
-    data: ProblemData | null;
+    data: ProblemData | ChunkInstructionProblem | null;
 }
 const ResponseFeedback = ({ responseText, toolName, className, size = 10, data }: IResponseFeedbackProps) => {
     const [thumbUpSelected, setThumbUpSelected] = useState(false);
