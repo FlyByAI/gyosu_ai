@@ -15,6 +15,9 @@ const Home = () => {
 
     return (
         <div>
+            <div className={"text-white text-bold text-2xl mb-4"}>
+                Scroll down to see what's coming in Version 2!
+            </div>
             {/* Hero Section */}
             {darkMode &&
                 <div
@@ -41,6 +44,23 @@ const Home = () => {
                         </div>
                     </div>
                 </div>}
+            <div className={"text-white text-bold text-2xl mb-4"}>
+                Version 2 is in development: Here's a quick preview of what's to come!
+            </div>
+            <div className={"bg-white rounded-xl p-2 mb-8"}>
+                <p style={{ border: 0, width: "100%", marginBottom: 0, height: " 450px" }}>
+                    <iframe
+                        style={{ width: "100%", height: "100%", border: 0 }}
+                        src="https://www.floik.com/embed/7d6e51c5-8700-44ed-b686-e5f224ad5142/890119d1-2588-44a2-906b-51b23af49743-flo.html"
+                        width="100%"
+                        height="450px"
+                        allowfullscreen="allowfullscreen"
+                        webkitallowfullscreen
+                        mozallowfullscreen
+                    >
+                    </iframe>
+                </p>
+            </div>
 
 
             {/* About Section */}
