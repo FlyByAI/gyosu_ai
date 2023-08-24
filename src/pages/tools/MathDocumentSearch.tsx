@@ -6,24 +6,25 @@ import Accordion from '../../components/Accordion';
 import GridContainer3x3 from '../../components/grids/GridContainer3x3';
 import DocumentPreview from '../../components/forms/DocumentPreview';
 import MathDocumentSearchForm from '../../components/math/MathDocumentSearchForm';
-import { ProblemData } from '../../interfaces';
 import DocumentShelf from '../../components/document/DocumentShelf';
-import useSearchMathDocuments from '../../hooks/tools/math/useSearchDocuments';
 
 const MathDocumentSearch: React.FC = () => {
 
-    const { documents, error } = useFetchDocuments(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/documents/recent/`);
+    const { documents, error } = useFetchDocuments(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/school_document/community/recent/`);
 
+    console.log(documents)
     return (
         <div className="flex">
             <DocumentShelf isExporting={false} />
             <div className="w-5/6">
+                {/* search */}
                 <MathDocumentSearchForm />
 
-                {documents && <div className="flex justify-center items-center mb-2">
+                {/* community documents */}
+                <div className="flex flex-row justify-center mb-2">
                     <Accordion title={"Browse recent community created documents"} visible={true}>
                         <GridContainer3x3>
-                            {documents.map((doc, index) => (
+                            {documents?.map((doc, index) => (
                                 <DocumentPreview
                                     key={index}
                                     document={doc}
@@ -31,7 +32,7 @@ const MathDocumentSearch: React.FC = () => {
                             ))}
                         </GridContainer3x3>
                     </Accordion>
-                </div>}
+                </div>
             </div>
         </div>
     );

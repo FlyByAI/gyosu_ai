@@ -35,7 +35,7 @@ const MathDocumentSearchForm: React.FC = () => {
 
     const { session, openSignIn } = useClerk();
 
-    const { searchMathDocuments, documentSearchResults, error, isLoading } = useSearchMathDocuments(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/documents/search/`);
+    const { searchMathDocuments, documentSearchResults, error, isLoading } = useSearchMathDocuments(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/school_document/community/search/`);
 
 
     const handleSearch = () => {
@@ -96,28 +96,27 @@ const MathDocumentSearchForm: React.FC = () => {
                         className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                     />
                 </div>
-                {documentSearchResults && documentSearchResults.length > 0 ?
-                    <div className="flex justify-center items-center">
-                        <Accordion title={"Search Results"} visible={true}>
-                            <GridContainer3x3>
-                                {documentSearchResults.map((doc, index) => (
-                                    <DocumentPreview
-                                        key={index}
-                                        document={doc}
-                                    />
-                                ))}
-                            </GridContainer3x3>
-                        </Accordion>
-                    </div> :
-                    documentSearchResults &&
-                    <Accordion title={"Search Results"} visible={true}>
-                        <div className='text-red-100'>
-                            No results found. Try searching for something else.
-                        </div>
-                    </Accordion>
-                }
-
             </div>
+            {documentSearchResults && documentSearchResults.length > 0 ?
+                <div className="flex justify-center items-center">
+                    <Accordion title={"Search Results"} visible={true}>
+                        <GridContainer3x3>
+                            {documentSearchResults.map((doc, index) => (
+                                <DocumentPreview
+                                    key={index}
+                                    document={doc}
+                                />
+                            ))}
+                        </GridContainer3x3>
+                    </Accordion>
+                </div> :
+                documentSearchResults &&
+                <Accordion title={"Search Results"} visible={true}>
+                    <div className='text-red-100'>
+                        No results found. Try searching for something else.
+                    </div>
+                </Accordion>
+            }
             {error as Error && <p className="text-red-600 mt-4 text-center">Error: {(error as Error).message}</p>}
             {error as Error && !user?.user?.username && <p className="text-red-600 mt-4 text-center">Note: {"Our tools require you to be signed in."}</p>}
             {isLoading && <p className="dark:text-white">Loading...</p>}

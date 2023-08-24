@@ -45,7 +45,7 @@ const DocumentPreview: React.FC<DocumentPreviewProps> = ({ document }) => {
 
 
     return (
-        <Link to={`/document/${id}`}
+        <Link to={`/math-app/document/${id}`}
             className='m-2 bg-white rounded-2xl relative'
             onMouseEnter={() => setIsHovering(true)}
             onMouseLeave={() => setIsHovering(false)}

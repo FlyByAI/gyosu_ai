@@ -18,9 +18,6 @@ const MathGenerate: React.FC = () => {
 
     const [chunkArr, setChunkArr] = useState<Chunk[]>([]);
 
-    const { documents } = useFetchDocuments(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/documents/recent/`);
-    const { documents: myDocuments } = useFetchDocuments(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/myDocuments/recent/`);
-
     const [problemData, setProblemData] = useState<ProblemData | undefined>(undefined);
 
     const user = useUser();
@@ -41,37 +38,7 @@ const MathGenerate: React.FC = () => {
         <div className="flex">
             <DocumentShelf isExporting={false} />
             <div className="w-full">
-
                 <MathGenerateForm onSubmit={handleSubmit} setProblemData={setProblemData} />
-
-                {myDocuments && <div className="flex justify-center items-center">
-                    <Accordion title={"Documents created by you"}>
-                        <GridContainer3x3>
-                            {myDocuments.map((doc, index) => {
-                                return (
-                                    <DocumentPreview
-                                        key={index}
-                                        document={doc}
-                                    />
-                                );
-                            })}
-                        </GridContainer3x3>
-                    </Accordion>
-                </div>}
-                {documents && <div className="flex justify-center items-center mb-2">
-                    <Accordion title={"Browse recent community created documents"} visible={true}>
-                        <GridContainer3x3>
-                            {documents.map((doc, index) => {
-                                return (
-                                    <DocumentPreview
-                                        key={index}
-                                        document={doc}
-                                    />
-                                );
-                            })}
-                        </GridContainer3x3>
-                    </Accordion>
-                </div>}
                 <div>
                     {problemData && chunkArr.length > 0 && <ChunkManager
                         chunkArray={chunkArr}
