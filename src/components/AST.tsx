@@ -20,7 +20,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk }) => {
     const [content, setContent] = useState<Chunk['content']>(chunk.content);
     const [, ref] = useDrag({
         type: CHUNK_DRAG_TYPE,
-        item: { type: CHUNK_TYPE, content: chunk.content } as Chunk
+        item: { type: CHUNK_TYPE, content: content } as Chunk
     });
 
     const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
