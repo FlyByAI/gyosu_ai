@@ -54,9 +54,6 @@ const Home = () => {
                         src="https://www.floik.com/embed/7d6e51c5-8700-44ed-b686-e5f224ad5142/890119d1-2588-44a2-906b-51b23af49743-flo.html"
                         width="100%"
                         height="450px"
-                        allowfullscreen="allowfullscreen"
-                        webkitallowfullscreen
-                        mozallowfullscreen
                     >
                     </iframe>
                 </p>
