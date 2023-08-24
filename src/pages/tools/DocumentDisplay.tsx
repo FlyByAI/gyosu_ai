@@ -1,19 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useParams } from 'react-router-dom';
 import useGetDocument from '../../hooks/tools/math/useGetDocument';
-import { ChunkComponent } from '../../components/AST';
 import { notSecretConstants } from '../../constants/notSecretConstants';
 import DocumentShelf from '../../components/document/DocumentShelf';
 
-import { Chunk, ProblemData } from '../../interfaces';
+import { Chunk } from '../../interfaces';
 import MathProblem from '../../components/math/MathProblem';
 import DocumentHeader from '../../components/document/DocumentHeader';
 import AIChatSmallWrapper from '../../components/math/AIChatSmallWrapper';
+import useSubmitDocument from '../../hooks/tools/math/useSubmitDocument';
 
 const DocumentDisplay: React.FC = () => {
     const { id } = useParams();
     const { isLoading, error, document } = useGetDocument(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/school_document`, Number(id));
 
+    const endpoint2 = `${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/school_document/`;
+    const { updateDocument } = useSubmitDocument(endpoint2);
 
     if (isLoading) {
         return <div className="text-white">Loading...</div>;
@@ -27,13 +29,43 @@ const DocumentDisplay: React.FC = () => {
         return <div className="text-white">No document found</div>;
     }
 
-    const insertChunk = (index: number, chunk: Chunk) => {
-        console.log("insert from display document", index, "problem", chunk)
-    }
+    const insertChunk = (index: number) => {
+        // Define an empty chunk with the type and empty content
+        const emptyChunk: Chunk = { type: "chunk", content: [] };
+
+        // Create a copy of the existing chunks and insert the empty chunk at the specified index
+        const updatedChunks = [...(document.problemChunks || [])];
+        updatedChunks.splice(index, 0, emptyChunk);
+
+        // Create an updated document object with the new chunks array
+        const updatedDocument = { ...document, problemChunks: updatedChunks };
+
+        // Submit the change, triggering the updateDocument mutation
+        updateDocument({ document: updatedDocument });
+    };
+
 
     const deleteChunk = (index: number) => {
-        console.log("delete from display document for index: ", index)
-    }
+        // Create a copy of the existing chunks and remove the chunk at the specified index
+        const updatedChunks = [...(document.problemChunks || [])];
+        updatedChunks.splice(index, 1);
+
+        // Create an updated document object with the new chunks array
+        const updatedDocument = { ...document, problemChunks: updatedChunks };
+
+        // Submit the change, triggering the updateDocument mutation
+        updateDocument({ document: updatedDocument });
+    };
+
+    const updateDocumentChunk = (chunk: Chunk, index: number) => {
+        // Update the specific chunk in the document
+
+        const updatedChunks = document.problemChunks?.map((c, i) => (i === index ? { ...chunk, id: undefined } : c)) || [];
+        const updatedDocument = { ...document, problemChunks: updatedChunks };
+
+        // Submit the change, triggering the updateDocument mutation
+        updateDocument({ document: updatedDocument });
+    };
 
     return (
         <div className='flex '>
@@ -42,15 +74,19 @@ const DocumentDisplay: React.FC = () => {
                 <DocumentHeader document={document} />
                 {document.problemChunks
                     && document.problemChunks.length > 0
-                    && document.problemChunks?.map((chunk, index) => {
+                    && document.problemChunks?.map((chunk, chunkIndex) => {
                         return (
                             <div className='w-3/4 mx-auto flex flex-row mb-4 bg-gray-900 p-2'>
                                 <div className='w-5/6  rounded-xl'>
-
-                                    <AIChatSmallWrapper chunk={chunk} index={index} >
+                                    <AIChatSmallWrapper chunk={chunk} index={chunkIndex}
+                                        updateChunk={updateDocumentChunk}
+                                    >
                                         <MathProblem
-                                            key={index}
-                                            index={index}
+                                            insertChunk={insertChunk}
+                                            deleteChunk={deleteChunk}
+                                            updateChunk={updateDocumentChunk}
+                                            key={chunkIndex}
+                                            chunkIndex={chunkIndex}
                                             problem={chunk}
                                         />
                                     </AIChatSmallWrapper>
@@ -60,10 +96,9 @@ const DocumentDisplay: React.FC = () => {
                                         test
                                     </div>
                                 </div>
-
-                            </div>)
-                    })
-                }
+                            </div>
+                        )
+                    })}
             </div>
         </div>
     );

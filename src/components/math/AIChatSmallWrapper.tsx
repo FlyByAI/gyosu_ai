@@ -10,9 +10,10 @@ interface AIChatSmallWrapperProps {
     chunk: Chunk;
     index: number;
     className?: string;
+    updateChunk: (updatedChunk: Chunk, chunkIndex: number) => void;
 }
 
-const AIChatSmallWrapper: React.FC<AIChatSmallWrapperProps> = ({ className, chunk, index, children }) => {
+const AIChatSmallWrapper: React.FC<AIChatSmallWrapperProps> = ({ updateChunk, className, chunk, index, children }) => {
 
     const [smallChatText, setSmallChatText] = useState('');
     const formRef = useRef<HTMLFormElement>(null);
@@ -22,12 +23,20 @@ const AIChatSmallWrapper: React.FC<AIChatSmallWrapperProps> = ({ className, chun
 
     const options = { language: language, topic: "none" };
 
-    const { error, isLoading, submitTextWithChunk } = useSubmitTextWithChunk(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/chat/problem/`)
+    const { submitTextWithChunk, isLoading, error, data } = useSubmitTextWithChunk(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/chat/problem/`);
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (typeof smallChatText === 'string' && chunk) {
-            await submitTextWithChunk(smallChatText, chunk, options);
+            submitTextWithChunk({ userInput: smallChatText, chunk, options },
+                {
+                    onSuccess: (responseData) => {
+                        // Extract the updated chunk and update it
+                        const updatedChunk = responseData?.updatedChunk || chunk;
+                        updateChunk && updateChunk(updatedChunk, index);
+                    }
+                }
+            );
         }
     };
 

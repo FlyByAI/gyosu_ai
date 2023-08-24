@@ -11,7 +11,7 @@ const MathGenerate: React.FC = () => {
 
     const { session, openSignIn } = useClerk();
 
-    const [chunkArr, setChunkArr] = useState<Chunk[]>([]);
+    const [chunkArray, setChunkArray] = useState<Chunk[]>([]);
 
     const [problemData, setProblemData] = useState<ProblemData | undefined>(undefined);
 
@@ -19,8 +19,7 @@ const MathGenerate: React.FC = () => {
 
     const handleSubmit = (data: { response: Chunk[] | string; id?: number }) => {
         const chunkArray = data.response as Chunk[];
-
-        setChunkArr(chunkArray);
+        setChunkArray(chunkArray);
     };
 
     useEffect(() => {
@@ -35,10 +34,13 @@ const MathGenerate: React.FC = () => {
             <div className="w-full">
                 <MathGenerateForm onSubmit={handleSubmit} setProblemData={setProblemData} />
                 <div>
-                    {problemData && chunkArr.length > 0 && <ChunkManager
-                        chunkArray={chunkArr}
-                        problemData={problemData}
-                    />}
+                    {problemData &&
+                        chunkArray.length > 0 &&
+                        <ChunkManager
+                            setChunkArray={setChunkArray}
+                            chunkArray={chunkArray}
+                            problemData={problemData}
+                        />}
                 </div>
             </div>
         </div>

@@ -6,33 +6,35 @@ import AIChatSmallWrapper from './AIChatSmallWrapper';
 interface ChunkManagerProps {
     chunkArray: Chunk[];
     problemData?: ProblemData;
+    setChunkArray: (value: React.SetStateAction<Chunk[]>) => void
 }
 
-const ChunkManager: React.FC<ChunkManagerProps> = ({ chunkArray, problemData }) => {
-    const [chunkArr, setChunkArr] = useState<Chunk[]>(chunkArray); //keep in mind this will not update parent state
+const ChunkManager: React.FC<ChunkManagerProps> = ({ chunkArray, problemData, setChunkArray }) => {
 
-    const insertChunk = (index: number, chunk: Chunk) => {
-        console.log('test', index, chunk)
-    }
+    const updateChunk = (updatedChunk: Chunk, index: number) => {
+        console.log("update chunk: ", chunkArray[index], "new chunk:", updatedChunk, index)
 
-    const deleteChunk = (index: number) => {
-        console.log('test', index)
-    }
+        setChunkArray(prevChunks => {
+            const newChunks = [...prevChunks];
+            newChunks[index] = updatedChunk;
+            return newChunks;
+        });
+    };
 
     return (
         <div className='flex flex-col'>
             <div className="text-xl justify-center text-white flex items-center">Problem Browser</div>
-            {chunkArr?.map((chunk, index) => {
+            {chunkArray?.map((chunk, chunkIndex) => {
                 return (
                     <div className='w-3/4 mx-auto flex flex-row mb-4 bg-gray-900 p-2'>
                         <div className='w-5/6  rounded-xl'>
 
-                            <AIChatSmallWrapper chunk={chunk} index={index} >
+                            <AIChatSmallWrapper chunk={chunk} index={chunkIndex} updateChunk={updateChunk} >
                                 <MathProblem
-                                    key={index}
-                                    index={index}
+                                    key={chunkIndex}
+                                    chunkIndex={chunkIndex}
                                     problem={chunk}
-                                />
+                                    updateChunk={updateChunk} />
                             </AIChatSmallWrapper>
                         </div>
                         <div className='w-1/6 bg-gray-900 p-2'>

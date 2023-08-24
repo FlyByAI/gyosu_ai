@@ -13,24 +13,19 @@ import ToolWrapper from './math/ToolWrapper';
 interface ChunkProps {
     chunk: Chunk;
     edit?: boolean;
+    insertChunk?: (chunkIndex: number) => void;
+    deleteChunk?: (chunkIndex: number) => void;
+    updateChunk: (updatedChunk: Chunk, chunkIndex: number) => void;
+    chunkIndex: number;
 }
 
-export const ChunkComponent: React.FC<ChunkProps> = ({ chunk }) => {
-    const [content, setContent] = useState<Chunk['content']>(chunk.content);
+export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, deleteChunk, updateChunk, chunkIndex }) => {
     const [, ref] = useDrag({
         type: CHUNK_DRAG_TYPE,
-        item: { type: CHUNK_TYPE, content: content } as Chunk
+        item: { type: CHUNK_TYPE, content: chunk.content } as Chunk
     });
 
-    const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
     const [isHovered, setIsHovered] = useState(false);
-
-    const onDelete = (index: number) => {
-        const updatedContent = [...content];
-        updatedContent.splice(index, 1);
-        setContent(updatedContent);
-        setSelectedIndex(null); // Reset selected index after deletion
-    };
 
     const [, drop] = useDrop({
         accept: [INSTRUCTION_DRAG_TYPE, PROBLEM_DRAG_TYPE],
@@ -39,32 +34,48 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk }) => {
         },
         drop: (item: Instruction | Problem) => {
             if (item.type === INSTRUCTION_TYPE || item.type === PROBLEM_TYPE) {
-                setContent([...content, item]);
+                const updatedContent = [...chunk.content, item];
+                // Update the content state if you still want to use it elsewhere
+                // setContent(updatedContent);
+
+                // Create a new chunk object with the updated content
+                const updatedChunk = { ...chunk, content: updatedContent };
+
+                // Use the method from props to update the chunk
+                updateChunk(updatedChunk, chunkIndex);
             }
         },
     });
 
-    const [isChildHovered, setIsChildHovered] = useState(false);
-
-    useEffect(() => { console.log(isChildHovered) }, [isChildHovered])
-
     return (
-        <ToolWrapper chunk={chunk}>
+        <ToolWrapper chunk={chunk}
+            insertChunk={insertChunk || undefined}
+            deleteChunk={deleteChunk || undefined}
+            updateChunk={updateChunk}
+            chunkIndex={chunkIndex}
+        >
             <div
                 ref={(node) => ref(drop(node))}
                 onMouseEnter={() => !isHovered && setIsHovered(true)}
                 onMouseLeave={() => isHovered && setIsHovered(false)}
                 className={"border-2 border-transparent p-4 " + (isHovered ? " hover:border-green-200 border-dashed hover:border-2 hover:border-purple-dashed" : '')}
             >
-                {content.map((item, index) => {
+                {chunk.content.length === 0 && <div className="text-gray-400 p-4">Drag and drop instructions or problems here</div>}
+                {chunk.content.map((item, index) => {
                     return (
-                        <div key={`${item.type}-${index}-${content.length}`}>
+                        <div key={`${item.type}-${index}-${chunk.content.length}`}>
                             {(() => {
                                 switch (item.type) {
                                     case 'instruction':
                                         return (
                                             <ToolWrapper
-                                                key={`${item.type}-${index}-${content.length}`} chunk={chunk} instruction={item}
+                                                key={`${item.type}-${index}-${chunk.content.length}`}
+                                                insertChunk={insertChunk}
+                                                deleteChunk={deleteChunk}
+                                                updateChunk={updateChunk}
+                                                chunkIndex={chunkIndex}
+                                                chunk={chunk}
+                                                instruction={item}
                                             >
                                                 <InstructionComponent instruction={item} onInstructionHover={setIsHovered} />
                                             </ToolWrapper>
@@ -72,7 +83,13 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk }) => {
                                     case 'problem':
                                         return (
                                             <ToolWrapper
-                                                key={`${item.type}-${index}-${content.length}`} chunk={chunk} problem={item}
+                                                key={`${item.type}-${index}-${chunk.content.length}`}
+                                                insertChunk={insertChunk}
+                                                deleteChunk={deleteChunk}
+                                                updateChunk={updateChunk}
+                                                chunkIndex={chunkIndex}
+                                                chunk={chunk}
+                                                problem={item}
                                             >
                                                 <ProblemComponent problem={item} onInstructionHover={setIsHovered} />
                                             </ToolWrapper>
@@ -90,7 +107,6 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk }) => {
     );
 
 };
-
 
 
 interface InstructionProps {

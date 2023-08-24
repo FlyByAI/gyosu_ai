@@ -7,9 +7,13 @@ interface ToolWrapperProps {
     chunk: Chunk;
     instruction?: Instruction;
     problem?: Problem;
+    insertChunk?: (chunkIndex: number) => void;
+    deleteChunk?: (chunkIndex: number) => void;
+    updateChunk: (updatedChunk: Chunk, chunkIndex: number) => void;
+    chunkIndex: number;
 }
 
-const ToolWrapper: React.FC<ToolWrapperProps> = ({ children, chunk, instruction, problem }) => {
+const ToolWrapper: React.FC<ToolWrapperProps> = ({ children, chunk, instruction, problem, insertChunk, deleteChunk, updateChunk, chunkIndex }) => {
     const [isHovered, setIsHovered] = useState(false);
     const [isClicked, setIsClicked] = useState(false);
     const wrapperRef = useRef<HTMLDivElement>(null);
@@ -52,7 +56,12 @@ const ToolWrapper: React.FC<ToolWrapperProps> = ({ children, chunk, instruction,
                     <ToolBadge
                         chunk={chunk}
                         instruction={instruction}
-                        problem={problem} />
+                        problem={problem}
+                        updateChunk={updateChunk}
+                        insertChunk={insertChunk || undefined}
+                        deleteChunk={deleteChunk || undefined}
+                        chunkIndex={chunkIndex}
+                    />
                 </div>
             )}
             {children}

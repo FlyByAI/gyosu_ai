@@ -10,7 +10,7 @@ export interface ProblemData {
 export interface ChunkInstructionProblem {
     chunk: Chunk;
     instruction?: Instruction;
-    Problem?: Problem;
+    problem?: Problem;
 }
 export interface IPost {
     id: number;

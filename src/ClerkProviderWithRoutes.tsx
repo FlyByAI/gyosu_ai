@@ -92,6 +92,16 @@ export default function ClerkProviderWithRoutes() {
                     }
                 />
                 <Route
+                    path="/math-app/document/:id"
+                    element={
+                        <>
+                            <Navbar />
+                            <DocumentDisplay />
+                            <Subscription />
+                        </>
+                    }
+                />
+                <Route
                     path="/math-app/search"
                     element={
                         <>
@@ -113,16 +123,7 @@ export default function ClerkProviderWithRoutes() {
                         </>
                     }
                 />
-                <Route
-                    path="/math-app/document/:id"
-                    element={
-                        <>
-                            <Navbar />
-                            <DocumentDisplay />
-                            <Subscription />
-                        </>
-                    }
-                />
+
                 <Route
                     path="/math-app/document/:id/export"
                     element={

@@ -3,8 +3,42 @@ import { Link } from 'react-router-dom';
 import ArrowRightMore from '../svg/ArrowRightMore';
 import MathProblem from '../components/math/MathProblem';
 import { Chunk, ProblemData } from '../interfaces';
+import AIChatSmallWrapper from '../components/math/AIChatSmallWrapper';
 
 const LandingPage: React.FC = () => {
+
+    const sampleChunk: Chunk = {
+        "id": 0,
+        "type": "chunk",
+        "content": [
+            {
+                "type": "problem",
+                "content": [
+                    {
+                        "type": "text",
+                        "value": "What is the difference between a relation and a function?"
+                    }
+                ]
+            }
+        ]
+    }
+
+    const sampleChunk2: Chunk = {
+        "id": 1,
+        "type": "chunk",
+        "content": [
+            {
+                "type": "problem",
+                "content": [
+                    {
+                        "type": "text",
+                        "value": "What is the difference between a relation and a function?"
+                    }
+                ]
+            }
+        ]
+    }
+
     return (
         <div>
             <section className="h-full flex flex-col md:flex-row items-center" style={{ backgroundImage: `url('/svg/dark-bg.svg')`, backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover' }}>
@@ -55,62 +89,39 @@ const LandingPage: React.FC = () => {
                     <p className=" text-lg">Drag problems to re-arrange them</p>
                 </div>
                 <div className='w-full md:w-1/2 flex flex-col py-4'>
+                    <div className='w-3/4 mx-auto flex flex-row mb-4 bg-gray-900 p-2'>
+                        <div className='w-full rounded-xl'>
+                            <AIChatSmallWrapper chunk={sampleChunk} index={0}
+                                updateChunk={() => console.log('update')}
+                            >
+                                <MathProblem chunkIndex={0}
+                                    problem={sampleChunk as Chunk}
+                                    updateChunk={() => console.log('update')} />
+                            </AIChatSmallWrapper>
 
-                    <MathProblem index={0}
-                        problem={{
-                            "id": 1,
-                            "parent_id": null,
-                            "type": "chunk",
-                            "content": [
-                                {
-                                    "type": "problem",
-                                    "content": [
-                                        {
-                                            "type": "text",
-                                            "value": "What is the difference between a relation and a function?"
-                                        }
-                                    ]
-                                }
-                            ]
-                        } as Chunk}
-                        problemData={{} as ProblemData}
-                        insertChunk={() => console.log("demo")}
-                        deleteChunk={() => console.log("demo")}
-                    />
+                        </div>
+                    </div>
                 </div>
-
             </section>
-
             <section className="py-10 h-full bg-pink-100 justify-center text-gray-700 flex flex-col md:flex-row items-center">
                 <div className='w-full md:w-1/2 text-2xl md:text-5xl flex flex-col items-center'>
                     <h1 className="font-bold mb-4">Chat with AI</h1>
                     <p className="text-lg">Make the problem more fun</p>
                 </div>
                 <div className='w-full md:w-1/2 flex flex-col py-4'>
-
-                    <MathProblem index={0}
-                        problem={{
-                            "type": "chunk",
-                            "content": [
-                                {
-                                    "type": "problem",
-                                    "content": [
-                                        {
-                                            "type": "text",
-                                            "value": "Why does the domain differ for different functions?"
-                                        }
-                                    ]
-                                }
-                            ],
-                        } as Chunk}
-                        problemData={{} as ProblemData}
-                        insertChunk={() => console.log("demo")}
-                        deleteChunk={() => console.log("demo")}
-                    />
+                    <div className='w-3/4 mx-auto flex flex-row mb-4 bg-gray-900 p-2'>
+                        <div className='w-full rounded-xl'>
+                            <AIChatSmallWrapper chunk={sampleChunk2} index={0}
+                                updateChunk={() => console.log('update')}
+                            >
+                                <MathProblem chunkIndex={0}
+                                    problem={sampleChunk2 as Chunk}
+                                    updateChunk={() => console.log('update')} />
+                            </AIChatSmallWrapper>
+                        </div>
+                    </div>
                 </div>
-
             </section>
-
             <section className="p-10 h-full flex items-center" style={{ backgroundImage: `url('/svg/tech-bg.svg')`, backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover' }}>
                 <div className="w-2/3 text-5xl text-gray-800">
                     <h1 className="font-bold">A teaching tool</h1>

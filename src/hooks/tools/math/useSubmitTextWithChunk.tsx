@@ -1,22 +1,14 @@
+import { useMutation } from '@tanstack/react-query';
 import { useClerk } from '@clerk/clerk-react';
 import humps from 'humps';
-import { useState } from 'react';
-import { Chunk, ProblemData } from '../../../interfaces';
-import { useLanguage } from '../../../contexts/useLanguage';
+import { Chunk } from '../../../interfaces';
 
 const useSubmitTextWithChunk = (endpoint: string) => {
     const { session } = useClerk();
-    const [isLoading, setLoading] = useState<boolean>(false);
-    const [error, setError] = useState<string | null>(null);
-    const [data, setData] = useState<any | null>(null);
 
-    const submitTextWithChunk = async (userInput: string, chunk: Chunk, options = { language: "en", topic: "none" }) => {
-        setLoading(true);
-        setError(null);
-
-        try {
+    const submitTextWithChunkMutation = useMutation(
+        async ({ userInput, chunk, options }: { userInput: string; chunk: Chunk; options?: { language: string; topic: string } }) => {
             const token = session ? await session.getToken() : "none";
-
             const body = humps.decamelizeKeys({ userInput, chunk, ...options });
 
             const response = await fetch(endpoint, {
@@ -25,26 +17,23 @@ const useSubmitTextWithChunk = (endpoint: string) => {
                     'Content-Type': 'application/json',
                     'Authorization': token ? `Bearer ${token}` : '',
                 },
-                body: JSON.stringify(body)  // Add Chunk variable here
-
+                body: JSON.stringify(body)
             });
-
 
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
 
-            const responseData = await response.json().then((json) => humps.camelizeKeys(json));
-            setData(responseData);
-
-            setLoading(false);
-        } catch (err: any) {
-            setError(err.message);
-            setLoading(false);
+            return response.json().then((json) => humps.camelizeKeys(json));
         }
-    };
+    );
 
-    return { submitTextWithChunk, isLoading, error, data };
+    return {
+        submitTextWithChunk: submitTextWithChunkMutation.mutate,
+        isLoading: submitTextWithChunkMutation.isLoading,
+        error: submitTextWithChunkMutation.error,
+        data: submitTextWithChunkMutation.data,
+    };
 };
 
 export default useSubmitTextWithChunk;

@@ -45,7 +45,9 @@ const useSubmitDocument = (endpoint: string) => {
         async (documentData: DocumentData) => {
             const token = session ? await session.getToken() : 'none';
             const payload = humps.decamelizeKeys({ document: documentData.document, ...documentData.formData });
-            console.log("token", token)
+
+            console.log(payload)
+
             const response = await fetch(`${endpoint}${documentData.document.id}/`, {
                 method: 'PATCH',
                 headers: {
@@ -60,6 +62,9 @@ const useSubmitDocument = (endpoint: string) => {
             }
 
             const responseData = await response.json();
+
+            console.log(responseData)
+
             return humps.camelizeKeys(responseData) as MathFormData;
         },
         {
