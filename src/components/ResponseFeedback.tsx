@@ -12,7 +12,7 @@ interface IResponseFeedbackProps {
     toolName: string;
     className?: string;
     size?: 6 | 10 | 15;
-    data: ProblemData
+    data: ProblemData | null;
 }
 const ResponseFeedback = ({ responseText, toolName, className, size = 10, data }: IResponseFeedbackProps) => {
     const [thumbUpSelected, setThumbUpSelected] = useState(false);
@@ -56,12 +56,12 @@ const ResponseFeedback = ({ responseText, toolName, className, size = 10, data }
     return (
         <div className={"flex justify-center" + className}>
             <button onClick={handleThumbUpClick} className="mr-2">
-                <div className={`w-${size} dark:text-gray-300`}>
+                <div className={`w-${size} dark:text-gray-700`}>
                     <ThumbsUpSvg rating={rating} />
                 </div>
             </button>
             <button onClick={handleThumbDownClick} className="">
-                <div className={`w-${size} dark:text-gray-300`}>
+                <div className={`w-${size} dark:text-gray-700`}>
                     <ThumbsDownSvg rating={rating} />
                 </div>
             </button>
@@ -72,7 +72,7 @@ const ResponseFeedback = ({ responseText, toolName, className, size = 10, data }
                 onClose={handleCloseModal}
                 toolName={toolName}
                 responseText={responseText}
-                data={data}
+                data={data || {}}
             />
         </div>
     );

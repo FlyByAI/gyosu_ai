@@ -20,7 +20,7 @@ const MyMathDocuments: React.FC = () => {
             <DocumentShelf isExporting={false} />
             <div className="w-5/6">
                 <div className="flex flex-row justify-center mb-2">
-                    <Accordion title={"My problem bank"} visible={true}>
+                    <Accordion title={"My Problem Bank"} visible={true}>
                         <GridContainer3x3>
                             {documents?.map((doc, index) => (
                                 <DocumentPreview key={index} document={doc} />

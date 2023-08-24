@@ -7,7 +7,6 @@ import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 import { useDrag, useDrop } from 'react-dnd';
-import ToolBadge from './math/ToolBadge';
 import ToolWrapper from './math/ToolWrapper';
 
 
@@ -64,7 +63,6 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk }) => {
                                     case 'problem':
                                         return <ProblemComponent problem={item} onInstructionHover={setIsHovered} />;
                                     default:
-                                        console.log("NO MATCH", item);
                                         return null;
                                 }
                             })()}

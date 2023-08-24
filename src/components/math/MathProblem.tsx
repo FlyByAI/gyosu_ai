@@ -27,7 +27,7 @@ const MathProblem: React.FC<MathProblemProps> = ({ index, problem, problemData, 
             {/* first section */}
             <div className={` m-4 flex flex-col w-full bg-white dark:bg-gray-900 shadow-md rounded-md mb-2 pe-0  max-w-4xl`}>
                 <div className="flex space-y-4 p-2">
-                    <div className="flex flex-col w-5/6 space-y-4">
+                    <div className="flex flex-col w-full space-y-4">
                         <ResponseBox
                             key={index}
                             data={problemData}
@@ -39,8 +39,7 @@ const MathProblem: React.FC<MathProblemProps> = ({ index, problem, problemData, 
 
                     </div>
                     <div className="flex flex-grow flex-col w-1/6 space-y-4 justify-center items-center">
-                        <ResponseFeedback responseText={JSON.stringify(problem)} toolName={'math_app'} data={problemData} className='mt-4' size={6} />
-                        <div className="flex flex-row justify-center items-center">
+                        {/* <div className="flex flex-row justify-center items-center">
                             <div className="mr-2 group relative dark:text-green-300">
                                 <button onClick={() => insertChunk(index, {} as Chunk)}><PlusIcon /></button>
                                 <div className="hidden group-hover:block group-hover:left-12 absolute bg-gray-700 text-white py-1 px-2 rounded text-l">Insert Problem</div>
@@ -63,7 +62,7 @@ const MathProblem: React.FC<MathProblemProps> = ({ index, problem, problemData, 
                                 }}><TrashIcon /></button>
                                 <div className="hidden group-hover:block group-hover:left-12 absolute bg-gray-700 text-white py-1 px-2 rounded text-l">Delete Problem</div>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </div>
