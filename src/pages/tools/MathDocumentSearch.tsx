@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import 'tailwindcss/tailwind.css';
 import { notSecretConstants } from '../../constants/notSecretConstants';
-import useFetchDocuments from '../../hooks/tools/math/useFetchDocuments';
 import Accordion from '../../components/Accordion';
 import GridContainer3x3 from '../../components/grids/GridContainer3x3';
 import DocumentPreview from '../../components/forms/DocumentPreview';
 import MathDocumentSearchForm from '../../components/math/MathDocumentSearchForm';
 import DocumentShelf from '../../components/document/DocumentShelf';
+import useGetDocuments from '../../hooks/tools/math/useGetDocuments';
 
 const MathDocumentSearch: React.FC = () => {
 
-    const { documents, error } = useFetchDocuments(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/school_document/community/recent/`);
+    const { documents, error } = useGetDocuments(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/school_document/community/recent/`);
 
     console.log(documents)
     return (

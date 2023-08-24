@@ -21,13 +21,9 @@ export interface DocumentShelfProps {
 const DocumentShelf: React.FC<DocumentShelfProps> = ({ isExporting }) => {
 
     const endpoint = `${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/school_document/list/`;
-    const { getDocuments, isLoading, error, documents } = useGetDocuments(endpoint);
+    const { documents, isLoading, error } = useGetDocuments(endpoint);
     const endpoint2 = `${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/school_document/`;
     const { submitDocument, updateDocument } = useSubmitDocument(endpoint2);
-
-    useEffect(() => {
-        getDocuments();
-    }, [getDocuments]);
 
     const handleAddDocument = async () => {
         const newDocument: Document = {
@@ -44,8 +40,6 @@ const DocumentShelf: React.FC<DocumentShelfProps> = ({ isExporting }) => {
         };
 
         await submitDocument({ document: newDocument });
-
-        getDocuments();
     };
 
     const handleDropNode = async (documentId: number, node: Chunk | Problem | Instruction) => {
@@ -87,7 +81,7 @@ const DocumentShelf: React.FC<DocumentShelfProps> = ({ isExporting }) => {
         <div style={{ marginLeft: '16.6667%' }} />
         <div className="flex flex-col w-1/6 bg-gray-800 p-4 h-screen fixed overflow-y-scroll">
             <div className="flex justify-between items-center mb-2">
-                <h3 className="text-white text-xl">Doc Shelf</h3>
+                <h3 className="text-white text-xl">Problem Bank</h3>
                 <button onClick={handleAddDocument} className="bg-blue-400 p-2 rounded-md text-white font-extrabold">
                     <PlusIcon />
                 </button>

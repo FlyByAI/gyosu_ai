@@ -31,6 +31,7 @@ import DocumentEditor from './pages/tools/DocumentEditor.tsx';
 import LandingPage from './pages/Landing.tsx';
 import MathDocumentSearch from './pages/tools/MathDocumentSearch.tsx';
 import MathGenerate from './pages/tools/MathGenerate.tsx';
+import MathDocumentBank from './pages/tools/MathDocumentBank.tsx';
 
 const clerkPubKey = "pk_test_Y2F1c2FsLWJ1bm55LTQ0LmNsZXJrLmFjY291bnRzLmRldiQ";
 
@@ -96,6 +97,17 @@ export default function ClerkProviderWithRoutes() {
                         <>
                             <Navbar />
                             <MathDocumentSearch />
+                            <Footer />
+                            <Subscription />
+                        </>
+                    }
+                />
+                <Route
+                    path="/math-app/bank"
+                    element={
+                        <>
+                            <Navbar />
+                            <MathDocumentBank />
                             <Footer />
                             <Subscription />
                         </>

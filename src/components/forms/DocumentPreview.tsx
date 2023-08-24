@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
@@ -44,6 +44,10 @@ const DocumentPreview: React.FC<DocumentPreviewProps> = ({ document }) => {
     };
 
 
+    useEffect(() => {
+        console.log(document, document.problemChunks)
+    })
+
     return (
         <Link to={`/math-app/document/${id}`}
             className='m-2 bg-white rounded-2xl relative'
@@ -69,6 +73,7 @@ const DocumentPreview: React.FC<DocumentPreviewProps> = ({ document }) => {
                             <span className="text-white text-xl font-bold">Edit</span>
                         </div>
                     )}
+                    {document.title}
                     {upvotes > 0 && <p>Upvotes: {upvotes}</p>}
                     {tips > 0 && <p> Tips: {tips}</p>}
                 </div>

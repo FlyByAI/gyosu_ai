@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import 'tailwindcss/tailwind.css';
-import { notSecretConstants } from '../../constants/notSecretConstants';
-import GridContainer3x3 from '../../components/grids/GridContainer3x3';
-import DocumentPreview from '../../components/forms/DocumentPreview';
-import useFetchDocuments from '../../hooks/tools/math/useFetchDocuments';
 import { useClerk, useUser } from '@clerk/clerk-react';
-import Accordion from '../../components/Accordion';
 import { Chunk, ProblemData } from '../../interfaces';
 import DocumentShelf from '../../components/document/DocumentShelf';
 import ChunkManager from '../../components/math/ChunkManager';
