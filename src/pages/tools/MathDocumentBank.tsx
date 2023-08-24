@@ -6,7 +6,7 @@ import GridContainer3x3 from '../../components/grids/GridContainer3x3';
 import DocumentPreview from '../../components/forms/DocumentPreview';
 import useGetDocuments from '../../hooks/tools/math/useGetDocuments';
 
-const MyMathDocumentBank: React.FC = () => {
+const MyMathDocuments: React.FC = () => {
     const { documents, error } = useGetDocuments(
         `${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/school_document/list/`
     );
@@ -33,4 +33,4 @@ const MyMathDocumentBank: React.FC = () => {
     );
 };
 
-export default MyMathDocumentBank;
+export default MyMathDocuments;

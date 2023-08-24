@@ -7,6 +7,7 @@ interface DropdownProps {
     className?: string;
     defaultValue?: string;
     label: string;
+    showSelected: boolean;
 }
 
 const mapOptions = (options: DropdownProps['options']) => {
@@ -28,18 +29,18 @@ const mapOptions = (options: DropdownProps['options']) => {
     }
 };
 
-const Dropdown: React.FC<DropdownProps> = ({ options, handleChange, disabled = false, className, defaultValue, label }) => {
+const Dropdown: React.FC<DropdownProps> = ({ options, handleChange, disabled = false, className, defaultValue, label, showSelected }) => {
     const optionsArray = mapOptions(options).filter(key => key.value !== 'option_text');
     const selectedValue = defaultValue ? defaultValue : optionsArray[0]?.value || '';
 
     return (
-        <>
-            <h2 className="text-xl font-bold mb-2 text-white text-left">{label + ": " + selectedValue}</h2>
+        <div className={className}>
+            <h2 className="h-6 text-lg mb-2 text-white text-left">{label + (showSelected ? ": " + selectedValue : "")}</h2>
             <select
                 disabled={disabled}
                 value={selectedValue}
                 onChange={handleChange}
-                className={className + " form-select block w-full mt-1"}
+                className={"form-select block w-full mt-1"}
             >
                 {optionsArray.map((option, index) => (
                     <option key={index} value={option.value}>
@@ -47,7 +48,7 @@ const Dropdown: React.FC<DropdownProps> = ({ options, handleChange, disabled = f
                     </option>
                 ))}
             </select>
-        </>
+        </div>
     );
 };
 

@@ -108,10 +108,10 @@ const MathGenerateForm: React.FC<MathGenerateFormProps> = ({ onSubmit, setProble
         <>
             <div className="flex justify-center items-center">
                 <div className="w-full md:w-1/2 bg-gray-700 rounded-lg p-8 m-4 shadow-lg">
-                    <Dropdown label={"Source Material"} options={formOptionsObj} defaultValue={sourceMaterial} handleChange={handleSourceMaterialChange} className="form-select block w-full mt-1" />
-                    <Dropdown label={"Document Type"} options={typeOptions} defaultValue={typeOptions[0]} handleChange={handleTypeChange} className="form-select block w-full mt-1" />
-                    <Dropdown label={"Section"} options={formOptionsObj[sourceMaterial]} defaultValue={section} handleChange={handleSectionChange} className="form-select block w-full mt-1" />
-                    <Dropdown label={"Problem Type"} options={formOptionsObj[sourceMaterial][section]['problem_types']} defaultValue={problemType} handleChange={handleChangeProblemType} className="form-select block w-full mt-1" />
+                    <Dropdown showSelected={false} label={"Source Material"} options={formOptionsObj} defaultValue={sourceMaterial} handleChange={handleSourceMaterialChange} className="flex flex-col w-full" />
+                    <Dropdown showSelected={false} label={"Document Type"} options={typeOptions} defaultValue={typeOptions[0]} handleChange={handleTypeChange} className="flex flex-col w-full" />
+                    <Dropdown showSelected={false} label={"Section"} options={formOptionsObj[sourceMaterial]} defaultValue={section} handleChange={handleSectionChange} className="flex flex-col w-full" />
+                    <Dropdown showSelected={false} label={"Problem Type"} options={formOptionsObj[sourceMaterial][section]['problem_types']} defaultValue={problemType} handleChange={handleChangeProblemType} className="flex flex-col w-full" />
                     <SubmitButton
                         buttonText={"Generate New"}
                         handleClick={handleMathSubmit}
