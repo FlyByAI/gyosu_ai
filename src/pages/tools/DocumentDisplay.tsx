@@ -22,7 +22,19 @@ const DocumentDisplay: React.FC = () => {
     }
 
     if (error) {
-        return <div className="text-white">Error: {error.message}</div>;
+        return (
+            <div className='flex'>
+                <DocumentShelf isExporting={false} />
+                <div className="w-5/6">
+                    <div className="text-white text-center mt-2">
+                        Error: {error.message}
+                    </div>
+                    <div className="text-white text-center mt-4">
+                        Document not found.
+                    </div>
+                </div>
+            </div>
+        );
     }
 
     if (!document) {

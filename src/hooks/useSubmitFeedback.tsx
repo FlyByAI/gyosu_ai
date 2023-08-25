@@ -15,7 +15,7 @@ const useSubmitFeedback = (endpoint: string) => {
         setLoading(true);
         setError(null);
 
-        const feedbackDataWithChapSec = { ...feedbackData, chapter: feedbackData.section.split(".")[0], section: feedbackData.section.split(".")[1] };
+        const feedbackDataWithChapSec = { ...feedbackData };
 
         try {
             const response = await fetch(endpoint, {

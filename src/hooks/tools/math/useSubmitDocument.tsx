@@ -78,6 +78,32 @@ const useSubmitDocument = (endpoint: string) => {
         }
     );
 
+    const deleteDocumentMutation = useMutation<void, Error, Document>(
+        async (document: Document) => {
+            const token = session ? await session.getToken() : 'none';
+
+            const response = await fetch(`${endpoint}/${document.id}/`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': token ? `Bearer ${token}` : '',
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+        },
+        {
+            onSuccess: (_, context) => {
+                // Invalidate 'documents' query when deleting a document
+                queryClient.invalidateQueries(['documents']);
+                queryClient.invalidateQueries(['document', context.id]);
+                console.log(context.id)
+            },
+        }
+    );
+
 
     return {
         submitDocument: submitDocumentMutation.mutate,
@@ -85,6 +111,10 @@ const useSubmitDocument = (endpoint: string) => {
         isLoading: submitDocumentMutation.isLoading || updateDocumentMutation.isLoading,
         error: submitDocumentMutation.error || updateDocumentMutation.error,
         data: submitDocumentMutation.data || updateDocumentMutation.data,
+        //delete
+        deleteDocument: deleteDocumentMutation.mutate,
+        isDeleting: deleteDocumentMutation.isLoading,
+        deleteError: deleteDocumentMutation.error,
     };
 };
 

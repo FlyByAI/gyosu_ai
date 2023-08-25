@@ -11,6 +11,8 @@ export default function App() {
   const editorRef = useRef(null);
   const log = () => {
     if (editorRef.current) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       console.log(editorRef.current.getContent());
     }
   };
@@ -29,6 +31,8 @@ export default function App() {
       const katexHtml = katex.renderToString(latexString, {
         throwOnError: true
       })
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       editorRef.current.insertContent(katexHtml);
     }
   };
@@ -36,8 +40,9 @@ export default function App() {
   const insertLatex = (latex: string) => {
     if (editorRef.current) {
       const editor = editorRef.current;
-      // The MathType plugin expects LaTeX to be wrapped in specific delimiters
       const wrappedLatex = `${latex}`;
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       editor.insertContent(wrappedLatex);
     }
   };
@@ -54,6 +59,7 @@ export default function App() {
         {`$$ax^2 + bx + c$$`}
       </ReactMarkdown>
       <Editor
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         onInit={(evt, editor) => editorRef.current = editor}
         initialValue={initialValue}

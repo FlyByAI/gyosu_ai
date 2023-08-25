@@ -8,6 +8,8 @@ import DocumentTitle from '../document/DocumentTitle';
 import useGetDocument from '../../hooks/tools/math/useGetDocument';
 import { notSecretConstants } from '../../constants/notSecretConstants';
 import ChevronLeft from '../../svg/ChevronLeft';
+import useSubmitDocument from '../../hooks/tools/math/useSubmitDocument';
+import TrashIcon from '../../svg/TrashIcon';
 
 const DocumentToolbarNav: React.FC = () => {
     const { darkMode } = useDarkMode();
@@ -15,6 +17,17 @@ const DocumentToolbarNav: React.FC = () => {
 
     const { id } = useParams();
     const { document } = useGetDocument(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/school_document`, Number(id));
+    const { deleteDocument, isDeleting, deleteError } = useSubmitDocument(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/school_document`);
+
+    const handleDeleteClick = () => {
+        if (document) {
+            const confirmDelete = window.confirm('Are you sure you want to delete this document? This action cannot be undone.');
+            if (confirmDelete) {
+                deleteDocument(document);
+            }
+        }
+    };
+
 
     return (
         <>
@@ -24,18 +37,18 @@ const DocumentToolbarNav: React.FC = () => {
                     <div className=" w-1/6">
                         <Link to="/math-app" className="text-3xl font-semibold text-white font-mono flex items-center"><ChevronLeft />Home</Link>
                     </div>
-
-
                     <div className="w-1/6 justify-between flex flex-row">
                         {document && <Link to={`/math-app/document/${document?.id}/export`} className="text-xl font-semibold text-white font-mono flex items-end">Export</Link>}
                     </div>
-
                     <div className="w-1/6 justify-between flex flex-row">
 
                     </div>
                     <div className="w-1/2 flex justify-end items-center">
                         {document && <DocumentTitle document={document} />}
-                        <LanguageDropdown className="ps-2 hidden sm:flex " />
+                        <button className='text-red-500 mx-2' onClick={handleDeleteClick} disabled={isDeleting} >
+                            <TrashIcon />
+                        </button>
+                        <LanguageDropdown className="ps-4 hidden sm:flex " />
                         <SignedIn>
                             {darkMode ? <UserButton afterSignOutUrl="/" appearance={getGyosuClerkTheme()} /> : <UserButton afterSignOutUrl="http://localhost:5173/" />}
                         </SignedIn>

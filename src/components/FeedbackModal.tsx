@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { IFeedbackData, ProblemData, Rating } from '../interfaces';
+import { ChunkInstructionProblem, IFeedbackData, ProblemData, Rating } from '../interfaces';
 
 interface FeedbackModalProps {
     rating: Rating;
@@ -8,7 +8,7 @@ interface FeedbackModalProps {
     isOpen: boolean;
     onSubmitFeedback: (feedbackData: IFeedbackData) => void;
     onClose: () => void;
-    data: ProblemData | null
+    data: ProblemData | ChunkInstructionProblem | null
 }
 
 const FeedbackModal: React.FC<FeedbackModalProps> = ({ rating, toolName, responseText, isOpen, onSubmitFeedback, onClose, data }) => {
@@ -16,7 +16,7 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({ rating, toolName, respons
 
     const handleSubmit = (event: React.FormEvent) => {
         event.preventDefault();
-        const feedbackData: IFeedbackData = { toolName, responseText, rating, userFeedback, ...data };
+        const feedbackData: IFeedbackData = { toolName, responseText, rating, userFeedback, data };
         onSubmitFeedback(feedbackData);
     };
 

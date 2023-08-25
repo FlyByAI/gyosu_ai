@@ -39,7 +39,6 @@ const MathGenerate: React.FC = () => {
                         <ChunkManager
                             setChunkArray={setChunkArray}
                             chunkArray={chunkArray}
-                            problemData={problemData}
                         />}
                 </div>
             </div>

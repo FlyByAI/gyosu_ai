@@ -71,7 +71,7 @@ const AIChat: React.FC<AIChatProps> = ({ markdown, additionalInfo }) => {
                     <button type="submit" className="ms-2 p-2 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded">Send</button>
                 </div>
 
-                {error && <p className="text-red-600 mt-4 text-center">Error: {error}</p>}
+                {error as Error && <p className="text-red-600 mt-4 text-center">Error: {(error as Error).message}</p>}
                 {isLoading && <p className="dark:text-white">Loading...</p>}
 
             </div>

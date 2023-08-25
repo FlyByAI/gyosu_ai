@@ -37,10 +37,7 @@ export interface IFeedbackData {
     responseText: string | null;
     rating: Rating;
     userFeedback: string;
-    section: string;
-    documentType: string;
-    sourceMaterial: string;
-    problemType: string;
+    data: ProblemData | ChunkInstructionProblem | null
 }
 
 export interface ISubscriptionData {
@@ -120,6 +117,7 @@ export interface Document {
 
 export interface Chunk {
     id?: number;
+    mongoChunkId?: string;
     type: "chunk";
     content: (Instruction | Problem)[];
 }

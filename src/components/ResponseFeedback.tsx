@@ -72,7 +72,7 @@ const ResponseFeedback = ({ responseText, toolName, className, size = 10, data }
                 onClose={handleCloseModal}
                 toolName={toolName}
                 responseText={responseText}
-                data={data || {}}
+                data={data || null}
             />
         </div>
     );

@@ -5,11 +5,10 @@ import AIChatSmallWrapper from './AIChatSmallWrapper';
 
 interface ChunkManagerProps {
     chunkArray: Chunk[];
-    problemData?: ProblemData;
     setChunkArray: (value: React.SetStateAction<Chunk[]>) => void
 }
 
-const ChunkManager: React.FC<ChunkManagerProps> = ({ chunkArray, problemData, setChunkArray }) => {
+const ChunkManager: React.FC<ChunkManagerProps> = ({ chunkArray, setChunkArray }) => {
 
     const updateChunk = (updatedChunk: Chunk, index: number) => {
         console.log("update chunk: ", chunkArray[index], "new chunk:", updatedChunk, index)
