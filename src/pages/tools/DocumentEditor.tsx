@@ -12,7 +12,8 @@ import { notSecretConstants } from '../../constants/notSecretConstants';
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
-import DownloadDocx from '../../components/docx/DownloadDocx';
+import DownloadDocx from '../../components/exports/DownloadDocx';
+import DownloadPDF from '../../components/exports/DownloadPDF';
 
 interface ChunkProps {
     chunk: Chunk;
@@ -114,8 +115,11 @@ const PrintableDocumentComponent: React.FC = () => {
 
 
     return (
-        <div>
-            <DownloadDocx html={html} />
+        <div className='flex flex-col items-center'>
+            <div className='flex flex-row my-4'>
+                <DownloadDocx html={html} />
+                <DownloadPDF htmlContent={html} />
+            </div>
             <div ref={ref} className="flex flex-col items-center">
                 {document ? <div className='bg-white max-w-4xl'>
                     <p>Document: {document?.title}</p>

@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
-import DownloadDocx from '../../components/docx/DownloadDocx';
+import DownloadDocx from '../../components/exports/DownloadDocx';
 import katex from 'katex';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';

@@ -29,11 +29,11 @@ function DownloadDocx({ html }: DownloadDocxProps) {
   }
 
   return (
-    <div className="flex flex-col items-center">
-      <button className="text-white bg-blue-300 w-32" onClick={downloadDocx}>
-        Export to Docx
-      </button>
-    </div>
+    <button
+      className={`text-white rounded p-2 w-auto flex font-bold bg-blue-700 hover:bg-blue-500 me-4`}
+      onClick={downloadDocx}>
+      Export to Docx
+    </button>
   );
 }
 
