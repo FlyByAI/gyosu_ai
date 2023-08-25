@@ -1,3 +1,5 @@
+import React from 'react';
+import { useToPng } from '@hugocxl/react-to-image';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import HTMLtoDOCX from "html-to-docx";
@@ -10,30 +12,31 @@ interface DownloadDocxProps {
 }
 
 function DownloadDocx({ html }: DownloadDocxProps) {
+  const [state, convertToPng, ref] = useToPng<HTMLDivElement>({
+    onSuccess: async (data) => {
+      const clonedHtml = document.createElement('div');
+      clonedHtml.innerHTML = html;
+      // Create an image element with the base64 data
+      const img = document.createElement('img');
+      img.src = data;
+      clonedHtml.appendChild(img); // Append the image to the HTML
 
-  async function downloadDocx(params: any) {
+      const fileBuffer = await HTMLtoDOCX(clonedHtml.innerHTML, null, {
+        table: { row: { cantSplit: true } },
+        footer: true,
+        pageNumber: true,
+      });
 
-    params && console.log(params)
-
-    const fileBuffer = await HTMLtoDOCX(html, null, {
-      table: { row: { cantSplit: true } },
-      footer: true,
-      pageNumber: true,
-    });
-
-    // console.log("fileBuffer:", fileBuffer); 
-
-    const blob = new Blob([new Uint8Array(fileBuffer)], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
-
-    saveAs(blob, "html-to-docx.docx");
-  }
+      const blob = new Blob([new Uint8Array(fileBuffer)], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
+      saveAs(blob, "html-to-docx.docx");
+    }
+  });
 
   return (
-    <button
-      className={`text-white rounded p-2 w-auto flex font-bold bg-blue-700 hover:bg-blue-500 me-4`}
-      onClick={downloadDocx}>
-      Export to Docx
-    </button>
+    <div>
+      <div ref={ref} dangerouslySetInnerHTML={{ __html: html }} />
+      <button onClick={convertToPng}>Export to Docx</button>
+    </div>
   );
 }
 
