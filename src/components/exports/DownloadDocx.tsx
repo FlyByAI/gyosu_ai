@@ -33,9 +33,14 @@ function DownloadDocx({ html }: DownloadDocxProps) {
   });
 
   return (
-    <div>
+    <div className='flex flex-col items-center'>
+
+      <button
+        className={`text-white rounded p-2 w-auto flex font-bold bg-blue-700 hover:bg-blue-500`}
+        onClick={convertToPng}
+      >
+        Export to Docx</button>
       <div ref={ref} dangerouslySetInnerHTML={{ __html: html }} />
-      <button onClick={convertToPng}>Export to Docx</button>
     </div>
   );
 }

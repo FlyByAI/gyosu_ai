@@ -36,7 +36,8 @@ const DocumentToolbarNav: React.FC = () => {
             <header className="fixed top-0 left-0 w-full z-10 px-6 py-4 bg-blue-900 text-white dark:bg-gray-900 dark:text-gray-200">
                 <div className="flex justify-between items-center w-full">
                     <div className=" w-1/6">
-                        <Link to="/math-app" className="text-3xl font-semibold text-white font-mono flex items-center"><ChevronLeft />Home</Link>
+                        {!isExporting && <Link to="/math-app" className="text-3xl font-semibold text-white font-mono flex items-center"><ChevronLeft />Home</Link>}
+                        {isExporting && <Link to={`/math-app/document/${document?.id}`} className="text-3xl font-semibold text-white font-mono flex items-center"><ChevronLeft />Back</Link>}
                     </div>
                     <div className="w-1/6 justify-between flex flex-row">
                         {document && !isExporting && <Link to={`/math-app/document/${document?.id}/export`} className="text-xl font-semibold text-white font-mono flex items-end">Export</Link>}

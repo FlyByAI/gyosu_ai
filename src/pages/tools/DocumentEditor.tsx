@@ -118,8 +118,8 @@ const PrintableDocumentComponent: React.FC = () => {
         <div className='flex flex-col items-center'>
             <div className='flex flex-row my-4'>
                 <DownloadDocx html={html} />
-                <DownloadPDF htmlContent={html} />
             </div>
+            <DownloadPDF htmlContent={html} />
             <div ref={ref} className="flex flex-col items-center">
                 {document ? <div className='bg-white max-w-4xl'>
                     <p>Document: {document?.title}</p>
