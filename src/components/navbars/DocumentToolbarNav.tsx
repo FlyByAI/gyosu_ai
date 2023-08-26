@@ -58,7 +58,7 @@ const DocumentToolbarNav: React.FC = () => {
                             onClick={handleShare}
                         >
                             <div>Shared </div>
-                            <div className={document.shared ? "text-green-300 ms-2 m-1" : "text-red-300 ms-2 m-1"}>{document.shared ? <CheckmarkIcon /> : <XIcon />}</div>
+                            <div className={!document.shared ? "text-green-300 ms-2 m-1" : "text-red-300 ms-2 m-1"}>{document.shared ? <XIcon /> : <CheckmarkIcon />}</div>
                         </button>}
                     </div>
                     <div className="w-1/6 justify-between flex flex-row">
