@@ -9,6 +9,8 @@ import MathProblem from '../../components/math/MathProblem';
 import DocumentHeader from '../../components/document/DocumentHeader';
 import AIChatSmallWrapper from '../../components/math/AIChatSmallWrapper';
 import useSubmitDocument from '../../hooks/tools/math/useSubmitDocument';
+import ChunkSidebarWrapper from '../../components/math/ChunkSidebarWrapper';
+import { useSidebarContext } from '../../contexts/useSidebarContext';
 
 const DocumentDisplay: React.FC = () => {
     const { id } = useParams();
@@ -16,6 +18,9 @@ const DocumentDisplay: React.FC = () => {
 
     const endpoint2 = `${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/school_document/`;
     const { updateDocument } = useSubmitDocument(endpoint2);
+
+
+
 
     if (isLoading) {
         return <div className="text-white">Loading...</div>;
@@ -84,33 +89,38 @@ const DocumentDisplay: React.FC = () => {
             <DocumentShelf isExporting={false} />
             <div className="w-5/6">
                 <DocumentHeader document={document} />
-                {document.problemChunks
-                    && document.problemChunks.length > 0
-                    && document.problemChunks?.map((chunk, chunkIndex) => {
-                        return (
-                            <div className='w-3/4 mx-auto flex flex-row mb-4 bg-gray-900 p-2'>
-                                <div className='w-5/6  rounded-xl'>
-                                    <AIChatSmallWrapper chunk={chunk} index={chunkIndex}
-                                        updateChunk={updateDocumentChunk}
-                                    >
-                                        <MathProblem
-                                            insertChunk={insertChunk}
-                                            deleteChunk={deleteChunk}
+                <ChunkSidebarWrapper
+                    document={document}
+                >
+                    {document.problemChunks
+                        && document.problemChunks.length > 0
+                        && document.problemChunks?.map((chunk, chunkIndex) => {
+                            return (
+                                <div
+                                    key={chunkIndex} className='w-3/4 mx-auto flex flex-row mb-4 bg-gray-900 p-2'>
+                                    <div className='w-5/6  rounded-xl' >
+                                        <AIChatSmallWrapper chunk={chunk} index={chunkIndex}
                                             updateChunk={updateDocumentChunk}
-                                            key={chunkIndex}
-                                            chunkIndex={chunkIndex}
-                                            problem={chunk}
-                                        />
-                                    </AIChatSmallWrapper>
-                                </div>
-                                <div className='w-1/6 bg-gray-900 p-2'>
-                                    <div className='w-full h-full  text-white'>
-                                        test
+                                        >
+                                            <MathProblem
+                                                insertChunk={insertChunk}
+                                                deleteChunk={deleteChunk}
+                                                updateChunk={updateDocumentChunk}
+                                                key={chunkIndex}
+                                                chunkIndex={chunkIndex}
+                                                problem={chunk}
+                                            />
+                                        </AIChatSmallWrapper>
+                                    </div>
+                                    <div className='w-1/6 bg-gray-900 p-2'>
+                                        <div className='w-full h-full  text-white'>
+                                            test
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        )
-                    })}
+                            )
+                        })}
+                </ChunkSidebarWrapper>
             </div>
         </div>
     );

@@ -44,17 +44,6 @@ const ToolBadge: React.FC<ToolBadgeProps> = ({ chunk, instruction, problem, inse
         }
     };
 
-    // const handleEdit = async () => {
-    //     console.log("reroll", payload);
-
-    //     try {
-    //         const updatedChunk = await submitReroll({ chunk, action: 'reroll', instruction, problem });
-    //         updateChunk(updatedChunk.chunk, chunkIndex);
-    //     } catch (error) {
-    //         console.error("An error occurred during reroll:", error);
-    //     }
-    // };
-
     const handleAdd = () => {
         console.log("add", payload);
         insertChunk && insertChunk(chunkIndex)

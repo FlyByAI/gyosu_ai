@@ -8,6 +8,9 @@ import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 import { useDrag, useDrop } from 'react-dnd';
 import ToolWrapper from './math/ToolWrapper';
+import ChunkSidebarWrapper from './math/ChunkSidebarWrapper';
+import { useSidebarContext } from '../contexts/useSidebarContext';
+import CheckmarkIcon from '../svg/CheckmarkIcon';
 
 
 interface ChunkProps {
@@ -20,6 +23,9 @@ interface ChunkProps {
 }
 
 export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, deleteChunk, updateChunk, chunkIndex }) => {
+
+    const { activeChunkIndices, setActiveChunkIndices } = useSidebarContext();
+
     const [, ref] = useDrag({
         type: CHUNK_DRAG_TYPE,
         item: { type: CHUNK_TYPE, content: chunk.content } as Chunk
@@ -48,62 +54,69 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, delet
     });
 
     return (
-        <ToolWrapper chunk={chunk}
-            insertChunk={insertChunk || undefined}
-            deleteChunk={deleteChunk || undefined}
-            updateChunk={updateChunk}
-            chunkIndex={chunkIndex}
-        >
-            <div
-                ref={(node) => ref(drop(node))}
-                onMouseEnter={() => !isHovered && setIsHovered(true)}
-                onMouseLeave={() => isHovered && setIsHovered(false)}
-                className={"border-2 border-transparent p-4 " + (isHovered ? " hover:border-green-200 border-dashed hover:border-2 hover:border-purple-dashed" : '')}
-            >
-                {chunk.content.length === 0 && <div className="text-gray-400 p-4">Drag and drop instructions or problems here</div>}
-                {chunk.content.map((item, index) => {
-                    return (
-                        <div key={`${item.type}-${index}-${chunk.content.length}`}>
-                            {(() => {
-                                switch (item.type) {
-                                    case 'instruction':
-                                        return (
-                                            <ToolWrapper
-                                                key={`${item.type}-${index}-${chunk.content.length}`}
-                                                insertChunk={insertChunk}
-                                                deleteChunk={deleteChunk}
-                                                updateChunk={updateChunk}
-                                                chunkIndex={chunkIndex}
-                                                chunk={chunk}
-                                                instruction={item}
-                                            >
-                                                <InstructionComponent instruction={item} onInstructionHover={setIsHovered} />
-                                            </ToolWrapper>
-                                        );
-                                    case 'problem':
-                                        return (
-                                            <ToolWrapper
-                                                key={`${item.type}-${index}-${chunk.content.length}`}
-                                                insertChunk={insertChunk}
-                                                deleteChunk={deleteChunk}
-                                                updateChunk={updateChunk}
-                                                chunkIndex={chunkIndex}
-                                                chunk={chunk}
-                                                problem={item}
-                                            >
-                                                <ProblemComponent problem={item} onInstructionHover={setIsHovered} />
-                                            </ToolWrapper>
-                                        );
-                                    default:
-                                        return null;
-                                }
-                            })()}
-                        </div>
-                    );
-                })}
-            </div>
-        </ToolWrapper>
 
+        <div
+            ref={(node) => ref(drop(node))}
+            onMouseEnter={() => !isHovered && setIsHovered(true)}
+            onMouseLeave={() => isHovered && setIsHovered(false)}
+            className={"border-2 border-transparent p-4 " + (isHovered ? " hover:border-green-200 border-dashed hover:border-2 hover:border-purple-dashed" : '')}
+        >
+
+            {activeChunkIndices.includes(chunkIndex) ?
+                <div className='flex text-green-300'>
+                    <CheckmarkIcon />
+                </div> :
+                <div className='flex'>
+                    <input
+                        type="checkbox"
+                        defaultChecked={activeChunkIndices.includes(chunkIndex)}
+                        className="focus:ring-green-500 h-4 w-4 text-green-600 rounded"
+                    />
+                </div>
+            }
+
+            {chunk.content.length === 0 && <div className="text-gray-400 p-4">Drag and drop instructions or problems here</div>}
+            {chunk.content.map((item, index) => {
+                return (
+                    <div key={`${item.type}-${index}-${chunk.content.length}`}>
+                        {(() => {
+                            switch (item.type) {
+                                case 'instruction':
+                                    return (
+                                        <ToolWrapper
+                                            key={`${item.type}-${index}-${chunk.content.length}`}
+                                            insertChunk={insertChunk}
+                                            deleteChunk={deleteChunk}
+                                            updateChunk={updateChunk}
+                                            chunkIndex={chunkIndex}
+                                            chunk={chunk}
+                                            instruction={item}
+                                        >
+                                            <InstructionComponent instruction={item} onInstructionHover={setIsHovered} />
+                                        </ToolWrapper>
+                                    );
+                                case 'problem':
+                                    return (
+                                        <ToolWrapper
+                                            key={`${item.type}-${index}-${chunk.content.length}`}
+                                            insertChunk={insertChunk}
+                                            deleteChunk={deleteChunk}
+                                            updateChunk={updateChunk}
+                                            chunkIndex={chunkIndex}
+                                            chunk={chunk}
+                                            problem={item}
+                                        >
+                                            <ProblemComponent problem={item} onInstructionHover={setIsHovered} />
+                                        </ToolWrapper>
+                                    );
+                                default:
+                                    return null;
+                            }
+                        })()}
+                    </div>
+                );
+            })}
+        </div>
     );
 
 };

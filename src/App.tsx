@@ -7,6 +7,7 @@ import {
   QueryClient,
   QueryClientProvider,
 } from '@tanstack/react-query'
+import { SidebarProvider } from './contexts/useSidebarContext';
 
 interface AppProps {
   children: any;
@@ -19,11 +20,13 @@ function App({ children }: AppProps) {
     <div className=''>
       <QueryClientProvider client={queryClient}>
         <DarkModeProvider>
-          <LanguageProvider>
-            <DndProvider backend={HTML5Backend}>
-              {children}
-            </DndProvider>
-          </LanguageProvider>
+          <SidebarProvider>
+            <LanguageProvider>
+              <DndProvider backend={HTML5Backend}>
+                {children}
+              </DndProvider>
+            </LanguageProvider>
+          </SidebarProvider>
         </DarkModeProvider>
       </QueryClientProvider>
     </div>

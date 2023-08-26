@@ -27,7 +27,7 @@ const ChunkManager: React.FC<ChunkManagerProps> = ({ chunkArray, setChunkArray }
                 return (
                     <div key={chunkIndex}
                         className='w-3/4 mx-auto flex flex-row mb-4 bg-gray-900 p-2'>
-                        <div className='w-5/6  rounded-xl'>
+                        <div className='w-5/6 rounded-xl'>
 
                             <AIChatSmallWrapper chunk={chunk} index={chunkIndex} updateChunk={updateChunk} >
                                 <MathProblem

@@ -1,10 +1,10 @@
-export const languageNames = Object({
+export const languageNames: { [key: string]: string } = {
     "en": 'English',
     "es": 'Spanish',
     "fr": 'French',
     "de": 'German',
     "ko": 'Korean',
-});
+};
 
 export const flagOptions = Object({
     "en": 'us',
