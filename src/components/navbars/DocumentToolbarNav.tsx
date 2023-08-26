@@ -10,14 +10,16 @@ import { notSecretConstants } from '../../constants/notSecretConstants';
 import ChevronLeft from '../../svg/ChevronLeft';
 import useSubmitDocument from '../../hooks/tools/math/useSubmitDocument';
 import TrashIcon from '../../svg/TrashIcon';
+import XIcon from '../../svg/XIcon';
+import CheckmarkIcon from '../../svg/CheckmarkIcon';
 
 const DocumentToolbarNav: React.FC = () => {
     const { darkMode } = useDarkMode();
     const toolbarHeight = "70";
 
     const { id } = useParams();
-    const { document } = useGetDocument(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/school_document`, Number(id));
-    const { deleteDocument, isDeleting, deleteError } = useSubmitDocument(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/school_document`);
+    const { document } = useGetDocument(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/school_document/`, Number(id));
+    const { deleteDocument, isDeleting, deleteError, shareDocument } = useSubmitDocument(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/school_document/`);
 
     const handleDeleteClick = () => {
         if (document) {
@@ -26,7 +28,17 @@ const DocumentToolbarNav: React.FC = () => {
                 deleteDocument(document);
             }
         }
+
     };
+
+    const handleShare = () => {
+        if (document && document.id) {
+            shareDocument({ id: document.id, shared: !document.shared })
+        }
+        else {
+            console.log('Error sharing document')
+        }
+    }
 
     const isExporting = location.pathname.includes('export')
 
@@ -41,6 +53,13 @@ const DocumentToolbarNav: React.FC = () => {
                     </div>
                     <div className="w-1/6 justify-between flex flex-row">
                         {document && !isExporting && <Link to={`/math-app/document/${document?.id}/export`} className="text-xl font-semibold text-white font-mono flex items-end">Export</Link>}
+                        {document && <button
+                            className="ms-2 text-xl font-semibold text-white font-mono flex flex-row items-end"
+                            onClick={handleShare}
+                        >
+                            <div>Shared </div>
+                            <div className={document.shared ? "text-green-300 ms-2 m-1" : "text-red-300 ms-2 m-1"}>{document.shared ? <CheckmarkIcon /> : <XIcon />}</div>
+                        </button>}
                     </div>
                     <div className="w-1/6 justify-between flex flex-row">
 

@@ -103,7 +103,7 @@ const PrintableProblemComponent: React.FC<ProblemProps> = ({ problem }) => {
 
 const PrintableDocumentComponent: React.FC = () => {
     const { id } = useParams();
-    const { document } = useGetDocument(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/school_document`, Number(id));
+    const { document } = useGetDocument(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/school_document/`, Number(id));
 
     const ref = createRef<HTMLDivElement>();
     const [html, setHtml] = useState<string>('');

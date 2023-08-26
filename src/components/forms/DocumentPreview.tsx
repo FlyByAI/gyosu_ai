@@ -67,7 +67,7 @@ const DocumentPreview: React.FC<DocumentPreviewProps> = ({ document }) => {
                 </div>
 
                 <div className="document-footer mt-4 bg-gray-200 p-4 rounded-lg text-sm w-10/12 mx-auto">
-                    <h2 className="text-base font-bold">Created by {creator}</h2>
+                    <h2 className="text-base font-bold">Created by {document.creator || "unknown"}</h2>
                     {isHovering && (
                         <div className="rounded-b-2xl absolute inset-x-0 top-2/3 bottom-0 bg-gray-600 bg-opacity-70 flex justify-center items-center">
                             <span className="text-white text-xl font-bold">Edit</span>

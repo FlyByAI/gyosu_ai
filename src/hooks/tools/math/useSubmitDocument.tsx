@@ -3,6 +3,7 @@ import { useClerk } from '@clerk/clerk-react';
 import humps from 'humps';
 import { Document } from '../../../interfaces';
 import { MathFormData } from './useSubmitMathForm';
+import { useNavigate } from 'react-router-dom';
 
 interface DocumentData {
     document: Document;
@@ -78,11 +79,42 @@ const useSubmitDocument = (endpoint: string) => {
         }
     );
 
+    const shareDocumentMutation = useMutation<any, Error, { id: number, shared: boolean }>(
+        async ({ id, shared }) => {
+            const token = session ? await session.getToken() : 'none';
+
+            const response = await fetch(`${endpoint}${id}/share/`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': token ? `Bearer ${token}` : '',
+                },
+                body: JSON.stringify({ shared: !!shared }),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(`HTTP error! status: ${response.status}, details: ${JSON.stringify(humps.camelizeKeys(errorData))}`);
+            }
+
+            const responseData = await response.json();
+            return humps.camelizeKeys(responseData);
+        },
+        {
+            onSuccess: (_, { id }) => {
+                queryClient.invalidateQueries(['document', id]);
+                queryClient.refetchQueries(['document', id]);
+            },
+        }
+    );
+
+    const navigate = useNavigate();
+
     const deleteDocumentMutation = useMutation<void, Error, Document>(
         async (document: Document) => {
             const token = session ? await session.getToken() : 'none';
 
-            const response = await fetch(`${endpoint}/${document.id}/`, {
+            const response = await fetch(`${endpoint}${document.id}/`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
@@ -99,7 +131,8 @@ const useSubmitDocument = (endpoint: string) => {
                 // Invalidate 'documents' query when deleting a document
                 queryClient.invalidateQueries(['documents']);
                 queryClient.invalidateQueries(['document', context.id]);
-                console.log(context.id)
+                queryClient.refetchQueries(['document', context.id]);
+                navigate('/math-app/bank');
             },
         }
     );
@@ -108,6 +141,7 @@ const useSubmitDocument = (endpoint: string) => {
     return {
         submitDocument: submitDocumentMutation.mutate,
         updateDocument: updateDocumentMutation.mutate,
+        shareDocument: shareDocumentMutation.mutate,
         isLoading: submitDocumentMutation.isLoading || updateDocumentMutation.isLoading,
         error: submitDocumentMutation.error || updateDocumentMutation.error,
         data: submitDocumentMutation.data || updateDocumentMutation.data,

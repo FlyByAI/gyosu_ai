@@ -5,7 +5,7 @@ import { Document } from '../../../interfaces';
 import { useEffect } from 'react';
 
 const fetchDocument = async (endpoint: string, documentId: number, token: string | null) => {
-    const response = await fetch(`${endpoint}/${documentId}`, {
+    const response = await fetch(`${endpoint}${documentId}/`, {
         method: 'GET',
         headers: {
             'Authorization': token ? `Bearer ${token}` : '',

@@ -25,7 +25,8 @@ const ChunkManager: React.FC<ChunkManagerProps> = ({ chunkArray, setChunkArray }
             <div className="text-xl justify-center text-white flex items-center">Problem Browser</div>
             {chunkArray?.map((chunk, chunkIndex) => {
                 return (
-                    <div className='w-3/4 mx-auto flex flex-row mb-4 bg-gray-900 p-2'>
+                    <div key={chunkIndex}
+                        className='w-3/4 mx-auto flex flex-row mb-4 bg-gray-900 p-2'>
                         <div className='w-5/6  rounded-xl'>
 
                             <AIChatSmallWrapper chunk={chunk} index={chunkIndex} updateChunk={updateChunk} >

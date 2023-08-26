@@ -112,6 +112,7 @@ export interface Document {
     chapter: string;
     documentType?: string;
     problemChunks?: Chunk[];
+    shared?: boolean;
 }
 
 
