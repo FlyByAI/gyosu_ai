@@ -107,15 +107,17 @@ const MathGenerateForm: React.FC<MathGenerateFormProps> = ({ onSubmit, setProble
     return (
         <>
             <div className="flex justify-center items-center">
-                <div className="w-full md:w-1/2 bg-gray-700 rounded-lg p-8 m-4 shadow-lg">
-                    <Dropdown showSelected={false} label={"Source Material"} options={formOptionsObj} defaultValue={sourceMaterial} handleChange={handleSourceMaterialChange} className="flex flex-col w-full" />
-                    <Dropdown showSelected={false} label={"Document Type"} options={typeOptions} defaultValue={typeOptions[0]} handleChange={handleTypeChange} className="flex flex-col w-full" />
-                    <Dropdown showSelected={false} label={"Section"} options={formOptionsObj[sourceMaterial]} defaultValue={section} handleChange={handleSectionChange} className="flex flex-col w-full" />
-                    <Dropdown showSelected={false} label={"Problem Type"} options={formOptionsObj[sourceMaterial][section]['problem_types']} defaultValue={problemType} handleChange={handleChangeProblemType} className="flex flex-col w-full" />
+                <div className="w-full md:w-3/4 bg-gray-700 rounded-lg p-8 m-4 shadow-lg">
+                    <div className='flex flex-col lg:flex-row justify-center items-center w-full'>
+                        <Dropdown showSelected={false} label={"Source Material"} options={formOptionsObj} defaultValue={sourceMaterial} handleChange={handleSourceMaterialChange} className="form-select block mt-1 w-full lg:w-1/3" />
+                        <Dropdown showSelected={false} label={"Document Type"} options={typeOptions} defaultValue={typeOptions[0]} handleChange={handleTypeChange} className="w-full hidden" />
+                        <Dropdown showSelected={false} label={"Section"} options={formOptionsObj[sourceMaterial]} defaultValue={section} handleChange={handleSectionChange} className="form-select block mt-1 w-full lg:w-1/3" />
+                        <Dropdown showSelected={false} label={"Problem Type"} options={formOptionsObj[sourceMaterial][section]['problem_types']} defaultValue={problemType} handleChange={handleChangeProblemType} className="form-select block mt-1 w-full lg:w-1/3" />
+                    </div>
                     <SubmitButton
                         buttonText={"Generate New"}
                         handleClick={handleMathSubmit}
-                        className=" mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                        className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded self-center w-full"
                     />
 
                 </div>
