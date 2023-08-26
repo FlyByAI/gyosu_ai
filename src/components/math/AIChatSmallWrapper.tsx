@@ -26,6 +26,7 @@ const AIChatSmallWrapper: React.FC<AIChatSmallWrapperProps> = ({ updateChunk, cl
     const { submitTextWithChunk, isLoading, error, data } = useSubmitTextWithChunk(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/chat/problem/`);
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+        console.log("handleSubmit called for some reason?")
         event.preventDefault();
         if (typeof smallChatText === 'string' && chunk) {
             submitTextWithChunk({ userInput: smallChatText, chunk, options },
@@ -47,7 +48,7 @@ const AIChatSmallWrapper: React.FC<AIChatSmallWrapperProps> = ({ updateChunk, cl
     const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
         if (event.key === 'Enter' && !event.shiftKey) {
             event.preventDefault();
-            submitButtonRef?.current?.click();
+            // submitButtonRef?.current?.click();
         }
     };
 
@@ -58,28 +59,28 @@ const AIChatSmallWrapper: React.FC<AIChatSmallWrapperProps> = ({ updateChunk, cl
         }
     }, [smallChatText]);
 
+    // Note, do not wrap the children with the form element, because it can cause the form to submit
     return (
-        <form ref={formRef} onSubmit={handleSubmit}>
-            <div className="flex flex-col items-center justify-center bg-gray-900">
-                {children}
-                <div className="rounded-l flex flex-row w-full mt-2">
-                    <textarea
-                        ref={textAreaRef}
-                        id={`ai-chat-textbox-${index}`}
-                        value={smallChatText}
-                        onChange={handleSmallChatChange}
-                        onKeyDown={handleKeyDown}
-                        className={className + " px-2 resize-none bg-gray-100 dark:bg-gray-800 rounded dark:text-white form-textarea block w-full"}
-                        placeholder="Change this problem with AI"
-                    />
-                    <button ref={submitButtonRef} type="submit" className="ms-2 p-2 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded flex flex-col justify-center items-center">
-                        <SendIcon className="h-3 w-3" />
-                        <p className="text-xs">Send</p>
-                    </button>
-                </div>
-                {isLoading && <p className="dark:text-white">Loading...</p>}
-            </div>
-        </form>
+        <div className="flex flex-col items-center justify-center bg-gray-900">
+            {children}
+            <form ref={formRef} onSubmit={handleSubmit} className="rounded-l flex flex-row w-full mt-2">
+                <textarea
+                    ref={textAreaRef}
+                    id={`ai-chat-textbox-${index}`}
+                    value={smallChatText}
+                    onChange={handleSmallChatChange}
+                    onKeyDown={handleKeyDown}
+                    className={className + " px-2 resize-none bg-gray-100 dark:bg-gray-800 rounded dark:text-white form-textarea block w-full"}
+                    placeholder="Change this problem with AI"
+                />
+                <button ref={submitButtonRef} type="submit" className="ms-2 p-2 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded flex flex-col justify-center items-center">
+                    <SendIcon className="h-3 w-3" />
+                    <p className="text-xs">Send</p>
+                </button>
+            </form>
+
+            {isLoading && <p className="dark:text-white">Loading...</p>}
+        </div>
 
     )
 };

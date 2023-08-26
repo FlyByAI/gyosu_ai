@@ -18,7 +18,7 @@ interface ToolBadgeProps {
 
 const ToolBadge: React.FC<ToolBadgeProps> = ({ chunk, instruction, problem, insertChunk, deleteChunk, updateChunk, chunkIndex }) => {
 
-    const { submitReroll } = useSubmitReroll(notSecretConstants.djangoApi + '/math_app/reroll/');
+    const { submitReroll } = useSubmitReroll(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/reroll/`);
 
     const payload = {
         chunkId: chunk.id || null,
