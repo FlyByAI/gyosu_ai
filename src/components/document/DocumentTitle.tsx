@@ -33,9 +33,6 @@ const DocumentTitle: React.FC<DocumentTitleProps> = ({ document }) => {
         }
     };
 
-    console.log(document.title)
-
-
     return (
         <div className="w-64 text-lg font-bold font-mono border border-gray-500 shadow-sm ps-1">
             {isEditing ? (

@@ -47,8 +47,6 @@ const useSubmitDocument = (endpoint: string) => {
             const token = session ? await session.getToken() : 'none';
             const payload = humps.decamelizeKeys({ document: documentData.document, ...documentData.formData });
 
-            console.log(payload)
-
             const response = await fetch(`${endpoint}${documentData.document.id}/`, {
                 method: 'PATCH',
                 headers: {
@@ -63,8 +61,6 @@ const useSubmitDocument = (endpoint: string) => {
             }
 
             const responseData = await response.json();
-
-            console.log(responseData)
 
             return humps.camelizeKeys(responseData) as MathFormData;
         },
@@ -131,7 +127,6 @@ const useSubmitDocument = (endpoint: string) => {
                 // Invalidate 'documents' query when deleting a document
                 queryClient.invalidateQueries(['documents']);
                 queryClient.invalidateQueries(['document', context.id]);
-                queryClient.refetchQueries(['document', context.id]);
                 navigate('/math-app/bank');
             },
         }

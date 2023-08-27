@@ -1,6 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
 import ToolBadge from './ToolBadge';
 import { Chunk, Instruction, Problem } from '../../interfaces';
+import useGetDocument from '../../hooks/tools/math/useGetDocument';
+import { notSecretConstants } from '../../constants/notSecretConstants';
+import { useParams } from 'react-router-dom';
 
 interface ToolWrapperProps {
     children: React.ReactNode;
@@ -8,19 +11,15 @@ interface ToolWrapperProps {
     instruction?: Instruction;
     problem?: Problem;
     insertChunk?: (chunkIndex: number) => void;
-    deleteChunk?: (chunkIndex: number) => void;
     updateChunk: (updatedChunk: Chunk, chunkIndex: number) => void;
     chunkIndex: number;
 }
 
-const ToolWrapper: React.FC<ToolWrapperProps> = ({ children, chunk, instruction, problem, insertChunk, deleteChunk, updateChunk, chunkIndex }) => {
+const ToolWrapper: React.FC<ToolWrapperProps> = ({ children, chunk, instruction, problem, insertChunk, updateChunk, chunkIndex }) => {
     const [isHovered, setIsHovered] = useState(false);
     const [isClicked, setIsClicked] = useState(false);
     const wrapperRef = useRef<HTMLDivElement>(null);
 
-    // () => console.log("should delete", { type: CHUNK_TYPE, content })
-    // () => console.log("should delete", { type: INSTRUCTION_TYPE, content: item.content })
-    // () => console.log("should delete", { type: PROBLEM_TYPE, content: item.content })
 
     const handleToggleClick = (e: React.MouseEvent) => {
         e.stopPropagation(); // Prevent this click from being detected by the document listener
@@ -59,7 +58,6 @@ const ToolWrapper: React.FC<ToolWrapperProps> = ({ children, chunk, instruction,
                         problem={problem}
                         updateChunk={updateChunk}
                         insertChunk={insertChunk || undefined}
-                        deleteChunk={deleteChunk || undefined}
                         chunkIndex={chunkIndex}
                     />
                 </div>

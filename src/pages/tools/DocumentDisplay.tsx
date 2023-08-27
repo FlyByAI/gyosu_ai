@@ -93,7 +93,6 @@ const DocumentDisplay: React.FC = () => {
                 <DocumentHeader document={document} />
                 <ChunkSidebarWrapper
                     document={document}
-                    deleteChunk={deleteChunk}
                 >
                     {document.problemChunks
                         && document.problemChunks.length > 0
@@ -107,7 +106,6 @@ const DocumentDisplay: React.FC = () => {
                                         >
                                             <MathProblem
                                                 insertChunk={insertChunk}
-                                                deleteChunk={deleteChunk}
                                                 updateChunk={updateDocumentChunk}
                                                 key={chunkIndex}
                                                 chunkIndex={chunkIndex}

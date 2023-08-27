@@ -8,10 +8,9 @@ import useSubmitDocument from "../../hooks/tools/math/useSubmitDocument";
 
 interface ChunkSidebarProps {
     document: Document | EmptyDocument;
-    deleteChunk?: (chunkIndex: number) => void;
 }
 
-const ChunkSidebar: React.FC<ChunkSidebarProps> = ({ document, deleteChunk }) => {
+const ChunkSidebar: React.FC<ChunkSidebarProps> = ({ document }) => {
 
     const endpoint2 = `${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/school_document/`;
     const { updateDocument } = useSubmitDocument(endpoint2);

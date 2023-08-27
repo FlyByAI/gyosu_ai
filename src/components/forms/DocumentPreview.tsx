@@ -74,8 +74,6 @@ const DocumentPreview: React.FC<DocumentPreviewProps> = ({ document }) => {
                         </div>
                     )}
                     {document.title}
-                    {upvotes > 0 && <p>Upvotes: {upvotes}</p>}
-                    {tips > 0 && <p> Tips: {tips}</p>}
                 </div>
             </div>
         </Link>

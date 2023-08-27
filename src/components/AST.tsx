@@ -17,12 +17,11 @@ interface ChunkProps {
     chunk: Chunk;
     edit?: boolean;
     insertChunk?: (chunkIndex: number) => void;
-    deleteChunk?: (chunkIndex: number) => void;
     updateChunk: (updatedChunk: Chunk, chunkIndex: number) => void;
     chunkIndex: number;
 }
 
-export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, deleteChunk, updateChunk, chunkIndex }) => {
+export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updateChunk, chunkIndex }) => {
 
     const { activeChunkIndices, setActiveChunkIndices } = useSidebarContext();
 
@@ -86,7 +85,6 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, delet
                                         <ToolWrapper
                                             key={`${item.type}-${index}-${chunk.content.length}`}
                                             insertChunk={insertChunk}
-                                            deleteChunk={deleteChunk}
                                             updateChunk={updateChunk}
                                             chunkIndex={chunkIndex}
                                             chunk={chunk}
@@ -100,7 +98,6 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, delet
                                         <ToolWrapper
                                             key={`${item.type}-${index}-${chunk.content.length}`}
                                             insertChunk={insertChunk}
-                                            deleteChunk={deleteChunk}
                                             updateChunk={updateChunk}
                                             chunkIndex={chunkIndex}
                                             chunk={chunk}
