@@ -102,9 +102,8 @@ export interface Document {
     id?: number;
     title: string;
     creator?: string;
-    contributors: string[]; // Array of contributors
-    upvotes: number;
-    tips: number;
+    upvotes?: number;
+    tips?: number;
     last_modified_by: string;
     created_at: string; // Using string for simplicity, consider using a date/time library like day.js or luxon for better date/time handling
     updated_at: string; // Same as above
@@ -114,6 +113,11 @@ export interface Document {
     problemChunks?: Chunk[];
     shared?: boolean;
 }
+export interface EmptyDocument {
+    problemChunks?: Chunk[];
+}
+
+
 
 
 export interface Chunk {

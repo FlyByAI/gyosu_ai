@@ -1,16 +1,20 @@
 import { useEffect, useState } from "react";
-import { Chunk, Document } from "../../interfaces";
+import { Chunk, Document, EmptyDocument } from "../../interfaces";
 import { useSidebarContext } from "../../contexts/useSidebarContext";
 import useSubmitChunkSidebarForm, { SubmitChunkSidebarResponse } from "../forms/useSubmitChunkSidebarForm";
 import { notSecretConstants } from "../../constants/notSecretConstants";
 import { languageNames } from "../../helpers/language";
+import useSubmitDocument from "../../hooks/tools/math/useSubmitDocument";
 
 interface ChunkSidebarProps {
-    document: Document;
+    document: Document | EmptyDocument;
+    deleteChunk?: (chunkIndex: number) => void;
 }
 
-const ChunkSidebar: React.FC<ChunkSidebarProps> = ({ document }) => {
+const ChunkSidebar: React.FC<ChunkSidebarProps> = ({ document, deleteChunk }) => {
 
+    const endpoint2 = `${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/school_document/`;
+    const { updateDocument } = useSubmitDocument(endpoint2);
 
     const { activeChunkIndices } = useSidebarContext();
 
@@ -34,18 +38,21 @@ const ChunkSidebar: React.FC<ChunkSidebarProps> = ({ document }) => {
         // Populate selectedChunks array using activeChunkIndices
         const selectedChunks = activeChunkIndices.map(index => document.problemChunks?.[index]).filter(Boolean) as Chunk[];
 
-        // try {
-        //     const response: SubmitChunkSidebarResponse = await submitForm({
-        //         ...formState,
-        //         chunks: selectedChunks,
-        //     });
+        try {
+            const response: SubmitChunkSidebarResponse = await submitForm({
+                ...formState,
+                chunks: selectedChunks,
+            });
 
-        //     console.log(response)
+            console.log(response)
 
-        // } catch (error) {
-        //     // Handle the error case
-        //     console.error("Form submission failed", error);
-        // }
+            console.log("if this is empty document, then we need to udpate the chunks in the mongodb only")
+            console.log("if this is a real document, then we need to update the chunks in the mongodb and the document in the postgresql")
+
+        } catch (error) {
+            // Handle the error case
+            console.error("Form submission failed", error);
+        }
     };
 
     //save form state to local storage
@@ -59,7 +66,34 @@ const ChunkSidebar: React.FC<ChunkSidebarProps> = ({ document }) => {
         localStorage.setItem('formState', JSON.stringify(formState));
     }, [formState]);
 
+    const handleDeleteSelected = async () => {
+        // Validation for selected chunks, assuming you have activeChunkIndices array
+        if (!activeChunkIndices || activeChunkIndices.length === 0) {
+            return;
+        }
 
+        deleteChunks(activeChunkIndices);
+    };
+
+
+    const deleteChunks = (indices: number[]) => {
+        // Validation for document object
+        if (!('id' in document)) {
+            return;
+        }
+
+        const updatedChunks = [...(document.problemChunks || [])];
+
+        // Sort indices in descending order and remove specified chunks
+        indices.sort((a, b) => b - a).forEach(index => {
+            updatedChunks.splice(index, 1);
+        });
+
+        const updatedDocument = { ...document, problemChunks: updatedChunks };
+
+        // Submit the change, triggering the updateDocument mutation
+        updateDocument({ document: updatedDocument });
+    };
 
     return (
         <div className="fixed right-0 top-0 h-screen w-1/4 bg-gray-900 transform transition-transform duration-1000">
@@ -143,6 +177,10 @@ const ChunkSidebar: React.FC<ChunkSidebarProps> = ({ document }) => {
                         Cancel
                     </button>
                 </form>
+
+                <button onClick={handleDeleteSelected} className="mt-10 px-4 py-2 ms-2 bg-gray-600 border-red-500 border-2 text-white">
+                    Delete Selected
+                </button>
             </div>
         </div>
     );

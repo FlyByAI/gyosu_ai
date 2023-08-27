@@ -74,6 +74,8 @@ const DocumentDisplay: React.FC = () => {
         updateDocument({ document: updatedDocument });
     };
 
+
+
     const updateDocumentChunk = (chunk: Chunk, index: number) => {
         // Update the specific chunk in the document
 
@@ -91,6 +93,7 @@ const DocumentDisplay: React.FC = () => {
                 <DocumentHeader document={document} />
                 <ChunkSidebarWrapper
                     document={document}
+                    deleteChunk={deleteChunk}
                 >
                     {document.problemChunks
                         && document.problemChunks.length > 0

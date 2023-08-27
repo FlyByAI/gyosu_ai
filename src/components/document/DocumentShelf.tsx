@@ -28,7 +28,6 @@ const DocumentShelf: React.FC<DocumentShelfProps> = ({ isExporting }) => {
     const handleAddDocument = async () => {
         const newDocument: Document = {
             title: `Document ${(documents?.length || 0) + 1}`,
-            contributors: [],
             upvotes: 0,
             tips: 0,
             last_modified_by: '',
