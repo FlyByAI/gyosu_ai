@@ -119,8 +119,8 @@ const ChunkSidebar: React.FC<ChunkSidebarProps> = ({ document }) => {
                         <div className="my-4">
                             <label className="block">Language</label>
                             <select
-                                value={formState.language}
-                                onChange={e => setFormState({ ...formState, language: e.target.value })}
+                                value={formState.form_language}
+                                onChange={e => setFormState({ ...formState, form_language: e.target.value })}
                                 className='bg-gray-600'
                             >
                                 {Object.entries(languageNames).map(([code, name]) => (
