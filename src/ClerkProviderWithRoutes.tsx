@@ -32,7 +32,7 @@ import LandingPage from './pages/Landing.tsx';
 import MathDocumentSearch from './pages/tools/MathDocumentSearch.tsx';
 import MathGenerate from './pages/tools/MathGenerate.tsx';
 import MyMathDocuments from './pages/tools/MathDocumentBank.tsx';
-import Pricing from './components/Pricing.tsx';
+import Subscribe from './components/Subscribe.tsx';
 
 const clerkPubKey = "pk_test_Y2F1c2FsLWJ1bm55LTQ0LmNsZXJrLmFjY291bnRzLmRldiQ";
 
@@ -148,12 +148,12 @@ export default function ClerkProviderWithRoutes() {
                     }
                 />
                 <Route
-                    path="/pricing"
+                    path="/subscribe"
                     element={
                         <>
                             <Navbar />
                             <ContentWrapper>
-                                <Pricing />
+                                <Subscribe />
                                 <Footer />
                             </ContentWrapper>
                         </>

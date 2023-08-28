@@ -1,7 +1,7 @@
 import React from 'react';
 import { useClerk } from '@clerk/clerk-react';
 import ManageSubscriptionButton from './ManageSubscriptionButton';
-import SubscribeButton from './SubscribeButton';
+import { RedirectToSubscribePageButton } from './SubscribeButton';
 import TrialButton from './TrialButton';
 import { notSecretConstants } from '../constants/notSecretConstants';
 import useFetchSubscriptionInfo from '../hooks/subscription/useFetchSubscriptionInfo';
@@ -15,7 +15,7 @@ const Subscription: React.FC = () => {
         session ? <div>
             {!isLoading && subscriptionInfo && (
                 <>
-                    {!subscriptionInfo?.has_valid_subscription && subscriptionInfo?.has_activated_trial && !subscriptionInfo?.active_trial && <SubscribeButton />}
+                    {!subscriptionInfo?.has_valid_subscription && subscriptionInfo?.has_activated_trial && !subscriptionInfo?.active_trial && <RedirectToSubscribePageButton />}
                     {!subscriptionInfo?.has_valid_subscription && (subscriptionInfo?.active_trial || !subscriptionInfo?.has_activated_trial) && <TrialButton />}
                     {subscriptionInfo?.has_valid_subscription && <ManageSubscriptionButton />}
                 </>

@@ -4,31 +4,6 @@ import useInitiateCheckout from '../hooks/subscription/useInitiateCheckout';
 import { notSecretConstants } from '../constants/notSecretConstants';
 import CheckIcon from '../svg/CheckIcon';
 
-const TokenIcon: React.FC = () => {
-    return (
-        <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="url(#goldGradient)"
-            stroke="#af7543"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="h-8 w-5 m-1"
-        >
-            <defs>
-                <linearGradient id="goldGradient" x1="100%" y1="100%" x2="0%" y2="0%">
-                    <stop offset="0%" style={{ stopColor: "#FFD700" }} />
-                    <stop offset="100%" style={{ stopColor: "#FFCC33" }} />
-                </linearGradient>
-            </defs>
-            <ellipse cx="12" cy="16" rx="10" ry="8" />
-            <ellipse cx="12" cy="12" rx="10" ry="8" />
-            <ellipse cx="12" cy="8" rx="10" ry="8" />
-        </svg>
-    );
-};
-
 
 
 const ManageSubscriptionButton: React.FC = () => {
