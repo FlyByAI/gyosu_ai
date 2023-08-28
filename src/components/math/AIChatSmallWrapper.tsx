@@ -19,9 +19,7 @@ const AIChatSmallWrapper: React.FC<AIChatSmallWrapperProps> = ({ updateChunk, cl
     const formRef = useRef<HTMLFormElement>(null);
     const submitButtonRef = useRef<HTMLButtonElement>(null);
     const textAreaRef = useRef<HTMLTextAreaElement>(null);
-    const { language } = useLanguage();
 
-    const options = { language: language, topic: "none" };
 
     const { submitTextWithChunk, isLoading, error, data } = useSubmitTextWithChunk(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/chat/problem/`);
 
@@ -29,7 +27,7 @@ const AIChatSmallWrapper: React.FC<AIChatSmallWrapperProps> = ({ updateChunk, cl
         console.log("handleSubmit called for some reason?")
         event.preventDefault();
         if (typeof smallChatText === 'string' && chunk) {
-            submitTextWithChunk({ userInput: smallChatText, chunk, options },
+            submitTextWithChunk({ userInput: smallChatText, chunk },
                 {
                     onSuccess: (responseData) => {
                         // Extract the updated chunk and update it

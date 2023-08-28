@@ -1,17 +1,25 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import useSubmitDocument from '../../hooks/tools/math/useSubmitDocument';
 import { notSecretConstants } from '../../constants/notSecretConstants';
 import { Document } from '../../interfaces'
+import useGetDocument from '../../hooks/tools/math/useGetDocument';
+import { useParams } from 'react-router-dom';
 
-interface DocumentTitleProps {
-    document: Document;
-}
 
-const DocumentTitle: React.FC<DocumentTitleProps> = ({ document }) => {
+const DocumentTitle: React.FC = () => {
     const [isEditing, setIsEditing] = useState(false);
-    const [title, setTitle] = useState(document.title);
     const endpoint2 = `${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/school_document/`;
     const { updateDocument } = useSubmitDocument(endpoint2);
+
+    const [title, setTitle] = useState('');
+
+    const { id } = useParams();
+
+    const { document } = useGetDocument(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/school_document/`, Number(id));
+
+    useEffect(() => {
+        setTitle(document?.title || '');
+    }, [document])
 
     const handleTitleClick = () => {
         setIsEditing(true);
@@ -19,7 +27,9 @@ const DocumentTitle: React.FC<DocumentTitleProps> = ({ document }) => {
 
     const handleTitleBlur = () => {
         setIsEditing(false);
-        updateDocument({ document: { ...document, title } });
+        if (document) {
+            updateDocument({ document: { ...document, title } });
+        }
     };
 
     const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -29,7 +39,9 @@ const DocumentTitle: React.FC<DocumentTitleProps> = ({ document }) => {
     const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
             setIsEditing(false);
-            updateDocument({ document: { ...document, title } });
+            if (document) {
+                updateDocument({ document: { ...document, title } });
+            }
         }
     };
 

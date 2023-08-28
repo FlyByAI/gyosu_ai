@@ -15,7 +15,7 @@ const ChunkSidebar: React.FC<ChunkSidebarProps> = ({ document }) => {
     const endpoint2 = `${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/school_document/`;
     const { updateDocument } = useSubmitDocument(endpoint2);
 
-    const { activeChunkIndices } = useSidebarContext();
+    const { activeChunkIndices, setActiveChunkIndices } = useSidebarContext();
 
     const { submitForm } = useSubmitChunkSidebarForm(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/problem/playground/`);
 
@@ -31,8 +31,6 @@ const ChunkSidebar: React.FC<ChunkSidebarProps> = ({ document }) => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-
-        console.log("Form Submitted for multiple chunks", formState);
 
         // Populate selectedChunks array using activeChunkIndices
         const selectedChunks = activeChunkIndices.map(index => document.problemChunks?.[index]).filter(Boolean) as Chunk[];
@@ -72,6 +70,7 @@ const ChunkSidebar: React.FC<ChunkSidebarProps> = ({ document }) => {
         }
 
         deleteChunks(activeChunkIndices);
+        setActiveChunkIndices([]);
     };
 
 
@@ -95,91 +94,93 @@ const ChunkSidebar: React.FC<ChunkSidebarProps> = ({ document }) => {
     };
 
     return (
-        <div className="fixed right-0 top-0 h-screen w-1/4 bg-gray-900 transform transition-transform duration-1000">
-            <div className="h-screen bg-gray-700 m-2 p-2 text-white">
-                {/* Form */}
-                selected: {activeChunkIndices.map((index) => {
-                    return index.toString()
-                }).sort().join(", ")}
-                <form onSubmit={handleSubmit}>
-                    <div className="my-4">
-                        <label className="block">Tone</label>
-                        <input
-                            type="text"
-                            className='bg-gray-600'
-                            value={formState.tone}
-                            onChange={e => setFormState({ ...formState, tone: e.target.value })}
-                        />
-                    </div>
-                    <div className="my-4">
-                        <label className="block">Language</label>
-                        <select
-                            value={formState.language}
-                            onChange={e => setFormState({ ...formState, language: e.target.value })}
-                            className='bg-gray-600'
-                        >
-                            {Object.entries(languageNames).map(([code, name]) => (
-                                <option value={code} key={code}>{name}</option>
-                            ))}
-                        </select>
-                    </div>
-
-                    <div className="my-4">
-                        <label className="block">Topic</label>
-                        <input
-                            type="text"
-                            className='bg-gray-600'
-                            value={formState.topic}
-                            onChange={e => setFormState({ ...formState, topic: e.target.value })}
-                        />
-                    </div>
-                    <div className="my-4">
-                        <label className="cursor-pointer">
+        <div className="p-2 fixed right-0 top-0 my-20 w-1/6 bg-gray-900 transform transition-transform duration-1000">
+            <div className="p-2 bg-gray-800">
+                <div className="h-5/6 bg-gray-700 p-4 text-white">
+                    {/* Form */}
+                    selected: {activeChunkIndices.map((index) => {
+                        return index.toString()
+                    }).sort().length}
+                    <form onSubmit={handleSubmit}>
+                        <div className="my-4">
+                            <label className="block">Tone</label>
                             <input
-                                type="checkbox"
-                                className="mr-2"
-                                checked={formState.keepNumbersSame}
-                                onChange={e => setFormState({ ...formState, keepNumbersSame: e.target.checked })}
+                                type="text"
+                                className='bg-gray-600'
+                                value={formState.tone}
+                                onChange={e => setFormState({ ...formState, tone: e.target.value })}
                             />
-                            Keep Numbers Same
-                        </label>
-                    </div>
+                        </div>
+                        <div className="my-4">
+                            <label className="block">Language</label>
+                            <select
+                                value={formState.language}
+                                onChange={e => setFormState({ ...formState, language: e.target.value })}
+                                className='bg-gray-600'
+                            >
+                                {Object.entries(languageNames).map(([code, name]) => (
+                                    <option value={code} key={code}>{name}</option>
+                                ))}
+                            </select>
+                        </div>
 
-                    <div className="my-4">
-                        <label className="cursor-pointer">
+                        <div className="my-4">
+                            <label className="block">Topic</label>
                             <input
-                                type="checkbox"
-                                className="mr-2"
-                                checked={formState.keepInstructionsSame}
-                                onChange={e => setFormState({ ...formState, keepInstructionsSame: e.target.checked })}
+                                type="text"
+                                className='bg-gray-600'
+                                value={formState.topic}
+                                onChange={e => setFormState({ ...formState, topic: e.target.value })}
                             />
-                            Keep Instructions Same
-                        </label>
-                    </div>
+                        </div>
+                        <div className="my-4">
+                            <label className="cursor-pointer">
+                                <input
+                                    type="checkbox"
+                                    className="mr-2"
+                                    checked={formState.keepNumbersSame}
+                                    onChange={e => setFormState({ ...formState, keepNumbersSame: e.target.checked })}
+                                />
+                                Keep Numbers Same
+                            </label>
+                        </div>
 
-                    <div className="my-4">
-                        <label className="block">Grade Level</label>
-                        <input
-                            type="range"
-                            min="1"
-                            max="12"
-                            className='bg-gray-600'
-                            value={formState.gradeLevel}
-                            onChange={e => setFormState({ ...formState, gradeLevel: e.target.value })}
-                        />
-                        <span className="ml-2">{formState.gradeLevel}</span>
-                    </div>
-                    <button type="submit" className="mt-4 px-4 py-2 bg-blue-500 text-white">
-                        Submit
-                    </button>
-                    <button className="mt-4 px-4 py-2 ms-2 bg-red-400 text-white">
-                        Cancel
-                    </button>
-                </form>
+                        <div className="my-4">
+                            <label className="cursor-pointer">
+                                <input
+                                    type="checkbox"
+                                    className="mr-2"
+                                    checked={formState.keepInstructionsSame}
+                                    onChange={e => setFormState({ ...formState, keepInstructionsSame: e.target.checked })}
+                                />
+                                Keep Instructions Same
+                            </label>
+                        </div>
 
-                <button onClick={handleDeleteSelected} className="mt-10 px-4 py-2 ms-2 bg-gray-600 border-red-500 border-2 text-white">
-                    Delete Selected
-                </button>
+                        <div className="my-4">
+                            <label className="block">Grade Level</label>
+                            <input
+                                type="range"
+                                min="1"
+                                max="12"
+                                className='bg-gray-600'
+                                value={formState.gradeLevel}
+                                onChange={e => setFormState({ ...formState, gradeLevel: e.target.value })}
+                            />
+                            <span className="ml-2">{formState.gradeLevel}</span>
+                        </div>
+                        <button type="submit" className="mt-4 px-4 py-2 bg-blue-500 text-white">
+                            Submit
+                        </button>
+                        <button onClick={() => setActiveChunkIndices([])} className="mt-4 px-4 py-2 ms-2 bg-red-400 text-white">
+                            Cancel
+                        </button>
+                    </form>
+
+                    <button onClick={handleDeleteSelected} className="mt-10 px-4 py-2 ms-2 bg-gray-600 border-red-500 border-2 text-white">
+                        Delete Selected
+                    </button>
+                </div>
             </div>
         </div>
     );

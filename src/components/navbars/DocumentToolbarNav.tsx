@@ -65,7 +65,7 @@ const DocumentToolbarNav: React.FC = () => {
 
                     </div>
                     <div className="w-1/2 flex justify-end items-center">
-                        {document && <DocumentTitle document={document} />}
+                        {document && <DocumentTitle />}
                         <button className='text-red-500 mx-2' onClick={handleDeleteClick} disabled={isDeleting} >
                             <TrashIcon />
                         </button>

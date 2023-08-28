@@ -16,7 +16,7 @@ const ChunkSidebarWrapper: React.FC<ChunkSidebarWrapperProps> = ({ children, doc
     const { activeChunkIndices } = useSidebarContext();
 
 
-    return (
+    return (<>
         <div
             ref={wrapperRef}
             onMouseEnter={() => setIsHovered(true)}
@@ -32,6 +32,7 @@ const ChunkSidebarWrapper: React.FC<ChunkSidebarWrapperProps> = ({ children, doc
             )}
             {children}
         </div>
+    </>
     );
 
 };

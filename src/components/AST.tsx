@@ -58,7 +58,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
             ref={(node) => ref(drop(node))}
             onMouseEnter={() => !isHovered && setIsHovered(true)}
             onMouseLeave={() => isHovered && setIsHovered(false)}
-            className={"border-2 border-transparent p-4 w-full " + (isHovered ? " hover:border-green-200 border-dashed hover:border-2 hover:border-purple-dashed" : '')}
+            className={"border-2 border-transparent p-4 w-full " + ((activeChunkIndices.includes(chunkIndex) || isHovered) ? " border-green-200 border-dashed hover:border-2 hover:border-purple-dashed" : '')}
         >
 
             {activeChunkIndices.includes(chunkIndex) ?

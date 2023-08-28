@@ -4,6 +4,9 @@ import { Chunk, Instruction, Problem } from '../../interfaces';
 import useGetDocument from '../../hooks/tools/math/useGetDocument';
 import { notSecretConstants } from '../../constants/notSecretConstants';
 import { useParams } from 'react-router-dom';
+import { useModal } from '../../contexts/useModal';
+import AppModal from '../AppModal';
+import FeedbackForm from '../forms/FeedbackForm';
 
 interface ToolWrapperProps {
     children: React.ReactNode;
@@ -19,7 +22,6 @@ const ToolWrapper: React.FC<ToolWrapperProps> = ({ children, chunk, instruction,
     const [isHovered, setIsHovered] = useState(false);
     const [isClicked, setIsClicked] = useState(false);
     const wrapperRef = useRef<HTMLDivElement>(null);
-
 
     const handleToggleClick = (e: React.MouseEvent) => {
         e.stopPropagation(); // Prevent this click from being detected by the document listener
@@ -50,18 +52,18 @@ const ToolWrapper: React.FC<ToolWrapperProps> = ({ children, chunk, instruction,
             onMouseEnter={() => !isClicked && setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
         >
-            {(isClicked || isHovered) && (
-                <div>
-                    <ToolBadge
-                        chunk={chunk}
-                        instruction={instruction}
-                        problem={problem}
-                        updateChunk={updateChunk}
-                        insertChunk={insertChunk || undefined}
-                        chunkIndex={chunkIndex}
-                    />
-                </div>
-            )}
+            <AppModal modalId={'feedbackModal'} />
+            <div>
+                <ToolBadge
+                    hidden={!isClicked && !isHovered}
+                    chunk={chunk}
+                    instruction={instruction}
+                    problem={problem}
+                    updateChunk={updateChunk}
+                    insertChunk={insertChunk || undefined}
+                    chunkIndex={chunkIndex}
+                />
+            </div>
             {children}
         </div>
     );

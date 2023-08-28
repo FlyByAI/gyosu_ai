@@ -2,6 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import { useClerk } from '@clerk/clerk-react';
 import humps from 'humps';
 import { Chunk, ChunkInstructionProblem, Instruction, Problem } from '../../../interfaces';
+import { useLanguage } from '../../../contexts/useLanguage';
 
 interface SubmitRerollParams {
     action: string;
@@ -17,10 +18,13 @@ interface SubmitRerollResponse {
 const useSubmitReroll = (endpoint: string) => {
     const { session } = useClerk();
 
+    const { language } = useLanguage();
+    const options = { language: language, topic: "none" };
+
     const submitRerollMutation = useMutation<SubmitRerollResponse, Error, SubmitRerollParams>(
         async ({ chunk, action, instruction, problem }): Promise<SubmitRerollResponse> => {
             const token = session ? await session.getToken() : "none";
-            const body = humps.decamelizeKeys({ chunk, action, instruction, problem });
+            const body = humps.decamelizeKeys({ chunk, action, instruction, problem, ...options });
 
             const response = await fetch(endpoint, {
                 method: 'POST',

@@ -2,12 +2,17 @@ import { useMutation } from '@tanstack/react-query';
 import { useClerk } from '@clerk/clerk-react';
 import humps from 'humps';
 import { Chunk } from '../../../interfaces';
+import { useLanguage } from '../../../contexts/useLanguage';
 
 const useSubmitTextWithChunk = (endpoint: string) => {
     const { session } = useClerk();
 
+    const { language } = useLanguage();
+
+    const options = { language: language, topic: "none" };
+
     const submitTextWithChunkMutation = useMutation(
-        async ({ userInput, chunk, options }: { userInput: string; chunk: Chunk; options?: { language: string; topic: string } }) => {
+        async ({ userInput, chunk }: { userInput: string; chunk: Chunk }) => {
             const token = session ? await session.getToken() : "none";
             const body = humps.decamelizeKeys({ userInput, chunk, ...options });
 

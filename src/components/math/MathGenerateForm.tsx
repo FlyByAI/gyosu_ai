@@ -7,6 +7,7 @@ import Dropdown from '../forms/Dropdown';
 import { useClerk, useUser } from '@clerk/clerk-react';
 import formOptionsJSON from '../../json/dropdown_data.json';
 import { ProblemData } from '../../interfaces';
+import { useLanguage } from '../../contexts/useLanguage';
 
 type MathGenerateFormProps = {
     onSubmit: (data: any) => void;
@@ -29,6 +30,8 @@ const MathGenerateForm: React.FC<MathGenerateFormProps> = ({ onSubmit, setProble
 
 
     const [documentAST, setDocumentAST] = useState<Document | null>(null);
+
+
 
     const { isLoading, error, submitMathForm, data } = useSubmitMathForm(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/generate/`)
 

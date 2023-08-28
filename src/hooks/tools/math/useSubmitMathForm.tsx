@@ -1,6 +1,7 @@
 import { useClerk } from '@clerk/clerk-react';
 import humps from 'humps';
 import { useState } from 'react';
+import { useLanguage } from '../../../contexts/useLanguage';
 
 export interface MathFormData {
     id?: number;
@@ -22,6 +23,9 @@ const useSubmitMathForm = (endpoint: string) => {
     const [error, setError] = useState<string | null>(null);
     const [data, setData] = useState<any | null>(null);
 
+    const { language } = useLanguage();
+    const options = { language: language, topic: "none" };
+
     const submitMathForm = async (formData: MathFormData) => {
         setLoading(true);
         setError(null);
@@ -34,7 +38,7 @@ const useSubmitMathForm = (endpoint: string) => {
                     'Content-Type': 'application/json',
                     'Authorization': token ? `Bearer ${token}` : '',
                 },
-                body: JSON.stringify(humps.decamelizeKeys({ ...formData, chapter: formData.section.split('.')[0], section: formData.section.split(".")[1] }))
+                body: JSON.stringify(humps.decamelizeKeys({ ...formData, chapter: formData.section.split('.')[0], section: formData.section.split(".")[1], ...options }))
             });
 
             if (!response.ok) {

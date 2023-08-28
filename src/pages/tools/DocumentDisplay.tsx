@@ -1,16 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import useGetDocument from '../../hooks/tools/math/useGetDocument';
 import { notSecretConstants } from '../../constants/notSecretConstants';
 import DocumentShelf from '../../components/document/DocumentShelf';
 
-import { Chunk } from '../../interfaces';
+import { Chunk, IFeedbackData } from '../../interfaces';
 import MathProblem from '../../components/math/MathProblem';
 import DocumentHeader from '../../components/document/DocumentHeader';
 import AIChatSmallWrapper from '../../components/math/AIChatSmallWrapper';
 import useSubmitDocument from '../../hooks/tools/math/useSubmitDocument';
 import ChunkSidebarWrapper from '../../components/math/ChunkSidebarWrapper';
 import { useSidebarContext } from '../../contexts/useSidebarContext';
+import PlusIcon from '../../svg/PlusIcon';
+import SomeFeedbackForm from '../../components/SomeFeedbackForm';
+import FeedbackForm from '../../components/forms/FeedbackForm';
+import { useModal } from '../../contexts/useModal';
+import useSubmitFeedback from '../../hooks/useSubmitFeedback';
 
 const DocumentDisplay: React.FC = () => {
     const { id } = useParams();
@@ -18,9 +23,6 @@ const DocumentDisplay: React.FC = () => {
 
     const endpoint2 = `${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/school_document/`;
     const { updateDocument } = useSubmitDocument(endpoint2);
-
-
-
 
     if (isLoading) {
         return <div className="text-white">Loading...</div>;
@@ -87,9 +89,9 @@ const DocumentDisplay: React.FC = () => {
     };
 
     return (
-        <div className='flex '>
+        <div className='flex'>
             <DocumentShelf isExporting={false} />
-            <div className="w-5/6">
+            <div className="w-5/6" style={{ marginRight: '16.6667%' }}>
                 <DocumentHeader document={document} />
                 <ChunkSidebarWrapper
                     document={document}
@@ -100,7 +102,7 @@ const DocumentDisplay: React.FC = () => {
                             return (
                                 <div
                                     key={chunkIndex} className='w-3/4 mx-auto flex flex-row mb-4 bg-gray-900 p-2'>
-                                    <div className='w-5/6  rounded-xl' >
+                                    <div className='w-full rounded-xl' >
                                         <AIChatSmallWrapper chunk={chunk} index={chunkIndex}
                                             updateChunk={updateDocumentChunk}
                                         >
@@ -113,14 +115,15 @@ const DocumentDisplay: React.FC = () => {
                                             />
                                         </AIChatSmallWrapper>
                                     </div>
-                                    <div className='w-1/6 bg-gray-900 p-2'>
-                                        <div className='w-full h-full  text-white'>
-                                            test
-                                        </div>
-                                    </div>
+
                                 </div>
                             )
                         })}
+                    {<div className='w-3/4 mx-auto flex flex-row mb-4 bg-gray-900 p-2 justify-center'>
+                        {<button onClick={() => insertChunk((document.problemChunks?.length || 0) + 1)} className="pe-1 text-green-500">
+                            <PlusIcon />
+                        </button>}
+                    </div>}
                 </ChunkSidebarWrapper>
             </div>
         </div>
