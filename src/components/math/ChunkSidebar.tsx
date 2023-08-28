@@ -98,14 +98,24 @@ const ChunkSidebar: React.FC<ChunkSidebarProps> = ({ document }) => {
         updateDocument({ document: updatedDocument });
     };
 
+
+    const handleCreateWorksheet = async () => {
+        const selectedChunks = activeChunkIndices.map(index => document.problemChunks?.[index]).filter(Boolean) as Chunk[];
+
+        console.log("create worksheet using", selectedChunks)
+    };
+
     return (
         <div className="p-2 fixed right-0 top-0 my-20 w-1/6 bg-gray-900 transform transition-transform duration-1000">
             <div className="p-2 bg-gray-800">
-                <div className="h-5/6 bg-gray-700 p-4 text-white">
+                <div className="h-5/6 bg-gray-700 p-4 text-white overflow-y-auto max-h-[90vh]">
+
                     {/* Form */}
-                    selected: {activeChunkIndices.map((index) => {
-                        return index.toString()
-                    }).sort().length}
+                    <div className="border-2 border-dashed border-green-600 font-bold">
+                        selected: {activeChunkIndices.map((index) => {
+                            return index.toString()
+                        }).sort().length}
+                    </div>
                     <form onSubmit={handleSubmit}>
                         <div className="my-4">
                             <label className="block">Tone</label>
@@ -184,6 +194,10 @@ const ChunkSidebar: React.FC<ChunkSidebarProps> = ({ document }) => {
 
                     <button onClick={handleDeleteSelected} className="mt-10 px-4 py-2 ms-2 bg-gray-600 border-red-500 border-2 text-white">
                         Delete Selected
+                    </button>
+
+                    <button onClick={handleCreateWorksheet} className="mt-10 px-4 py-2 ms-2 bg-blue-400 border-2 text-white">
+                        Create worksheet from selected
                     </button>
                 </div>
             </div>

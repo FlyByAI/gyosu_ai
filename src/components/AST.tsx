@@ -58,18 +58,18 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
             ref={(node) => ref(drop(node))}
             onMouseEnter={() => !isHovered && setIsHovered(true)}
             onMouseLeave={() => isHovered && setIsHovered(false)}
-            className={"border-2 border-transparent p-4 w-full " + ((activeChunkIndices.includes(chunkIndex) || isHovered) ? " border-green-200 border-dashed hover:border-2 hover:border-purple-dashed" : '')}
+            className={"border-2 p-4 w-full " + ((activeChunkIndices.includes(chunkIndex)) ? " border-green-200" : 'border-transparent')}
         >
 
             {activeChunkIndices.includes(chunkIndex) ?
-                <div className='flex text-green-300'>
+                <div className='flex text-green-300 h-4 w-6'>
                     <CheckmarkIcon />
                 </div> :
                 <div className='flex'>
                     <input
                         type="checkbox"
                         defaultChecked={activeChunkIndices.includes(chunkIndex)}
-                        className="focus:ring-green-500 h-4 w-4 text-green-600 rounded"
+                        className="focus:ring-green-500 h-4 w-6 text-green-600 rounded"
                     />
                 </div>
             }

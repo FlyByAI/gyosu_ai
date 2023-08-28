@@ -98,9 +98,9 @@ const ToolBadge: React.FC<ToolBadgeProps> = ({ chunk, instruction, problem, inse
                     <ThumbsDownSvg rating={rating} />
                 </div>
             </button>
-            <button onClick={handleReroll} className="pe-1 text-black">
+            {/* <button onClick={handleReroll} className="pe-1 text-black">
                 <RefreshIcon />
-            </button>
+            </button> */}
             {insertChunk && <button onClick={handleAdd} className="pe-1 text-green-500">
                 <PlusIcon />
             </button>}
