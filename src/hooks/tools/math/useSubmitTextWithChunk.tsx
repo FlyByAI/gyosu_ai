@@ -3,13 +3,14 @@ import { useClerk } from '@clerk/clerk-react';
 import humps from 'humps';
 import { Chunk } from '../../../interfaces';
 import { useLanguage } from '../../../contexts/useLanguage';
+import { languageNames } from '../../../helpers/language';
 
 const useSubmitTextWithChunk = (endpoint: string) => {
     const { session } = useClerk();
 
     const { language } = useLanguage();
 
-    const options = { language: language, topic: "none" };
+    const options = { language: languageNames[language] };
 
     const submitTextWithChunkMutation = useMutation(
         async ({ userInput, chunk }: { userInput: string; chunk: Chunk }) => {

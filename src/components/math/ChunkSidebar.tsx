@@ -5,6 +5,7 @@ import useSubmitChunkSidebarForm, { SubmitChunkSidebarResponse } from "../forms/
 import { notSecretConstants } from "../../constants/notSecretConstants";
 import { languageNames } from "../../helpers/language";
 import useSubmitDocument from "../../hooks/tools/math/useSubmitDocument";
+import { useLanguage } from "../../contexts/useLanguage";
 
 interface ChunkSidebarProps {
     document: Document | EmptyDocument;
@@ -19,11 +20,15 @@ const ChunkSidebar: React.FC<ChunkSidebarProps> = ({ document }) => {
 
     const { submitForm } = useSubmitChunkSidebarForm(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/problem/playground/`);
 
+    const { language } = useLanguage();
+
+    const options = { language: languageNames[language] };
+
     const [formState, setFormState] = useState({
         tone: 'professional',
         topic: '',
         gradeLevel: '',
-        language: 'english',
+        form_language: languageNames[language],
         keepNumbersSame: false,
         keepInstructionsSame: false,
     });

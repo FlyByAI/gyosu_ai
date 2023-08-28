@@ -2,12 +2,14 @@ import { useClerk } from "@clerk/clerk-react";
 import { Chunk } from "../../interfaces";
 import humps from "humps";
 import { useMutation } from "@tanstack/react-query";
+import { useLanguage } from "../../contexts/useLanguage";
+import { languageNames } from "../../helpers/language";
 
 interface SubmitChunkSidebarParams {
     tone: string;
     topic: string;
     gradeLevel: string;
-    language: string;
+    form_language: string;
     chunks: Chunk[];
 }
 
@@ -20,10 +22,14 @@ export interface SubmitChunkSidebarResponse {
 const useSubmitChunkSidebarForm = (endpoint: string) => {
     const { session } = useClerk();
 
+    const { language } = useLanguage();
+
+    const options = { language: languageNames[language] };
+
     const submitFormMutation = useMutation<SubmitChunkSidebarResponse, Error, SubmitChunkSidebarParams>(
         async (formParams): Promise<SubmitChunkSidebarResponse> => {
             const token = session ? await session.getToken() : "none";
-            const body = humps.decamelizeKeys(formParams);
+            const body = humps.decamelizeKeys({ ...formParams, ...options });
 
             const response = await fetch(endpoint, {
                 method: 'POST',

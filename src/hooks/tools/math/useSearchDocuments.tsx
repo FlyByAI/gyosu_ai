@@ -3,6 +3,7 @@ import humps from 'humps';
 import { useClerk } from '@clerk/clerk-react';
 import { useMutation } from '@tanstack/react-query';
 import { useLanguage } from '../../../contexts/useLanguage';
+import { languageNames } from '../../../helpers/language';
 
 export interface SearchFormData {
     sourceMaterial: string;
@@ -16,7 +17,7 @@ const useSearchMathDocuments = (endpoint: string) => {
 
     const { language } = useLanguage();
 
-    const options = { language: language, topic: "none" };
+    const options = { language: languageNames[language] };
 
     const searchMathDocuments = useMutation(async (formData: SearchFormData) => {
         const token = session ? await session.getToken() : 'none';

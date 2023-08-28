@@ -3,6 +3,7 @@ import { useClerk } from '@clerk/clerk-react';
 import humps from 'humps';
 import { Chunk, ChunkInstructionProblem, Instruction, Problem } from '../../../interfaces';
 import { useLanguage } from '../../../contexts/useLanguage';
+import { languageNames } from '../../../helpers/language';
 
 interface SubmitRerollParams {
     action: string;
@@ -19,7 +20,7 @@ const useSubmitReroll = (endpoint: string) => {
     const { session } = useClerk();
 
     const { language } = useLanguage();
-    const options = { language: language, topic: "none" };
+    const options = { language: languageNames[language] };
 
     const submitRerollMutation = useMutation<SubmitRerollResponse, Error, SubmitRerollParams>(
         async ({ chunk, action, instruction, problem }): Promise<SubmitRerollResponse> => {

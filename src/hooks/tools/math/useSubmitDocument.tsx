@@ -5,6 +5,7 @@ import { Document } from '../../../interfaces';
 import { MathFormData } from './useSubmitMathForm';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../../../contexts/useLanguage';
+import { languageNames } from '../../../helpers/language';
 
 interface DocumentData {
     document: Document;
@@ -17,7 +18,7 @@ const useSubmitDocument = (endpoint: string) => {
 
     const { language } = useLanguage();
 
-    const options = { language: language, topic: "none" };
+    const options = { language: languageNames[language] };
 
     const submitDocumentMutation = useMutation<any, Error, DocumentData>(
         async (documentData: DocumentData) => {

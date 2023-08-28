@@ -31,7 +31,8 @@ const MathGenerate: React.FC = () => {
     return (
         <div className="flex">
             <DocumentShelf isExporting={false} />
-            <div className="w-full">
+            <div className="w-5/6" style={{ marginRight: '16.6667%' }}>
+
                 <MathGenerateForm onSubmit={handleSubmit} setProblemData={setProblemData} />
                 <div>
                     {problemData &&

@@ -2,6 +2,7 @@ import { useClerk } from '@clerk/clerk-react';
 import humps from 'humps';
 import { useState } from 'react';
 import { useLanguage } from '../../../contexts/useLanguage';
+import { languageNames } from '../../../helpers/language';
 
 export interface MathFormData {
     id?: number;
@@ -24,7 +25,7 @@ const useSubmitMathForm = (endpoint: string) => {
     const [data, setData] = useState<any | null>(null);
 
     const { language } = useLanguage();
-    const options = { language: language, topic: "none" };
+    const options = { language: languageNames[language] };
 
     const submitMathForm = async (formData: MathFormData) => {
         setLoading(true);
