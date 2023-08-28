@@ -9,7 +9,7 @@ interface SubmitChunkSidebarParams {
     tone: string;
     topic: string;
     gradeLevel: string;
-    form_language: string;
+    language: string;
     chunks: Chunk[];
 }
 
@@ -24,7 +24,7 @@ const useSubmitChunkSidebarForm = (endpoint: string) => {
 
     const { language } = useLanguage();
 
-    const options = { language: languageNames[language] };
+    const options = { site_language: languageNames[language] };
 
     const submitFormMutation = useMutation<SubmitChunkSidebarResponse, Error, SubmitChunkSidebarParams>(
         async (formParams): Promise<SubmitChunkSidebarResponse> => {

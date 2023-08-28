@@ -17,7 +17,7 @@ const useSearchMathDocuments = (endpoint: string) => {
 
     const { language } = useLanguage();
 
-    const options = { language: languageNames[language] };
+    const options = { site_language: languageNames[language] };
 
     const searchMathDocuments = useMutation(async (formData: SearchFormData) => {
         const token = session ? await session.getToken() : 'none';

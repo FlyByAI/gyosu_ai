@@ -18,7 +18,7 @@ const useSubmitDocument = (endpoint: string) => {
 
     const { language } = useLanguage();
 
-    const options = { language: languageNames[language] };
+    const options = { site_language: languageNames[language] };
 
     const submitDocumentMutation = useMutation<any, Error, DocumentData>(
         async (documentData: DocumentData) => {

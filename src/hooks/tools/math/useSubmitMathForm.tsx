@@ -25,7 +25,7 @@ const useSubmitMathForm = (endpoint: string) => {
     const [data, setData] = useState<any | null>(null);
 
     const { language } = useLanguage();
-    const options = { language: languageNames[language] };
+    const options = { site_language: languageNames[language] };
 
     const submitMathForm = async (formData: MathFormData) => {
         setLoading(true);

@@ -20,7 +20,7 @@ const useSubmitReroll = (endpoint: string) => {
     const { session } = useClerk();
 
     const { language } = useLanguage();
-    const options = { language: languageNames[language] };
+    const options = { site_language: languageNames[language] };
 
     const submitRerollMutation = useMutation<SubmitRerollResponse, Error, SubmitRerollParams>(
         async ({ chunk, action, instruction, problem }): Promise<SubmitRerollResponse> => {

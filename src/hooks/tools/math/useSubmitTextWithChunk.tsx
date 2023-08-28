@@ -10,7 +10,7 @@ const useSubmitTextWithChunk = (endpoint: string) => {
 
     const { language } = useLanguage();
 
-    const options = { language: languageNames[language] };
+    const options = { site_language: languageNames[language] };
 
     const submitTextWithChunkMutation = useMutation(
         async ({ userInput, chunk }: { userInput: string; chunk: Chunk }) => {
