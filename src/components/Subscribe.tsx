@@ -1,7 +1,13 @@
 import React from 'react';
 import { SubscribeLiteButton, SubscribePremiumButton } from './SubscribeButton';
+import useFetchSubscriptionInfo from '../hooks/subscription/useFetchSubscriptionInfo';
+import { notSecretConstants } from '../constants/notSecretConstants';
+import TrialButton from './TrialButton';
 
 const Subscribe = () => {
+
+    const { subscriptionInfo, isLoading } = useFetchSubscriptionInfo(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/user_data/get_subscription_info/`);
+
     return (
         <div className='text-white text-l bg-gray-900 p-8'>
             <section id="pricing">
@@ -44,9 +50,11 @@ const Subscribe = () => {
                 <p className='text-lg mb-8 text-center'>Choose a plan, grow with us, and let's make education brighter and smarter together.</p>
 
                 <div className="actions flex flex-row justify-center my-8">
-                    <button className="btn w-1/6 text-white font-bold inline-flex justify-center rounded-md border border-transparent shadow-sm p-4 mx-2 bg-gray-600 hover:bg-gray-700">Start for Free</button>
-                    <SubscribeLiteButton className="btn w-1/6 text-white font-bold inline-flex justify-center rounded-md border border-transparent shadow-sm p-4 mx-2 bg-blue-600 hover:bg-blue-700" />
-                    <SubscribePremiumButton className="btn w-1/6 text-white font-bold inline-flex justify-center rounded-md border border-transparent shadow-sm p-4 mx-2 bg-green-600 hover:bg-green-700" />
+                    {(subscriptionInfo?.has_activated_trial && !subscriptionInfo.active_trial) ?
+                        <button className="btn w-1/4 text-white font-bold inline-flex justify-center rounded-md border border-transparent shadow-sm p-4 mx-2 bg-gray-600 ">Trial Expired</button>
+                        : <TrialButton className={"btn w-1/4 text-white font-bold inline-flex justify-center rounded-md border border-transparent shadow-sm p-4 mx-2 bg-gray-600"} />}
+                    <SubscribeLiteButton className="btn w-1/4 text-white font-bold inline-flex justify-center rounded-md border border-transparent shadow-sm p-4 mx-2 bg-blue-600 hover:bg-blue-700" />
+                    <SubscribePremiumButton className="btn w-1/4 text-white font-bold inline-flex justify-center rounded-md border border-transparent shadow-sm p-4 mx-2 bg-green-600 hover:bg-green-700" />
                 </div>
 
                 <h2 className='text-2xl font-semibold mb-4'>Pricing &amp; Rate Limits</h2>

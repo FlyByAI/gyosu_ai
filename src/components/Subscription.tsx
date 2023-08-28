@@ -15,9 +15,7 @@ const Subscription: React.FC = () => {
         session ? <div>
             {!isLoading && subscriptionInfo && (
                 <>
-                    {!subscriptionInfo?.has_valid_subscription && subscriptionInfo?.has_activated_trial && !subscriptionInfo?.active_trial && <RedirectToSubscribePageButton />}
-                    {!subscriptionInfo?.has_valid_subscription && (subscriptionInfo?.active_trial || !subscriptionInfo?.has_activated_trial) && <TrialButton />}
-                    {subscriptionInfo?.has_valid_subscription && <ManageSubscriptionButton />}
+                    {(subscriptionInfo?.has_valid_subscription || subscriptionInfo?.active_trial) ? <ManageSubscriptionButton /> : <RedirectToSubscribePageButton />}
                 </>
             )}
         </div> : null
