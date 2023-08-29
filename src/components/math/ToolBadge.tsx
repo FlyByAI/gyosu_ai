@@ -1,17 +1,14 @@
 import { useParams } from "react-router-dom";
 import { notSecretConstants } from "../../constants/notSecretConstants";
-import useGetDocument from "../../hooks/tools/math/useGetDocument";
-import useSubmitDocument from "../../hooks/tools/math/useSubmitDocument";
 import useSubmitReroll from "../../hooks/tools/math/useSubmitReroll";
-import { Chunk, Instruction, Problem, Document, IFeedbackData, Rating } from "../../interfaces";
+import { Chunk, Instruction, Problem, Document, Rating, ChunkInstructionProblem } from "../../interfaces";
 import PlusIcon from "../../svg/PlusIcon";
-import RefreshIcon from "../../svg/RefreshIcon";
-import TrashIcon from "../../svg/TrashIcon";
 import { ThumbsDownSvg, ThumbsUpSvg } from "../../svg/customSVGs";
 import { useModal } from "../../contexts/useModal";
 import FeedbackForm from "../forms/FeedbackForm";
 import useSubmitFeedback from "../../hooks/useSubmitFeedback";
 import { useState } from "react";
+
 
 interface ToolBadgeProps {
     chunk: Chunk;
@@ -29,8 +26,8 @@ const ToolBadge: React.FC<ToolBadgeProps> = ({ chunk, instruction, problem, inse
 
     const { submitFeedback } = useSubmitFeedback(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/feedback/`)
 
-    const payload = {
-        chunkId: chunk.id || null,
+    const payload: ChunkInstructionProblem = {
+        chunkId: chunk.id,
         chunk: chunk,
         ...(instruction ? { instruction } : {}),
         ...(problem ? { problem } : {})
@@ -63,8 +60,8 @@ const ToolBadge: React.FC<ToolBadgeProps> = ({ chunk, instruction, problem, inse
 
     const handleThumbUpClick = () => {
         openModal("feedbackModal",
-            <FeedbackForm toolName={"math_app_chat"}
-                responseText={null}
+            <FeedbackForm
+                feedbackLabel={"Chunk Feedback"}
                 rating={"thumbsUp"}
                 onSubmitFeedback={submitFeedback}
                 onClose={handleCloseModal}
@@ -75,8 +72,8 @@ const ToolBadge: React.FC<ToolBadgeProps> = ({ chunk, instruction, problem, inse
 
     const handleThumbDownClick = () => {
         openModal("feedbackModal",
-            <FeedbackForm toolName={"math_app_chat"}
-                responseText={null}
+            <FeedbackForm
+                feedbackLabel={"Chunk Feedback"}
                 rating={"thumbsDown"}
                 onSubmitFeedback={submitFeedback}
                 onClose={handleCloseModal}

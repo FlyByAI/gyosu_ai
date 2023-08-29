@@ -4,18 +4,13 @@ import useGetDocument from '../../hooks/tools/math/useGetDocument';
 import { notSecretConstants } from '../../constants/notSecretConstants';
 import DocumentShelf from '../../components/document/DocumentShelf';
 
-import { Chunk, IFeedbackData } from '../../interfaces';
+import { Chunk } from '../../interfaces';
 import MathProblem from '../../components/math/MathProblem';
 import DocumentHeader from '../../components/document/DocumentHeader';
 import AIChatSmallWrapper from '../../components/math/AIChatSmallWrapper';
 import useSubmitDocument from '../../hooks/tools/math/useSubmitDocument';
 import ChunkSidebarWrapper from '../../components/math/ChunkSidebarWrapper';
-import { useSidebarContext } from '../../contexts/useSidebarContext';
 import PlusIcon from '../../svg/PlusIcon';
-import SomeFeedbackForm from '../../components/SomeFeedbackForm';
-import FeedbackForm from '../../components/forms/FeedbackForm';
-import { useModal } from '../../contexts/useModal';
-import useSubmitFeedback from '../../hooks/useSubmitFeedback';
 
 const DocumentDisplay: React.FC = () => {
     const { id } = useParams();

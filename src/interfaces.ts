@@ -8,6 +8,7 @@ export interface ProblemData {
 }
 
 export interface ChunkInstructionProblem {
+    chunkId?: number;
     chunk: Chunk;
     instruction?: Instruction;
     problem?: Problem;
@@ -32,12 +33,16 @@ export interface ITool {
 
 export type Rating = 'thumbsUp' | 'thumbsDown' | "";
 
-export interface IFeedbackData {
-    toolName: string;
-    responseText: string | null;
+export interface IFeedbackData extends ChunkInstructionProblem {
+    feedbackLabel: string;
     rating: Rating;
     userFeedback: string;
-    data: ProblemData | ChunkInstructionProblem | null
+    issueResponses: Array<FeedbackQuestion>;
+}
+
+interface FeedbackQuestion {
+    question: string;
+    response: Rating | "yes" | "no";
 }
 
 export interface ISubscriptionData {
@@ -116,8 +121,6 @@ export interface Document {
 export interface EmptyDocument {
     problemChunks?: Chunk[];
 }
-
-
 
 
 export interface Chunk {

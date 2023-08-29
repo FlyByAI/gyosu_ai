@@ -1,30 +1,25 @@
 import React, { useState, FormEvent } from 'react';
-import { ChunkInstructionProblem, IFeedbackData, ProblemData, Rating } from '../../interfaces';
+import { Chunk, ChunkInstructionProblem, IFeedbackData, ProblemData, Rating } from '../../interfaces';
 import { ThumbsDownSvg, ThumbsUpSvg } from '../../svg/customSVGs';
 
-interface FeecbackFormProps {
-    toolName: string;
-    responseText: string | null;
+interface FeedbackFormProps {
+    feedbackLabel: string;
     rating: Rating;
     onSubmitFeedback: (data: IFeedbackData) => void;
-    data: ProblemData | ChunkInstructionProblem | null;
+    data: ChunkInstructionProblem;
     onClose: () => void;
 }
 
-const FeecbackForm: React.FC<FeecbackFormProps> = ({ toolName, responseText, rating, onSubmitFeedback, data, onClose }) => {
+const FeedbackForm: React.FC<FeedbackFormProps> = ({ feedbackLabel, rating, onSubmitFeedback, data, onClose }) => {
     const [comment, setComment] = useState<string>("");
 
     const [issueType, setIssueType] = useState<{ [key: string]: boolean }>({});
 
-    const issueTypesThumbsDown = [
+    const responseQuestions = [ // can extend this to be more dynamic as a prop
         'How was the problem quality?',
-        'Were there typos?',
-        'Was the answer incorrect?'
-    ];
-
-    const issueTypesThumbsUp = [
-        'Did you like the problem quality?',
-        'Was it easy to understand?'
+        'Was this problem mistake-free?',
+        'Was it easy to understand?',
+        'Was the answer correct?',
     ];
 
     const toggleIssue = (issueName: string, thumbRating: 'thumbsUp' | 'thumbsDown') => {
@@ -38,44 +33,50 @@ const FeecbackForm: React.FC<FeecbackFormProps> = ({ toolName, responseText, rat
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
+        const issueResponses = responseQuestions.map(question => {
+            return {
+                question,
+                response: issueType[question] ? 'thumbsUp' : 'thumbsDown' as Rating
+            };
+        });
+
         const feedbackData: IFeedbackData = {
-            toolName,
-            responseText,
+            feedbackLabel,
             rating,
             userFeedback: comment,
-            data,
-            ...issueType,
+            issueResponses,
+            ...data,
         };
 
         await onSubmitFeedback(feedbackData);
         onClose();
     };
 
+    const renderIssue = (issue: string, index: number) => (
+        <div key={index} className="space-y-2 flex items-center">
+            <label>{issue}</label>
+            <div onClick={() => toggleIssue(issue, 'thumbsDown')}>
+                <ThumbsDownSvg rating={issueType[issue] == false ? 'thumbsDown' : ''} />
+            </div>
+            <div onClick={() => toggleIssue(issue, 'thumbsUp')}>
+                <ThumbsUpSvg rating={issueType[issue] == true ? 'thumbsUp' : ''} />
+            </div>
+        </div>
+    );
+
     return (
         <form onSubmit={handleSubmit}>
             <div className="mb-4">
-                {rating === 'thumbsDown' && issueTypesThumbsDown.map((issue, index) => (
-                    <div key={index} className="space-y-2 flex items-center">
-                        <label>{issue}</label>
-                        <div onClick={() => toggleIssue(issue, 'thumbsDown')}>
-                            <ThumbsDownSvg rating={issueType[issue] == false ? 'thumbsDown' : ''} />
-                        </div>
-                        <div onClick={() => toggleIssue(issue, 'thumbsUp')}>
-                            <ThumbsUpSvg rating={issueType[issue] == true ? 'thumbsUp' : ''} />
-                        </div>
-                    </div>
-                ))}
-                {rating === 'thumbsUp' && issueTypesThumbsUp.map((issue, index) => (
-                    <div key={index} className="space-y-2 flex items-center">
-                        <label>{issue}</label>
-                        <div onClick={() => toggleIssue(issue, 'thumbsDown')}>
-                            <ThumbsDownSvg rating={issueType[issue] == false ? 'thumbsDown' : ''} />
-                        </div>
-                        <div onClick={() => toggleIssue(issue, 'thumbsUp')}>
-                            <ThumbsUpSvg rating={issueType[issue] == true ? 'thumbsUp' : ''} />
-                        </div>
-                    </div>
-                ))}
+                {(() => {
+                    switch (rating) {
+                        case 'thumbsDown':
+                            return responseQuestions.map((issue, index) => renderIssue(issue, index));
+                        case 'thumbsUp':
+                            return responseQuestions.map((issue, index) => renderIssue(issue, index));
+                        default:
+                            return null;
+                    }
+                })()}
             </div>
             <div className="mb-4">
                 <label className="block text-sm font-medium text-white">Comment</label>
@@ -94,4 +95,4 @@ const FeecbackForm: React.FC<FeecbackFormProps> = ({ toolName, responseText, rat
     );
 };
 
-export default FeecbackForm;
+export default FeedbackForm;
