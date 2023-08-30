@@ -27,7 +27,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
 
     const [, ref] = useDrag({
         type: CHUNK_DRAG_TYPE,
-        item: { type: CHUNK_TYPE, content: chunk.content } as Chunk
+        item: { ...chunk, content: chunk.content } as Chunk
     });
 
     const [isHovered, setIsHovered] = useState(false);
@@ -159,7 +159,7 @@ const InstructionComponent: React.FC<InstructionProps> = ({ instruction, onInstr
                                 case 'text':
                                     return (
                                         <ReactMarkdown
-                                            className={"text-blue-300 border-2 border-transparent border-dashed hover:border-2 hover:border-purple-dashed p-1 m-1 group-hover:border-2 group-hover:border-blue-500 group-hover:border-dashed"}
+                                            className={"z-10 text-blue-300 border-2 border-transparent border-dashed hover:border-2 hover:border-purple-dashed p-1 m-1 group-hover:border-2 group-hover:border-blue-500 group-hover:border-dashed"}
                                             remarkPlugins={[remarkGfm, remarkMath]}
                                             rehypePlugins={[rehypeKatex]}
                                         >
@@ -169,7 +169,7 @@ const InstructionComponent: React.FC<InstructionProps> = ({ instruction, onInstr
                                 case 'math':
                                     return (
                                         <ReactMarkdown
-                                            className={"text-yellow-200 border-2 border-transparent border-dashed hover:border-2 hover:border-purple-dashed p-1 m-1 group-hover:border-2 group-hover:border-yellow-300 group-hover:border-dashed"}
+                                            className={"z-10 text-yellow-200 border-2 border-transparent border-dashed hover:border-2 hover:border-purple-dashed p-1 m-1 group-hover:border-2 group-hover:border-yellow-300 group-hover:border-dashed"}
                                             remarkPlugins={[remarkGfm, remarkMath]}
                                             rehypePlugins={[rehypeKatex]}
                                         >
@@ -233,7 +233,7 @@ const ProblemComponent: React.FC<ProblemProps> = ({ problem, onInstructionHover 
                                 case 'text':
                                     return (
                                         <ReactMarkdown
-                                            className={'text-gray-200 border-2 border-transparent border-dashed hover:border-2 hover:border-purple-dashed p-1 m-1 group-hover:border-2 group-hover:border-white group-hover:border-dashed'}
+                                            className={'z-10 text-gray-200 border-2 border-transparent border-dashed hover:border-2 hover:border-purple-dashed p-1 m-1 group-hover:border-2 group-hover:border-white group-hover:border-dashed'}
                                             remarkPlugins={[remarkGfm, remarkMath]}
                                             rehypePlugins={[rehypeKatex]}
                                         >
@@ -243,7 +243,7 @@ const ProblemComponent: React.FC<ProblemProps> = ({ problem, onInstructionHover 
                                 case 'math':
                                     return (
                                         <ReactMarkdown
-                                            className={"text-purple-300 border-gray-100  border-2 border-transparent border-dashed hover:border-2 hover:border-purple-dashed p-1 m-1 group-hover:border-2 group-hover:border-purple-500 group-hover:border-dashed"}
+                                            className={"z-10 text-purple-300 border-gray-100  border-2 border-transparent border-dashed hover:border-2 hover:border-purple-dashed p-1 m-1 group-hover:border-2 group-hover:border-purple-500 group-hover:border-dashed"}
                                             remarkPlugins={[remarkGfm, remarkMath]}
                                             rehypePlugins={[rehypeKatex]}
                                         >

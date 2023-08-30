@@ -8,6 +8,8 @@ import { useModal } from "../../contexts/useModal";
 import FeedbackForm from "../forms/FeedbackForm";
 import useSubmitFeedback from "../../hooks/useSubmitFeedback";
 import { useState } from "react";
+import TrashIcon from "../../svg/TrashIcon";
+import { Tooltip as ReactTooltip } from "react-tooltip";
 
 
 interface ToolBadgeProps {
@@ -44,6 +46,33 @@ const ToolBadge: React.FC<ToolBadgeProps> = ({ chunk, instruction, problem, inse
             console.error("An error occurred during reroll:", error);
         }
     };
+
+
+    const handleDeleteInstructionProblem = async () => {
+        console.log("delete", payload.problem, "or", payload.instruction);
+
+        try {
+            const newContent = payload.chunk.content.filter((item) => {
+                if (payload.problem && item.type === "problem") {
+                    return item !== payload.problem; // Compare how you deem appropriate
+                }
+                if (payload.instruction && item.type === "instruction") {
+                    return item !== payload.instruction; // Compare how you deem appropriate
+                }
+                return true;
+            });
+
+            const updatedChunk = {
+                ...payload.chunk,
+                content: newContent
+            };
+
+            updateChunk(updatedChunk, chunkIndex);
+        } catch (error) {
+            console.error("An error occurred during reroll:", error);
+        }
+    };
+
 
     const handleAdd = () => {
         console.log("add", payload);
@@ -85,22 +114,44 @@ const ToolBadge: React.FC<ToolBadgeProps> = ({ chunk, instruction, problem, inse
 
     return (
         <div className={`bg-gray-100 rounded-full p-3 flex space-x-2 absolute transform translate-x-full -translate-y-full flex-row + ${hidden ? "hidden" : ""}`}>
-            <button onClick={handleThumbUpClick} className="">
+            <button onClick={handleThumbUpClick} className=""
+                data-tooltip-id="reviewTip"
+            >
                 <div className={`pe-1 dark:text-gray-700`}>
                     <ThumbsUpSvg rating={rating} />
                 </div>
             </button>
             <button onClick={handleThumbDownClick} className="">
-                <div className={`pe-1 dark:text-gray-700`}>
+                <div className={`pe-1 dark:text-gray-700`}
+                    data-tooltip-id="reviewTip"
+                >
                     <ThumbsDownSvg rating={rating} />
                 </div>
             </button>
-            {/* <button onClick={handleReroll} className="pe-1 text-black">
-                <RefreshIcon />
-            </button> */}
-            {insertChunk && <button onClick={handleAdd} className="pe-1 text-green-500">
+            <button
+                onClick={handleDeleteInstructionProblem}
+                data-tooltip-id="deleteTip"
+                className="pe-1 text-black"
+            >
+                <TrashIcon />
+            </button>
+            {insertChunk && <button onClick={handleAdd}
+                data-tooltip-id="insertTip"
+                className="pe-1 text-green-500">
                 <PlusIcon />
             </button>}
+            <ReactTooltip
+                id='deleteTip'
+                place="bottom"
+                content={`Delete this ${payload.instruction ? "instruction" : "problem"} from this exercise`} />
+            <ReactTooltip
+                id='reviewTip'
+                place="bottom"
+                content={`Rate this exercise`} />
+            <ReactTooltip
+                id='insertTip'
+                place="bottom"
+                content={`Insert a new exercise above this one`} />
         </div>
     );
 };

@@ -22,7 +22,7 @@ const MathDocumentSearch: React.FC = () => {
 
                 {/* community documents */}
                 <div className="flex flex-row justify-center mb-2">
-                    <Accordion title={"Browse recent community created documents"} visible={true}>
+                    <Accordion title={"Recent community problem banks"} visible={true}>
                         <GridContainer3x3>
                             {documents?.map((doc, index) => (
                                 <DocumentPreview

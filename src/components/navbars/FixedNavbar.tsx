@@ -26,7 +26,7 @@ const RegularNavbar: React.FC = () => {
       </div>
       <nav className="grid grid-cols-2 gap-2 lg:flex lg:space-x-3 pt-4">
         <Link to="/math-app" className="text-lg text-white hover:underline dark:text-gray-200 lg:justify-self-end block sm:hidden">
-          Generate
+          Browse
         </Link>
         <Link to="/math-app" className="text-lg text-white hover:underline dark:text-gray-200 lg:justify-self-end block sm:hidden">
           Documents
@@ -45,7 +45,7 @@ const RegularNavbar: React.FC = () => {
         <div className="flex items-center">
           <nav>
             <Link to="/math-app" className="text-lg text-white mx-3 hover:underline dark:text-gray-200 font-mono font-bold">
-              Generate
+              Browse
             </Link>
             <Link to="/math-app/bank" className="text-lg text-white mx-3 hover:underline dark:text-gray-200 font-mono font-bold">
               Documents

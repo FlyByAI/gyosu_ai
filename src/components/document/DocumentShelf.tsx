@@ -34,8 +34,6 @@ const DocumentShelf: React.FC<DocumentShelfProps> = ({ isExporting }) => {
             last_modified_by: '',
             created_at: new Date().toISOString(),
             updated_at: new Date().toISOString(),
-            section: '',
-            chapter: '',
             problemChunks: [] as Chunk[],
         };
 
@@ -67,10 +65,14 @@ const DocumentShelf: React.FC<DocumentShelfProps> = ({ isExporting }) => {
                 return; // You might want to handle this case specifically
         }
 
+
+
         const updatedDocument: Document = {
             ...documentToUpdate,
             problemChunks: [...(documentToUpdate.problemChunks || []), contentItem as Chunk],
         };
+
+        console.log(updatedDocument)
 
         await updateDocument({ document: updatedDocument });
 
@@ -80,7 +82,7 @@ const DocumentShelf: React.FC<DocumentShelfProps> = ({ isExporting }) => {
         <div style={{ marginLeft: '16.6667%' }} />
         <div className="flex flex-col w-1/6 bg-gray-800 p-4 h-screen fixed overflow-y-scroll">
             <div className="flex justify-between items-center mb-2">
-                <h3 className="text-white text-xl">Problem Bank</h3>
+                <h3 className="text-white text-xl">Problem Banks</h3>
                 <button onClick={handleAddDocument} className="bg-blue-400 p-2 rounded-md text-white font-extrabold">
                     <PlusIcon />
                 </button>

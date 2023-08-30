@@ -112,12 +112,18 @@ export interface Document {
     last_modified_by: string;
     created_at: string; // Using string for simplicity, consider using a date/time library like day.js or luxon for better date/time handling
     updated_at: string; // Same as above
-    section: string;
-    chapter: string;
     documentType?: string;
     problemChunks?: Chunk[];
     shared?: boolean;
 }
+
+export interface Source {
+    book: string,
+    chapter: string,
+    section: string,
+    problemType: string
+}
+
 export interface EmptyDocument {
     problemChunks?: Chunk[];
 }
@@ -128,6 +134,7 @@ export interface Chunk {
     mongoChunkId?: string;
     type: "chunk";
     content: (Instruction | Problem)[];
+    source?: Source;
 }
 
 export interface Instruction {

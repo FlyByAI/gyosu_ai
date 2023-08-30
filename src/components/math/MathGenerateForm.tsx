@@ -118,7 +118,7 @@ const MathGenerateForm: React.FC<MathGenerateFormProps> = ({ onSubmit, setProble
                         <Dropdown showSelected={false} label={"Problem Type"} options={formOptionsObj[sourceMaterial][section]['problem_types']} defaultValue={problemType} handleChange={handleChangeProblemType} className="form-select block w-full lg:w-1/3" />
                     </div>
                     <SubmitButton
-                        buttonText={"Generate New"}
+                        buttonText={"Browse Problems"}
                         handleClick={handleMathSubmit}
                         className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded self-center w-full"
                     />

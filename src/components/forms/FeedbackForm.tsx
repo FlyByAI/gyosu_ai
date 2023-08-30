@@ -55,10 +55,10 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ feedbackLabel, rating, onSu
     const renderIssue = (issue: string, index: number) => (
         <div key={index} className="space-y-2 flex items-center">
             <label>{issue}</label>
-            <div onClick={() => toggleIssue(issue, 'thumbsDown')}>
+            <div className="ms-4" onClick={() => toggleIssue(issue, 'thumbsDown')}>
                 <ThumbsDownSvg rating={issueType[issue] == false ? 'thumbsDown' : ''} />
             </div>
-            <div onClick={() => toggleIssue(issue, 'thumbsUp')}>
+            <div className="ps-2" onClick={() => toggleIssue(issue, 'thumbsUp')}>
                 <ThumbsUpSvg rating={issueType[issue] == true ? 'thumbsUp' : ''} />
             </div>
         </div>
@@ -66,7 +66,7 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ feedbackLabel, rating, onSu
 
     return (
         <form onSubmit={handleSubmit}>
-            <div className="mb-4">
+            <div className="mb-6">
                 {(() => {
                     switch (rating) {
                         case 'thumbsDown':
@@ -79,7 +79,9 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ feedbackLabel, rating, onSu
                 })()}
             </div>
             <div className="mb-4">
-                <label className="block text-sm font-medium text-white">Comment</label>
+                <label className="block text-md text-white mb-2">
+                    The feedback we receive from our users will help us to improve the quality of our content. Please let us know what you think.
+                </label>
                 <textarea
                     className="mt-1 p-2 w-full border rounded-md text-black"
                     value={comment}
