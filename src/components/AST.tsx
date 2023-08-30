@@ -177,8 +177,23 @@ const InstructionComponent: React.FC<InstructionProps> = ({ instruction, onInstr
                                         </ReactMarkdown>
                                     );
                                 case 'table':
-                                    // You can render tables here, or add a custom Table component
-                                    return <span key={index}>Table content here</span>;
+                                    return (
+                                        <ReactMarkdown
+                                            className={"z-10 text-purple-300 border-gray-100  border-2 border-transparent border-dashed hover:border-2 hover:border-purple-dashed p-1 m-1 group-hover:border-2 group-hover:border-purple-500 group-hover:border-dashed"}
+                                            remarkPlugins={[remarkGfm, remarkMath]}
+                                            rehypePlugins={[rehypeKatex]}
+                                        >
+                                            {`${item.value}`}
+                                        </ReactMarkdown>
+                                    );
+                                case 'image':
+                                    return (
+                                        <img
+                                            src={item.value}
+                                            alt="Description"
+                                            className="z-10 p-1 m-1 border-2 border-transparent border-dashed hover:border-2 hover:border-purple-dashed group-hover:border-2 group-hover:border-purple-500 group-hover:border-dashed"
+                                        />
+                                    );
                                 default:
                                     return null;
                             }
@@ -251,8 +266,23 @@ const ProblemComponent: React.FC<ProblemProps> = ({ problem, onInstructionHover 
                                         </ReactMarkdown>
                                     );
                                 case 'table':
-                                    // You can render tables here, or add a custom Table component
-                                    return <span key={index}>Table content here</span>;
+                                    return (
+                                        <ReactMarkdown
+                                            className={"z-10 text-purple-300 border-gray-100  border-2 border-transparent border-dashed hover:border-2 hover:border-purple-dashed p-1 m-1 group-hover:border-2 group-hover:border-purple-500 group-hover:border-dashed"}
+                                            remarkPlugins={[remarkGfm, remarkMath]}
+                                            rehypePlugins={[rehypeKatex]}
+                                        >
+                                            {`${item.value}`}
+                                        </ReactMarkdown>
+                                    );
+                                case 'image':
+                                    return (
+                                        <img
+                                            src={item.value}
+                                            alt="Description"
+                                            className="z-10 p-1 m-1 border-2 border-transparent border-dashed hover:border-2 hover:border-purple-dashed group-hover:border-2 group-hover:border-purple-500 group-hover:border-dashed"
+                                        />
+                                    );
                                 default:
                                     return null;
                             }
