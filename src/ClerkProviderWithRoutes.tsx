@@ -27,7 +27,6 @@ import ContentWrapper from './components/ContentWrapper.tsx';
 import Attributions from './pages/Attributions.tsx';
 import DocumentDisplay from './pages/tools/DocumentDisplay.tsx';
 import Subscription from './components/Subscription.tsx';
-import DocumentEditor from './pages/tools/DocumentEditor.tsx';
 import LandingPage from './pages/Landing.tsx';
 import MathDocumentSearch from './pages/tools/MathDocumentSearch.tsx';
 import MathGenerate from './pages/tools/MathGenerate.tsx';
@@ -120,17 +119,6 @@ export default function ClerkProviderWithRoutes() {
                             <Navbar />
                             <MyMathDocuments />
                             <Footer />
-                            <Subscription />
-                        </>
-                    }
-                />
-
-                <Route
-                    path="/math-app/document/:id/export"
-                    element={
-                        <>
-                            <Navbar />
-                            <DocumentEditor />
                             <Subscription />
                         </>
                     }

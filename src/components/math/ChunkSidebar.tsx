@@ -69,13 +69,16 @@ const ChunkSidebar: React.FC<ChunkSidebarProps> = ({ document }) => {
     }, [formState]);
 
     const handleDeleteSelected = async () => {
-        // Validation for selected chunks, assuming you have activeChunkIndices array
         if (!activeChunkIndices || activeChunkIndices.length === 0) {
             return;
         }
 
-        deleteChunks(activeChunkIndices);
-        setActiveChunkIndices([]);
+        const userConfirmed = window.confirm('Are you sure you want to delete the selected exercises?');
+
+        if (userConfirmed) {
+            deleteChunks(activeChunkIndices);
+            setActiveChunkIndices([]);
+        }
     };
 
 
@@ -177,15 +180,14 @@ const ChunkSidebar: React.FC<ChunkSidebarProps> = ({ document }) => {
                         />
                         <span className="ml-2">{formState.gradeLevel}</span>
                     </div>
-                    <button type="submit" className="mt-4 px-4 py-2 bg-blue-500 text-white">
+                    <button type="submit" className="mt-4 px-4 py-2 bg-blue-500 text-white me-2">
                         Submit
                     </button>
-                    <button onClick={() => setActiveChunkIndices([])} className="mt-4 px-4 py-2 ms-2 bg-red-400 text-white">
+                    <button onClick={() => setActiveChunkIndices([])} className="mt-4 px-4 py-2 bg-red-400 text-white">
                         Cancel
                     </button>
                 </form>
-                <hr className="mt-4 py-2 w-full" />
-                <button onClick={handleDeleteSelected} className="mt-4 px-4 py-2 ms-2 bg-gray-600 border-red-500 border-2 text-white">
+                <button onClick={handleDeleteSelected} className="mt-4 px-4 py-2 bg-gray-600 border-red-500 border-2 text-white">
                     Delete Selected
                 </button>
                 <hr className="mt-4 py-2 w-full" />

@@ -24,7 +24,7 @@ const ToolBadge: React.FC<ToolBadgeProps> = ({ chunk, instruction, problem, inse
 
     const { submitReroll } = useSubmitReroll(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/reroll/`);
 
-    const { submitFeedback } = useSubmitFeedback(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/feedback/`)
+    const { submitFeedback } = useSubmitFeedback(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/feedback/problem/`)
 
     const payload: ChunkInstructionProblem = {
         chunkId: chunk.id,
