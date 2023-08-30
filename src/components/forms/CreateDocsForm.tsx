@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useSidebarContext } from '../../contexts/useSidebarContext';
 import { Chunk, Document, EmptyDocument } from '../../interfaces';
-import useCreateDocx from '../../hooks/tools/math/useCreateDocs';
 import { notSecretConstants } from '../../constants/notSecretConstants';
+import useCreateDocx from '../../hooks/tools/math/useCreateDocs';
 
 type DocxAction = "worksheet" | "quiz" | "exam" | "answer";
 

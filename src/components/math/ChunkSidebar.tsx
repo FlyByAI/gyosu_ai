@@ -6,7 +6,6 @@ import { notSecretConstants } from "../../constants/notSecretConstants";
 import { languageNames } from "../../helpers/language";
 import useSubmitDocument from "../../hooks/tools/math/useSubmitDocument";
 import { useLanguage } from "../../contexts/useLanguage";
-import useCreateDocx from "../../hooks/tools/math/useCreateDocs";
 import CreateDocxForm from "../forms/CreateDocsForm";
 
 interface ChunkSidebarProps {
