@@ -144,7 +144,7 @@ const InstructionComponent: React.FC<InstructionProps> = ({ parentChunk, parentC
     const [, drop] = useDrop({
         accept: [INSTRUCTION_DRAG_TYPE, PROBLEM_DRAG_TYPE],
         hover: () => {
-            console.log('hover instruction')
+            console.log('hover problem')
         },
         drop: (item: Instruction | Problem) => {
             if (item.type === INSTRUCTION_TYPE || item.type === PROBLEM_TYPE) {
