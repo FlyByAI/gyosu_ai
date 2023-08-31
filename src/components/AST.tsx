@@ -32,6 +32,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
 
     const [isHovered, setIsHovered] = useState(false);
 
+    //do this in instruction and problem too so they can be dragged on
     const [, drop] = useDrop({
         accept: [INSTRUCTION_DRAG_TYPE, PROBLEM_DRAG_TYPE],
         hover: () => {
@@ -125,15 +126,39 @@ interface InstructionProps {
 }
 
 interface InstructionProps {
+    parentChunk: Chunk;
+    parentChunkIndex: number;
+    updateChunk: (updatedChunk: Chunk, chunkIndex: number) => void;
+
     instruction: Instruction;
     edit?: boolean;
     onInstructionHover: (hovered: boolean) => void; // Function to change the parent's hover state
 }
 
-const InstructionComponent: React.FC<InstructionProps> = ({ instruction, onInstructionHover }) => {
+const InstructionComponent: React.FC<InstructionProps> = ({ parentChunk, parentChunkIndex, updateChunk, instruction, onInstructionHover }) => {
     const [, ref] = useDrag({
         type: INSTRUCTION_DRAG_TYPE,
         item: { type: INSTRUCTION_TYPE, content: instruction.content } as Instruction,
+    });
+
+    const [, drop] = useDrop({
+        accept: [INSTRUCTION_DRAG_TYPE, PROBLEM_DRAG_TYPE],
+        hover: () => {
+            console.log('hover instruction')
+        },
+        drop: (item: Instruction | Problem) => {
+            if (item.type === INSTRUCTION_TYPE || item.type === PROBLEM_TYPE) {
+                const updatedContent = [...parentChunk.content, item];
+                // Update the content state if you still want to use it elsewhere
+                // setContent(updatedContent);
+
+                // Create a new chunk object with the updated content
+                const updatedChunk = { ...parentChunk, content: updatedContent };
+
+                // Use the method from props to update the chunk
+                updateChunk(updatedChunk, parentChunkIndex);
+            }
+        },
     });
 
     function processLatexString(latex_string: string): string {
@@ -207,23 +232,40 @@ const InstructionComponent: React.FC<InstructionProps> = ({ instruction, onInstr
 
 
 interface ProblemProps {
-    problem: Problem;
-    edit?: boolean;
-}
+    parentChunk: Chunk;
+    parentChunkIndex: number;
+    updateChunk: (updatedChunk: Chunk, chunkIndex: number) => void;
 
-interface ProblemProps {
     problem: Problem;
     edit?: boolean;
     onInstructionHover: (hovered: boolean) => void; // Function to change the parent's hover state
 }
 
-const ProblemComponent: React.FC<ProblemProps> = ({ problem, onInstructionHover }) => {
+const ProblemComponent: React.FC<ProblemProps> = ({ parentChunk, parentChunkIndex, updateChunk, problem, onInstructionHover }) => {
     const [, ref] = useDrag({
         type: PROBLEM_DRAG_TYPE,
         item: { type: PROBLEM_TYPE, content: problem.content } as Problem,
     });
 
+    const [, drop] = useDrop({
+        accept: [INSTRUCTION_DRAG_TYPE, PROBLEM_DRAG_TYPE],
+        hover: () => {
+            console.log('hover instruction')
+        },
+        drop: (item: Instruction | Problem) => {
+            if (item.type === INSTRUCTION_TYPE || item.type === PROBLEM_TYPE) {
+                const updatedContent = [...parentChunk.content, item];
+                // Update the content state if you still want to use it elsewhere
+                // setContent(updatedContent);
 
+                // Create a new chunk object with the updated content
+                const updatedChunk = { ...parentChunk, content: updatedContent };
+
+                // Use the method from props to update the chunk
+                updateChunk(updatedChunk, parentChunkIndex);
+            }
+        },
+    });
 
     function processLatexString(latex_string: string): string {
         const result = latex_string.replace(/^\\\(/, '')
