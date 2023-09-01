@@ -11,6 +11,7 @@ import ToolWrapper from './math/ToolWrapper';
 import ChunkSidebarWrapper from './math/ChunkSidebarWrapper';
 import { useSidebarContext } from '../contexts/useSidebarContext';
 import CheckmarkIcon from '../svg/CheckmarkIcon';
+import TrashIcon from '../svg/TrashIcon';
 
 
 interface ChunkProps {
@@ -59,8 +60,15 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
             ref={(node) => ref(drop(node))}
             onMouseEnter={() => !isHovered && setIsHovered(true)}
             onMouseLeave={() => isHovered && setIsHovered(false)}
-            className={"border-2 p-4 w-full " + ((activeChunkIndices.includes(chunkIndex)) ? " border-green-200" : 'border-transparent')}
+            className={"p-4 w-full relative " + ((activeChunkIndices.includes(chunkIndex)) ? " bg-blue-900 " : '')}
         >
+            {isHovered && <button
+                onClick={() => console.log("delete chunk action")}
+                data-tooltip-id="deleteTip"
+                className="absolute top-0 right-0 pe-2 pt-2 text-red-500 z-10"
+            >
+                <TrashIcon />
+            </button>}
 
             {activeChunkIndices.includes(chunkIndex) ?
                 <div className='flex text-green-300 h-4 w-6'>
@@ -73,12 +81,16 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
                         className="focus:ring-green-500 h-4 w-6 text-green-600 rounded"
                     />
                 </div>
+
             }
+            {/* {chunk.parentChunkId && <div className='text-gray-400 text-xs'>Parent: {chunk.parentChunkId}</div>} */}
 
             {chunk.content.length === 0 && <div className="text-gray-400 p-4">Drag and drop instructions or problems here</div>}
             {chunk.content.map((item, index) => {
                 return (
                     <div key={`${item.type}-${index}-${chunk.content.length}`}>
+                        {/* put at upper right, and show on hover */}
+
                         {(() => {
                             switch (item.type) {
                                 case 'instruction':
@@ -135,7 +147,7 @@ interface InstructionProps {
     onInstructionHover: (hovered: boolean) => void; // Function to change the parent's hover state
 }
 
-const InstructionComponent: React.FC<InstructionProps> = ({ parentChunk, parentChunkIndex, updateChunk, instruction, onInstructionHover }) => {
+const InstructionComponent: React.FC<InstructionProps> = ({ parentChunk, parentChunkIndex, updateChunk, instruction }) => {
     const [, ref] = useDrag({
         type: INSTRUCTION_DRAG_TYPE,
         item: { type: INSTRUCTION_TYPE, content: instruction.content } as Instruction,
@@ -172,10 +184,7 @@ const InstructionComponent: React.FC<InstructionProps> = ({ parentChunk, parentC
     }
 
     return (
-        <div ref={ref} className="flex group"
-            onMouseEnter={() => onInstructionHover(false)} // Turn off parent's hover state
-            onMouseLeave={() => onInstructionHover(true)} // Turn on parent's hover state
-        >
+        <div ref={ref} className="flex group">
             {
                 instruction.content.map((item, index) => (
                     <div className="me-2" key={index}>
@@ -241,7 +250,7 @@ interface ProblemProps {
     onInstructionHover: (hovered: boolean) => void; // Function to change the parent's hover state
 }
 
-const ProblemComponent: React.FC<ProblemProps> = ({ parentChunk, parentChunkIndex, updateChunk, problem, onInstructionHover }) => {
+const ProblemComponent: React.FC<ProblemProps> = ({ parentChunk, parentChunkIndex, updateChunk, problem }) => {
     const [, ref] = useDrag({
         type: PROBLEM_DRAG_TYPE,
         item: { type: PROBLEM_TYPE, content: problem.content } as Problem,
@@ -278,10 +287,7 @@ const ProblemComponent: React.FC<ProblemProps> = ({ parentChunk, parentChunkInde
     }
 
     return (
-        <div ref={ref} className="flex group"
-            onMouseEnter={() => onInstructionHover(false)} // Turn off parent's hover state
-            onMouseLeave={() => onInstructionHover(true)} // Turn on parent's hover state
-        >
+        <div ref={ref} className="flex group">
             {
                 problem.content.map((item, index) => (
                     <div className="me-2" key={index}>

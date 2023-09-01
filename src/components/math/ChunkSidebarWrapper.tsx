@@ -22,14 +22,9 @@ const ChunkSidebarWrapper: React.FC<ChunkSidebarWrapperProps> = ({ children, doc
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
         >
-
-            {(activeChunkIndices.length > 0) && (
-                <div>
-                    <ChunkSidebar
-                        document={document}
-                    />
-                </div>
-            )}
+            <ChunkSidebar
+                document={document}
+            />
             {children}
         </div>
     </>

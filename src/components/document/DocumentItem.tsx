@@ -38,7 +38,7 @@ const DocumentItem: React.FC<DocumentItemProps> = ({ document, onDropChunk, isEx
     };
 
     return (
-        <li ref={dropRef} key={document.id} className={(id == document.id ? "bg-gray-600" : "bg-gray-700") + "  text-white h-14 p-2 rounded-md overflow-clip relative"} onClick={handleClick}>
+        <li ref={dropRef} key={document.id} className={(id == document.id ? "bg-blue-900" : "bg-gray-700") + "  text-white h-14 p-2 rounded-md overflow-clip relative"} onClick={handleClick}>
             {document && document.problemChunks && <div
                 className="absolute text-sm flex flex-col"
             >

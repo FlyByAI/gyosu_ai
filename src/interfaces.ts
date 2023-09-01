@@ -131,6 +131,7 @@ export interface EmptyDocument {
 
 export interface Chunk {
     id?: number;
+    parentId?: number;
     mongoChunkId?: string;
     type: "chunk";
     content: (Instruction | Problem)[];

@@ -91,13 +91,9 @@ const LandingPage: React.FC = () => {
                 <div className='w-full md:w-1/2 flex flex-col py-4'>
                     <div className='w-3/4 mx-auto flex flex-row mb-4 bg-gray-900 p-2'>
                         <div className='w-full rounded-xl'>
-                            <AIChatSmallWrapper chunk={sampleChunk} index={0}
-                                updateChunk={() => console.log('update')}
-                            >
-                                <MathProblem chunkIndex={0}
-                                    problem={sampleChunk as Chunk}
-                                    updateChunk={() => console.log('update')} />
-                            </AIChatSmallWrapper>
+                            <MathProblem chunkIndex={0}
+                                problem={sampleChunk as Chunk}
+                                updateChunk={() => console.log('update')} />
 
                         </div>
                     </div>
@@ -111,17 +107,13 @@ const LandingPage: React.FC = () => {
                 <div className='w-full md:w-1/2 flex flex-col py-4'>
                     <div className='w-3/4 mx-auto flex flex-row mb-4 bg-gray-900 p-2'>
                         <div className='w-full rounded-xl'>
-                            <AIChatSmallWrapper chunk={sampleChunk2} index={0}
-                                updateChunk={() => console.log('update')}
-                            >
-                                <MathProblem chunkIndex={0}
-                                    problem={sampleChunk2 as Chunk}
-                                    updateChunk={() => console.log('update')} />
-                            </AIChatSmallWrapper>
+                            <MathProblem chunkIndex={0}
+                                problem={sampleChunk2 as Chunk}
+                                updateChunk={() => console.log('update')} />
                         </div>
                     </div>
                 </div>
-            </section>
+            </section >
             <section className="p-10 h-full flex items-center" style={{ backgroundImage: `url('/svg/tech-bg.svg')`, backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover' }}>
                 <div className="w-2/3 text-5xl text-gray-800">
                     <h1 className="font-bold">A teaching tool</h1>
@@ -136,7 +128,7 @@ const LandingPage: React.FC = () => {
                 </div>
                 <img className="w-1/3 h-auto" src="/svg/teacher2.svg" alt="Image 1" />
             </section>
-        </div>
+        </div >
     );
 };
 

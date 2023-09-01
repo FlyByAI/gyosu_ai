@@ -98,17 +98,13 @@ const DocumentDisplay: React.FC = () => {
                                 <div
                                     key={chunkIndex} className='w-3/4 mx-auto flex flex-row mb-4 bg-gray-900 p-2'>
                                     <div className='w-full rounded-xl' >
-                                        <AIChatSmallWrapper chunk={chunk} index={chunkIndex}
+                                        <MathProblem
+                                            insertChunk={insertChunk}
                                             updateChunk={updateDocumentChunk}
-                                        >
-                                            <MathProblem
-                                                insertChunk={insertChunk}
-                                                updateChunk={updateDocumentChunk}
-                                                key={chunkIndex}
-                                                chunkIndex={chunkIndex}
-                                                problem={chunk}
-                                            />
-                                        </AIChatSmallWrapper>
+                                            key={chunkIndex}
+                                            chunkIndex={chunkIndex}
+                                            problem={chunk}
+                                        />
                                     </div>
 
                                 </div>

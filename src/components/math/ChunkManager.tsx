@@ -32,14 +32,11 @@ const ChunkManager: React.FC<ChunkManagerProps> = ({ chunkArray, setChunkArray }
                         <div key={chunkIndex}
                             className='w-3/4 mx-auto flex flex-row mb-4 bg-gray-900 p-2'>
                             <div className='w-full rounded-xl'>
-
-                                <AIChatSmallWrapper chunk={chunk} index={chunkIndex} updateChunk={updateChunk} >
-                                    <MathProblem
-                                        key={chunkIndex}
-                                        chunkIndex={chunkIndex}
-                                        problem={chunk}
-                                        updateChunk={updateChunk} />
-                                </AIChatSmallWrapper>
+                                <MathProblem
+                                    key={chunkIndex}
+                                    chunkIndex={chunkIndex}
+                                    problem={chunk}
+                                    updateChunk={updateChunk} />
                             </div>
 
                         </div>
