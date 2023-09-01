@@ -91,7 +91,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
                                             chunk={chunk}
                                             instruction={item}
                                         >
-                                            <InstructionComponent instruction={item} onInstructionHover={setIsHovered} />
+                                            <InstructionComponent parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} instruction={item} onInstructionHover={setIsHovered} />
                                         </ToolWrapper>
                                     );
                                 case 'problem':
@@ -104,7 +104,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
                                             chunk={chunk}
                                             problem={item}
                                         >
-                                            <ProblemComponent problem={item} onInstructionHover={setIsHovered} />
+                                            <ProblemComponent parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} problem={item} onInstructionHover={setIsHovered} />
                                         </ToolWrapper>
                                     );
                                 default:
