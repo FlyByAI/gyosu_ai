@@ -12,6 +12,10 @@ import ChunkSidebarWrapper from './math/ChunkSidebarWrapper';
 import { useSidebarContext } from '../contexts/useSidebarContext';
 import CheckmarkIcon from '../svg/CheckmarkIcon';
 import TrashIcon from '../svg/TrashIcon';
+import { notSecretConstants } from '../constants/notSecretConstants';
+import useSubmitDocument from '../hooks/tools/math/useSubmitDocument';
+import useGetDocument from '../hooks/tools/math/useGetDocument';
+import { useParams } from 'react-router-dom';
 
 
 interface ChunkProps {
@@ -25,6 +29,9 @@ interface ChunkProps {
 export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updateChunk, chunkIndex }) => {
 
     const { activeChunkIndices, setActiveChunkIndices } = useSidebarContext();
+
+    const endpoint2 = `${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/school_document/`;
+    const { isLoading, updateDocument } = useSubmitDocument(endpoint2);
 
     const [, ref] = useDrag({
         type: CHUNK_DRAG_TYPE,
@@ -54,6 +61,31 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
         },
     });
 
+    const { id } = useParams();
+
+    const { document } = useGetDocument(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/school_document/`, Number(id));
+
+    const deleteChunk = (index: number) => {
+        // Validation for document object
+        if (!document || !('id' in document)) {
+            return;
+        }
+
+        const updatedChunks = [...(document.problemChunks || [])];
+
+        updatedChunks.splice(index, 1);
+
+        const updatedDocument = { ...document, problemChunks: updatedChunks };
+
+        // unset this index in selected
+        setActiveChunkIndices(activeChunkIndices.filter(activeIndex => activeIndex !== index));
+
+        // Submit the change, triggering the updateDocument mutation
+        updateDocument({ document: updatedDocument });
+
+    };
+
+
     return (
 
         <div
@@ -63,7 +95,10 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
             className={"p-4 w-full relative " + ((activeChunkIndices.includes(chunkIndex)) ? " bg-blue-900 " : '')}
         >
             {isHovered && <button
-                onClick={() => console.log("delete chunk action")}
+                onClick={(e) => {
+                    e.stopPropagation();
+                    deleteChunk(chunkIndex);
+                }}
                 data-tooltip-id="deleteTip"
                 className="absolute top-0 right-0 pe-2 pt-2 text-red-500 z-10"
             >
