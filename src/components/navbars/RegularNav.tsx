@@ -31,9 +31,12 @@ const RegularNavbar: React.FC = () => {
                 <Link to="/math-app" className="text-lg text-white hover:underline dark:text-gray-200 lg:justify-self-end block sm:hidden">
                     Problem Banks
                 </Link>
-                <Link to="/math-app/bank" className="text-lg text-white hover:underline dark:text-gray-200 lg:justify-self-end block sm:hidden">
-                    Search
+                <Link to="/math-app/documents" className="text-lg text-white hover:underline dark:text-gray-200 lg:justify-self-end block sm:hidden">
+                    Documents
                 </Link>
+                {/* <Link to="/math-app/bank" className="text-lg text-white hover:underline dark:text-gray-200 lg:justify-self-end block sm:hidden">
+                    Search
+                </Link> */}
                 <Link to="/contact" className="text-lg text-white hover:underline dark:text-gray-200 lg:justify-self-end block sm:hidden">
                     Contact
                 </Link>
@@ -50,9 +53,12 @@ const RegularNavbar: React.FC = () => {
                         <Link to="/math-app/bank" className="text-lg text-white mx-3 hover:underline dark:text-gray-200 font-mono font-bold">
                             Problem Banks
                         </Link>
-                        <Link to="/math-app/search" className="text-lg text-white mx-3 hover:underline dark:text-gray-200 font-mono font-bold">
-                            Search
+                        <Link to="/math-app/documents" className="text-lg text-white mx-3 hover:underline dark:text-gray-200 font-mono font-bold">
+                            Documents
                         </Link>
+                        {/* <Link to="/math-app/search" className="text-lg text-white mx-3 hover:underline dark:text-gray-200 font-mono font-bold">
+                            Search
+                        </Link> */}
                         <Link to="/contact" className="text-lg text-white mx-3 hover:underline dark:text-gray-200 mr-4 font-mono font-bold">
                             Contact
                         </Link>

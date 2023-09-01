@@ -32,6 +32,7 @@ import MathDocumentSearch from './pages/tools/MathDocumentSearch.tsx';
 import MathGenerate from './pages/tools/MathGenerate.tsx';
 import MyMathDocuments from './pages/tools/MathDocumentBank.tsx';
 import Subscribe from './components/Subscribe.tsx';
+import Documents from './pages/Documents.tsx';
 
 const clerkPubKey = "pk_test_Y2F1c2FsLWJ1bm55LTQ0LmNsZXJrLmFjY291bnRzLmRldiQ";
 
@@ -107,6 +108,17 @@ export default function ClerkProviderWithRoutes() {
                         <>
                             <Navbar />
                             <MathDocumentSearch />
+                            <Footer />
+                            <Subscription />
+                        </>
+                    }
+                />
+                <Route
+                    path="/math-app/documents"
+                    element={
+                        <>
+                            <Navbar />
+                            <Documents />
                             <Footer />
                             <Subscription />
                         </>

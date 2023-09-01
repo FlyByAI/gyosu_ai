@@ -44,9 +44,9 @@ const CreateDocxForm = ({ document }: CreateDocsFormProps) => {
                 disabled={isLoading || activeChunkIndices.length === 0}
                 type="submit"
                 data-tooltip-id={"createWorksheetTip"}
-                className={`mt-2 w-full px-4 py-2 bg-blue-400 border-2 text-white ${activeChunkIndices.length === 0 ? " opacity-50 cursor-not-allowed" : ""}`}
+                className={`mt-2 w-full px-4 py-2 bg-blue-400 border-2 text-white ${activeChunkIndices.length === 0 || isLoading ? " opacity-50 cursor-not-allowed" : ""}`}
             >
-                Create Worksheet
+                {isLoading ? "Creating..." : "Create Worksheet"}
             </button>
             <ReactTooltip
                 id='createWorksheetTip'

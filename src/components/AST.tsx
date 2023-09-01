@@ -6,7 +6,7 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
-import { useDrag, useDrop } from 'react-dnd';
+import { DropTargetMonitor, useDrag, useDrop } from 'react-dnd';
 import ToolWrapper from './math/ToolWrapper';
 import ChunkSidebarWrapper from './math/ChunkSidebarWrapper';
 import { useSidebarContext } from '../contexts/useSidebarContext';
@@ -46,7 +46,16 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
         hover: () => {
             setIsHovered(true);
         },
-        drop: (item: Instruction | Problem) => {
+        drop: (item: Instruction | Problem, monitor: DropTargetMonitor) => {
+
+            const didDrop = monitor.didDrop();
+            if (didDrop) {
+                return;
+            }
+            else {
+                console.log("dropped on chunk")
+            }
+
             if (item.type === INSTRUCTION_TYPE || item.type === PROBLEM_TYPE) {
                 const updatedContent = [...chunk.content, item];
                 // Update the content state if you still want to use it elsewhere
@@ -138,7 +147,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
                                             chunk={chunk}
                                             instruction={item}
                                         >
-                                            <InstructionComponent parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} instruction={item} onInstructionHover={setIsHovered} />
+                                            <InstructionComponent instructionIndex={index} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} instruction={item} onInstructionHover={setIsHovered} />
                                         </ToolWrapper>
                                     );
                                 case 'problem':
@@ -151,7 +160,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
                                             chunk={chunk}
                                             problem={item}
                                         >
-                                            <ProblemComponent parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} problem={item} onInstructionHover={setIsHovered} />
+                                            <ProblemComponent problemIndex={index} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} problem={item} onInstructionHover={setIsHovered} />
                                         </ToolWrapper>
                                     );
                                 default:
@@ -178,11 +187,12 @@ interface InstructionProps {
     updateChunk: (updatedChunk: Chunk, chunkIndex: number) => void;
 
     instruction: Instruction;
+    instructionIndex: number;
     edit?: boolean;
     onInstructionHover: (hovered: boolean) => void; // Function to change the parent's hover state
 }
 
-const InstructionComponent: React.FC<InstructionProps> = ({ parentChunk, parentChunkIndex, updateChunk, instruction }) => {
+const InstructionComponent: React.FC<InstructionProps> = ({ parentChunk, parentChunkIndex, updateChunk, instruction, instructionIndex }) => {
     const [, ref] = useDrag({
         type: INSTRUCTION_DRAG_TYPE,
         item: { type: INSTRUCTION_TYPE, content: instruction.content } as Instruction,
@@ -193,19 +203,30 @@ const InstructionComponent: React.FC<InstructionProps> = ({ parentChunk, parentC
         hover: () => {
             console.log('hover problem')
         },
-        drop: (item: Instruction | Problem) => {
-            if (item.type === INSTRUCTION_TYPE || item.type === PROBLEM_TYPE) {
-                const updatedContent = [...parentChunk.content, item];
-                // Update the content state if you still want to use it elsewhere
-                // setContent(updatedContent);
+        drop: (item: Instruction | Problem, monitor: DropTargetMonitor) => {
 
-                // Create a new chunk object with the updated content
+            const didDrop = monitor.didDrop();
+            if (didDrop) {
+                return;
+            }
+            else {
+                console.log("dropped on instruction")
+            }
+
+            const draggedItemType = item.type;
+            if (draggedItemType === INSTRUCTION_TYPE || draggedItemType === PROBLEM_TYPE) {
+                const updatedContent = [...parentChunk.content];
+
+                const targetIndex = instructionIndex !== undefined ? instructionIndex : updatedContent.length;
+
+                // Insert at target index and shift other elements down
+                updatedContent.splice(targetIndex, 0, item);
+
                 const updatedChunk = { ...parentChunk, content: updatedContent };
-
-                // Use the method from props to update the chunk
                 updateChunk(updatedChunk, parentChunkIndex);
             }
-        },
+        }
+
     });
 
     function processLatexString(latex_string: string): string {
@@ -219,7 +240,7 @@ const InstructionComponent: React.FC<InstructionProps> = ({ parentChunk, parentC
     }
 
     return (
-        <div ref={ref} className="flex group">
+        <div ref={(node) => ref(drop(node))} className="flex group">
             {
                 instruction.content.map((item, index) => (
                     <div className="me-2" key={index}>
@@ -281,11 +302,12 @@ interface ProblemProps {
     updateChunk: (updatedChunk: Chunk, chunkIndex: number) => void;
 
     problem: Problem;
+    problemIndex: number;
     edit?: boolean;
     onInstructionHover: (hovered: boolean) => void; // Function to change the parent's hover state
 }
 
-const ProblemComponent: React.FC<ProblemProps> = ({ parentChunk, parentChunkIndex, updateChunk, problem }) => {
+const ProblemComponent: React.FC<ProblemProps> = ({ parentChunk, parentChunkIndex, updateChunk, problem, problemIndex }) => {
     const [, ref] = useDrag({
         type: PROBLEM_DRAG_TYPE,
         item: { type: PROBLEM_TYPE, content: problem.content } as Problem,
@@ -296,19 +318,30 @@ const ProblemComponent: React.FC<ProblemProps> = ({ parentChunk, parentChunkInde
         hover: () => {
             console.log('hover instruction')
         },
-        drop: (item: Instruction | Problem) => {
-            if (item.type === INSTRUCTION_TYPE || item.type === PROBLEM_TYPE) {
-                const updatedContent = [...parentChunk.content, item];
-                // Update the content state if you still want to use it elsewhere
-                // setContent(updatedContent);
+        drop: (item: Instruction | Problem, monitor: DropTargetMonitor) => {
 
-                // Create a new chunk object with the updated content
+            const didDrop = monitor.didDrop();
+            if (didDrop) {
+                return;
+            }
+            else {
+                console.log("dropped on problem")
+            }
+
+            const draggedItemType = item.type;
+            if (draggedItemType === INSTRUCTION_TYPE || draggedItemType === PROBLEM_TYPE) {
+                const updatedContent = [...parentChunk.content];
+
+                const targetIndex = problemIndex !== undefined ? problemIndex : updatedContent.length;
+
+                // Insert at target index and shift other elements down
+                updatedContent.splice(targetIndex, 0, item);
+
                 const updatedChunk = { ...parentChunk, content: updatedContent };
-
-                // Use the method from props to update the chunk
                 updateChunk(updatedChunk, parentChunkIndex);
             }
-        },
+        }
+
     });
 
     function processLatexString(latex_string: string): string {
@@ -322,7 +355,7 @@ const ProblemComponent: React.FC<ProblemProps> = ({ parentChunk, parentChunkInde
     }
 
     return (
-        <div ref={ref} className="flex group">
+        <div ref={(node) => ref(drop(node))} className="flex group">
             {
                 problem.content.map((item, index) => (
                     <div className="me-2" key={index}>

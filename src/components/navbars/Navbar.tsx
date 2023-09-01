@@ -6,8 +6,6 @@ import FixedNavbar from "./FixedNavbar";
 const Navbar: React.FC = () => {
   const location = useLocation();
 
-  console.log(location.pathname == '/math-app')
-
   switch (true) { // Switch on true to allow for conditional checks
     case location.pathname.includes('/document/'):
       return <DocumentToolbarNav />;

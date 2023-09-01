@@ -49,13 +49,13 @@ const DocumentToolbarNav: React.FC = () => {
                         <Link to="/math-app" className="text-3xl font-semibold text-white font-mono flex items-center"><ChevronLeft />Home</Link>
                     </div>
                     <div className="w-1/6 justify-between flex flex-row">
-                        {document && <button
+                        {/* {document && <button
                             className="ms-2 text-xl font-semibold text-white font-mono flex flex-row items-end"
                             onClick={handleShare}
                         >
                             <div>Shared </div>
                             <div className={!document.shared ? "text-green-300 ms-2 m-1" : "text-red-300 ms-2 m-1"}>{document.shared ? <XIcon /> : <CheckmarkIcon />}</div>
-                        </button>}
+                        </button>} */}
                     </div>
                     <div className="w-1/6 justify-between flex flex-row">
 
