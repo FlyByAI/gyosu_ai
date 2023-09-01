@@ -165,4 +165,5 @@ export interface Image {
 export interface Table {
     type: "table";
     value: string;
+    content: (Text | Math | Image)[];
 }
