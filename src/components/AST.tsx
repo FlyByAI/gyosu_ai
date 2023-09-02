@@ -101,7 +101,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
             ref={(node) => ref(drop(node))}
             onMouseEnter={() => !isHovered && setIsHovered(true)}
             onMouseLeave={() => isHovered && setIsHovered(false)}
-            className={"p-4 w-full relative " + ((activeChunkIndices.includes(chunkIndex)) ? " bg-blue-900 " : '')}
+            className={"border-2 relative border-transparent p-4 w-full " + (isHovered ? " hover:border-green-200 border-dashed hover:border-2 hover:border-purple-dashed" : '') + ((activeChunkIndices.includes(chunkIndex)) ? " bg-blue-900 " : '')}
         >
             {isHovered && <button
                 onClick={(e) => {
@@ -109,7 +109,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
                     deleteChunk(chunkIndex);
                 }}
                 data-tooltip-id="deleteTip"
-                className="absolute top-0 right-0 pe-2 pt-2 text-red-500 z-10"
+                className="absolute top-0 right-0 pe-2 pt-2 text-red-500"
             >
                 <TrashIcon />
             </button>}

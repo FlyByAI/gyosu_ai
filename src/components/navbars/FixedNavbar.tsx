@@ -13,7 +13,7 @@ const RegularNavbar: React.FC = () => {
 
   return (<>
     <div className='mt-20' />
-    <header className="fixed top-0 left-0 w-full px-6 pb-4 bg-blue-900 text-white dark:bg-gray-900 dark:text-gray-200">      {/* mobile */}
+    <header className="z-50 fixed top-0 left-0 w-full px-6 pb-4 bg-blue-900 text-white dark:bg-gray-900 dark:text-gray-200">      {/* mobile */}
       <div className="flex flex-row container mx-auto grid-cols-2 lg:grid-cols-2 items-center justify-between gap-4 sm:hidden">
         <Link to="/" className="text-3xl font-semibold text-white justify-self-center lg:justify-self-start font-mono">Gyosu.ai</Link>
         <div className="flex items-center justify-self-center sm:block">
