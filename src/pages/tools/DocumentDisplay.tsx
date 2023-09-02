@@ -84,10 +84,10 @@ const DocumentDisplay: React.FC = () => {
     };
 
     return (
-        <div className='flex'>
+        <div className='flex '>
             <DocumentShelf isExporting={false} />
             <div className="w-5/6" style={{ marginRight: '16.6667%' }}>
-                <DocumentHeader document={document} />
+                {/* <DocumentHeader document={document} /> */}
                 <ChunkSidebarWrapper
                     document={document}
                 >

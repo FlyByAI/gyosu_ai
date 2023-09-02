@@ -4,6 +4,9 @@ import { SignedIn, SignedOut, UserButton, SignInButton } from '@clerk/clerk-reac
 import { useDarkMode } from '../../hooks/useDarkMode';
 import LanguageDropdown from '../LanguageDropdown';
 import { getGyosuClerkTheme } from '../../theme/customClerkTheme';
+import Hamburger from 'hamburger-react'
+import HamburgerWrapper from '../HamburgerWrapper';
+import ManageSubscriptionButton from '../ManageSubscriptionButton';
 
 const RegularNavbar: React.FC = () => {
 
@@ -15,10 +18,12 @@ const RegularNavbar: React.FC = () => {
             <div className="flex flex-row container mx-auto grid-cols-2 lg:grid-cols-2 items-center justify-between gap-4 sm:hidden">
                 <Link to="/" className="text-3xl font-semibold text-white justify-self-center lg:justify-self-start font-mono">Gyosu.ai</Link>
                 <div className="flex items-center justify-self-center sm:block">
-                    <LanguageDropdown className="sm:hidden" />
                     <SignedIn>
-                        {darkMode ? <UserButton afterSignOutUrl="http://localhost:5173/" appearance={getGyosuClerkTheme()} /> : <UserButton afterSignOutUrl="http://localhost:5173/" />}
-                    </SignedIn>
+                        {darkMode ? <UserButton afterSignOutUrl="/" appearance={getGyosuClerkTheme()} /> : <UserButton afterSignOutUrl="http://localhost:5173/" />}
+                        <HamburgerWrapper>
+                            <LanguageDropdown />
+                            <ManageSubscriptionButton />
+                        </HamburgerWrapper>                    </SignedIn>
                     <SignedOut>
                         <SignInButton mode="modal" />
                     </SignedOut>
@@ -29,7 +34,7 @@ const RegularNavbar: React.FC = () => {
                     Browse
                 </Link>
                 <Link to="/math-app" className="text-lg text-white hover:underline dark:text-gray-200 lg:justify-self-end block sm:hidden">
-                    Problem Banks
+                    Problem Bank
                 </Link>
                 <Link to="/math-app/documents" className="text-lg text-white hover:underline dark:text-gray-200 lg:justify-self-end block sm:hidden">
                     Documents
@@ -51,7 +56,7 @@ const RegularNavbar: React.FC = () => {
                             Browse
                         </Link>
                         <Link to="/math-app/bank" className="text-lg text-white mx-3 hover:underline dark:text-gray-200 font-mono font-bold">
-                            Problem Banks
+                            Problem Bank
                         </Link>
                         <Link to="/math-app/documents" className="text-lg text-white mx-3 hover:underline dark:text-gray-200 font-mono font-bold">
                             Documents
@@ -63,12 +68,26 @@ const RegularNavbar: React.FC = () => {
                             Contact
                         </Link>
                     </nav>
-                    <LanguageDropdown className="hidden sm:flex " />
                     <SignedIn>
                         {darkMode ? <UserButton afterSignOutUrl="/" appearance={getGyosuClerkTheme()} /> : <UserButton afterSignOutUrl="http://localhost:5173/" />}
+                        <HamburgerWrapper>
+                            <LanguageDropdown />
+                            <ManageSubscriptionButton />
+                        </HamburgerWrapper>
                     </SignedIn>
                     <SignedOut>
-                        <SignInButton mode="modal" />
+                        <div
+                            className="flex justify-center items-center bg-orange-500 hover:bg-orange-600 rounded-md p-2 cursor-pointer"
+                            onClick={(e) => {
+                                // Programmatically click the inner button
+                                const button = e.currentTarget.querySelector('button');
+                                if (button) {
+                                    button.click();
+                                }
+                            }}
+                        >
+                            <SignInButton mode="modal" />
+                        </div>
                     </SignedOut>
                 </div>
             </div>

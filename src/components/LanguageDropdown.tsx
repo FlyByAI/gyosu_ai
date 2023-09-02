@@ -17,19 +17,19 @@ const LanguageDropdown = ({ className }: LanguageDropdownProps) => {
     };
 
     return (
-        <div className={className + ` pe-3`}>
+        <div className={className + " py-2 hidden sm:flex hover:bg-gray-800"}>
             <div className="cursor-pointer" onClick={() => setShowOptions(!showOptions)}>
-                <span className={`flag-icon flag-icon-${flagOptions[language]}`}></span>
+                Change Language
             </div>
             {showOptions && (
-                <div className="absolute bg-gray-900 border rounded shadow z-50">
+                <div className="absolute bg-gray-900 hover:bg-gray-800 border rounded shadow z-50">
                     {Object.keys(languageNames).map((lang) => (
                         <div
                             key={lang}
                             className="cursor-pointer hover:bg-gray-700 p-2"
                             onClick={() => handleLanguageChange(lang)}
                         >
-                            <span className={`flag-icon flag-icon-${flagOptions[lang]}`}></span> {languageNames[lang]}
+                            {languageNames[lang]}
                         </div>
                     ))}
                 </div>

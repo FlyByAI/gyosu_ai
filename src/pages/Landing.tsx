@@ -48,7 +48,7 @@ const LandingPage: React.FC = () => {
                     <p className="font-bold mt-4">custom AI math tools</p>
                     <p className="mt-4 text-lg">Quickly create customized content for your students</p>
                     <Link className="text-sm" to="/math-app">
-                        <button className="bg-orange-500 text-white rounded-3xl flex items-center my-6 p-1 pl-4">
+                        <button className="bg-gradient-to-r from-blue-700 to-green-600 hover:from-blue-500 hover:to-green-500 text-white rounded-3xl flex items-center my-6 p-1 pl-4">
                             Try AI Generate
                             <ArrowRightMore className="p-2 text-lg" />
                         </button>
@@ -120,7 +120,7 @@ const LandingPage: React.FC = () => {
                     <h1 className="font-bold">just for you</h1>
                     <p className="mt-4 text-lg">Let us be your full time content creation tool</p>
                     <Link className="text-sm" to="/math-app">
-                        <button className="bg-orange-500 text-white rounded-3xl flex items-center my-6 p-1 pl-4">
+                        <button className="bg-gradient-to-r from-blue-700 to-green-600 hover:from-blue-500 hover:to-green-500 text-white rounded-3xl flex items-center my-6 p-1 pl-4">
                             Try AI Generate
                             <ArrowRightMore className="p-2 text-lg" />
                         </button>

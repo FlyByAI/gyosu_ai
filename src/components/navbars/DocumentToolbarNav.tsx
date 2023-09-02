@@ -12,6 +12,8 @@ import useSubmitDocument from '../../hooks/tools/math/useSubmitDocument';
 import TrashIcon from '../../svg/TrashIcon';
 import XIcon from '../../svg/XIcon';
 import CheckmarkIcon from '../../svg/CheckmarkIcon';
+import HamburgerWrapper from '../HamburgerWrapper';
+import ManageSubscriptionButton from '../ManageSubscriptionButton';
 
 const DocumentToolbarNav: React.FC = () => {
     const { darkMode } = useDarkMode();
@@ -42,7 +44,7 @@ const DocumentToolbarNav: React.FC = () => {
 
     return (
         <>
-            <div style={{ height: `${toolbarHeight}px` }}></div> {/* Placeholder */}
+            <div className='mt-20'></div> {/* Placeholder */}
             <header className="fixed top-0 left-0 w-full px-6 py-4 bg-blue-900 text-white dark:bg-gray-900 dark:text-gray-200">
                 <div className="flex justify-between items-center w-full">
                     <div className=" w-1/6">
@@ -68,9 +70,23 @@ const DocumentToolbarNav: React.FC = () => {
                         <LanguageDropdown className="ps-4 hidden sm:flex " />
                         <SignedIn>
                             {darkMode ? <UserButton afterSignOutUrl="/" appearance={getGyosuClerkTheme()} /> : <UserButton afterSignOutUrl="http://localhost:5173/" />}
-                        </SignedIn>
+                            <HamburgerWrapper>
+                                <LanguageDropdown />
+                                <ManageSubscriptionButton />
+                            </HamburgerWrapper>                        </SignedIn>
                         <SignedOut>
-                            <SignInButton mode="modal" />
+                            <div
+                                className="flex justify-center items-center bg-orange-500 hover:bg-orange-600 rounded-md p-2 cursor-pointer"
+                                onClick={(e) => {
+                                    // Programmatically click the inner button
+                                    const button = e.currentTarget.querySelector('button');
+                                    if (button) {
+                                        button.click();
+                                    }
+                                }}
+                            >
+                                <SignInButton mode="modal" />
+                            </div>
                         </SignedOut>
                     </div>
                 </div>
