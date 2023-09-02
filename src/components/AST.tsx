@@ -195,7 +195,7 @@ interface InstructionProps {
 const InstructionComponent: React.FC<InstructionProps> = ({ parentChunk, parentChunkIndex, updateChunk, instruction, instructionIndex }) => {
     const [, ref] = useDrag({
         type: INSTRUCTION_DRAG_TYPE,
-        item: { type: INSTRUCTION_TYPE, content: instruction.content } as Instruction,
+        item: { ...instruction, content: instruction.content } as Instruction,
     });
 
     const [, drop] = useDrop({
@@ -204,28 +204,32 @@ const InstructionComponent: React.FC<InstructionProps> = ({ parentChunk, parentC
             console.log('hover problem')
         },
         drop: (item: Instruction | Problem, monitor: DropTargetMonitor) => {
+            const updatedContent = [...parentChunk.content];
 
-            const didDrop = monitor.didDrop();
-            if (didDrop) {
-                return;
-            }
-            else {
-                console.log("dropped on instruction")
-            }
+            // Insert at target index and shift other elements down
+            const targetIndex = instructionIndex !== undefined ? instructionIndex : updatedContent.length;
+            updatedContent.splice(targetIndex, 0, item);
 
-            const draggedItemType = item.type;
-            if (draggedItemType === INSTRUCTION_TYPE || draggedItemType === PROBLEM_TYPE) {
-                const updatedContent = [...parentChunk.content];
+            // Mark duplicates for removal except the newly inserted one
+            const markedContent = updatedContent.map((contentItem, index) => {
+                let isDuplicate = false;
+                if ('instruction_id' in contentItem && 'instruction_id' in item) {
+                    isDuplicate = contentItem.instruction_id === item.instruction_id && index !== targetIndex;
+                } else if ('problem_id' in contentItem && 'problem_id' in item) {
+                    isDuplicate = contentItem.problem_id === item.problem_id && index !== targetIndex;
+                }
+                return { ...contentItem, isDuplicate };
+            });
 
-                const targetIndex = instructionIndex !== undefined ? instructionIndex : updatedContent.length;
+            // Remove duplicates
+            const filteredContent = markedContent.filter(contentItem => !contentItem.isDuplicate);
 
-                // Insert at target index and shift other elements down
-                updatedContent.splice(targetIndex, 0, item);
-
-                const updatedChunk = { ...parentChunk, content: updatedContent };
-                updateChunk(updatedChunk, parentChunkIndex);
-            }
+            const updatedChunk = { ...parentChunk, content: filteredContent };
+            updateChunk(updatedChunk, parentChunkIndex);
         }
+
+
+
 
     });
 
@@ -240,58 +244,58 @@ const InstructionComponent: React.FC<InstructionProps> = ({ parentChunk, parentC
     }
 
     return (
-        <div ref={(node) => ref(drop(node))} className="flex group">
-            {
-                instruction.content.map((item, index) => (
-                    <div className="me-2" key={index}>
-                        {(() => {
-                            switch (item.type) {
-                                case 'text':
-                                    return (
-                                        <ReactMarkdown
-                                            className={"z-10 text-blue-300 border-2 border-transparent border-dashed hover:border-2 hover:border-purple-dashed p-1 m-1 group-hover:border-2 group-hover:border-blue-500 group-hover:border-dashed"}
-                                            remarkPlugins={[remarkGfm, remarkMath]}
-                                            rehypePlugins={[rehypeKatex]}
-                                        >
-                                            {`${item.value}`}
-                                        </ReactMarkdown>
-                                    );
-                                case 'math':
-                                    return (
-                                        <ReactMarkdown
-                                            className={"z-10 text-yellow-200 border-2 border-transparent border-dashed hover:border-2 hover:border-purple-dashed p-1 m-1 group-hover:border-2 group-hover:border-yellow-300 group-hover:border-dashed"}
-                                            remarkPlugins={[remarkGfm, remarkMath]}
-                                            rehypePlugins={[rehypeKatex]}
-                                        >
-                                            {`$$${processLatexString(item.value)}$$`}
-                                        </ReactMarkdown>
-                                    );
-                                case 'table':
-                                    return (
-                                        <ReactMarkdown
-                                            className={"z-10 text-purple-300 border-gray-100  border-2 border-transparent border-dashed hover:border-2 hover:border-purple-dashed p-1 m-1 group-hover:border-2 group-hover:border-purple-500 group-hover:border-dashed"}
-                                            remarkPlugins={[remarkGfm, remarkMath]}
-                                            rehypePlugins={[rehypeKatex]}
-                                        >
-                                            {`${item.value}`}
-                                        </ReactMarkdown>
-                                    );
-                                case 'image':
-                                    return (
-                                        <img
-                                            src={item.value}
-                                            alt="Description"
-                                            className="z-10 p-1 m-1 border-2 border-transparent border-dashed hover:border-2 hover:border-purple-dashed group-hover:border-2 group-hover:border-purple-500 group-hover:border-dashed"
-                                        />
-                                    );
-                                default:
-                                    return null;
-                            }
-                        })()}
-                    </div>
-                ))
-            }
-        </div >
+        <div ref={(node) => ref(drop(node))} className="flex group flex-row flex-wrap">
+            {instruction.content.map((item, index) => (
+                <span key={index} style={{ display: 'inline' }}>
+                    {(() => {
+                        switch (item.type) {
+                            case 'text':
+                                return (
+                                    <ReactMarkdown
+                                        className={"z-10 text-blue-300 border-2 border-transparent border-dashed hover:border-2 hover:border-purple-dashed p-1 m-1 group-hover:border-2 group-hover:border-blue-500 group-hover:border-dashed"}
+                                        remarkPlugins={[remarkGfm, remarkMath]}
+                                        rehypePlugins={[rehypeKatex]}
+                                    >
+                                        {item.value}
+                                    </ReactMarkdown>
+                                );
+                            case 'math':
+                                return (
+                                    <ReactMarkdown
+                                        className={"z-10 text-yellow-200 border-2 border-transparent border-dashed hover:border-2 hover:border-purple-dashed p-1 m-1 group-hover:border-2 group-hover:border-yellow-300 group-hover:border-dashed"}
+                                        remarkPlugins={[remarkGfm, remarkMath]}
+                                        rehypePlugins={[rehypeKatex]}
+                                    >
+                                        {`$$${processLatexString(item.value)}$$`}
+                                    </ReactMarkdown>
+                                );
+                            case 'table':
+                                return (
+                                    <ReactMarkdown
+                                        className={"z-10 text-purple-300 border-gray-100  border-2 border-transparent border-dashed hover:border-2 hover:border-purple-dashed p-1 m-1 group-hover:border-2 group-hover:border-purple-500 group-hover:border-dashed"}
+                                        remarkPlugins={[remarkGfm, remarkMath]}
+                                        rehypePlugins={[rehypeKatex]}
+                                    >
+                                        {`${item.value}`}
+                                    </ReactMarkdown>
+                                );
+                            case 'image':
+                                return (
+                                    <img
+                                        src={item.value}
+                                        alt="Description"
+                                        className="z-10 p-1 m-1 border-2 border-transparent border-dashed hover:border-2 hover:border-purple-dashed group-hover:border-2 group-hover:border-purple-500 group-hover:border-dashed"
+                                    />
+                                );
+                            default:
+                                return null;
+                        }
+                    })()}
+                </span>
+            ))}
+        </div>
+
+
     );
 };
 
@@ -310,7 +314,7 @@ interface ProblemProps {
 const ProblemComponent: React.FC<ProblemProps> = ({ parentChunk, parentChunkIndex, updateChunk, problem, problemIndex }) => {
     const [, ref] = useDrag({
         type: PROBLEM_DRAG_TYPE,
-        item: { type: PROBLEM_TYPE, content: problem.content } as Problem,
+        item: { ...problem, content: problem.content } as Problem,
     });
 
     const [, drop] = useDrop({
@@ -319,28 +323,31 @@ const ProblemComponent: React.FC<ProblemProps> = ({ parentChunk, parentChunkInde
             console.log('hover instruction')
         },
         drop: (item: Instruction | Problem, monitor: DropTargetMonitor) => {
+            const updatedContent = [...parentChunk.content];
 
-            const didDrop = monitor.didDrop();
-            if (didDrop) {
-                return;
-            }
-            else {
-                console.log("dropped on problem")
-            }
+            // Insert at target index and shift other elements down
+            const targetIndex = problemIndex !== undefined ? problemIndex : updatedContent.length;
+            updatedContent.splice(targetIndex, 0, item);
 
-            const draggedItemType = item.type;
-            if (draggedItemType === INSTRUCTION_TYPE || draggedItemType === PROBLEM_TYPE) {
-                const updatedContent = [...parentChunk.content];
+            // Mark duplicates for removal except the newly inserted one
+            const markedContent = updatedContent.map((contentItem, index) => {
+                let isDuplicate = false;
+                if ('instruction_id' in contentItem && 'instruction_id' in item) {
+                    isDuplicate = contentItem.instruction_id === item.instruction_id && index !== targetIndex;
+                } else if ('problem_id' in contentItem && 'problem_id' in item) {
+                    isDuplicate = contentItem.problem_id === item.problem_id && index !== targetIndex;
+                }
+                return { ...contentItem, isDuplicate };
+            });
 
-                const targetIndex = problemIndex !== undefined ? problemIndex : updatedContent.length;
+            // Remove duplicates
+            const filteredContent = markedContent.filter(contentItem => !contentItem.isDuplicate);
 
-                // Insert at target index and shift other elements down
-                updatedContent.splice(targetIndex, 0, item);
-
-                const updatedChunk = { ...parentChunk, content: updatedContent };
-                updateChunk(updatedChunk, parentChunkIndex);
-            }
+            const updatedChunk = { ...parentChunk, content: filteredContent };
+            updateChunk(updatedChunk, parentChunkIndex);
         }
+
+
 
     });
 
@@ -355,58 +362,57 @@ const ProblemComponent: React.FC<ProblemProps> = ({ parentChunk, parentChunkInde
     }
 
     return (
-        <div ref={(node) => ref(drop(node))} className="flex group">
-            {
-                problem.content.map((item, index) => (
-                    <div className="me-2" key={index}>
-                        {(() => {
-                            switch (item.type) {
-                                case 'text':
-                                    return (
-                                        <ReactMarkdown
-                                            className={'z-10 text-gray-200 border-2 border-transparent border-dashed hover:border-2 hover:border-purple-dashed p-1 m-1 group-hover:border-2 group-hover:border-white group-hover:border-dashed'}
-                                            remarkPlugins={[remarkGfm, remarkMath]}
-                                            rehypePlugins={[rehypeKatex]}
-                                        >
-                                            {`${item.value}`}
-                                        </ReactMarkdown>
-                                    );
-                                case 'math':
-                                    return (
-                                        <ReactMarkdown
-                                            className={"z-10 text-purple-300 border-gray-100  border-2 border-transparent border-dashed hover:border-2 hover:border-purple-dashed p-1 m-1 group-hover:border-2 group-hover:border-purple-500 group-hover:border-dashed"}
-                                            remarkPlugins={[remarkGfm, remarkMath]}
-                                            rehypePlugins={[rehypeKatex]}
-                                        >
-                                            {`$$${processLatexString(item.value)}$$`}
-                                        </ReactMarkdown>
-                                    );
-                                case 'table':
-                                    return (
-                                        <ReactMarkdown
-                                            className={"z-10 text-purple-300 border-gray-100  border-2 border-transparent border-dashed hover:border-2 hover:border-purple-dashed p-1 m-1 group-hover:border-2 group-hover:border-purple-500 group-hover:border-dashed"}
-                                            remarkPlugins={[remarkGfm, remarkMath]}
-                                            rehypePlugins={[rehypeKatex]}
-                                        >
-                                            {`${item.value}`}
-                                        </ReactMarkdown>
-                                    );
-                                case 'image':
-                                    return (
-                                        <img
-                                            src={item.value}
-                                            alt="Description"
-                                            className="z-10 p-1 m-1 border-2 border-transparent border-dashed hover:border-2 hover:border-purple-dashed group-hover:border-2 group-hover:border-purple-500 group-hover:border-dashed"
-                                        />
-                                    );
-                                default:
-                                    return null;
-                            }
-                        })()}
-                    </div>
-                ))
-            }
-        </div >
+        <div ref={(node) => ref(drop(node))} className="flex group flex-row flex-wrap">
+            {problem.content.map((item, index) => (
+                <span key={index} style={{ display: 'inline' }}>
+                    {(() => {
+                        switch (item.type) {
+                            case 'text':
+                                return (
+                                    <ReactMarkdown
+                                        className={'z-10 text-gray-200 border-2 border-transparent border-dashed hover:border-2 hover:border-purple-dashed p-1 m-1 group-hover:border-2 group-hover:border-white group-hover:border-dashed'}
+                                        remarkPlugins={[remarkGfm, remarkMath]}
+                                        rehypePlugins={[rehypeKatex]}
+                                    >
+                                        {item.value}
+                                    </ReactMarkdown>
+                                );
+                            case 'math':
+                                return (
+                                    <ReactMarkdown
+                                        className={"z-10 text-purple-300 border-gray-100 border-2 border-transparent border-dashed hover:border-2 hover:border-purple-dashed p-1 m-1 group-hover:border-2 group-hover:border-purple-500 group-hover:border-dashed"}
+                                        remarkPlugins={[remarkGfm, remarkMath]}
+                                        rehypePlugins={[rehypeKatex]}
+                                    >
+                                        {`$$${processLatexString(item.value)}$$`}
+                                    </ReactMarkdown>
+                                );
+                            case 'table':
+                                return (
+                                    <ReactMarkdown
+                                        className={"z-10 text-purple-300 border-gray-100 border-2 border-transparent border-dashed hover:border-2 hover:border-purple-dashed p-1 m-1 group-hover:border-2 group-hover:border-purple-500 group-hover:border-dashed"}
+                                        remarkPlugins={[remarkGfm, remarkMath]}
+                                        rehypePlugins={[rehypeKatex]}
+                                    >
+                                        {item.value}
+                                    </ReactMarkdown>
+                                );
+                            case 'image':
+                                return (
+                                    <img
+                                        src={item.value}
+                                        alt="Description"
+                                        className="z-10 p-1 m-1 border-2 border-transparent border-dashed hover:border-2 hover:border-purple-dashed group-hover:border-2 group-hover:border-purple-500 group-hover:border-dashed"
+                                    />
+                                );
+                            default:
+                                return null;
+                        }
+                    })()}
+                </span>
+            ))}
+        </div>
+
     );
 };
 

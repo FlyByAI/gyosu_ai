@@ -139,12 +139,12 @@ export interface Chunk {
 }
 
 export interface Instruction {
-    type: "instruction";
+    type: typeof INSTRUCTION_TYPE;
     content: (Text | Math | Table | Image)[];
 }
 
 export interface Problem {
-    type: "problem";
+    type: typeof PROBLEM_TYPE;
     content: (Text | Math | Table | Image)[];
 }
 
