@@ -141,11 +141,13 @@ export interface Chunk {
 export interface Instruction {
     type: typeof INSTRUCTION_TYPE;
     content: (Text | Math | Table | Image)[];
+    instructionId?: number;
 }
 
 export interface Problem {
     type: typeof PROBLEM_TYPE;
     content: (Text | Math | Table | Image)[];
+    problemId?: number;
 }
 
 export interface Text {

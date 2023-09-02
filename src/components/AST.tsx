@@ -207,19 +207,24 @@ const InstructionComponent: React.FC<InstructionProps> = ({ parentChunk, parentC
             const updatedContent = [...parentChunk.content];
 
             // Insert at target index and shift other elements down
-            const targetIndex = instructionIndex !== undefined ? instructionIndex : updatedContent.length;
+            const targetIndex = instructionIndex ? instructionIndex : updatedContent.length;
             updatedContent.splice(targetIndex, 0, item);
+
+            console.log(targetIndex)
 
             // Mark duplicates for removal except the newly inserted one
             const markedContent = updatedContent.map((contentItem, index) => {
                 let isDuplicate = false;
-                if ('instruction_id' in contentItem && 'instruction_id' in item) {
-                    isDuplicate = contentItem.instruction_id === item.instruction_id && index !== targetIndex;
-                } else if ('problem_id' in contentItem && 'problem_id' in item) {
-                    isDuplicate = contentItem.problem_id === item.problem_id && index !== targetIndex;
+                if ('instructionId' in contentItem && 'instructionId' in item) {
+                    console.log(contentItem.instructionId, item.instructionId)
+                    isDuplicate = contentItem.instructionId === item.instructionId && index !== targetIndex;
+                } else if ('problemId' in contentItem && 'problemId' in item) {
+                    isDuplicate = contentItem.problemId === item.problemId && index !== targetIndex;
+                    console.log(contentItem.problemId, item.problemId)
                 }
                 return { ...contentItem, isDuplicate };
             });
+            console.log(markedContent)
 
             // Remove duplicates
             const filteredContent = markedContent.filter(contentItem => !contentItem.isDuplicate);
@@ -326,19 +331,24 @@ const ProblemComponent: React.FC<ProblemProps> = ({ parentChunk, parentChunkInde
             const updatedContent = [...parentChunk.content];
 
             // Insert at target index and shift other elements down
-            const targetIndex = problemIndex !== undefined ? problemIndex : updatedContent.length;
+            const targetIndex = problemIndex ? problemIndex : updatedContent.length;
             updatedContent.splice(targetIndex, 0, item);
 
             // Mark duplicates for removal except the newly inserted one
             const markedContent = updatedContent.map((contentItem, index) => {
                 let isDuplicate = false;
-                if ('instruction_id' in contentItem && 'instruction_id' in item) {
-                    isDuplicate = contentItem.instruction_id === item.instruction_id && index !== targetIndex;
-                } else if ('problem_id' in contentItem && 'problem_id' in item) {
-                    isDuplicate = contentItem.problem_id === item.problem_id && index !== targetIndex;
+                if ('instructionId' in contentItem && 'instructionId' in item) {
+                    console.log(contentItem.instructionId, item.instructionId)
+                    isDuplicate = contentItem.instructionId === item.instructionId && index !== targetIndex;
+                } else if ('problemId' in contentItem && 'problemId' in item) {
+                    isDuplicate = contentItem.problemId === item.problemId && index !== targetIndex;
+                    console.log(contentItem.problemId, item.problemId)
                 }
+                console.log(contentItem, item)
+
                 return { ...contentItem, isDuplicate };
             });
+            console.log(markedContent)
 
             // Remove duplicates
             const filteredContent = markedContent.filter(contentItem => !contentItem.isDuplicate);
