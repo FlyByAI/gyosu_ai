@@ -83,7 +83,7 @@ const DocumentShelf: React.FC<DocumentShelfProps> = ({ isExporting }) => {
         <div className="flex flex-col w-1/6 bg-gray-800 p-4 h-screen fixed overflow-y-scroll">
             <div className="flex justify-between items-center mb-2">
                 <h3 className="text-white text-xl">Problem Banks</h3>
-                <button onClick={handleAddDocument} className="bg-blue-400 p-2 rounded-md text-white font-extrabold">
+                <button onClick={handleAddDocument} className="bg-blue-500 p-2 rounded-md text-white font-extrabold">
                     <PlusIcon />
                 </button>
             </div>

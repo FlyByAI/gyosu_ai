@@ -73,7 +73,8 @@ const DocumentToolbarNav: React.FC = () => {
                             <HamburgerWrapper>
                                 <LanguageDropdown />
                                 <ManageSubscriptionButton />
-                            </HamburgerWrapper>                        </SignedIn>
+                            </HamburgerWrapper>
+                        </SignedIn>
                         <SignedOut>
                             <div
                                 className="flex justify-center items-center bg-orange-500 hover:bg-orange-600 rounded-md p-2 cursor-pointer"

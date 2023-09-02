@@ -23,7 +23,8 @@ const RegularNavbar: React.FC = () => {
                         <HamburgerWrapper>
                             <LanguageDropdown />
                             <ManageSubscriptionButton />
-                        </HamburgerWrapper>                    </SignedIn>
+                        </HamburgerWrapper>
+                    </SignedIn>
                     <SignedOut>
                         <SignInButton mode="modal" />
                     </SignedOut>
