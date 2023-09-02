@@ -206,7 +206,7 @@ const InstructionComponent: React.FC<InstructionProps> = ({ parentChunk, parentC
         drop: (item: Instruction | Problem, monitor: DropTargetMonitor) => {
             const updatedContent = [...parentChunk.content];
 
-            const targetIndex = instructionIndex ? instructionIndex : updatedContent.length;
+            const targetIndex = instructionIndex !== undefined ? instructionIndex : updatedContent.length;
             updatedContent.splice(targetIndex, 0, item);
 
             const markedContent = updatedContent.map((contentItem, index) => ({
@@ -224,10 +224,6 @@ const InstructionComponent: React.FC<InstructionProps> = ({ parentChunk, parentC
             const updatedChunk = { ...parentChunk, content: filteredContent };
             updateChunk(updatedChunk, parentChunkIndex);
         }
-
-
-
-
 
     });
 
@@ -323,7 +319,7 @@ const ProblemComponent: React.FC<ProblemProps> = ({ parentChunk, parentChunkInde
         drop: (item: Instruction | Problem, monitor: DropTargetMonitor) => {
             const updatedContent = [...parentChunk.content];
 
-            const targetIndex = problemIndex ? problemIndex : updatedContent.length;
+            const targetIndex = problemIndex !== undefined ? problemIndex : updatedContent.length;
             updatedContent.splice(targetIndex, 0, item);
 
             const markedContent = updatedContent.map((contentItem, index) => ({
