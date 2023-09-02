@@ -8,9 +8,18 @@ import { useMutation } from '@tanstack/react-query';
 type DocxAction = "worksheet" | "quiz" | "exam" | "answer";
 
 interface MutationResponse {
-    docx_url: string;
-    pdf_url: string;
-    file_name: string;
+    docxUrl: string;
+    pdfUrl: string;
+    fileName: string;
+}
+
+// New interface to include formState fields
+interface CreateDocxParams {
+    action: DocxAction;
+    chunks: Chunk[];
+    title: string;
+    persona: string;
+    theme: string;
 }
 
 const useCreateDocx = (endpoint = 'api/math_app/generate_docx/') => {
@@ -18,10 +27,11 @@ const useCreateDocx = (endpoint = 'api/math_app/generate_docx/') => {
     const { language } = useLanguage();
     const options = { site_language: languageNames[language] };
 
-    const createDocxMutation = useMutation<MutationResponse, Error, { action: DocxAction; chunks: Chunk[] }>(
-        async ({ action, chunks }) => {
+    // Updated mutation function
+    const createDocxMutation = useMutation<MutationResponse, Error, CreateDocxParams>(
+        async ({ action, chunks, title, persona, theme }) => {
             const token = session ? await session.getToken() : 'none';
-            const payload = humps.decamelizeKeys({ action, chunks, ...options });
+            const payload = humps.decamelizeKeys({ action, chunks, title, persona, theme, ...options });
             const response = await fetch(endpoint, {
                 method: 'POST',
                 headers: {
@@ -35,7 +45,8 @@ const useCreateDocx = (endpoint = 'api/math_app/generate_docx/') => {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
 
-            return response.json();
+            const responseData = await response.json().then((json) => humps.camelizeKeys(json));
+            return responseData as MutationResponse;
         }
     );
 
@@ -50,11 +61,11 @@ const useCreateDocx = (endpoint = 'api/math_app/generate_docx/') => {
     };
 
     return {
-        createDocx: (params: { action: DocxAction; chunks: Chunk[] }) => {
+        createDocx: (params: CreateDocxParams) => {
             createDocxMutation.mutate(params, {
                 onSuccess: (data) => {
-                    downloadFromUrl(data.docx_url, `${data.file_name}.docx`);
-                    downloadFromUrl(data.pdf_url, `${data.file_name}.pdf`);
+                    downloadFromUrl(data.docxUrl, `${data.fileName}.docx`);
+                    downloadFromUrl(data.pdfUrl, `${data.fileName}.pdf`);
                 },
             });
         },
