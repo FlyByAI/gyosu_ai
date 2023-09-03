@@ -22,7 +22,7 @@ const ManageSubscriptionButton: React.FC = () => {
         subscriptionInfo?.has_valid_subscription ?
             <div
                 onClick={redirectToPortal}
-                className="py-2 rounded h-auto w-32 flex items-center justify-center cursor-pointer transition-colors hover:bg-gray-800"
+                className=" mx-2 py-2 rounded h-auto w-32 flex items-center justify-center cursor-pointer transition-colors hover:bg-gray-800"
             >
                 <p>Manage Subscription</p>
             </div>
