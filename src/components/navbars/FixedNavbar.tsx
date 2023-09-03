@@ -7,7 +7,7 @@ import { getGyosuClerkTheme } from '../../theme/customClerkTheme';
 import HamburgerWrapper from '../HamburgerWrapper';
 import ManageSubscriptionButton from '../ManageSubscriptionButton';
 
-const RegularNavbar: React.FC = () => {
+const FixedNavbar: React.FC = () => {
 
   const { darkMode } = useDarkMode();
 
@@ -95,4 +95,4 @@ const RegularNavbar: React.FC = () => {
   </>);
 };
 
-export default RegularNavbar;
+export default FixedNavbar;

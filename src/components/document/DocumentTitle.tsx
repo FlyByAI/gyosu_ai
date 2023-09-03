@@ -4,7 +4,7 @@ import { notSecretConstants } from '../../constants/notSecretConstants';
 import { Document } from '../../interfaces'
 import useGetDocument from '../../hooks/tools/math/useGetDocument';
 import { useParams } from 'react-router-dom';
-
+import { Tooltip as ReactTooltip } from "react-tooltip";
 
 const DocumentTitle: React.FC = () => {
     const [isEditing, setIsEditing] = useState(false);
@@ -45,10 +45,14 @@ const DocumentTitle: React.FC = () => {
         }
     };
 
+    console.log(title)
+
     return (
-        <div className="w-64 text-lg font-bold font-mono border border-gray-500 shadow-sm ps-1">
+        <div className="w-64 text-lg font-bold font-mono border border-gray-500 shadow-sm ps-1"
+        >
             {isEditing ? (
                 <input
+                    data-tooltip-id='changeTitleTip'
                     type="text"
                     value={title}
                     onChange={handleTitleChange}
@@ -58,8 +62,12 @@ const DocumentTitle: React.FC = () => {
                     className="w-full text-black ps-1"
                 />
             ) : (
-                <h1 onClick={handleTitleClick} className="truncate">{title}</h1>
+                <h1 onClick={handleTitleClick} data-tooltip-id='changeTitleTip' className="truncate">{title}</h1>
             )}
+            <ReactTooltip
+                id='changeTitleTip'
+                place="bottom"
+                content={`Rename problem bank`} />
         </div>
     );
 

@@ -17,7 +17,7 @@ const LanguageDropdown = ({ className }: LanguageDropdownProps) => {
     };
 
     return (
-        <div className={className + " py-2 hidden sm:flex hover:bg-gray-800"}>
+        <div className={className + " p-2 hidden sm:flex hover:bg-gray-800"}>
             <div className="cursor-pointer" onClick={() => setShowOptions(!showOptions)}>
                 Change Language
             </div>

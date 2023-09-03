@@ -10,10 +10,9 @@ import { notSecretConstants } from '../../constants/notSecretConstants';
 import ChevronLeft from '../../svg/ChevronLeft';
 import useSubmitDocument from '../../hooks/tools/math/useSubmitDocument';
 import TrashIcon from '../../svg/TrashIcon';
-import XIcon from '../../svg/XIcon';
-import CheckmarkIcon from '../../svg/CheckmarkIcon';
 import HamburgerWrapper from '../HamburgerWrapper';
 import ManageSubscriptionButton from '../ManageSubscriptionButton';
+import { Tooltip as ReactTooltip } from "react-tooltip";
 
 const DocumentToolbarNav: React.FC = () => {
     const { darkMode } = useDarkMode();
@@ -45,7 +44,7 @@ const DocumentToolbarNav: React.FC = () => {
     return (
         <>
             <div className='mt-20'></div> {/* Placeholder */}
-            <header className="fixed top-0 left-0 w-full px-6 py-4 bg-blue-900 text-white dark:bg-gray-900 dark:text-gray-200">
+            <header className="z-50 fixed top-0 left-0 w-full px-6 py-4 bg-blue-900 text-white dark:bg-gray-900 dark:text-gray-200">
                 <div className="flex justify-between items-center w-full">
                     <div className=" w-1/6">
                         <Link to="/math-app" className="text-3xl font-semibold text-white font-mono flex items-center"><ChevronLeft />Home</Link>
@@ -64,10 +63,16 @@ const DocumentToolbarNav: React.FC = () => {
                     </div>
                     <div className="w-1/2 flex justify-end items-center">
                         {document && <DocumentTitle />}
-                        <button className='text-red-500 mx-2' onClick={handleDeleteClick} disabled={isDeleting} >
+                        <button className='text-red-500 mx-2'
+                            data-tooltip-id="deleteDocumentTip"
+                            onClick={handleDeleteClick} disabled={isDeleting} >
                             <TrashIcon />
+                            <ReactTooltip
+                                id='deleteDocumentTip'
+                                place="bottom"
+                                content={`Delete problem bank`} />
                         </button>
-                        <LanguageDropdown className="ps-4 hidden sm:flex " />
+
                         <SignedIn>
                             {darkMode ? <UserButton afterSignOutUrl="/" appearance={getGyosuClerkTheme()} /> : <UserButton afterSignOutUrl="http://localhost:5173/" />}
                             <HamburgerWrapper>

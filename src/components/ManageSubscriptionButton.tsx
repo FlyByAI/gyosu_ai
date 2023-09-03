@@ -16,7 +16,7 @@ const ManageSubscriptionButton: React.FC = () => {
     return (
         <div
             onClick={redirectToPortal}
-            className="py-2 rounded h-10 w-32 flex items-center justify-center cursor-pointer transition-colors z-50 hover:bg-gray-800"
+            className="py-2 rounded h-auto w-32 flex items-center justify-center cursor-pointer transition-colors hover:bg-gray-800"
         >
             <p>Manage Subscription</p>
         </div>
