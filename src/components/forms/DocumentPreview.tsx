@@ -18,30 +18,53 @@ const DocumentPreview: React.FC<DocumentPreviewProps> = ({ document }) => {
     const renderContent = (content: (Text | Math | Table | Image)[]) => {
         return content.map((item, index) => {
             switch (item.type) {
-                case "text":
-                    return <span key={index}>{item.value}</span>;
-                case "math":
-                    return <span key={index}>{item.value}</span>; // You can handle math rendering as needed
-                case "image":
-                    return <img key={index} src={item.value} alt="preview" />;
-                case "table":
+                case 'text':
                     return (
-                        <table key={index}>
-                            <tbody>
-                                <tr>
-                                    {item.content.map((cell, cellIndex) => (
-                                        <td key={cellIndex}>{cell.value}</td>
-                                    ))}
-                                </tr>
-                            </tbody>
-                        </table>
+                        <ReactMarkdown
+                            key={index}
+                            className={'z-10 text-gray-200 border-2 border-transparent border-dashed hover:border-2 hover:border-purple-dashed p-1 m-1 group-hover:border-2 group-hover:border-white group-hover:border-dashed'}
+                            remarkPlugins={[remarkGfm, remarkMath]}
+                            rehypePlugins={[rehypeKatex]}
+                        >
+                            {item.value}
+                        </ReactMarkdown>
                     );
+                case 'math':
+                    return (
+                        <ReactMarkdown
+                            key={index}
+                            className={"z-10 text-purple-300 border-gray-100 border-2 border-transparent border-dashed hover:border-2 hover:border-purple-dashed p-1 m-1 group-hover:border-2 group-hover:border-purple-500 group-hover:border-dashed"}
+                            remarkPlugins={[remarkGfm, remarkMath]}
+                            rehypePlugins={[rehypeKatex]}
+                        >
+                            {`$$${item.value}$$`}
+                        </ReactMarkdown>
+                    );
+                case 'table':
+                    <ReactMarkdown
+                        className={"z-10 text-purple-300 border-gray-100 border-2 border-transparent border-dashed hover:border-2 hover:border-purple-dashed p-1 m-1 group-hover:border-2 group-hover:border-purple-500 group-hover:border-dashed"}
+                        remarkPlugins={[remarkGfm, remarkMath]}
+                        rehypePlugins={[rehypeKatex]}
+                    >
+                        {item.value}
+                    </ReactMarkdown>
 
+                    break;
+                case 'image':
+                    return (
+                        <img
+                            key={index}
+                            src={item.value}
+                            alt="Description"
+                            className="z-10 p-1 m-1 border-2 border-transparent border-dashed hover:border-2 hover:border-purple-dashed group-hover:border-2 group-hover:border-purple-500 group-hover:border-dashed"
+                        />
+                    );
                 default:
                     return null;
             }
         });
     };
+
 
 
     useEffect(() => {
@@ -56,7 +79,7 @@ const DocumentPreview: React.FC<DocumentPreviewProps> = ({ document }) => {
         >
             <div className='p-2'>
 
-                <div className="preview-content overflow-y-auto h-32 p-2 rounded-lg text-xs">
+                <div className="preview-content overflow-y-auto h-32 p-2 rounded-lg text-xs bg-gray-800">
                     {problemChunks?.map((chunk, index) => (
                         <div key={index}>
                             {chunk.content.map((contentItem, contentIndex) => (
@@ -70,7 +93,7 @@ const DocumentPreview: React.FC<DocumentPreviewProps> = ({ document }) => {
                     <h2 className="text-base font-bold">Created by {document.creator || "unknown"}</h2>
                     {isHovering && (
                         <div className="rounded-b-2xl absolute inset-x-0 top-2/3 bottom-0 bg-gray-600 bg-opacity-70 flex justify-center items-center">
-                            <span className="text-white text-xl font-bold">Edit</span>
+                            <span className="text-white text-xl font-bold">View</span>
                         </div>
                     )}
                     {document.title}

@@ -154,7 +154,6 @@ export default function ClerkProviderWithRoutes() {
                             <Navbar />
                             <ContentWrapper>
                                 <Subscribe />
-                                <Footer />
                             </ContentWrapper>
                         </>
                     }

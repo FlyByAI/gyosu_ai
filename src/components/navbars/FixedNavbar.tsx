@@ -30,6 +30,9 @@ const FixedNavbar: React.FC = () => {
         </div>
       </div>
       <nav className="grid grid-cols-2 gap-2 lg:flex lg:space-x-3 pt-4">
+        <Link to="/subscribe" className="text-lg text-white hover:underline dark:text-gray-200 lg:justify-self-end block sm:hidden">
+          Pricing
+        </Link>
         <Link to="/math-app" className="text-lg text-white hover:underline dark:text-gray-200 lg:justify-self-end block sm:hidden">
           Browse
         </Link>
@@ -50,6 +53,9 @@ const FixedNavbar: React.FC = () => {
         <Link to="/" className="text-3xl font-semibold text-white font-mono">Gyosu.ai</Link>
         <div className="flex items-center">
           <nav>
+            <Link to="/subscribe" className="text-lg text-white mx-3 hover:underline dark:text-gray-200 font-mono font-bold">
+              Pricing
+            </Link>
             <Link to="/math-app" className="text-lg text-white mx-3 hover:underline dark:text-gray-200 font-mono font-bold">
               Browse
             </Link>
