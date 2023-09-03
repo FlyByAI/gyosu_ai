@@ -92,6 +92,7 @@ const useSubmitDocument = (endpoint: string) => {
                 // Invalidate the query to refetch and confirm
                 if (context) {
                     queryClient.invalidateQueries(['document', context.prevDocument?.id]);
+                    queryClient.invalidateQueries(['documents']);
                 }
             },
         }

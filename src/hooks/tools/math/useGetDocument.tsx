@@ -36,7 +36,7 @@ const useGetDocument = (endpoint: string, documentId: number) => {
             query.refetch();
         }
         lastSessionRef.current = session;
-    }, [session]);
+    }, [session, query]);
 
     return {
         getDocument: query.refetch, // You can use this method to refetch manually if needed

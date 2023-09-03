@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useClerk } from '@clerk/clerk-react';
 import humps from 'humps';
 import { Document } from '../../../interfaces';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 const fetchDocuments = async (endpoint: string, token: string | null) => {
     const response = await fetch(`${endpoint}`, {
@@ -22,23 +22,24 @@ const fetchDocuments = async (endpoint: string, token: string | null) => {
 
 const useGetDocuments = (endpoint: string) => {
     const { session } = useClerk();
+    const lastSessionRef = useRef(session);
 
     const query = useQuery<Document[], Error>(['documents', endpoint], async () => {
         const token = session ? await session.getToken() : 'none';
         return fetchDocuments(endpoint, token);
     }, {
-        // Optional configuration like staleTime, retry, etc.
-        enabled: !!session, // This will run the query only if session is available
+        enabled: !!session,
     });
 
     useEffect(() => {
-        if (session) {
+        if (session && session !== lastSessionRef.current) {
             query.refetch();
         }
+        lastSessionRef.current = session;
     }, [session, query]);
 
     return {
-        getDocuments: query.refetch, // You can use this method to refetch manually if needed
+        getDocuments: query.refetch,
         isLoading: query.isLoading,
         error: query.error,
         documents: query.data,
