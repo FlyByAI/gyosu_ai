@@ -38,10 +38,8 @@ const Documents: React.FC = () => {
 
     return (
         <>
-
-
             {!isLoading && documentDownloads && documentDownloads.length > 0 ? (
-                <div className="flex justify-center items-center">
+                <div className="flex justify-center items-center  mt-4">
                     <Accordion title={"Documents"} visible={true}>
                         <ul className="list-inside space-y-4 text-white mt-4">
                             {documentDownloads.map((doc) => (

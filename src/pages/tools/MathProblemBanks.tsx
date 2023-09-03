@@ -20,7 +20,7 @@ const MyProblemBanks: React.FC = () => {
         <div className="flex">
             <DocumentShelf isExporting={false} />
             <div className="w-5/6 h-screen">
-                <div className="flex flex-row justify-center mb-2">
+                <div className="flex flex-row justify-center mt-4">
                     <Accordion title={"My Problem Banks"} visible={true}>
                         <GridContainer3x3>
                             {documents?.map((doc, index) => (
