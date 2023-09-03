@@ -18,7 +18,7 @@ const MyMathDocuments: React.FC = () => {
     return (
         <div className="flex">
             <DocumentShelf isExporting={false} />
-            <div className="w-5/6">
+            <div className="w-5/6 h-screen">
                 <div className="flex flex-row justify-center mb-2">
                     <Accordion title={"My Problem Banks"} visible={true}>
                         <GridContainer3x3>

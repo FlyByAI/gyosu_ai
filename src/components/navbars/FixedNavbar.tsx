@@ -42,9 +42,7 @@ const FixedNavbar: React.FC = () => {
         {/* <Link to="/math-app/bank" className="text-lg text-white hover:underline dark:text-gray-200 lg:justify-self-end block sm:hidden">
           Search
         </Link> */}
-        <Link to="/contact" className="text-lg text-white hover:underline dark:text-gray-200 lg:justify-self-end block sm:hidden">
-          Contact
-        </Link>
+
       </nav>
 
       {/* desktop */}
@@ -64,9 +62,7 @@ const FixedNavbar: React.FC = () => {
             {/* <Link to="/math-app/search" className="text-lg text-white mx-3 hover:underline dark:text-gray-200 font-mono font-bold">
               Search
             </Link> */}
-            <Link to="/contact" className="text-lg text-white mx-3 hover:underline dark:text-gray-200 mr-4 font-mono font-bold">
-              Contact
-            </Link>
+
           </nav>
           <SignedIn>
             {darkMode ? <UserButton afterSignOutUrl="/" appearance={getGyosuClerkTheme()} /> : <UserButton afterSignOutUrl="http://localhost:5173/" />}

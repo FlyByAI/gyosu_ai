@@ -1,5 +1,7 @@
+import { useQuery } from '@tanstack/react-query';
 import { useClerk } from '@clerk/clerk-react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import humps from 'humps';
 
 interface SubscriptionInfo {
     has_valid_subscription: boolean;
@@ -8,46 +10,47 @@ interface SubscriptionInfo {
     time_left_in_trial?: number;
 }
 
+const fetchSubscriptionInfo = async (endpoint: string, token: string | null) => {
+    const response = await fetch(endpoint, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token ? `Bearer ${token}` : '',
+        },
+    });
+
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const responseData = await response.json();
+    return responseData as SubscriptionInfo;
+};
+
 const useFetchSubscriptionInfo = (endpoint: string) => {
     const { session } = useClerk();
-    const [isLoading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string | null>(null);
-    const [subscriptionInfo, setSubscriptionInfo] = useState<SubscriptionInfo | null>(null);
+    const lastSessionRef = useRef(session);
 
+    const query = useQuery<SubscriptionInfo, Error>(['subscription', endpoint], async () => {
+        const token = session ? await session.getToken() : 'none';
+        return fetchSubscriptionInfo(endpoint, token);
+    }, {
+        enabled: !!session,
+    });
 
     useEffect(() => {
-        const fetchSubscriptionInfo = async () => {
-            setLoading(true);
-            setError(null);
-            try {
-                const token = session ? await session.getToken() : "none";
+        if (session && session !== lastSessionRef.current) {
+            query.refetch();
+        }
+        lastSessionRef.current = session;
+    }, [session, query]);
 
-                const response = await fetch(endpoint, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': token ? `Bearer ${token}` : '',
-                    },
-                });
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
-                const responseData = await response.json();
-                setSubscriptionInfo(responseData);
-
-                setLoading(false);
-            } catch (err: any) {
-                setError(err.message);
-                setLoading(false);
-            }
-        };
-
-        fetchSubscriptionInfo();
-    }, [endpoint, session]);
-
-    return { subscriptionInfo, isLoading, error };
+    return {
+        getSubscriptionInfo: query.refetch,
+        isLoading: query.isLoading,
+        error: query.error,
+        subscriptionInfo: query.data,
+    };
 };
 
 export default useFetchSubscriptionInfo;

@@ -9,7 +9,7 @@ const Navbar: React.FC = () => {
   switch (true) { // Switch on true to allow for conditional checks
     case location.pathname.includes('/document/'):
       return <DocumentToolbarNav />;
-    case location.pathname == '/math-app':
+    case location.pathname == '/math-app' || location.pathname.includes('/math-app/bank'):
       return <FixedNavbar />;
     default:
       return <RegularNavbar />;
