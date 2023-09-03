@@ -49,6 +49,8 @@ const useSubmitDocument = (endpoint: string) => {
     );
 
     const updateDocumentMutation = useMutation<any, Error, DocumentData>(
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         async (documentData: DocumentData) => {
             const token = session ? await session.getToken() : 'none';
             const payload = humps.decamelizeKeys({ document: documentData.document, ...documentData.formData });
@@ -71,11 +73,25 @@ const useSubmitDocument = (endpoint: string) => {
             return humps.camelizeKeys(responseData) as MathFormData;
         },
         {
-            onSuccess: (_, context) => {
-                // Invalidate 'document' query when updating a document
-                // Assuming that context contains the documentData
+            // eager updates the cache before the mutation is executed
+            onMutate: async (newDocumentData: DocumentData) => {
+                queryClient.cancelQueries(['document', newDocumentData.document.id]);
+
+                const prevDocument = queryClient.getQueryData<Document>(['document', newDocumentData.document.id]);
+
+                // Optimistically update the cache before the respnose comes back
+                queryClient.setQueryData(['document', newDocumentData.document.id], newDocumentData.document);
+
+                return { prevDocument };
+            },
+            onError: (error: Error, newDocumentData: DocumentData, context: { prevDocument: Document }) => {
+                // Revert to the previous data if mutation fails
+                queryClient.setQueryData(['document', newDocumentData.document.id], context.prevDocument);
+            },
+            onSuccess: (_, context: { prevDocument: Document }) => {
+                // Invalidate the query to refetch and confirm
                 if (context) {
-                    queryClient.invalidateQueries(['document', context.document.id]);
+                    queryClient.invalidateQueries(['document', context.prevDocument?.id]);
                 }
             },
         }
