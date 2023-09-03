@@ -5,7 +5,7 @@ import { Chunk } from '../../../interfaces';
 import { languageNames } from '../../../helpers/language';
 import { useMutation } from '@tanstack/react-query';
 
-type DocxAction = "worksheet" | "quiz" | "exam" | "answer";
+export type DocxAction = "worksheet" | "quiz" | "exam" | "answer";
 
 interface MutationResponse {
     docxUrl: string;

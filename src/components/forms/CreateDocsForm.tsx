@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSidebarContext } from '../../contexts/useSidebarContext';
 import { Chunk, Document, EmptyDocument } from '../../interfaces';
 import { notSecretConstants } from '../../constants/notSecretConstants';
-import useCreateDocx from '../../hooks/tools/math/useCreateDocs';
+import useCreateDocx, { DocxAction } from '../../hooks/tools/math/useCreateDocs';
 import { Tooltip as ReactTooltip } from "react-tooltip";
 import { useParams } from 'react-router-dom';
 
@@ -20,7 +20,7 @@ const CreateDocxForm: React.FC<CreateDocsFormProps> = ({ document }) => {
         title: 'My Worksheet',
         persona: "Math Teacher",
         theme: "",
-        action: "worksheet"
+        action: "worksheet" as DocxAction
     });
 
     // Your local storage logic

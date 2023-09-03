@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Accordion from '../components/Accordion';
 import GridContainer3x3 from '../components/grids/GridContainer3x3';
 import { notSecretConstants } from '../constants/notSecretConstants';
 import { useClerk, useUser } from '@clerk/clerk-react';
 import useGetDocumentDownloads from '../hooks/tools/math/useGetDocumentDownloads';
+import useGetDocumentDownload from '../hooks/tools/math/useGetDocumentDownload';
 
 
 export interface DocumentDownload {
+    id: number;
     title: string;
     url: string;
     blobName: string;
@@ -15,9 +17,20 @@ export interface DocumentDownload {
 
 const Documents: React.FC = () => {
     // finish this
-    const { documentDownloads, isLoading, error } = useGetDocumentDownloads(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/document/downloads/`)
+    const { documentDownloads, isLoading, error } = useGetDocumentDownloads(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/cloud_storage_document/list/`)
+    const { getDocumentDownload, isLoading: isDownloadLoading, data, error: downloadError } = useGetDocumentDownload(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app`);
 
     const user = useUser();
+
+    const handleDocumentClick = (blobName: string) => {
+        getDocumentDownload(blobName);
+    };
+
+    useEffect(() => {
+        if (data?.signedUrl) {
+            window.location.href = data.signedUrl;
+        }
+    }, [data]);
 
     return (
         <>
@@ -25,14 +38,16 @@ const Documents: React.FC = () => {
                 <div className="flex justify-center items-center">
                     <Accordion title={"Search Results"} visible={true}>
                         <GridContainer3x3>
-                            fill in document details here...
+                            {documentDownloads.map((doc) => (
+                                <div key={doc.id} onClick={() => handleDocumentClick(doc.blobName)}>
+                                    <span className="text-blue-500 hover:underline cursor-pointer">
+                                        {doc.blobName}
+                                    </span>
+                                </div>
+                            ))}
                         </GridContainer3x3>
                     </Accordion>
                 </div>
-            ) : documentDownloads ? (
-                <Accordion title={"Search Results"} visible={true}>
-                    <div className="text-red-100">No results found. Try searching for something else.</div>
-                </Accordion>
             ) : null}
 
             {error && <p className="text-red-600 mt-4 text-center">Error: {error.message}</p>}
