@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { notSecretConstants } from '../../constants/notSecretConstants';
 import DocumentShelf from '../../components/document/DocumentShelf';
@@ -6,7 +7,7 @@ import GridContainer3x3 from '../../components/grids/GridContainer3x3';
 import DocumentPreview from '../../components/forms/DocumentPreview';
 import useGetDocuments from '../../hooks/tools/math/useGetDocuments';
 
-const MyMathDocuments: React.FC = () => {
+const MyProblemBanks: React.FC = () => {
     const { documents, error } = useGetDocuments(
         `${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/school_document/list/`
     );
@@ -33,4 +34,4 @@ const MyMathDocuments: React.FC = () => {
     );
 };
 
-export default MyMathDocuments;
+export default MyProblemBanks;

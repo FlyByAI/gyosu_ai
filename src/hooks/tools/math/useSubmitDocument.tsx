@@ -84,7 +84,7 @@ const useSubmitDocument = (endpoint: string) => {
 
                 return { prevDocument };
             },
-            onError: (error: Error, newDocumentData: DocumentData, context: { prevDocument: Document }) => {
+            onError: (_: Error, newDocumentData: DocumentData, context: { prevDocument: Document }) => {
                 // Revert to the previous data if mutation fails
                 queryClient.setQueryData(['document', newDocumentData.document.id], context.prevDocument);
             },

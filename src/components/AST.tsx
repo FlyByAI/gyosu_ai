@@ -203,7 +203,7 @@ const InstructionComponent: React.FC<InstructionProps> = ({ parentChunk, parentC
         hover: () => {
             console.log('hover problem')
         },
-        drop: (item: Instruction | Problem, monitor: DropTargetMonitor) => {
+        drop: (item: Instruction | Problem) => {
             const updatedContent = [...parentChunk.content];
 
             const targetIndex = instructionIndex !== undefined ? instructionIndex : updatedContent.length;
@@ -316,7 +316,7 @@ const ProblemComponent: React.FC<ProblemProps> = ({ parentChunk, parentChunkInde
         hover: () => {
             console.log('hover instruction')
         },
-        drop: (item: Instruction | Problem, monitor: DropTargetMonitor) => {
+        drop: (item: Instruction | Problem) => {
             const updatedContent = [...parentChunk.content];
 
             const targetIndex = problemIndex !== undefined ? problemIndex : updatedContent.length;
