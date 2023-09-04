@@ -14,7 +14,10 @@ const useInitiateCheckout = (endpoint: string) => {
     const [error, setError] = useState<string | null>(null);
     const [data, setData] = useState<ICheckoutResponse | null>(null);
 
-    const stripePromise = loadStripe(notSecretConstants.stripe.PUBLISHABLE_KEY);
+    const isDevelopment = import.meta.env.MODE !== 'production';
+    if (isDevelopment) console.log("Development mode");
+
+    const stripePromise = loadStripe(isDevelopment ? notSecretConstants.stripe.PUBLISHABLE_DEV_KEY : notSecretConstants.stripe.PUBLISHABLE_KEY);
 
     const initiateCheckout = async (): Promise<void> => {
         setLoading(true);

@@ -33,15 +33,20 @@ import MathGenerate from './pages/tools/MathGenerate.tsx';
 import Subscribe from './components/Subscribe.tsx';
 import Documents from './pages/Documents.tsx';
 import MyProblemBanks from './pages/tools/MathProblemBanks.tsx';
+import { notSecretConstants } from './constants/notSecretConstants.tsx';
 
-const clerkPubKey = "pk_test_Y2F1c2FsLWJ1bm55LTQ0LmNsZXJrLmFjY291bnRzLmRldiQ";
 
 export default function ClerkProviderWithRoutes() {
     const navigate = useNavigate();
 
+    const isDevelopment = import.meta.env.MODE === 'development';
+    if (isDevelopment) console.log("Development mode");
+
+    const clerkKey = isDevelopment ? notSecretConstants.clerk.PUBLISHABLE_DEV_KEY : notSecretConstants.clerk.PUBLISHABLE_KEY
+
     return (
         <ClerkProvider
-            publishableKey={clerkPubKey}
+            publishableKey={clerkKey}
             navigate={(to) => navigate(to)}
             appearance={getGyosuClerkTheme()}
         >
