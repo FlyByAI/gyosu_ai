@@ -8,14 +8,18 @@ import { Tooltip as ReactTooltip } from "react-tooltip";
 
 const DocumentTitle: React.FC = () => {
     const [isEditing, setIsEditing] = useState(false);
-    const endpoint2 = `${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/school_document/`;
+    const endpoint2 = `${window.location.href.includes("https://test.gyosu.ai")
+        ? notSecretConstants.testDjangoApi
+        : import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/school_document/`;
     const { updateDocument } = useSubmitDocument(endpoint2);
 
     const [title, setTitle] = useState('');
 
     const { id } = useParams();
 
-    const { document } = useGetDocument(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/school_document/`, Number(id));
+    const { document } = useGetDocument(`${window.location.href.includes("https://test.gyosu.ai")
+        ? notSecretConstants.testDjangoApi
+        : import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/school_document/`, Number(id));
 
     useEffect(() => {
         setTitle(document?.title || '');

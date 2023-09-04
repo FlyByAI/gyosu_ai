@@ -21,9 +21,13 @@ export interface DocumentShelfProps {
 
 const DocumentShelf: React.FC<DocumentShelfProps> = ({ isExporting }) => {
 
-    const endpoint = `${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/school_document/list/`;
+    const endpoint = `${window.location.href.includes("https://test.gyosu.ai")
+        ? notSecretConstants.testDjangoApi
+        : import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/school_document/list/`;
     const { documents, isLoading, error } = useGetDocuments(endpoint);
-    const endpoint2 = `${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/school_document/`;
+    const endpoint2 = `${window.location.href.includes("https://test.gyosu.ai")
+        ? notSecretConstants.testDjangoApi
+        : import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/school_document/`;
     const { submitDocument, updateDocument } = useSubmitDocument(endpoint2);
 
     const handleAddDocument = async () => {

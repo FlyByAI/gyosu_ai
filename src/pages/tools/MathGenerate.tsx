@@ -22,8 +22,6 @@ const MathGenerate: React.FC = () => {
         setChunkArray(chunkArray);
     };
 
-    console.log("VITE API URL", import.meta.env.VITE_API_URL)
-
     useEffect(() => {
         if (!session) {
             openSignIn()

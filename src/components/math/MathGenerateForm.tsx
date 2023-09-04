@@ -33,7 +33,9 @@ const MathGenerateForm: React.FC<MathGenerateFormProps> = ({ onSubmit, setProble
 
 
 
-    const { isLoading, error, submitMathForm, data } = useSubmitMathForm(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/generate/`)
+    const { isLoading, error, submitMathForm, data } = useSubmitMathForm(`${window.location.href.includes("https://test.gyosu.ai")
+        ? notSecretConstants.testDjangoApi
+        : import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/generate/`)
 
     useEffect(() => {
         const problemData: ProblemData = {

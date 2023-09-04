@@ -31,7 +31,9 @@ const MathDocumentSearchForm: React.FC = () => {
 
     const { session, openSignIn } = useClerk();
 
-    const { searchMathDocuments, documentSearchResults, error, isLoading } = useSearchMathDocuments(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/school_document/community/search/`);
+    const { searchMathDocuments, documentSearchResults, error, isLoading } = useSearchMathDocuments(`${window.location.href.includes("https://test.gyosu.ai")
+        ? notSecretConstants.testDjangoApi
+        : import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/school_document/community/search/`);
 
 
     const handleSearch = () => {

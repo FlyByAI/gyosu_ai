@@ -10,8 +10,12 @@ import useActivateTrial from '../hooks/subscription/useActivateTrial';
 
 const TrialButton = ({ className }: { className: string }) => {
 
-    const { trialActivated, activateTrial } = useActivateTrial(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/stripe/activate-trial/`)
-    const { subscriptionInfo, isLoading } = useFetchSubscriptionInfo(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/user_data/get_subscription_info/`)
+    const { trialActivated, activateTrial } = useActivateTrial(`${window.location.href.includes("https://test.gyosu.ai")
+        ? notSecretConstants.testDjangoApi
+        : import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/stripe/activate-trial/`)
+    const { subscriptionInfo, isLoading } = useFetchSubscriptionInfo(`${window.location.href.includes("https://test.gyosu.ai")
+        ? notSecretConstants.testDjangoApi
+        : import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/user_data/get_subscription_info/`)
     return (<>
         {!isLoading &&
             <div

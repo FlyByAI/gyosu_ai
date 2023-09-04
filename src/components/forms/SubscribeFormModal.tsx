@@ -14,7 +14,9 @@ const SubscribeFormModal = ({ isOpen, onClose }: SubscribeFormModalProps) => {
     const { session } = useClerk();
     const { ipAddress } = useIpAddress();
     const [email, setEmail] = useState("");
-    const { subscriptionData, submitSubscriptions } = useSubmitSubscribe(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/subscriptions/subscribe`, email);
+    const { subscriptionData, submitSubscriptions } = useSubmitSubscribe(`${window.location.href.includes("https://test.gyosu.ai")
+        ? notSecretConstants.testDjangoApi
+        : import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/subscriptions/subscribe`, email);
     const [newToolReleases, setNewToolReleases] = useState(subscriptionData?.newToolReleases || false);
     const [aiNewsletter, setAiNewsletter] = useState(subscriptionData?.aiNewsletter || false);
     const [blogPosts, setBlogPosts] = useState(subscriptionData?.blogPosts || false);

@@ -7,7 +7,9 @@ import { notSecretConstants } from '../constants/notSecretConstants';
 import useFetchSubscriptionInfo from '../hooks/subscription/useFetchSubscriptionInfo';
 
 const Subscription: React.FC = () => {
-    const { subscriptionInfo, isLoading } = useFetchSubscriptionInfo(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/user_data/get_subscription_info/`);
+    const { subscriptionInfo, isLoading } = useFetchSubscriptionInfo(`${window.location.href.includes("https://test.gyosu.ai")
+        ? notSecretConstants.testDjangoApi
+        : import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/user_data/get_subscription_info/`);
 
     const { session } = useClerk();
 

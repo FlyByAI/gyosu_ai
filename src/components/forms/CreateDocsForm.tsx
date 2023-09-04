@@ -12,7 +12,9 @@ interface CreateDocsFormProps {
 
 const CreateDocxForm: React.FC<CreateDocsFormProps> = ({ document }) => {
     const { activeChunkIndices, setActiveChunkIndices } = useSidebarContext();
-    const { createDocx, isLoading } = useCreateDocx(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/generate_docx/`);
+    const { createDocx, isLoading } = useCreateDocx(`${window.location.href.includes("https://test.gyosu.ai")
+        ? notSecretConstants.testDjangoApi
+        : import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/generate_docx/`);
     const { id } = useParams();
 
     // Moved formState and related logic here

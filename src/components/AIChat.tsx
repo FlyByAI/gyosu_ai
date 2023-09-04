@@ -17,7 +17,9 @@ const AIChat: React.FC<AIChatProps> = ({ markdown, additionalInfo }) => {
 
     const [chat, setChat] = useState("");
 
-    const { isLoading, error } = useSubmitTextWithChunk(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/ai_chat/`);
+    const { isLoading, error } = useSubmitTextWithChunk(`${window.location.href.includes("https://test.gyosu.ai")
+        ? notSecretConstants.testDjangoApi
+        : import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/ai_chat/`);
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {

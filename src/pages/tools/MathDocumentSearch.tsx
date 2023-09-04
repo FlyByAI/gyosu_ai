@@ -10,7 +10,9 @@ import useGetDocuments from '../../hooks/tools/math/useGetDocuments';
 
 const MathDocumentSearch: React.FC = () => {
 
-    const { documents } = useGetDocuments(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/school_document/community/recent/`);
+    const { documents } = useGetDocuments(`${window.location.href.includes("https://test.gyosu.ai")
+        ? notSecretConstants.testDjangoApi
+        : import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/school_document/community/recent/`);
 
     console.log(documents)
     return (

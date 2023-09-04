@@ -7,7 +7,9 @@ export const useRecentPost = () => {
   useEffect(() => {
     const fetchBlogPosts = async () => {
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/blogposts/recent`);
+        const response = await fetch(`${window.location.href.includes("https://test.gyosu.ai")
+          ? notSecretConstants.testDjangoApi
+          : import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/blogposts/recent`);
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }

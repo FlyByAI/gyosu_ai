@@ -10,7 +10,13 @@ import useFetchSubscriptionInfo from '../hooks/subscription/useFetchSubscription
 
 const SubscribePremiumButton = ({ className }: { className: string }) => {
 
-    const { initiateCheckout } = useInitiateCheckout(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/stripe/create-checkout-session/premium/`);
+    const url = `${window.location.href.includes("https://test.gyosu.ai")
+        ? notSecretConstants.testDjangoApi
+        : import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/stripe/create-checkout-session/premium/`
+
+    const { initiateCheckout } = useInitiateCheckout(`${window.location.href.includes("https://test.gyosu.ai")
+        ? notSecretConstants.testDjangoApi
+        : import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/stripe/create-checkout-session/premium/`);
 
     const diamondCount = 10;
     const diamonds = Array.from({ length: diamondCount }, (_, i) => {
@@ -46,7 +52,9 @@ const SubscribePremiumButton = ({ className }: { className: string }) => {
 
 const SubscribeLiteButton = ({ className }: { className: string }) => {
 
-    const { initiateCheckout } = useInitiateCheckout(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/stripe/create-checkout-session/lite/`)
+    const { initiateCheckout } = useInitiateCheckout(`${window.location.href.includes("https://test.gyosu.ai")
+        ? notSecretConstants.testDjangoApi
+        : import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/stripe/create-checkout-session/lite/`)
 
     return (
         <div
@@ -64,7 +72,9 @@ const SubscribeLiteButton = ({ className }: { className: string }) => {
 
 
 const RedirectToSubscribePageButton: React.FC = () => {
-    const { subscriptionInfo, isLoading } = useFetchSubscriptionInfo(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/user_data/get_subscription_info/`)
+    const { subscriptionInfo, isLoading } = useFetchSubscriptionInfo(`${window.location.href.includes("https://test.gyosu.ai")
+        ? notSecretConstants.testDjangoApi
+        : import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/user_data/get_subscription_info/`)
 
     return (
         <Link

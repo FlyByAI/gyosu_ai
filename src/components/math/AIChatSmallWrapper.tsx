@@ -21,7 +21,9 @@ const AIChatSmallWrapper: React.FC<AIChatSmallWrapperProps> = ({ updateChunk, cl
     const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
 
-    const { submitTextWithChunk, isLoading, error, data } = useSubmitTextWithChunk(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/chat/problem/`);
+    const { submitTextWithChunk, isLoading, error, data } = useSubmitTextWithChunk(`${window.location.href.includes("https://test.gyosu.ai")
+        ? notSecretConstants.testDjangoApi
+        : import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/chat/problem/`);
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         console.log("handleSubmit called for some reason?")

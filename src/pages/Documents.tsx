@@ -21,8 +21,12 @@ export interface DocumentDownload {
 
 const Documents: React.FC = () => {
     // finish this
-    const { documentDownloads, isLoading, error } = useGetDocumentDownloads(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/cloud_storage_document/list/`)
-    const { getDocumentDownload, isLoading: isDownloadLoading, data, error: downloadError } = useGetDocumentDownload(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app`);
+    const { documentDownloads, isLoading, error } = useGetDocumentDownloads(`${window.location.href.includes("https://test.gyosu.ai")
+        ? notSecretConstants.testDjangoApi
+        : import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/cloud_storage_document/list/`)
+    const { getDocumentDownload, isLoading: isDownloadLoading, data, error: downloadError } = useGetDocumentDownload(`${window.location.href.includes("https://test.gyosu.ai")
+        ? notSecretConstants.testDjangoApi
+        : import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app`);
 
     const user = useUser();
 

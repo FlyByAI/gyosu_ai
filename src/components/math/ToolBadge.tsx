@@ -24,9 +24,13 @@ interface ToolBadgeProps {
 
 const ToolBadge: React.FC<ToolBadgeProps> = ({ chunk, instruction, problem, insertChunk, updateChunk, chunkIndex, hidden }) => {
 
-    const { submitReroll } = useSubmitReroll(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/reroll/`);
+    const { submitReroll } = useSubmitReroll(`${window.location.href.includes("https://test.gyosu.ai")
+        ? notSecretConstants.testDjangoApi
+        : import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/reroll/`);
 
-    const { submitFeedback } = useSubmitFeedback(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/feedback/problem/`)
+    const { submitFeedback } = useSubmitFeedback(`${window.location.href.includes("https://test.gyosu.ai")
+        ? notSecretConstants.testDjangoApi
+        : import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/feedback/problem/`)
 
     const payload: ChunkInstructionProblem = {
         chunkId: chunk.id,

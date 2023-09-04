@@ -19,8 +19,12 @@ const DocumentToolbarNav: React.FC = () => {
     const toolbarHeight = "70";
 
     const { id } = useParams();
-    const { document } = useGetDocument(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/school_document/`, Number(id));
-    const { deleteDocument, isDeleting, shareDocument } = useSubmitDocument(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/school_document/`);
+    const { document } = useGetDocument(`${window.location.href.includes("https://test.gyosu.ai")
+        ? notSecretConstants.testDjangoApi
+        : import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/school_document/`, Number(id));
+    const { deleteDocument, isDeleting, shareDocument } = useSubmitDocument(`${window.location.href.includes("https://test.gyosu.ai")
+        ? notSecretConstants.testDjangoApi
+        : import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/school_document/`);
 
     const handleDeleteClick = () => {
         if (document) {

@@ -14,12 +14,16 @@ interface ChunkSidebarProps {
 
 const ChunkSidebar: React.FC<ChunkSidebarProps> = ({ document }) => {
 
-    const endpoint2 = `${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/school_document/`;
+    const endpoint2 = `${window.location.href.includes("https://test.gyosu.ai")
+        ? notSecretConstants.testDjangoApi
+        : import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/school_document/`;
     const { updateDocument } = useSubmitDocument(endpoint2);
 
     const { activeChunkIndices, setActiveChunkIndices } = useSidebarContext();
 
-    const { submitForm } = useSubmitChunkSidebarForm(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/problem/playground/`);
+    const { submitForm } = useSubmitChunkSidebarForm(`${window.location.href.includes("https://test.gyosu.ai")
+        ? notSecretConstants.testDjangoApi
+        : import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/problem/playground/`);
 
     const { language } = useLanguage();
 

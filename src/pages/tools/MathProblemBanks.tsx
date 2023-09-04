@@ -9,7 +9,9 @@ import useGetDocuments from '../../hooks/tools/math/useGetDocuments';
 
 const MyProblemBanks: React.FC = () => {
     const { documents, error } = useGetDocuments(
-        `${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/school_document/list/`
+        `${window.location.href.includes("https://test.gyosu.ai")
+            ? notSecretConstants.testDjangoApi
+            : import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/school_document/list/`
     );
 
     if (error) {

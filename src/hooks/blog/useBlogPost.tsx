@@ -7,7 +7,9 @@ export const useBlogPosts = () => {
   useEffect(() => {
     const fetchBlogPosts = async () => {
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/blogposts`);
+        const response = await fetch(`${window.location.href.includes("https://test.gyosu.ai")
+          ? notSecretConstants.testDjangoApi
+          : import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/blogposts`);
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
@@ -30,7 +32,9 @@ export const useBlogPost = (id: string) => {
   useEffect(() => {
     const fetchBlogPosts = async () => {
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/blogpost/${id}`);
+        const response = await fetch(`${window.location.href.includes("https://test.gyosu.ai")
+          ? notSecretConstants.testDjangoApi
+          : import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/blogpost/${id}`);
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }

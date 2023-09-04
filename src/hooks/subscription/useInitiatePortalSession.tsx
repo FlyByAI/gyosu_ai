@@ -15,7 +15,9 @@ export default function useInitiatePortalSession() {
             const currentURL = window.location.href;
 
             const response = await axios.post(
-                `${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/stripe/create-portal-session/`,
+                `${window.location.href.includes("https://test.gyosu.ai")
+                    ? notSecretConstants.testDjangoApi
+                    : import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/stripe/create-portal-session/`,
                 humps.decamelizeKeys({
                     returnUrl: currentURL
                 }),

@@ -16,7 +16,9 @@ interface PublishMarkdownDocumentProps {
 }
 
 const PublishMarkdownDocument: React.FC<PublishMarkdownDocumentProps> = ({ markdown, saved, setSaved, formData, documentId, setDocumentId }) => {
-    const { isLoading, error, data } = useSubmitDocument(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/document/save/`);
+    const { isLoading, error, data } = useSubmitDocument(`${window.location.href.includes("https://test.gyosu.ai")
+        ? notSecretConstants.testDjangoApi
+        : import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/document/save/`);
 
     useEffect(() => {
         setSaved(false);
