@@ -40,11 +40,13 @@ export default function ClerkProviderWithRoutes() {
     const navigate = useNavigate();
 
     
-    const isDevelopment = import.meta.env.MODE !== 'production';
-    console.log(isDevelopment);
-    if (isDevelopment) console.log("Development mode");
+    // const isDevelopment = import.meta.env.MODE !== 'production';
+    // console.log(isDevelopment);
+    // if (isDevelopment) console.log("Development mode");
 
-    const clerkKey = isDevelopment ? notSecretConstants.clerk.PUBLISHABLE_DEV_KEY : notSecretConstants.clerk.PUBLISHABLE_KEY
+    // const clerkKey = isDevelopment ? notSecretConstants.clerk.PUBLISHABLE_DEV_KEY : notSecretConstants.clerk.PUBLISHABLE_KEY
+
+    const clerkKey = notSecretConstants.clerk.PUBLISHABLE_DEV_KEY
 
     return (
         <ClerkProvider
