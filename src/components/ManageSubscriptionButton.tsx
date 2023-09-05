@@ -4,6 +4,7 @@ import CheckIcon from '../svg/CheckIcon';
 import useInitiatePortalSession from '../hooks/subscription/useInitiatePortalSession';
 import useFetchSubscriptionInfo from '../hooks/subscription/useFetchSubscriptionInfo';
 import { notSecretConstants } from '../constants/notSecretConstants';
+import useEnvironment from '../hooks/useEnvironment';
 
 const ManageSubscriptionButton: React.FC = () => {
 
@@ -15,10 +16,9 @@ const ManageSubscriptionButton: React.FC = () => {
             window.location.replace(manageSubLink);
         }
     };
+    const { apiUrl } = useEnvironment();
 
-    const { subscriptionInfo, isLoading } = useFetchSubscriptionInfo(`${window.location.href.includes("https://test.gyosu.ai")
-        ? notSecretConstants.testDjangoApi
-        : import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/user_data/get_subscription_info/`);
+    const { subscriptionInfo, isLoading } = useFetchSubscriptionInfo(`${apiUrl}/user_data/get_subscription_info/`);
 
     return (
         subscriptionInfo?.has_valid_subscription ?

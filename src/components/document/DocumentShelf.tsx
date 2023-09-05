@@ -6,6 +6,7 @@ import useGetDocuments from '../../hooks/tools/math/useGetDocuments';
 import { notSecretConstants } from '../../constants/notSecretConstants';
 import useSubmitDocument from '../../hooks/tools/math/useSubmitDocument';
 import { useParams } from 'react-router-dom';
+import useEnvironment from '../../hooks/useEnvironment';
 
 
 
@@ -20,14 +21,11 @@ export interface DocumentShelfProps {
 
 
 const DocumentShelf: React.FC<DocumentShelfProps> = ({ isExporting }) => {
+    const { apiUrl } = useEnvironment();
 
-    const endpoint = `${window.location.href.includes("https://test.gyosu.ai")
-        ? notSecretConstants.testDjangoApi
-        : import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/school_document/list/`;
+    const endpoint = `${apiUrl}/math_app/school_document/list/`;
     const { documents, isLoading, error } = useGetDocuments(endpoint);
-    const endpoint2 = `${window.location.href.includes("https://test.gyosu.ai")
-        ? notSecretConstants.testDjangoApi
-        : import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/school_document/`;
+    const endpoint2 = `${apiUrl}/math_app/school_document/`;
     const { submitDocument, updateDocument } = useSubmitDocument(endpoint2);
 
     const handleAddDocument = async () => {

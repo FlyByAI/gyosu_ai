@@ -5,21 +5,19 @@ import { Document } from '../../interfaces'
 import useGetDocument from '../../hooks/tools/math/useGetDocument';
 import { useParams } from 'react-router-dom';
 import { Tooltip as ReactTooltip } from "react-tooltip";
+import useEnvironment from '../../hooks/useEnvironment';
 
 const DocumentTitle: React.FC = () => {
     const [isEditing, setIsEditing] = useState(false);
-    const endpoint2 = `${window.location.href.includes("https://test.gyosu.ai")
-        ? notSecretConstants.testDjangoApi
-        : import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/school_document/`;
+    const { apiUrl } = useEnvironment();
+    const endpoint2 = `${apiUrl}/math_app/school_document/`;
     const { updateDocument } = useSubmitDocument(endpoint2);
 
     const [title, setTitle] = useState('');
 
     const { id } = useParams();
 
-    const { document } = useGetDocument(`${window.location.href.includes("https://test.gyosu.ai")
-        ? notSecretConstants.testDjangoApi
-        : import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/school_document/`, Number(id));
+    const { document } = useGetDocument(`${apiUrl}/math_app/school_document/`, Number(id));
 
     useEffect(() => {
         setTitle(document?.title || '');

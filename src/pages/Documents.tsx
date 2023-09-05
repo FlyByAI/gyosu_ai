@@ -6,6 +6,7 @@ import { useClerk, useUser } from '@clerk/clerk-react';
 import useGetDocumentDownloads from '../hooks/tools/math/useGetDocumentDownloads';
 import useGetDocumentDownload from '../hooks/tools/math/useGetDocumentDownload';
 import { Chunk } from '../interfaces';
+import useEnvironment from '../hooks/useEnvironment';
 
 
 export interface DocumentDownload {
@@ -20,13 +21,9 @@ export interface DocumentDownload {
 }
 
 const Documents: React.FC = () => {
-    // finish this
-    const { documentDownloads, isLoading, error } = useGetDocumentDownloads(`${window.location.href.includes("https://test.gyosu.ai")
-        ? notSecretConstants.testDjangoApi
-        : import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/cloud_storage_document/list/`)
-    const { getDocumentDownload, isLoading: isDownloadLoading, data, error: downloadError } = useGetDocumentDownload(`${window.location.href.includes("https://test.gyosu.ai")
-        ? notSecretConstants.testDjangoApi
-        : import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app`);
+    const { apiUrl } = useEnvironment();
+    const { documentDownloads, isLoading, error } = useGetDocumentDownloads(`${apiUrl}/math_app/cloud_storage_document/list/`)
+    const { getDocumentDownload, isLoading: isDownloadLoading, data, error: downloadError } = useGetDocumentDownload(`${apiUrl}/math_app`);
 
     const user = useUser();
 

@@ -3,6 +3,7 @@ import ChatBox from './math/ChatBox';
 import { notSecretConstants } from '../constants/notSecretConstants';
 import useSubmitTextWithMarkdown from '../hooks/tools/math/useSubmitTextWithChunk';
 import useSubmitTextWithChunk from '../hooks/tools/math/useSubmitTextWithChunk';
+import useEnvironment from '../hooks/useEnvironment';
 
 interface AIChatProps {
     markdown?: string;
@@ -16,10 +17,8 @@ const AIChat: React.FC<AIChatProps> = ({ markdown, additionalInfo }) => {
     const formRef = useRef<HTMLFormElement>(null);
 
     const [chat, setChat] = useState("");
-
-    const { isLoading, error } = useSubmitTextWithChunk(`${window.location.href.includes("https://test.gyosu.ai")
-        ? notSecretConstants.testDjangoApi
-        : import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/ai_chat/`);
+    const { apiUrl } = useEnvironment();
+    const { isLoading, error } = useSubmitTextWithChunk(`${apiUrl}/ai_chat/`);
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {

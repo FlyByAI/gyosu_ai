@@ -4,6 +4,7 @@ import SaveIcon from '../../svg/SaveIcon';
 import { MathFormData } from '../../hooks/tools/math/useSubmitMathForm';
 import useSubmitDocument from '../../hooks/tools/math/useSubmitDocument';
 import ViewIcon from '../../svg/ViewIcon';
+import useEnvironment from '../../hooks/useEnvironment';
 
 interface PublishMarkdownDocumentProps {
     markdown: string;
@@ -16,9 +17,8 @@ interface PublishMarkdownDocumentProps {
 }
 
 const PublishMarkdownDocument: React.FC<PublishMarkdownDocumentProps> = ({ markdown, saved, setSaved, formData, documentId, setDocumentId }) => {
-    const { isLoading, error, data } = useSubmitDocument(`${window.location.href.includes("https://test.gyosu.ai")
-        ? notSecretConstants.testDjangoApi
-        : import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/document/save/`);
+    const { apiUrl } = useEnvironment();
+    const { isLoading, error, data } = useSubmitDocument(`${apiUrl}/math_app/document/save/`);
 
     useEffect(() => {
         setSaved(false);

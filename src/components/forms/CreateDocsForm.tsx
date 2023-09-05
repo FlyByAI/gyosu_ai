@@ -5,6 +5,7 @@ import { notSecretConstants } from '../../constants/notSecretConstants';
 import useCreateDocx, { DocxAction } from '../../hooks/tools/math/useCreateDocs';
 import { Tooltip as ReactTooltip } from "react-tooltip";
 import { useParams } from 'react-router-dom';
+import useEnvironment from '../../hooks/useEnvironment';
 
 interface CreateDocsFormProps {
     document: Document | EmptyDocument;
@@ -12,9 +13,8 @@ interface CreateDocsFormProps {
 
 const CreateDocxForm: React.FC<CreateDocsFormProps> = ({ document }) => {
     const { activeChunkIndices, setActiveChunkIndices } = useSidebarContext();
-    const { createDocx, isLoading } = useCreateDocx(`${window.location.href.includes("https://test.gyosu.ai")
-        ? notSecretConstants.testDjangoApi
-        : import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/generate_docx/`);
+    const { apiUrl } = useEnvironment();
+    const { createDocx, isLoading } = useCreateDocx(`${apiUrl}/math_app/generate_docx/`);
     const { id } = useParams();
 
     // Moved formState and related logic here

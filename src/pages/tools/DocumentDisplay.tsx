@@ -11,16 +11,14 @@ import AIChatSmallWrapper from '../../components/math/AIChatSmallWrapper';
 import useSubmitDocument from '../../hooks/tools/math/useSubmitDocument';
 import ChunkSidebarWrapper from '../../components/math/ChunkSidebarWrapper';
 import PlusIcon from '../../svg/PlusIcon';
+import useEnvironment from '../../hooks/useEnvironment';
 
 const DocumentDisplay: React.FC = () => {
     const { id } = useParams();
-    const { isLoading, error, document } = useGetDocument(`${window.location.href.includes("https://test.gyosu.ai")
-        ? notSecretConstants.testDjangoApi
-        : import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/school_document/`, Number(id));
+    const { apiUrl } = useEnvironment();
+    const { isLoading, error, document } = useGetDocument(`${apiUrl}/math_app/school_document/`, Number(id));
 
-    const endpoint2 = `${window.location.href.includes("https://test.gyosu.ai")
-        ? notSecretConstants.testDjangoApi
-        : import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/school_document/`;
+    const endpoint2 = `${apiUrl}/math_app/school_document/`;
     const { updateDocument } = useSubmitDocument(endpoint2);
 
     if (isLoading) {
