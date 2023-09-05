@@ -39,7 +39,7 @@ import { notSecretConstants } from './constants/notSecretConstants.tsx';
 export default function ClerkProviderWithRoutes() {
     const navigate = useNavigate();
 
-    const isDevelopment = import.meta.env.MODE === 'development';
+    const isDevelopment = import.meta.env.MODE != 'production';
     if (isDevelopment) console.log("Development mode");
 
     const clerkKey = isDevelopment ? notSecretConstants.clerk.PUBLISHABLE_DEV_KEY : notSecretConstants.clerk.PUBLISHABLE_KEY
