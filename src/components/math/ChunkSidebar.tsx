@@ -7,6 +7,7 @@ import { languageNames } from "../../helpers/language";
 import useSubmitDocument from "../../hooks/tools/math/useSubmitDocument";
 import { useLanguage } from "../../contexts/useLanguage";
 import CreateDocxForm from "../forms/CreateDocsForm";
+import useEnvironment from "../../hooks/useEnvironment";
 
 interface ChunkSidebarProps {
     document: Document | EmptyDocument;
@@ -14,16 +15,13 @@ interface ChunkSidebarProps {
 
 const ChunkSidebar: React.FC<ChunkSidebarProps> = ({ document }) => {
 
-    const endpoint2 = `${window.location.href.includes("https://test.gyosu.ai")
-        ? notSecretConstants.testDjangoApi
-        : import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/school_document/`;
+    const { apiUrl } = useEnvironment();
+    const endpoint2 = `${apiUrl}/math_app/school_document/`;
     const { updateDocument } = useSubmitDocument(endpoint2);
 
     const { activeChunkIndices, setActiveChunkIndices } = useSidebarContext();
 
-    const { submitForm } = useSubmitChunkSidebarForm(`${window.location.href.includes("https://test.gyosu.ai")
-        ? notSecretConstants.testDjangoApi
-        : import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/problem/playground/`);
+    const { submitForm } = useSubmitChunkSidebarForm(`${apiUrl}/math_app/problem/playground/`);
 
     const { language } = useLanguage();
 

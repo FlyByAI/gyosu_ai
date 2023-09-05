@@ -34,19 +34,15 @@ import Subscribe from './components/Subscribe.tsx';
 import Documents from './pages/Documents.tsx';
 import MyProblemBanks from './pages/tools/MathProblemBanks.tsx';
 import { notSecretConstants } from './constants/notSecretConstants.tsx';
+import useEnvironment from './hooks/useEnvironment.tsx';
 
 
 export default function ClerkProviderWithRoutes() {
     const navigate = useNavigate();
 
-    
-    // const isDevelopment = import.meta.env.MODE !== 'production';
-    // console.log(isDevelopment);
-    // if (isDevelopment) console.log("Development mode");
+    const { env } = useEnvironment();
 
-    // const clerkKey = isDevelopment ? notSecretConstants.clerk.PUBLISHABLE_DEV_KEY : notSecretConstants.clerk.PUBLISHABLE_KEY
-
-    const clerkKey = notSecretConstants.clerk.PUBLISHABLE_DEV_KEY
+    const clerkKey = env != "production" ? notSecretConstants.clerk.PUBLISHABLE_DEV_KEY : notSecretConstants.clerk.PUBLISHABLE_KEY
 
     return (
         <ClerkProvider

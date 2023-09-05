@@ -13,18 +13,16 @@ import TrashIcon from '../../svg/TrashIcon';
 import HamburgerWrapper from '../HamburgerWrapper';
 import ManageSubscriptionButton from '../ManageSubscriptionButton';
 import { Tooltip as ReactTooltip } from "react-tooltip";
+import useEnvironment from '../../hooks/useEnvironment';
 
 const DocumentToolbarNav: React.FC = () => {
     const { darkMode } = useDarkMode();
     const toolbarHeight = "70";
 
     const { id } = useParams();
-    const { document } = useGetDocument(`${window.location.href.includes("https://test.gyosu.ai")
-        ? notSecretConstants.testDjangoApi
-        : import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/school_document/`, Number(id));
-    const { deleteDocument, isDeleting, shareDocument } = useSubmitDocument(`${window.location.href.includes("https://test.gyosu.ai")
-        ? notSecretConstants.testDjangoApi
-        : import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/school_document/`);
+    const { apiUrl } = useEnvironment();
+    const { document } = useGetDocument(`${apiUrl}/math_app/school_document/`, Number(id));
+    const { deleteDocument, isDeleting, shareDocument } = useSubmitDocument(`${apiUrl}/math_app/school_document/`);
 
     const handleDeleteClick = () => {
         if (document) {

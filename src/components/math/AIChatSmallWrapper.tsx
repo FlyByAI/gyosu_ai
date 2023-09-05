@@ -4,6 +4,7 @@ import { notSecretConstants } from "../../constants/notSecretConstants";
 import { Chunk, ProblemData } from "../../interfaces";
 import { useLanguage } from "../../contexts/useLanguage";
 import useSubmitTextWithChunk from "../../hooks/tools/math/useSubmitTextWithChunk";
+import useEnvironment from "../../hooks/useEnvironment";
 
 interface AIChatSmallWrapperProps {
     children: React.ReactNode;
@@ -21,9 +22,8 @@ const AIChatSmallWrapper: React.FC<AIChatSmallWrapperProps> = ({ updateChunk, cl
     const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
 
-    const { submitTextWithChunk, isLoading, error, data } = useSubmitTextWithChunk(`${window.location.href.includes("https://test.gyosu.ai")
-        ? notSecretConstants.testDjangoApi
-        : import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/chat/problem/`);
+    const { apiUrl } = useEnvironment();
+    const { submitTextWithChunk, isLoading, error, data } = useSubmitTextWithChunk(`${apiUrl}/math_app/chat/problem/`);
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         console.log("handleSubmit called for some reason?")

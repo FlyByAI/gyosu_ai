@@ -10,6 +10,7 @@ import Accordion from '../Accordion';
 import GridContainer3x3 from '../grids/GridContainer3x3';
 import DocumentPreview from '../forms/DocumentPreview';
 import { notSecretConstants } from '../../constants/notSecretConstants';
+import useEnvironment from '../../hooks/useEnvironment';
 
 
 const MathDocumentSearchForm: React.FC = () => {
@@ -31,9 +32,8 @@ const MathDocumentSearchForm: React.FC = () => {
 
     const { session, openSignIn } = useClerk();
 
-    const { searchMathDocuments, documentSearchResults, error, isLoading } = useSearchMathDocuments(`${window.location.href.includes("https://test.gyosu.ai")
-        ? notSecretConstants.testDjangoApi
-        : import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/school_document/community/search/`);
+    const { apiUrl } = useEnvironment();
+    const { searchMathDocuments, documentSearchResults, error, isLoading } = useSearchMathDocuments(`${apiUrl}/math_app/school_document/community/search/`);
 
 
     const handleSearch = () => {

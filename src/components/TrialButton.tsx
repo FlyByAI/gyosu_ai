@@ -1,21 +1,15 @@
-import React from 'react';
-
-import useInitiateCheckout from '../hooks/subscription/useInitiateCheckout';
-import { notSecretConstants } from '../constants/notSecretConstants';
 import useFetchSubscriptionInfo from '../hooks/subscription/useFetchSubscriptionInfo';
 import useActivateTrial from '../hooks/subscription/useActivateTrial';
+import useEnvironment from '../hooks/useEnvironment';
 
 
 
 
 const TrialButton = ({ className }: { className: string }) => {
+    const { apiUrl } = useEnvironment();
 
-    const { trialActivated, activateTrial } = useActivateTrial(`${window.location.href.includes("https://test.gyosu.ai")
-        ? notSecretConstants.testDjangoApi
-        : import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/stripe/activate-trial/`)
-    const { subscriptionInfo, isLoading } = useFetchSubscriptionInfo(`${window.location.href.includes("https://test.gyosu.ai")
-        ? notSecretConstants.testDjangoApi
-        : import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/user_data/get_subscription_info/`)
+    const { trialActivated, activateTrial } = useActivateTrial(`${apiUrl}/stripe/activate-trial/`)
+    const { subscriptionInfo, isLoading } = useFetchSubscriptionInfo(`${apiUrl}/user_data/get_subscription_info/`)
     return (<>
         {!isLoading &&
             <div

@@ -7,12 +7,12 @@ import DocumentPreview from '../../components/forms/DocumentPreview';
 import MathDocumentSearchForm from '../../components/math/MathDocumentSearchForm';
 import DocumentShelf from '../../components/document/DocumentShelf';
 import useGetDocuments from '../../hooks/tools/math/useGetDocuments';
+import useEnvironment from '../../hooks/useEnvironment';
 
 const MathDocumentSearch: React.FC = () => {
+    const { apiUrl } = useEnvironment();
 
-    const { documents } = useGetDocuments(`${window.location.href.includes("https://test.gyosu.ai")
-        ? notSecretConstants.testDjangoApi
-        : import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/school_document/community/recent/`);
+    const { documents } = useGetDocuments(`${apiUrl}/math_app/school_document/community/recent/`);
 
     console.log(documents)
     return (

@@ -8,6 +8,7 @@ import { useClerk, useUser } from '@clerk/clerk-react';
 import formOptionsJSON from '../../json/dropdown_data.json';
 import { ProblemData } from '../../interfaces';
 import { useLanguage } from '../../contexts/useLanguage';
+import useEnvironment from '../../hooks/useEnvironment';
 
 type MathGenerateFormProps = {
     onSubmit: (data: any) => void;
@@ -33,9 +34,8 @@ const MathGenerateForm: React.FC<MathGenerateFormProps> = ({ onSubmit, setProble
 
 
 
-    const { isLoading, error, submitMathForm, data } = useSubmitMathForm(`${window.location.href.includes("https://test.gyosu.ai")
-        ? notSecretConstants.testDjangoApi
-        : import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/generate/`)
+    const { apiUrl } = useEnvironment();
+    const { isLoading, error, submitMathForm, data } = useSubmitMathForm(`${apiUrl}/math_app/generate/`)
 
     useEffect(() => {
         const problemData: ProblemData = {

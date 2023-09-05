@@ -1,15 +1,11 @@
 import React from 'react';
 import { useClerk } from '@clerk/clerk-react';
-import ManageSubscriptionButton from './ManageSubscriptionButton';
-import { RedirectToSubscribePageButton } from './SubscribeButton';
-import TrialButton from './TrialButton';
-import { notSecretConstants } from '../constants/notSecretConstants';
 import useFetchSubscriptionInfo from '../hooks/subscription/useFetchSubscriptionInfo';
+import useEnvironment from '../hooks/useEnvironment';
 
 const Subscription: React.FC = () => {
-    const { subscriptionInfo, isLoading } = useFetchSubscriptionInfo(`${window.location.href.includes("https://test.gyosu.ai")
-        ? notSecretConstants.testDjangoApi
-        : import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/user_data/get_subscription_info/`);
+    const { apiUrl } = useEnvironment();
+    const { subscriptionInfo, isLoading } = useFetchSubscriptionInfo(`${apiUrl}/user_data/get_subscription_info/`);
 
     const { session } = useClerk();
 
