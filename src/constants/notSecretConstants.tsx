@@ -1,5 +1,5 @@
 export const notSecretConstants = {
-   "testDjangoApi": "https://test-django-backend-igbahdisaq-uc.a.run.app/api",
+   "testDjangoApi": "https://test-gyosu-ai-igbahdisaq-uc.a.run.app",
    "djangoApi": "https://django-backend-igbahdisaq-uc.a.run.app/api",
    "stripe": {
       "PUBLISHABLE_KEY": "pk_live_51NTvMyKx5VfIgpXPXmtg8mjpGdJAa2lACFXWdYqvbgOAv0vNofvqgb3HDXpTqsMFagYbKrzqIe1Xr2mWMMLbh30200mK755Pp6",
