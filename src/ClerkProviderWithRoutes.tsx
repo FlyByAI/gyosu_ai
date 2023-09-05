@@ -42,7 +42,7 @@ export default function ClerkProviderWithRoutes() {
 
     const { env } = useEnvironment();
 
-    const clerkKey = env != "production" ? notSecretConstants.clerk.PUBLISHABLE_DEV_KEY : notSecretConstants.clerk.PUBLISHABLE_KEY
+    const clerkKey = env == "production" ? notSecretConstants.clerk.PUBLISHABLE_KEY : notSecretConstants.clerk.PUBLISHABLE_DEV_KEY
 
     return (
         <ClerkProvider

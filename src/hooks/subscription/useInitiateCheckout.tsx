@@ -16,7 +16,7 @@ const useInitiateCheckout = (endpoint: string) => {
     const [data, setData] = useState<ICheckoutResponse | null>(null);
 
     const { env } = useEnvironment();
-    const stripePromise = loadStripe(env != "production" ? notSecretConstants.stripe.PUBLISHABLE_DEV_KEY : notSecretConstants.stripe.PUBLISHABLE_KEY);
+    const stripePromise = loadStripe(env == "production" ? notSecretConstants.stripe.PUBLISHABLE_KEY : notSecretConstants.stripe.PUBLISHABLE_DEV_KEY);
 
     const initiateCheckout = async (): Promise<void> => {
         setLoading(true);
