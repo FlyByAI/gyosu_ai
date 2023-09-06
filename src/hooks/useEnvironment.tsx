@@ -14,12 +14,12 @@ const useEnvironment = (): EnvironmentInfo => {
         let env = "";
         let apiUrl = "";
 
-        switch (url) {
-            case "https://test.gyosu.ai/":
+        switch (true) {
+            case url.includes("https://test.gyosu.ai"):
                 env = "test";
                 apiUrl = notSecretConstants.testDjangoApi;
                 break;
-            case "https://gyosu.ai/":
+            case url.includes("https://gyosu.ai"):
                 env = "production";
                 apiUrl = notSecretConstants.djangoApi;
                 break;
