@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useClerk } from '@clerk/clerk-react';
 import { loadStripe } from '@stripe/stripe-js';
 import { notSecretConstants } from '../../constants/notSecretConstants';

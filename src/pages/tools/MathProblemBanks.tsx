@@ -1,13 +1,23 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { notSecretConstants } from '../../constants/notSecretConstants';
 import DocumentShelf from '../../components/document/DocumentShelf';
 import Accordion from '../../components/Accordion';
 import GridContainer3x3 from '../../components/grids/GridContainer3x3';
 import DocumentPreview from '../../components/forms/DocumentPreview';
 import useGetDocuments from '../../hooks/tools/math/useGetDocuments';
+import { useClerk } from '@clerk/clerk-react';
 
 const MyProblemBanks: React.FC = () => {
+
+    const { session, openSignIn } = useClerk();
+
+    useEffect(() => {
+        if (!session) {
+            openSignIn()
+        }
+    }, [session, openSignIn])
+
     const { documents, error } = useGetDocuments(
         `${window.location.href.includes("https://test.gyosu.ai")
             ? notSecretConstants.testDjangoApi

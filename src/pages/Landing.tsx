@@ -4,6 +4,7 @@ import ArrowRightMore from '../svg/ArrowRightMore';
 import MathProblem from '../components/math/MathProblem';
 import { Chunk, ProblemData } from '../interfaces';
 import AIChatSmallWrapper from '../components/math/AIChatSmallWrapper';
+import LoopingText from '../components/LoopingText';
 
 const LandingPage: React.FC = () => {
 

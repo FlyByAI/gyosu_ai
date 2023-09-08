@@ -21,6 +21,15 @@ export interface DocumentDownload {
 }
 
 const Documents: React.FC = () => {
+
+    const { session, openSignIn } = useClerk();
+
+    useEffect(() => {
+        if (!session) {
+            openSignIn()
+        }
+    }, [session, openSignIn])
+
     const { apiUrl } = useEnvironment();
     const { documentDownloads, isLoading, error } = useGetDocumentDownloads(`${apiUrl}/math_app/cloud_storage_document/list/`)
     const { getDocumentDownload, isLoading: isDownloadLoading, data, error: downloadError } = useGetDocumentDownload(`${apiUrl}/math_app`);
@@ -61,19 +70,20 @@ const Documents: React.FC = () => {
                     </Accordion>
                 </div>
             ) : <div className="text-white mt-4 text-center h-screen">
-                {isLoading ? "Loading..." : "You don't have any documents yet."}
+                {isDownloadLoading ? "Loading..." : "You don't have any documents yet."}
             </div>}
 
             {error && <p className="text-red-600 mt-4 text-center">Error: {error.message}</p>}
             {downloadError && <p className="text-red-600 mt-4 text-center">Download Error: {downloadError.message}</p>}
             {error && !user?.user?.username && <p className="text-red-600 mt-4 text-center">Note: Our tools require you to be signed in.</p>}
 
-            {isLoading && <p className="dark:text-white">Loading...</p>}
-            {isLoading && (
+            {isDownloadLoading && <p className="dark:text-white">Loading...</p>}
+            {isDownloadLoading && (
                 <div className="flex justify-center mt-4">
                     <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12"></div>
                 </div>
             )}
+            {!isDownloadLoading && <div> No documents found. </div >}
         </>
     );
 };
