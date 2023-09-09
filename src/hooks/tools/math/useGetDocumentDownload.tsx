@@ -22,15 +22,23 @@ const fetchDocumentDownload = async (endpoint: string, blobName: string, token: 
 const useGetDocumentDownload = (endpoint: string) => {
     const { session } = useClerk();
 
-    const mutation = useMutation<DocumentDownload, Error, string>(
-        async (blobName: string): Promise<DocumentDownload> => {
+    const mutation = useMutation<DocumentDownload, Error, { blobName: string, newWindow: Window | null }>(
+        async ({ blobName, newWindow }): Promise<DocumentDownload> => {
             const token = session ? await session.getToken() : 'none';
-            return fetchDocumentDownload(endpoint, blobName, token);
+            const documentDownload = await fetchDocumentDownload(endpoint, blobName, token);
+
+            if (newWindow && documentDownload.signedUrl) {
+                newWindow.location.href = documentDownload.signedUrl;
+            }
+
+            return documentDownload;
         }
     );
 
     return {
-        getDocumentDownload: mutation.mutate,
+        getDocumentDownload: (blobName: string, newWindow: Window | null) => {
+            mutation.mutate({ blobName, newWindow });
+        },
         isLoading: mutation.isLoading,
         error: mutation.error,
         data: mutation.data,

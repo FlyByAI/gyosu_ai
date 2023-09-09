@@ -12,17 +12,6 @@ interface ChunkSidebarProps {
 
 const ChunkSidebar: React.FC<ChunkSidebarProps> = ({ document }) => {
 
-    const { apiUrl } = useEnvironment();
-    const endpoint2 = `${apiUrl}/math_app/school_document/`;
-    const { updateDocument } = useSubmitDocument(endpoint2);
-
-    const { activeChunkIndices, setActiveChunkIndices } = useSidebarContext();
-
-    const { submitForm } = useSubmitChunkSidebarForm(`${apiUrl}/math_app/problem/playground/`);
-
-    const { language } = useLanguage();
-
-
     return (
         <div className="p-2 fixed z-0 right-0 top-16 my-20 w-1/5 me-4 bg-gray-900 transform transition-transform duration-1000">
             <div className="h-5/6 bg-blue-900 p-4 text-white overflow-y-auto max-h-[90vh]">

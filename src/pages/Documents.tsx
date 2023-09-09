@@ -35,7 +35,8 @@ const Documents: React.FC = () => {
     const user = useUser();
 
     const handleDocumentClick = (blobName: string) => {
-        getDocumentDownload(blobName);
+        const newWindow = window.open('', '_blank'); // Preemptively open a new window
+        getDocumentDownload(blobName, newWindow);  // Fetch the document and populate the new window
     };
 
     useEffect(() => {
