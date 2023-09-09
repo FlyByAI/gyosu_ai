@@ -99,7 +99,7 @@ const CreateDocxForm: React.FC<CreateDocsFormProps> = ({ document }) => {
                     disabled={isLoading || activeChunkIndices.length === 0}
                     type="submit"
                     data-tooltip-id={"createWorksheetTip"}
-                    className={`mt-2 w-full px-4 py-2 bg-blue-400 border-2 text-white ${activeChunkIndices.length === 0 || isLoading ? " opacity-50 cursor-not-allowed" : ""}`}
+                    className={`mt-2 w-full px-4 py-2 bg-blue-400 border-2 text-white ${activeChunkIndices.length === 0 || isLoading ? " opacity-50" : ""}`}
                 >
                     {isLoading ? "Creating..." : "Create Worksheet"}
                 </button>
