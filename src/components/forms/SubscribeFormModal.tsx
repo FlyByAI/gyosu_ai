@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { useClerk } from '@clerk/clerk-react';
 import useIpAddress from '../../hooks/useIpAddress';
 import useSubmitSubscribe from '../../hooks/useSubscribe';
-import { notSecretConstants } from '../../constants/notSecretConstants';
 import useEnvironment from '../../hooks/useEnvironment';
 
 

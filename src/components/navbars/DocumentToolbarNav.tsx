@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { SignedIn, SignedOut, UserButton, SignInButton } from '@clerk/clerk-react';
 import { useDarkMode } from '../../hooks/useDarkMode';
@@ -6,7 +6,6 @@ import LanguageDropdown from '../LanguageDropdown';
 import { getGyosuClerkTheme } from '../../theme/customClerkTheme';
 import DocumentTitle from '../document/DocumentTitle';
 import useGetDocument from '../../hooks/tools/math/useGetDocument';
-import { notSecretConstants } from '../../constants/notSecretConstants';
 import ChevronLeft from '../../svg/ChevronLeft';
 import useSubmitDocument from '../../hooks/tools/math/useSubmitDocument';
 import TrashIcon from '../../svg/TrashIcon';

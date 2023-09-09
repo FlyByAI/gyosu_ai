@@ -1,7 +1,6 @@
 // New hook: useInitiatePortalSession.ts
 import { useCallback } from 'react';
 import axios from 'axios';
-import { notSecretConstants } from '../../constants/notSecretConstants';
 import { useClerk } from '@clerk/clerk-react';
 import humps from 'humps';
 
@@ -9,15 +8,14 @@ import humps from 'humps';
 export default function useInitiatePortalSession() {
     const { session } = useClerk();
 
-    const initiatePortalSession = useCallback(async () => {
+    const initiatePortalSession = useCallback(async (apiUrl: string) => {
         try {
             const token = session ? await session.getToken() : "none";
             const currentURL = window.location.href;
 
+
             const response = await axios.post(
-                `${window.location.href.includes("https://test.gyosu.ai")
-                    ? notSecretConstants.testDjangoApi
-                    : import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/stripe/create-portal-session/`,
+                `${apiUrl}/stripe/create-portal-session/`,
                 humps.decamelizeKeys({
                     returnUrl: currentURL
                 }),

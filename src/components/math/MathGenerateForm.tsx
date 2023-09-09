@@ -1,13 +1,11 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import 'tailwindcss/tailwind.css';
 import useSubmitMathForm from '../../hooks/tools/math/useSubmitMathForm';
-import { notSecretConstants } from '../../constants/notSecretConstants';
 import SubmitButton from '../forms/SubmitButton';
 import Dropdown from '../forms/Dropdown';
 import { useClerk, useUser } from '@clerk/clerk-react';
 import formOptionsJSON from '../../json/dropdown_data.json';
 import { ProblemData } from '../../interfaces';
-import { useLanguage } from '../../contexts/useLanguage';
 import useEnvironment from '../../hooks/useEnvironment';
 
 type MathGenerateFormProps = {

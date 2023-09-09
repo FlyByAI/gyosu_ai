@@ -12,7 +12,6 @@ import ChunkSidebarWrapper from './math/ChunkSidebarWrapper';
 import { useSidebarContext } from '../contexts/useSidebarContext';
 import CheckmarkIcon from '../svg/CheckmarkIcon';
 import TrashIcon from '../svg/TrashIcon';
-import { notSecretConstants } from '../constants/notSecretConstants';
 import useSubmitDocument from '../hooks/tools/math/useSubmitDocument';
 import useGetDocument from '../hooks/tools/math/useGetDocument';
 import { useParams } from 'react-router-dom';

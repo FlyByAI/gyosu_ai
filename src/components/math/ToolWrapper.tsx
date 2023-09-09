@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from 'react';
 import ToolBadge from './ToolBadge';
 import { Chunk, Instruction, Problem } from '../../interfaces';
 import useGetDocument from '../../hooks/tools/math/useGetDocument';
-import { notSecretConstants } from '../../constants/notSecretConstants';
 import { useParams } from 'react-router-dom';
 import { useModal } from '../../contexts/useModal';
 import AppModal from '../AppModal';

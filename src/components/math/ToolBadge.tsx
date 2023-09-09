@@ -1,5 +1,3 @@
-import { useParams } from "react-router-dom";
-import { notSecretConstants } from "../../constants/notSecretConstants";
 import useSubmitReroll from "../../hooks/tools/math/useSubmitReroll";
 import { Chunk, Instruction, Problem, Document, Rating, ChunkInstructionProblem } from "../../interfaces";
 import PlusIcon from "../../svg/PlusIcon";

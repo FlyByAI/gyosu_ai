@@ -3,9 +3,7 @@ import PlusIcon from '../../svg/PlusIcon';
 import { Document, Chunk, Problem, Instruction, CHUNK_TYPE } from '../../interfaces';
 import DocumentItem from './DocumentItem';
 import useGetDocuments from '../../hooks/tools/math/useGetDocuments';
-import { notSecretConstants } from '../../constants/notSecretConstants';
 import useSubmitDocument from '../../hooks/tools/math/useSubmitDocument';
-import { useParams } from 'react-router-dom';
 import useEnvironment from '../../hooks/useEnvironment';
 
 

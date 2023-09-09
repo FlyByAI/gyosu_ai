@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { SubscribeLiteButton, SubscribePremiumButton } from './SubscribeButton';
 import useFetchSubscriptionInfo from '../hooks/subscription/useFetchSubscriptionInfo';
-import { notSecretConstants } from '../constants/notSecretConstants';
 import TrialButton from './TrialButton';
 import FreeTierButton from './FreeTierButton';
 import { useClerk } from '@clerk/clerk-react';

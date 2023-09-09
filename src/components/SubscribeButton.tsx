@@ -1,9 +1,7 @@
 import React from 'react';
 
 import useInitiateCheckout from '../hooks/subscription/useInitiateCheckout';
-import { notSecretConstants } from '../constants/notSecretConstants';
 import { Link } from 'react-router-dom';
-import useFetchSubscriptionInfo from '../hooks/subscription/useFetchSubscriptionInfo';
 import useEnvironment from '../hooks/useEnvironment';
 import { useClerk } from '@clerk/clerk-react';
 

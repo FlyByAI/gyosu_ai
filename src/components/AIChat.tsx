@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import ChatBox from './math/ChatBox';
-import { notSecretConstants } from '../constants/notSecretConstants';
-import useSubmitTextWithMarkdown from '../hooks/tools/math/useSubmitTextWithChunk';
 import useSubmitTextWithChunk from '../hooks/tools/math/useSubmitTextWithChunk';
 import useEnvironment from '../hooks/useEnvironment';
 

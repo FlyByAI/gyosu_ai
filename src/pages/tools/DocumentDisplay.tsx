@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import useGetDocument from '../../hooks/tools/math/useGetDocument';
-import { notSecretConstants } from '../../constants/notSecretConstants';
 import DocumentShelf from '../../components/document/DocumentShelf';
 
 import { Chunk } from '../../interfaces';

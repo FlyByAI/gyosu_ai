@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import useSubmitDocument from '../../hooks/tools/math/useSubmitDocument';
-import { notSecretConstants } from '../../constants/notSecretConstants';
 import { Document } from '../../interfaces'
 import useGetDocument from '../../hooks/tools/math/useGetDocument';
 import { useParams } from 'react-router-dom';

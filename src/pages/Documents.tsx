@@ -1,7 +1,5 @@
 import React, { useEffect } from 'react';
 import Accordion from '../components/Accordion';
-import GridContainer3x3 from '../components/grids/GridContainer3x3';
-import { notSecretConstants } from '../constants/notSecretConstants';
 import { useClerk, useUser } from '@clerk/clerk-react';
 import useGetDocumentDownloads from '../hooks/tools/math/useGetDocumentDownloads';
 import useGetDocumentDownload from '../hooks/tools/math/useGetDocumentDownload';

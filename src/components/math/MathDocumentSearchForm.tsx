@@ -9,7 +9,6 @@ import useSearchMathDocuments from '../../hooks/tools/math/useSearchDocuments';
 import Accordion from '../Accordion';
 import GridContainer3x3 from '../grids/GridContainer3x3';
 import DocumentPreview from '../forms/DocumentPreview';
-import { notSecretConstants } from '../../constants/notSecretConstants';
 import useEnvironment from '../../hooks/useEnvironment';
 
 
