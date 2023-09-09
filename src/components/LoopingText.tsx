@@ -64,7 +64,7 @@ const LoopingText: React.FC<LoopingTextProps> = ({ textArray, variant = 'scroll'
                     {textArray[index]}
                 </span>
             ) : (
-                <span>{typedText}</span>
+                <span>{typedText || `${"."}`}</span>
             )}
         </>
     );
