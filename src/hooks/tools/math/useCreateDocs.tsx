@@ -13,7 +13,6 @@ interface MutationResponse {
     fileName: string;
 }
 
-// New interface to include formState fields
 interface CreateDocxParams {
     action: DocxAction;
     chunks: Chunk[];
@@ -22,12 +21,15 @@ interface CreateDocxParams {
     theme: string;
 }
 
+interface CreateDocxOptions {
+    onSuccess?: (data: MutationResponse) => void;
+}
+
 const useCreateDocx = (endpoint = 'api/math_app/generate_docx/') => {
     const { session } = useClerk();
     const { language } = useLanguage();
     const options = { site_language: languageNames[language] };
 
-    // Updated mutation function
     const createDocxMutation = useMutation<MutationResponse, Error, CreateDocxParams>(
         async ({ action, chunks, title, persona, theme }) => {
             const token = session ? await session.getToken() : 'none';
@@ -61,11 +63,15 @@ const useCreateDocx = (endpoint = 'api/math_app/generate_docx/') => {
     };
 
     return {
-        createDocx: (params: CreateDocxParams) => {
+        createDocx: (params: CreateDocxParams, options?: CreateDocxOptions) => {
             createDocxMutation.mutate(params, {
                 onSuccess: (data) => {
                     downloadFromUrl(data.docxUrl, `${data.fileName}.docx`);
                     downloadFromUrl(data.pdfUrl, `${data.fileName}.pdf`);
+
+                    if (options?.onSuccess) {
+                        options.onSuccess(data);
+                    }
                 },
             });
         },
@@ -73,6 +79,5 @@ const useCreateDocx = (endpoint = 'api/math_app/generate_docx/') => {
         error: createDocxMutation.error,
     };
 };
-
 
 export default useCreateDocx;
