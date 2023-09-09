@@ -175,19 +175,6 @@ export default function ClerkProviderWithRoutes() {
                     }
                 />
                 <Route
-                    path="/faq"
-                    element={
-                        <>
-                            <Navbar />
-                            <ContentWrapper>
-                                <FAQPage />
-                                <Footer />
-                            </ContentWrapper>
-
-                        </>
-                    }
-                />
-                <Route
                     path="/attributions"
                     element={
                         <>
