@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import 'tailwindcss/tailwind.css';
-import { notSecretConstants } from '../../constants/notSecretConstants';
 import Accordion from '../../components/Accordion';
 import GridContainer3x3 from '../../components/grids/GridContainer3x3';
 import DocumentPreview from '../../components/forms/DocumentPreview';

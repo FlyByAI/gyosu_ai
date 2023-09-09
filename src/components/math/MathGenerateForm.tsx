@@ -1,13 +1,11 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import 'tailwindcss/tailwind.css';
 import useSubmitMathForm from '../../hooks/tools/math/useSubmitMathForm';
-import { notSecretConstants } from '../../constants/notSecretConstants';
 import SubmitButton from '../forms/SubmitButton';
 import Dropdown from '../forms/Dropdown';
 import { useClerk, useUser } from '@clerk/clerk-react';
 import formOptionsJSON from '../../json/dropdown_data.json';
 import { ProblemData } from '../../interfaces';
-import { useLanguage } from '../../contexts/useLanguage';
 import useEnvironment from '../../hooks/useEnvironment';
 
 type MathGenerateFormProps = {
@@ -112,7 +110,7 @@ const MathGenerateForm: React.FC<MathGenerateFormProps> = ({ onSubmit, setProble
     return (
         <>
             <div className="flex justify-center items-center">
-                <div className="w-full md:w-3/4 bg-gray-700 rounded-lg p-8 m-4 shadow-lg">
+                <div className="w-full md:w-3/4 bg-gray-700 rounded-lg p-8 m-4 shadow-lg flex flex-col">
                     <div className='flex flex-col lg:flex-row justify-center items-center w-full'>
                         <Dropdown showSelected={false} label={"Source Material"} options={formOptionsObj} defaultValue={sourceMaterial} handleChange={handleSourceMaterialChange} className="form-select block me-2 w-full lg:w-1/3" />
                         <Dropdown showSelected={false} label={"Document Type"} options={typeOptions} defaultValue={typeOptions[0]} handleChange={handleTypeChange} className="w-full hidden" />
@@ -120,9 +118,9 @@ const MathGenerateForm: React.FC<MathGenerateFormProps> = ({ onSubmit, setProble
                         <Dropdown showSelected={false} label={"Problem Type"} options={formOptionsObj[sourceMaterial][section]['problem_types']} defaultValue={problemType} handleChange={handleChangeProblemType} className="form-select block w-full lg:w-1/3" />
                     </div>
                     <SubmitButton
-                        buttonText={isLoading ? "Loading..." : "Browse Problems"}
+                        buttonText={isLoading ? "Loading..." : "Search for Problems"}
                         handleClick={handleMathSubmit}
-                        className={`mt-4 ${isLoading ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-700'} text-white font-bold py-2 px-4 rounded self-center w-full`}
+                        className={`mt-4 ${isLoading ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-700'} text-white font-bold py-2 px-4 rounded self-center w-1/2`}
                         disabled={isLoading}
                     />
 

@@ -1,6 +1,4 @@
 import React, { useEffect } from 'react';
-import { notSecretConstants } from '../../constants/notSecretConstants';
-import SaveIcon from '../../svg/SaveIcon';
 import { MathFormData } from '../../hooks/tools/math/useSubmitMathForm';
 import useSubmitDocument from '../../hooks/tools/math/useSubmitDocument';
 import ViewIcon from '../../svg/ViewIcon';

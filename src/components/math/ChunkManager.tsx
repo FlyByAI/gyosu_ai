@@ -23,7 +23,7 @@ const ChunkManager: React.FC<ChunkManagerProps> = ({ chunkArray, setChunkArray }
 
     return (
         <div className='flex flex-col'>
-            <div className="text-xl justify-center text-white flex items-center">Problem Browser</div>
+            <div className="text-xl justify-center text-white flex items-center">Problems</div>
             <ChunkSidebarWrapper
                 document={{ problemChunks: chunkArray }}
             >

@@ -9,11 +9,10 @@ const FreeTierButton: React.FC<FreeTierButtonProps> = ({ className }) => {
 
     return (
         <div
-            className={`${className} inline-flex justify-center rounded-md border border-blue-500 shadow-sm p-4 mx-16 bg-gradient-to-r from-blue-600 to-green-500`}
+            className={`${className} inline-flex justify-center rounded-md shadow-sm p-4 mx-16`}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
         >
-            {isHovered ? '😞' : 'Free'}
         </div>
     );
 };

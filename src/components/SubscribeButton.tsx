@@ -1,10 +1,9 @@
 import React from 'react';
 
 import useInitiateCheckout from '../hooks/subscription/useInitiateCheckout';
-import { notSecretConstants } from '../constants/notSecretConstants';
 import { Link } from 'react-router-dom';
-import useFetchSubscriptionInfo from '../hooks/subscription/useFetchSubscriptionInfo';
 import useEnvironment from '../hooks/useEnvironment';
+import { useClerk } from '@clerk/clerk-react';
 
 
 
@@ -12,56 +11,53 @@ import useEnvironment from '../hooks/useEnvironment';
 const SubscribePremiumButton = ({ className }: { className: string }) => {
     const { apiUrl } = useEnvironment();
 
+    const { session, openSignIn } = useClerk();
+
     const url = `${apiUrl}/stripe/create-checkout-session/premium/`
 
     const { initiateCheckout } = useInitiateCheckout(`${apiUrl}/stripe/create-checkout-session/premium/`);
 
-    const diamondCount = 10;
-    const diamonds = Array.from({ length: diamondCount }, (_, i) => {
-        return {
-            x: (i / (diamondCount - 1)) * 100,
-            y: Math.floor(Math.random() * 200) - 100
-        };
-    });
+    const handleCheckout = () => {
+        if (session) {
+            initiateCheckout()
+        }
+        else {
+            openSignIn()
+        }
+    }
 
     return (
         <div
-            onClick={initiateCheckout}
+            onClick={handleCheckout}
             className={`${className} relative group overflow-hidden rain-diamonds`}
         >
             <p className='z-10 relative'>Get Premium</p>
-            {diamonds.map((pos, i) => (
-                <div
-                    key={i}
-                    className={`diamond absolute opacity-0 group-hover:opacity-100`}
-                    style={{
-                        left: `${pos.x}%`,
-                        top: `${pos.y}%`,
-                        animationDelay: `${i * 0.1}s`
-                    }}
-                >
-                    💎
-                </div>
-            ))}
         </div>
     );
 };
 
 
 const SubscribeLiteButton = ({ className }: { className: string }) => {
+    const { session, openSignIn } = useClerk();
 
     const { apiUrl } = useEnvironment();
     const { initiateCheckout } = useInitiateCheckout(`${apiUrl}/stripe/create-checkout-session/lite/`)
 
+    const handleCheckout = () => {
+        if (session) {
+            initiateCheckout()
+        }
+        else {
+            openSignIn()
+        }
+    }
+
     return (
         <div
-            onClick={initiateCheckout}
+            onClick={handleCheckout}
             className={`${className} relative group`}
         >
             <p className=''>Get Lite</p>
-            <div className='absolute left-0 bottom-0 transform opacity-0 group-hover:opacity-100 group-hover:translate-x-[250px] transition-transform duration-500 ease-in-out transition-opacity'>
-                🚀
-            </div>
         </div>
     );
 };

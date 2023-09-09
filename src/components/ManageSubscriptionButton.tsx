@@ -3,20 +3,20 @@ import React from 'react';
 import CheckIcon from '../svg/CheckIcon';
 import useInitiatePortalSession from '../hooks/subscription/useInitiatePortalSession';
 import useFetchSubscriptionInfo from '../hooks/subscription/useFetchSubscriptionInfo';
-import { notSecretConstants } from '../constants/notSecretConstants';
 import useEnvironment from '../hooks/useEnvironment';
 
 const ManageSubscriptionButton: React.FC = () => {
 
     const { initiatePortalSession } = useInitiatePortalSession();
 
+    const { apiUrl } = useEnvironment();
+
     const redirectToPortal = async () => {
-        const manageSubLink = await initiatePortalSession();
+        const manageSubLink = await initiatePortalSession(apiUrl);
         if (manageSubLink) {
             window.location.replace(manageSubLink);
         }
     };
-    const { apiUrl } = useEnvironment();
 
     const { subscriptionInfo, isLoading } = useFetchSubscriptionInfo(`${apiUrl}/user_data/get_subscription_info/`);
 

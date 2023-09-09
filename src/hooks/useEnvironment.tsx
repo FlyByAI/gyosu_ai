@@ -7,9 +7,7 @@ interface EnvironmentInfo {
 }
 
 const useEnvironment = (): EnvironmentInfo => {
-    const [envInfo, setEnvInfo] = useState<EnvironmentInfo>({ env: "", apiUrl: "" });
-
-    useEffect(() => {
+    const initialEnvInfo = (): EnvironmentInfo => {
         const url = window.location.href;
         let env = "";
         let apiUrl = "";
@@ -25,11 +23,13 @@ const useEnvironment = (): EnvironmentInfo => {
                 break;
             default:
                 env = "local";
-                apiUrl = import.meta.env.VITE_API_URL || "";
+                apiUrl = import.meta.env.VITE_API_URL || "https://localhost:8000";
         }
 
-        setEnvInfo({ env, apiUrl });
-    }, []);
+        return { env, apiUrl };
+    };
+
+    const [envInfo, setEnvInfo] = useState<EnvironmentInfo>(initialEnvInfo);
 
     return envInfo;
 };

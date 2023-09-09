@@ -78,3 +78,14 @@ table tr:nth-child(odd) td {
 .rain-diamonds:hover .diamond {
   animation: rain 1s infinite linear;
 }
+
+/* looping text */
+.scroll-in {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.scroll-out {
+  transform: translateY(-100%);
+  opacity: 0;
+}

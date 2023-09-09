@@ -1,18 +1,27 @@
 
-import React from 'react';
-import { notSecretConstants } from '../../constants/notSecretConstants';
+import React, { useEffect } from 'react';
 import DocumentShelf from '../../components/document/DocumentShelf';
 import Accordion from '../../components/Accordion';
 import GridContainer3x3 from '../../components/grids/GridContainer3x3';
 import DocumentPreview from '../../components/forms/DocumentPreview';
 import useGetDocuments from '../../hooks/tools/math/useGetDocuments';
+import { useClerk } from '@clerk/clerk-react';
+import useEnvironment from '../../hooks/useEnvironment';
 
 const MyProblemBanks: React.FC = () => {
-    const { documents, error } = useGetDocuments(
-        `${window.location.href.includes("https://test.gyosu.ai")
-            ? notSecretConstants.testDjangoApi
-            : import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/math_app/school_document/list/`
-    );
+
+    const { session, openSignIn } = useClerk();
+
+    useEffect(() => {
+        if (!session) {
+            openSignIn()
+        }
+    }, [session, openSignIn])
+
+    const { apiUrl } = useEnvironment();
+    const endpoint = `${apiUrl}/math_app/school_document/list/`;
+
+    const { documents, error } = useGetDocuments(endpoint);
 
     if (error) {
         return <div>Error loading documents: {(error as unknown as Error).message}</div>;

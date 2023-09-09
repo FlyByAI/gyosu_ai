@@ -1,9 +1,6 @@
-import { useEffect, useState } from "react";
-import { Chunk, Document, EmptyDocument } from "../../interfaces";
+import { Document, EmptyDocument } from "../../interfaces";
 import { useSidebarContext } from "../../contexts/useSidebarContext";
-import useSubmitChunkSidebarForm, { SubmitChunkSidebarResponse } from "../forms/useSubmitChunkSidebarForm";
-import { notSecretConstants } from "../../constants/notSecretConstants";
-import { languageNames } from "../../helpers/language";
+import useSubmitChunkSidebarForm from "../forms/useSubmitChunkSidebarForm";
 import useSubmitDocument from "../../hooks/tools/math/useSubmitDocument";
 import { useLanguage } from "../../contexts/useLanguage";
 import CreateDocxForm from "../forms/CreateDocsForm";

@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { SubscribeLiteButton, SubscribePremiumButton } from './SubscribeButton';
 import useFetchSubscriptionInfo from '../hooks/subscription/useFetchSubscriptionInfo';
-import { notSecretConstants } from '../constants/notSecretConstants';
 import TrialButton from './TrialButton';
 import FreeTierButton from './FreeTierButton';
+import { useClerk } from '@clerk/clerk-react';
 
 const Subscribe = () => {
 
@@ -44,7 +44,7 @@ const Subscribe = () => {
 
                 </div>
                 <div className="actions flex flex-row justify-center my-4">
-                    <FreeTierButton className="btn w-1/3 text-white font-bold inline-flex justify-center rounded-md border border-blue-500 shadow-sm p-4 mx-16 bg-gradient-to-r from-blue-600 to-green-500" />
+                    <FreeTierButton className="btn w-1/3 text-white font-bold inline-flex justify-center rounded-md" />
                     <SubscribeLiteButton className="btn w-1/3 text-white font-bold inline-flex justify-center rounded-md border border-blue-500 shadow-sm p-4 mx-16 bg-gradient-to-r from-blue-600 to-green-500 hover:from-blue-700 hover:to-green-600 cursor-pointer" />
                     <SubscribePremiumButton className="btn w-1/3 text-white font-bold inline-flex justify-center rounded-md border border-blue-500 shadow-sm p-4 mx-16 bg-gradient-to-r from-blue-600 to-green-500 hover:from-blue-700 hover:to-green-600  cursor-pointer" />
                 </div>

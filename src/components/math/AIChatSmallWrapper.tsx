@@ -1,8 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import SendIcon from "../../svg/SendIcon";
-import { notSecretConstants } from "../../constants/notSecretConstants";
 import { Chunk, ProblemData } from "../../interfaces";
-import { useLanguage } from "../../contexts/useLanguage";
 import useSubmitTextWithChunk from "../../hooks/tools/math/useSubmitTextWithChunk";
 import useEnvironment from "../../hooks/useEnvironment";
 
