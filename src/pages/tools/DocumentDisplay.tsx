@@ -92,7 +92,7 @@ const DocumentDisplay: React.FC = () => {
                 <ChunkSidebarWrapper
                     document={document}
                 >
-                    {document.problemChunks
+                    {document && document.problemChunks
                         && document.problemChunks.length > 0
                         && document.problemChunks?.map((chunk, chunkIndex) => {
                             return (
