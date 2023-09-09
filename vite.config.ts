@@ -3,7 +3,18 @@ import react from '@vitejs/plugin-react'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  define: {
+  resolve: {
+    alias: {
+      process: "process/browser",
+      stream: "stream-browserify",
+      zlib: "browserify-zlib",
+      util: 'util'
+    }
   },
-  plugins: [react()],
+  define: {
+    'process.env': process.env
+  },
+  plugins: [
+    react(),
+  ]
 })

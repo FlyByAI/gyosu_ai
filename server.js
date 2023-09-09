@@ -1,7 +1,11 @@
 // this is a really simple server we use for development to return fake data for development
-
 import express from "express";
 import cors from "cors";
+
+import { createRequire } from "node:module";
+const require = createRequire(import.meta.url);
+const exampleDoc = require("./src/json/example.json");
+const exampleDoc2 = require("./src/json/example2.json");
 
 const app = express();
 const port = 8000;
@@ -175,41 +179,22 @@ $$f(x)=-2x^2+3x$$
 
 `;
 
-const mathResponse = String.raw`
-**Problem 1**
-Instructions: For the following exercises, determine whether the relation is a function.
-$$\{(a,b),(c,d),(e,d)\}$$
+const mathResponseDoc = exampleDoc2;
 
-**Problem 2**
-Instructions: For the following exercises, determine whether the relation is a function.
-$$\{(5,2),(6,1),(6,2),(4,8)\}$$
-
-**Problem 3**
-Instructions: For the following exercises, determine whether the relation is a function.
-$$y^2+4=x$$
-, for $x$ the independent variable and $y$ the dependent variable.
-  
-**Problem 4**
-Instructions: Is the graph in Figure 1 a function?
-![Graph of a parabola](https://openstax.org/apps/image-cdn/v1/f=webp/apps/archive/20230220.155442/resources/bf41b5b90d8fa6abbca6d2a1170501c75ebb1497)
-
-**Problem 5**
-Instructions: For the following exercises, evaluate the function at the indicated values: $f(-3);f(2);f(-a);-f(a);f(a+h)$.
-$$f(x)=-2x^2+3x$$
-
-**Problem 6**
-Instructions: For the following exercises, evaluate the function at the indicated values: $f(-3);f(2);f(-a);-f(a);f(a+h)$.
-$$f(x)=2|3x-1|$$
-
-**Problem 7**
-Instructions: For the following exercises, determine whether the functions are one-to-one.
-$$f(x)=|x-3|$$
-
-`;
+const documents = [
+  {
+    ...exampleDoc,
+    id: 1,
+  },
+  {
+    ...exampleDoc2,
+    id: 2,
+  },
+];
 
 app.post("/api/math_app/generate", (req, res) => {
   res.json({
-    response: mathResponse2,
+    response: mathResponseDoc.content,
   });
 });
 
@@ -221,7 +206,8 @@ app.post("/api/math_app/document/save", (req, res) => {
   console.log("Delaying for 2 second.");
   setTimeout(() => {
     res.json({
-      response: req.body.text,
+      document: req.body.document,
+      id: 1,
     });
     console.log("Sent.");
   }, "2000");
@@ -234,4 +220,36 @@ app.get("/api/user_data/get_subscription_info/", (req, res) => {
     has_activated_trial: false,
     time_left_in_trial: 3,
   });
+});
+//localhost:8000/api/math_app/document
+
+app.post("/api/math_app/document/", (req, res) => {
+  setTimeout(() => {
+    res.json({
+      ...req.body.document,
+      id: 1,
+    });
+  }, 1000);
+});
+
+app.patch("/api/math_app/document/:id/", (req, res) => {
+  setTimeout(() => {
+    res.json({
+      ...req.body.document,
+      id: 1,
+    });
+  }, 1000);
+});
+
+app.get("/api/math_app/document/:id/", (req, res) => {
+  res.json({
+    ...mathResponseDoc,
+    id: 1,
+  });
+});
+
+app.get("/api/math_app/documents/", (req, res) => {
+  setTimeout(() => {
+    res.json(documents);
+  }, 1000);
 });

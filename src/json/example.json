@@ -1,0 +1,144 @@
+{
+  "type": "document",
+  "content": [
+    {
+      "type": "chunk",
+      "content": [
+        {
+          "type": "instruction",
+          "content": [
+            {
+              "type": "text",
+              "value": "Instructions: For the following exercises, determine whether the relation is a function."
+            }
+          ]
+        },
+        {
+          "type": "problem",
+          "content": [
+            {
+              "type": "math",
+              "value": "\\{(a,b),(c,d),(e,d)\\}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "chunk",
+      "content": [
+        {
+          "type": "instruction",
+          "content": [
+            {
+              "type": "text",
+              "value": "Instructions: For the following exercises, determine whether the relation is a function."
+            }
+          ]
+        },
+        {
+          "type": "problem",
+          "content": [
+            {
+              "type": "math",
+              "value": "\\{(5,2),(6,1),(6,2),(4,8)\\}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "chunk",
+      "content": [
+        {
+          "type": "instruction",
+          "content": [
+            {
+              "type": "text",
+              "value": "Instructions: For the following exercises, determine whether the relation is a function."
+            }
+          ]
+        },
+        {
+          "type": "problem",
+          "content": [
+            {
+              "type": "math",
+              "value": "y^2+4=x"
+            },
+            {
+              "type": "text",
+              "value": ", for "
+            },
+            {
+              "type": "math",
+              "value": "x"
+            },
+            {
+              "type": "text",
+              "value": " the independent variable and "
+            },
+            {
+              "type": "math",
+              "value": "y"
+            },
+            {
+              "type": "text",
+              "value": " the dependent variable."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "chunk",
+      "content": [
+        {
+          "type": "instruction",
+          "content": [
+            {
+              "type": "text",
+              "value": "Instructions: Is the graph in Figure 1 a function?"
+            }
+          ]
+        },
+        {
+          "type": "problem",
+          "content": [
+            {
+              "type": "image",
+              "value": "https://openstax.org/apps/image-cdn/v1/f=webp/apps/archive/20230220.155442/resources/bf41b5b90d8fa6abbca6d2a1170501c75ebb1497"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "chunk",
+      "content": [
+        {
+          "type": "instruction",
+          "content": [
+            {
+              "type": "text",
+              "value": "Instructions: For the following exercises, evaluate the function at the indicated values:"
+            }
+          ]
+        },
+        {
+          "type": "problem",
+          "content": [
+            {
+              "type": "math",
+              "value": "f(-3);f(2);f(-a);-f(a);f(a+h)"
+            },
+            {
+              "type": "math",
+              "value": "f(x)=-2x^2+3x"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

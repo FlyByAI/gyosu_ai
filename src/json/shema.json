@@ -1,0 +1,53 @@
+{
+  "type": "document",
+  "content": [
+    {
+      "type": "chunk",
+      "content": [
+        {
+          "type": "instruction",
+          "content": [
+            {
+              "type": "text",
+              "value": "Markdown string for instruction"
+            },
+            {
+              "type": "math",
+              "value": "KaTeX expression for instruction"
+            },
+            {
+              "type": "problem",
+              "content": [
+                {
+                  "type": "text",
+                  "value": "Markdown string for text"
+                },
+                {
+                  "type": "math",
+                  "value": "KaTeX expression"
+                },
+                {
+                  "type": "image",
+                  "value": "URL of the image"
+                }
+              ]
+            },
+            {
+              "type": "table",
+              "content": [
+                {
+                  "type": "math",
+                  "value": "KaTeX expression for table"
+                },
+                {
+                  "type": "text",
+                  "value": "Markdown string for table"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

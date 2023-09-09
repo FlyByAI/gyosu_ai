@@ -1,19 +1,15 @@
 import { Rating } from "../interfaces";
 
 export const ThumbsUpSvg = ({ rating }: { rating: Rating }) => (
-    <svg xmlns="http://www.w3.org/2000/svg" className="text-gray-800 dark:text-gray-300" viewBox="0 0 24 24" fill="none" stroke={rating == "thumbsUp" ? "green" : "currentColor"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="12" cy="12" r="10"></circle>
-        <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
-        <line x1="9" y1="9" x2="9.01" y2="9"></line>
-        <line x1="15" y1="9" x2="15.01" y2="9"></line>
+    <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-thumb-up" width="24" height="24" viewBox="0 0 24 24" strokeWidth="2" stroke={rating == "thumbsUp" ? "green" : "currentColor"} fill="none" strokeLinecap="round" strokeLinejoin="round">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+        <path d="M7 11v8a1 1 0 0 1 -1 1h-2a1 1 0 0 1 -1 -1v-7a1 1 0 0 1 1 -1h3a4 4 0 0 0 4 -4v-1a2 2 0 0 1 4 0v5h3a2 2 0 0 1 2 2l-1 5a2 3 0 0 1 -2 2h-7a3 3 0 0 1 -3 -3"></path>
     </svg>
 );
 
 export const ThumbsDownSvg = ({ rating }: { rating: Rating }) => (
-    <svg xmlns="http://www.w3.org/2000/svg" className="text-gray-800 dark:text-gray-300" viewBox="0 0 24 24" fill="none" stroke={rating == "thumbsDown" ? "red" : "currentColor"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="12" cy="12" r="10"></circle>
-        <path d="M16 16s-1.5-2-4-2-4 2-4 2"></path>
-        <line x1="9" y1="9" x2="9.01" y2="9"></line>
-        <line x1="15" y1="9" x2="15.01" y2="9"></line>
+    <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-thumb-down" width="24" height="24" viewBox="0 0 24 24" strokeWidth="2" stroke={rating == "thumbsDown" ? "red" : "currentColor"} fill="none" strokeLinecap="round" strokeLinejoin="round">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+        <path d="M7 13v-8a1 1 0 0 0 -1 -1h-2a1 1 0 0 0 -1 1v7a1 1 0 0 0 1 1h3a4 4 0 0 1 4 4v1a2 2 0 0 0 4 0v-5h3a2 2 0 0 0 2 -2l-1 -5a2 3 0 0 0 -2 -2h-7a3 3 0 0 0 -3 3"></path>
     </svg>
 );

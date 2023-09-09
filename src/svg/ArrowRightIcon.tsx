@@ -12,3 +12,4 @@ const ArrowRight = () => {
   );
 }
 export default ArrowRight;
+

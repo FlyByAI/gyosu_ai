@@ -1,35 +1,67 @@
+import { useQueryClient, useMutation } from '@tanstack/react-query';
 import { useClerk } from '@clerk/clerk-react';
-import { useState } from 'react';
-import { MathFormData } from './useSubmitMathForm';
 import humps from 'humps';
+import { Document } from '../../../interfaces';
+import { MathFormData } from './useSubmitMathForm';
+import { useNavigate } from 'react-router-dom';
+import { useLanguage } from '../../../contexts/useLanguage';
+import { languageNames } from '../../../helpers/language';
 
 interface DocumentData {
-    markdown: string;
-    formData: MathFormData;
+    document: Document;
+    formData?: MathFormData;
 }
 
 const useSubmitDocument = (endpoint: string) => {
     const { session } = useClerk();
-    const [isLoading, setLoading] = useState<boolean>(false);
-    const [error, setError] = useState<string | null>(null);
-    const [data, setData] = useState<any | null>(null);
+    const queryClient = useQueryClient();
 
-    const submitDocument = async (documentData: DocumentData) => {
+    const { language } = useLanguage();
 
-        setLoading(true);
-        setError(null);
-        try {
-            const token = session ? await session.getToken() : "none";
+    const options = { site_language: languageNames[language] };
 
-            const payload = humps.decamelizeKeys({ markdown: documentData.markdown, ...documentData.formData })
+    const submitDocumentMutation = useMutation<any, Error, DocumentData>(
+        async (documentData: DocumentData) => {
+            const token = session ? await session.getToken() : 'none';
+            const payload = humps.decamelizeKeys({ document: documentData.document, ...documentData.formData, ...options });
             const response = await fetch(endpoint, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': token ? `Bearer ${token}` : '',
                 },
-                body: JSON.stringify(payload)
+                body: JSON.stringify(payload),
+            });
 
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const responseData = await response.json();
+            return humps.camelizeKeys(responseData) as MathFormData;
+        },
+        {
+            onSuccess: () => {
+                // Invalidate 'documents' query when submitting a new document
+                queryClient.invalidateQueries(['documents']);
+            },
+        }
+    );
+
+    const updateDocumentMutation = useMutation<any, Error, DocumentData>(
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        async (documentData: DocumentData) => {
+            const token = session ? await session.getToken() : 'none';
+            const payload = humps.decamelizeKeys({ document: documentData.document, ...documentData.formData });
+
+            const response = await fetch(`${endpoint}${documentData.document.id}/`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': token ? `Bearer ${token}` : '',
+                },
+                body: JSON.stringify(payload),
             });
 
             if (!response.ok) {
@@ -38,17 +70,135 @@ const useSubmitDocument = (endpoint: string) => {
 
             const responseData = await response.json();
 
-            setData(humps.camelizeKeys(responseData) as MathFormData);
+            return humps.camelizeKeys(responseData) as MathFormData;
+        },
+        {
+            // eager updates the cache before the mutation is executed
+            onMutate: async (newDocumentData: DocumentData) => {
+                queryClient.cancelQueries(['document', newDocumentData.document.id]);
 
+                const prevDocument = queryClient.getQueryData<Document>(['document', newDocumentData.document.id]);
 
-            setLoading(false);
-        } catch (err: any) {
-            setError(err.message);
-            setLoading(false);
+                // Optimistically update the cache before the respnose comes back
+                queryClient.setQueryData(['document', newDocumentData.document.id], newDocumentData.document);
+
+                return { prevDocument };
+            },
+            onError: (_: Error, newDocumentData: DocumentData, context: { prevDocument: Document }) => {
+                // Revert to the previous data if mutation fails
+                queryClient.setQueryData(['document', newDocumentData.document.id], context.prevDocument);
+            },
+            onSuccess: (_, context: { prevDocument: Document }) => {
+                // Invalidate the query to refetch and confirm
+                if (context) {
+                    queryClient.invalidateQueries(['document', context.prevDocument?.id]);
+                    queryClient.invalidateQueries(['documents']);
+                }
+            },
         }
-    };
+    );
 
-    return { submitDocument, isLoading, error, data };
+    const shareDocumentMutation = useMutation<any, Error, { id: number, shared: boolean }>(
+        async ({ id, shared }) => {
+            const token = session ? await session.getToken() : 'none';
+
+            const response = await fetch(`${endpoint}${id}/share/`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': token ? `Bearer ${token}` : '',
+                },
+                body: JSON.stringify({ shared: !!shared }),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(`HTTP error! status: ${response.status}, details: ${JSON.stringify(humps.camelizeKeys(errorData))}`);
+            }
+
+            const responseData = await response.json();
+            return humps.camelizeKeys(responseData);
+        },
+        {
+            onSuccess: (_, { id }) => {
+                queryClient.invalidateQueries(['document', id]);
+                queryClient.refetchQueries(['document', id]);
+            },
+        }
+    );
+
+    const titleMutation = useMutation<any, Error, { id: number, title: string }>(
+        async ({ id, title }) => {
+            const token = session ? await session.getToken() : 'none';
+
+            const response = await fetch(`${endpoint}${id}/update_title/`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': token ? `Bearer ${token}` : '',
+                },
+                body: JSON.stringify({ title }),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(`HTTP error! status: ${response.status}, details: ${JSON.stringify(humps.camelizeKeys(errorData))}`);
+            }
+
+            const responseData = await response.json();
+            return humps.camelizeKeys(responseData);
+        },
+        {
+            onSuccess: (_, { id }) => {
+                queryClient.invalidateQueries(['document', id]);
+                queryClient.refetchQueries(['document', id]);
+            },
+        }
+    );
+
+
+    const navigate = useNavigate();
+
+    const deleteDocumentMutation = useMutation<void, Error, Document>(
+        async (document: Document) => {
+            const token = session ? await session.getToken() : 'none';
+
+            const response = await fetch(`${endpoint}${document.id}/`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': token ? `Bearer ${token}` : '',
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+        },
+        {
+            onSuccess: (_, context) => {
+                // Invalidate 'documents' query when deleting a document
+                queryClient.invalidateQueries(['documents']);
+                queryClient.invalidateQueries(['document', context.id]);
+                navigate('/math-app/bank');
+            },
+        }
+    );
+
+
+    return {
+        submitDocument: submitDocumentMutation.mutate,
+        updateDocument: updateDocumentMutation.mutate,
+        shareDocument: shareDocumentMutation.mutate,
+        updateTitle: titleMutation.mutate,
+        isLoading: submitDocumentMutation.isLoading || updateDocumentMutation.isLoading,
+        error: submitDocumentMutation.error || updateDocumentMutation.error,
+        data: submitDocumentMutation.data || updateDocumentMutation.data,
+        //delete
+        deleteDocument: deleteDocumentMutation.mutate,
+        isDeleting: deleteDocumentMutation.isLoading,
+        deleteError: deleteDocumentMutation.error,
+    };
 };
 
 export default useSubmitDocument;

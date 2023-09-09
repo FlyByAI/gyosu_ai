@@ -1,6 +1,9 @@
-import { useClerk } from '@clerk/clerk-react';
+import { Document } from '../../../interfaces';
 import humps from 'humps';
-import { useState } from 'react';
+import { useClerk } from '@clerk/clerk-react';
+import { useMutation } from '@tanstack/react-query';
+import { useLanguage } from '../../../contexts/useLanguage';
+import { languageNames } from '../../../helpers/language';
 
 export interface SearchFormData {
     sourceMaterial: string;
@@ -9,59 +12,46 @@ export interface SearchFormData {
     section?: string;
 }
 
-export interface MathDocument {
-    // Define the structure of your MathDocument object here
-    // Adjust the properties to match your actual API response
-    id: number;
-    creator: string | null | undefined;
-    markdown: string;
-    sourceMaterial: string;
-    documentType: string;
-    chapter?: string;
-    section?: string;
-    problemType?: string;
-    userInput: string;
-    upvotes?: number;
-    tips?: number;
-}
-
 const useSearchMathDocuments = (endpoint: string) => {
     const { session } = useClerk();
-    const [isLoading, setLoading] = useState<boolean>(false);
-    const [error, setError] = useState<string | null>(null);
-    const [data, setData] = useState<MathDocument[] | null>(null);
 
-    const searchMathDocuments = async (formData: SearchFormData) => {
-        setLoading(true);
-        setError(null);
-        try {
-            const token = session ? await session.getToken() : 'none';
+    const { language } = useLanguage();
 
-            const response = await fetch(endpoint, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: token ? `Bearer ${token}` : '',
-                },
-                body: JSON.stringify(humps.decamelizeKeys({ ...formData, section: formData.section?.split('.')[0], chapter: formData.section?.split('.')[1] })),
-            });
+    const options = { site_language: languageNames[language] };
 
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
+    const searchMathDocuments = useMutation(async (formData: SearchFormData) => {
+        const token = session ? await session.getToken() : 'none';
 
-            const responseData = await response.json().then((json) => humps.camelizeKeys(json));
+        const response = await fetch(endpoint, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: token ? `Bearer ${token}` : '',
+            },
+            body: JSON.stringify(
+                humps.decamelizeKeys({
+                    ...formData,
+                    section: formData.section?.split('.')[0],
+                    chapter: formData.section?.split('.')[1],
+                    ...options,
+                })
+            ),
+        });
 
-            setData(responseData as MathDocument[]);
-
-            setLoading(false);
-        } catch (err: any) {
-            setError(err.message);
-            setLoading(false);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
         }
-    };
 
-    return { searchMathDocuments, isLoading, error, data };
+        const responseData = await response.json().then((json) => humps.camelizeKeys(json));
+
+        return responseData as Document[];
+    });
+    return {
+        searchMathDocuments: searchMathDocuments.mutate,
+        isLoading: searchMathDocuments.isLoading,
+        error: searchMathDocuments.error,
+        documentSearchResults: searchMathDocuments.data,
+    };
 };
 
 export default useSearchMathDocuments;

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useClerk } from '@clerk/clerk-react';
 import { loadStripe } from '@stripe/stripe-js';
 import { notSecretConstants } from '../../constants/notSecretConstants';
+import useEnvironment from '../useEnvironment';
 
 interface ICheckoutResponse {
     message: string;
@@ -14,15 +15,12 @@ const useInitiateCheckout = (endpoint: string) => {
     const [error, setError] = useState<string | null>(null);
     const [data, setData] = useState<ICheckoutResponse | null>(null);
 
-    const isDevelopment = import.meta.env.MODE === 'development';
-    if (isDevelopment) console.log("Development mode");
-
-    const stripePromise = loadStripe(isDevelopment ? notSecretConstants.stripe.PUBLISHABLE_DEV_KEY : notSecretConstants.stripe.PUBLISHABLE_KEY);
+    const { env } = useEnvironment();
+    const stripePromise = loadStripe(env == "production" ? notSecretConstants.stripe.PUBLISHABLE_KEY : notSecretConstants.stripe.PUBLISHABLE_DEV_KEY);
 
     const initiateCheckout = async (): Promise<void> => {
         setLoading(true);
         setError(null);
-
 
         try {
             const token = session ? await session.getToken() : "none";

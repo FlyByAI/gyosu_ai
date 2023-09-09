@@ -1,4 +1,10 @@
+@import "/node_modules/flag-icon-css/css/flag-icons.min.css";
+@import "/node_modules/katex/dist/katex.min.css";
+@import "/node_modules/katex/dist/katex.min.css";
+
+
+
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-

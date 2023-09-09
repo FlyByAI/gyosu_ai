@@ -1,23 +1,22 @@
 import React, { useState, useEffect, useRef } from 'react';
 import ChatBox from './math/ChatBox';
-import { notSecretConstants } from '../constants/notSecretConstants';
-import useSubmitTextWithMarkdown from '../hooks/tools/math/useSubmitTextWithMarkdown';
+import useSubmitTextWithChunk from '../hooks/tools/math/useSubmitTextWithChunk';
+import useEnvironment from '../hooks/useEnvironment';
 
 interface AIChatProps {
     markdown?: string;
     onChatChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
     additionalInfo?: string;
     problems?: string[];
-    problemType: string;
 }
 
-const AIChat: React.FC<AIChatProps> = ({ markdown, additionalInfo, problemType }) => {
+const AIChat: React.FC<AIChatProps> = ({ markdown, additionalInfo }) => {
     const [focus, setFocus] = useState(false);
     const formRef = useRef<HTMLFormElement>(null);
 
     const [chat, setChat] = useState("");
-
-    const { submitTextWithMarkdown, isLoading, error, data } = useSubmitTextWithMarkdown(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/ai_chat/`);
+    const { apiUrl } = useEnvironment();
+    const { isLoading, error } = useSubmitTextWithChunk(`${apiUrl}/ai_chat/`);
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -39,7 +38,7 @@ const AIChat: React.FC<AIChatProps> = ({ markdown, additionalInfo, problemType }
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (typeof chat === 'string' && markdown) {
-            await submitTextWithMarkdown(chat, markdown, problemType);
+            // await submitTextWithChunk(chat, chunk, problemType);
         }
     };
 
@@ -71,7 +70,7 @@ const AIChat: React.FC<AIChatProps> = ({ markdown, additionalInfo, problemType }
                     <button type="submit" className="ms-2 p-2 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded">Send</button>
                 </div>
 
-                {error && <p className="text-red-600 mt-4 text-center">Error: {error}</p>}
+                {error as Error && <p className="text-red-600 mt-4 text-center">Error: {(error as Error).message}</p>}
                 {isLoading && <p className="dark:text-white">Loading...</p>}
 
             </div>

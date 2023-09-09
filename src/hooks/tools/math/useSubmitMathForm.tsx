@@ -1,6 +1,8 @@
 import { useClerk } from '@clerk/clerk-react';
 import humps from 'humps';
 import { useState } from 'react';
+import { useLanguage } from '../../../contexts/useLanguage';
+import { languageNames } from '../../../helpers/language';
 
 export interface MathFormData {
     id?: number;
@@ -12,8 +14,8 @@ export interface MathFormData {
     userInput: string;
     upvotes?: number;
     tips?: number;
-    shared: boolean
-    documentName: string;
+    shared?: boolean
+    documentName?: string;
 }
 
 const useSubmitMathForm = (endpoint: string) => {
@@ -21,6 +23,9 @@ const useSubmitMathForm = (endpoint: string) => {
     const [isLoading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
     const [data, setData] = useState<any | null>(null);
+
+    const { language } = useLanguage();
+    const options = { site_language: languageNames[language] };
 
     const submitMathForm = async (formData: MathFormData) => {
         setLoading(true);
@@ -34,7 +39,7 @@ const useSubmitMathForm = (endpoint: string) => {
                     'Content-Type': 'application/json',
                     'Authorization': token ? `Bearer ${token}` : '',
                 },
-                body: JSON.stringify(humps.decamelizeKeys({ ...formData, chapter: formData.section.split('.')[0], section: formData.section.split(".")[1] }))
+                body: JSON.stringify(humps.decamelizeKeys({ ...formData, chapter: formData.section.split('.')[0], section: formData.section.split(".")[1], ...options }))
             });
 
             if (!response.ok) {

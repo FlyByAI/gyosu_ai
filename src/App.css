@@ -44,3 +44,48 @@ table tr:nth-child(odd) td {
   font-weight: bold;
 }
 
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-100%);
+  }
+}
+/* rocket lol */
+@keyframes slide {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(100%);
+  }
+}
+
+.animate-slide {
+  animation: slide 0.5s ease-in-out;
+}
+
+/* diamonds */
+@keyframes rain {
+  to {
+    transform: translateY(300%);
+  }
+}
+
+.rain-diamonds:hover .diamond {
+  animation: rain 1s infinite linear;
+}
+
+/* looping text */
+.scroll-in {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.scroll-out {
+  transform: translateY(-100%);
+  opacity: 0;
+}

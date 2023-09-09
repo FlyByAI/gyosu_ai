@@ -1,21 +1,32 @@
-import { useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
 import { useClerk } from '@clerk/clerk-react';
 import humps from 'humps';
+import { Chunk, ChunkInstructionProblem, Instruction, Problem } from '../../../interfaces';
+import { useLanguage } from '../../../contexts/useLanguage';
+import { languageNames } from '../../../helpers/language';
 
+interface SubmitRerollParams {
+    action: string;
+    chunk: Chunk;
+    instruction?: Instruction;
+    problem?: Problem;
+}
+
+interface SubmitRerollResponse {
+    chunk: Chunk;
+}
 
 const useSubmitReroll = (endpoint: string) => {
     const { session } = useClerk();
-    const [isLoading, setLoading] = useState<boolean>(false);
-    const [error, setError] = useState<string | null>(null);
-    const [data, setData] = useState<any | null>(null);
 
-    const submitReroll = async (problem: string, problemType: string): Promise<void> => {
-        setLoading(true);
-        setError(null);
+    const { language } = useLanguage();
+    const options = { site_language: languageNames[language] };
 
-        try {
+    const submitRerollMutation = useMutation<SubmitRerollResponse, Error, SubmitRerollParams>(
+        async ({ chunk, action, instruction, problem }): Promise<SubmitRerollResponse> => {
             const token = session ? await session.getToken() : "none";
-            const body = humps.decamelizeKeys({ problem: problem, problemType: problemType });
+            const body = humps.decamelizeKeys({ chunk, action, instruction, problem, ...options });
+
             const response = await fetch(endpoint, {
                 method: 'POST',
                 headers: {
@@ -29,16 +40,17 @@ const useSubmitReroll = (endpoint: string) => {
                 throw new Error(`HTTP error! status: ${response.statusText} ${response.status}`);
             }
 
-            const responseData = await response.json().then((json) => humps.camelizeKeys(json));
-            setData(responseData);
-            setLoading(false);
-        } catch (err: any) {
-            setError(err.message);
-            setLoading(false);
+            const responseData = await response.json();
+            return humps.camelizeKeys(responseData) as SubmitRerollResponse;
         }
-    };
+    );
 
-    return { submitReroll, isLoading, error, data };
+    return {
+        submitReroll: submitRerollMutation.mutateAsync, // Use mutateAsync here
+        isLoading: submitRerollMutation.isLoading,
+        error: submitRerollMutation.error,
+        data: submitRerollMutation.data,
+    };
 };
 
 export default useSubmitReroll;

@@ -10,11 +10,8 @@ import {
     Route,
 } from "react-router-dom";
 import Home from './pages/Home.tsx';
-import Blog from './pages/Blog.tsx';
 import Contact from './pages/Contact.tsx';
-import Post from './components/Post.tsx';
-import Navbar from './components/Navbar.tsx';
-import Tools from './pages/Tools.tsx';
+import Navbar from './components/navbars/Navbar.tsx';
 //Clerk
 import {
     SignIn,
@@ -26,20 +23,25 @@ import PrivacyPolicy from './pages/PrivacyPolicy.tsx';
 import Terms from './pages/Terms.tsx';
 import Footer from './components/Footer.tsx';
 import ContentWrapper from './components/ContentWrapper.tsx';
-import MathTeacherApp from './pages/tools/MathTeacherApp.tsx';
 import Attributions from './pages/Attributions.tsx';
-import FAQPage from './pages/FAQPage.tsx';
+import DocumentDisplay from './pages/tools/DocumentDisplay.tsx';
+import Subscription from './components/Subscription.tsx';
+import LandingPage from './pages/Landing.tsx';
+import MathDocumentSearch from './pages/tools/MathDocumentSearch.tsx';
+import MathGenerate from './pages/tools/MathGenerate.tsx';
+import Subscribe from './components/Subscribe.tsx';
+import Documents from './pages/Documents.tsx';
+import MyProblemBanks from './pages/tools/MathProblemBanks.tsx';
 import { notSecretConstants } from './constants/notSecretConstants.tsx';
-
+import useEnvironment from './hooks/useEnvironment.tsx';
 
 
 export default function ClerkProviderWithRoutes() {
     const navigate = useNavigate();
 
-    const isDevelopment = import.meta.env.MODE === 'development';
-    if (isDevelopment) console.log("Development mode");
+    const { env } = useEnvironment();
 
-    const clerkKey = isDevelopment ? notSecretConstants.clerk.PUBLISHABLE_DEV_KEY : notSecretConstants.clerk.PUBLISHABLE_KEY
+    const clerkKey = env == "production" ? notSecretConstants.clerk.PUBLISHABLE_KEY : notSecretConstants.clerk.PUBLISHABLE_DEV_KEY
 
     return (
         <ClerkProvider
@@ -53,23 +55,21 @@ export default function ClerkProviderWithRoutes() {
                     element={
                         <>
                             <Navbar />
-                            <ContentWrapper>
-                                <Home />
-                                <Footer />
-                            </ContentWrapper>
+                            <LandingPage />
+                            <Footer />
                         </>
                     }
                 />
                 <Route
-                    path="/blog"
+                    path="/home"
                     element={
                         <>
                             <Navbar />
                             <ContentWrapper>
-                                <Blog />
+                                <Home />
                                 <Footer />
                             </ContentWrapper>
-
+                            <Subscription />
                         </>
                     }
                 />
@@ -78,24 +78,52 @@ export default function ClerkProviderWithRoutes() {
                     element={
                         <>
                             <Navbar />
-                            <ContentWrapper>
-                                <MathTeacherApp />
-                                <Footer />
-                            </ContentWrapper>
-
+                            <MathGenerate />
+                            <Footer />
+                            <Subscription />
                         </>
                     }
                 />
                 <Route
-                    path="/materials"
+                    path="/math-app/document/:id"
                     element={
                         <>
                             <Navbar />
-                            <ContentWrapper>
-                                <MathTeacherApp />
-                                <Footer />
-                            </ContentWrapper>
-
+                            <DocumentDisplay />
+                            <Subscription />
+                        </>
+                    }
+                />
+                <Route
+                    path="/math-app/search"
+                    element={
+                        <>
+                            <Navbar />
+                            <MathDocumentSearch />
+                            <Footer />
+                            <Subscription />
+                        </>
+                    }
+                />
+                <Route
+                    path="/math-app/documents"
+                    element={
+                        <>
+                            <Navbar />
+                            <Documents />
+                            <Footer />
+                            <Subscription />
+                        </>
+                    }
+                />
+                <Route
+                    path="/math-app/bank"
+                    element={
+                        <>
+                            <Navbar />
+                            <MyProblemBanks />
+                            <Footer />
+                            <Subscription />
                         </>
                     }
                 />
@@ -108,7 +136,17 @@ export default function ClerkProviderWithRoutes() {
                                 <Contact />
                                 <Footer />
                             </ContentWrapper>
-
+                        </>
+                    }
+                />
+                <Route
+                    path="/subscribe"
+                    element={
+                        <>
+                            <Navbar />
+                            <ContentWrapper>
+                                <Subscribe />
+                            </ContentWrapper>
                         </>
                     }
                 />
@@ -121,7 +159,6 @@ export default function ClerkProviderWithRoutes() {
                                 <PrivacyPolicy />
                                 <Footer />
                             </ContentWrapper>
-
                         </>
                     }
                 />
@@ -134,7 +171,6 @@ export default function ClerkProviderWithRoutes() {
                                 <Terms />
                                 <Footer />
                             </ContentWrapper>
-
                         </>
                     }
                 />
@@ -160,7 +196,6 @@ export default function ClerkProviderWithRoutes() {
                                 <Attributions />
                                 <Footer />
                             </ContentWrapper>
-
                         </>
                     }
                 />

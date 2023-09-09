@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useClerk } from '@clerk/clerk-react';
 import useIpAddress from '../../hooks/useIpAddress';
 import useSubmitSubscribe from '../../hooks/useSubscribe';
-import { notSecretConstants } from '../../constants/notSecretConstants';
+import useEnvironment from '../../hooks/useEnvironment';
 
 
 interface SubscribeFormModalProps {
@@ -14,7 +14,8 @@ const SubscribeFormModal = ({ isOpen, onClose }: SubscribeFormModalProps) => {
     const { session } = useClerk();
     const { ipAddress } = useIpAddress();
     const [email, setEmail] = useState("");
-    const { subscriptionData, submitSubscriptions } = useSubmitSubscribe(`${import.meta.env.VITE_API_URL || notSecretConstants.djangoApi}/subscriptions/subscribe`, email);
+    const { apiUrl } = useEnvironment();
+    const { subscriptionData, submitSubscriptions } = useSubmitSubscribe(`${apiUrl}/subscriptions/subscribe`, email);
     const [newToolReleases, setNewToolReleases] = useState(subscriptionData?.newToolReleases || false);
     const [aiNewsletter, setAiNewsletter] = useState(subscriptionData?.aiNewsletter || false);
     const [blogPosts, setBlogPosts] = useState(subscriptionData?.blogPosts || false);
