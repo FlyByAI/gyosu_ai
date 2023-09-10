@@ -9,6 +9,10 @@ interface ICheckoutResponse {
     sessionId: string;
 }
 
+interface IInitiateOptions {
+    coupon?: string;
+}
+
 const useInitiateCheckout = (endpoint: string) => {
     const { session } = useClerk();
     const [isLoading, setLoading] = useState<boolean>(false);
@@ -16,25 +20,28 @@ const useInitiateCheckout = (endpoint: string) => {
     const [data, setData] = useState<ICheckoutResponse | null>(null);
 
     const { env } = useEnvironment();
-    const stripePromise = loadStripe(env == "production" ? notSecretConstants.stripe.PUBLISHABLE_KEY : notSecretConstants.stripe.PUBLISHABLE_DEV_KEY);
+    const stripePromise = loadStripe(env === "production" ? notSecretConstants.stripe.PUBLISHABLE_KEY : notSecretConstants.stripe.PUBLISHABLE_DEV_KEY);
 
-    const initiateCheckout = async (): Promise<void> => {
+    const initiateCheckout = async (options: IInitiateOptions = {}): Promise<void> => {
         setLoading(true);
         setError(null);
 
         try {
             const token = session ? await session.getToken() : "none";
 
-            // Call your backend to create the Checkout Session
+            const requestBody = {
+                success_url: "https://gyosu.ai",
+                cancel_url: "https://gyosu.ai",
+                ...options
+            };
+
             const response = await fetch(endpoint, {
                 method: 'POST',
                 headers: {
                     'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({
-                    success_url: "https://gyosu.ai",
-                    cancel_url: "https://gyosu.ai"
-                })
+                body: JSON.stringify(requestBody)
             });
 
             if (!response.ok) {
@@ -44,10 +51,8 @@ const useInitiateCheckout = (endpoint: string) => {
             const sessionData = await response.json() as ICheckoutResponse;
             setData(sessionData);
 
-            // Get Stripe.js instance
             const stripe = await stripePromise;
 
-            // When the customer clicks on the button, redirect them to Checkout.
             const result = await stripe?.redirectToCheckout({
                 sessionId: sessionData.sessionId,
             });

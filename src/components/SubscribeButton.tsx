@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FormEvent } from 'react';
 
 import useInitiateCheckout from '../hooks/subscription/useInitiateCheckout';
 import { Link } from 'react-router-dom';
@@ -15,7 +15,7 @@ const SubscribeFreeButton = ({ className }: { className: string }) => {
         openSignIn()
     }
 
-    const {session} = useClerk();
+    const { session } = useClerk();
 
     return (
         <div
@@ -38,22 +38,35 @@ const SubscribePremiumButton = ({ className }: { className: string }) => {
 
     const { initiateCheckout } = useInitiateCheckout(`${apiUrl}/stripe/create-checkout-session/premium/`);
 
-    const handleCheckout = () => {
+    const handleCheckout = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const formData = new FormData(e.currentTarget);
+        const coupon = formData.get("coupon") as string; // Retrieve coupon
+
         if (session) {
-            initiateCheckout()
+            initiateCheckout({ coupon }); // Pass coupon to initiateCheckout
+        } else {
+            openSignIn();
         }
-        else {
-            openSignIn()
-        }
-    }
+    };
 
     return (
-        <div
-            onClick={handleCheckout}
-            className={`${className} relative group overflow-hidden rain-diamonds`}
-        >
-            <p className='z-10 relative'>Subscribe</p>
-        </div>
+        <form onSubmit={handleCheckout}>
+            <div className="flex flex-col items-center bg-gray-800">
+                <input
+                    type="text"
+                    name="coupon"
+                    placeholder="Enter coupon"
+                    className="mb-4 p-2 rounded bg-gray-700 w-64"
+                />
+            </div>
+            <button
+                type="submit"
+                className={`${className} relative group w-32`}
+            >
+                <p className="">Subscribe</p>
+            </button>
+        </form>
     );
 };
 
@@ -64,22 +77,36 @@ const SubscribeLiteButton = ({ className }: { className: string }) => {
     const { apiUrl } = useEnvironment();
     const { initiateCheckout } = useInitiateCheckout(`${apiUrl}/stripe/create-checkout-session/lite/`)
 
-    const handleCheckout = () => {
+    const handleCheckout = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const formData = new FormData(e.currentTarget);
+        const coupon = formData.get("coupon") as string; // Retrieve coupon
+
         if (session) {
-            initiateCheckout()
+            initiateCheckout({ coupon }); // Pass coupon to initiateCheckout
+        } else {
+            openSignIn();
         }
-        else {
-            openSignIn()
-        }
-    }
+    };
 
     return (
-        <div
-            onClick={handleCheckout}
-            className={`${className} relative group`}
-        >
-            <p className=''>Subscribe</p>
-        </div>
+        <form onSubmit={handleCheckout}>
+            <div className="flex flex-col items-center bg-gray-800">
+                <input
+                    type="text"
+                    name="coupon"
+                    placeholder="Enter coupon"
+                    className="mb-4 p-2 rounded bg-gray-700 w-64"
+                />
+            </div>
+            <button
+                type="submit"
+                className={`${className} relative group w-32`}
+            >
+                <p className="">Subscribe</p>
+            </button>
+        </form>
+
     );
 };
 
