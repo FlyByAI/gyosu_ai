@@ -23,7 +23,7 @@ export const privacyPolicy = {
         },
         {
             title: "6. Control Over Your Data",
-            text: "You can request the deletion of your profile and associated data by emailing us at wingman@flybyai.io."
+            text: "You can request the deletion of your profile and associated data by emailing us at support@gyosu.ai."
         },
         {
             title: "7. Data Security",
@@ -39,7 +39,7 @@ export const privacyPolicy = {
         },
         {
             title: "10. Contact Information",
-            text: "If you have any questions about this Privacy Policy, please contact us at wingman@Gyosu.io."
+            text: "If you have any questions about this Privacy Policy, please contact us at support@gyosu.ai."
         }
     ]
 };
@@ -74,7 +74,7 @@ export const termsOfUse = {
         },
         {
             title: "7. Contact Information",
-            text: "If you have any questions about these Terms of Use, please contact us at wingman@Gyosu.io."
+            text: "If you have any questions about these Terms of Use, please contact us at support@gyosu.ai"
         }
     ]
 };
