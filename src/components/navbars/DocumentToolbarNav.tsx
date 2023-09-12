@@ -4,7 +4,6 @@ import { SignedIn, SignedOut, UserButton, SignInButton } from '@clerk/clerk-reac
 import { useDarkMode } from '../../hooks/useDarkMode';
 import LanguageDropdown from '../LanguageDropdown';
 import { getGyosuClerkTheme } from '../../theme/customClerkTheme';
-import DocumentTitle from '../document/DocumentTitle';
 import useGetDocument from '../../hooks/tools/math/useGetDocument';
 import ChevronLeft from '../../svg/ChevronLeft';
 import useSubmitDocument from '../../hooks/tools/math/useSubmitDocument';
@@ -63,16 +62,6 @@ const DocumentToolbarNav: React.FC = () => {
 
                     </div>
                     <div className="w-1/2 flex justify-end items-center">
-                        {document && <DocumentTitle />}
-                        <button className='text-red-500 mx-2'
-                            data-tooltip-id="deleteDocumentTip"
-                            onClick={handleDeleteClick} disabled={isDeleting} >
-                            <TrashIcon />
-                            <ReactTooltip
-                                id='deleteDocumentTip'
-                                place="bottom"
-                                content={`Delete problem bank`} />
-                        </button>
 
                         <SignedIn>
                             {darkMode ? <UserButton afterSignOutUrl="/" appearance={getGyosuClerkTheme()} /> : <UserButton afterSignOutUrl="http://localhost:5173/" />}

@@ -8,9 +8,10 @@ interface MathProblemProps {
     chunkIndex: number;
     insertChunk?: (chunkIndex: number) => void;
     updateChunk: (updatedChunk: Chunk, chunkIndex: number) => void;
+    enableTools?: boolean;
 }
 
-const MathProblem: React.FC<MathProblemProps> = ({ problem, chunkIndex, insertChunk, updateChunk }) => {
+const MathProblem: React.FC<MathProblemProps> = ({ problem, chunkIndex, insertChunk, updateChunk, enableTools }) => {
 
     const { activeChunkIndices, setActiveChunkIndices } = useSidebarContext();
 
@@ -30,6 +31,7 @@ const MathProblem: React.FC<MathProblemProps> = ({ problem, chunkIndex, insertCh
                     insertChunk={insertChunk || undefined}
                     updateChunk={updateChunk}
                     chunkIndex={chunkIndex}
+                    enableTools={enableTools}
                 />}
         </div>
     )

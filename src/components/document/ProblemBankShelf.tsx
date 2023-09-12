@@ -5,6 +5,10 @@ import DocumentItem from './DocumentItem';
 import useGetDocuments from '../../hooks/tools/math/useGetDocuments';
 import useSubmitDocument from '../../hooks/tools/math/useSubmitDocument';
 import useEnvironment from '../../hooks/useEnvironment';
+import { Tooltip as ReactTooltip } from "react-tooltip";
+import { Link } from 'react-router-dom';
+import toast, { useToaster } from 'react-hot-toast/headless';
+import InfoCircle from '../../svg/InfoCircle';
 
 
 
@@ -13,13 +17,15 @@ export interface MathProblemDragItem {
     problem: Chunk; // Or the specific type you're dragging
 }
 
-export interface DocumentShelfProps {
+export interface ProblemBankShelfProps {
     isExporting: boolean;
 }
 
 
-const DocumentShelf: React.FC<DocumentShelfProps> = ({ isExporting }) => {
+const ProblemBankShelf: React.FC<ProblemBankShelfProps> = ({ isExporting }) => {
     const { apiUrl } = useEnvironment();
+
+    const { toasts, handlers } = useToaster();
 
     const endpoint = `${apiUrl}/math_app/school_document/list/`;
     const { documents, isLoading, error } = useGetDocuments(endpoint);
@@ -38,6 +44,8 @@ const DocumentShelf: React.FC<DocumentShelfProps> = ({ isExporting }) => {
         };
 
         await submitDocument({ document: newDocument });
+        toast('Created new problem bank...')
+
     };
 
     const handleDropNode = async (documentId: number, node: Chunk | Problem | Instruction) => {
@@ -73,6 +81,7 @@ const DocumentShelf: React.FC<DocumentShelfProps> = ({ isExporting }) => {
         };
 
         console.log(updatedDocument)
+        toast(`Added to problem bank: ${documentToUpdate.title}`)
 
         await updateDocument({ document: updatedDocument });
 
@@ -80,21 +89,30 @@ const DocumentShelf: React.FC<DocumentShelfProps> = ({ isExporting }) => {
 
     return (<>
         <div style={{ marginLeft: '16.6667%' }} />
-        <div className="flex flex-col w-1/6 bg-gray-800 p-4 h-screen fixed overflow-y-scroll">
-            <div className="flex justify-between items-center mb-2">
-                <h3 className="text-white text-xl">Problem Banks</h3>
-                <button onClick={handleAddDocument} className="bg-blue-500 p-2 rounded-md text-white font-extrabold">
-                    <PlusIcon />
+        <div className="flex z-10 flex-col w-1/6 bg-gray-800 p-4 fixed overflow-y-scroll" style={{ top: '80px', height: `calc(100vh - 80px)` }}>
+
+            <div className="flex flex-col justify-between items-center mb-2">
+                <Link to="/math-app" className="items-center justify-center w-full bg-blue-500 hover:bg-blue-700 h-14 p-2 rounded-md text-white font-extrabold flex-row flex">
+                    Problem Search
+                </Link>
+                <hr className="mt-4 w-full" />
+                <h3 className="text-white text-xl mt-4 mb-2 flex-row flex items-center">Problem Banks
+                    <InfoCircle className='ms-2' />
+                </h3>
+                <button onClick={handleAddDocument} className="spacing-x-2 items-center justify-center w-full bg-blue-500 hover:bg-blue-700 h-10 p-2 rounded-md text-white font-extrabold flex-row flex">
+                    Create<PlusIcon className="ps-2 h-8 w-8" />
                 </button>
             </div>
+
             <ul className="space-y-2">
                 {documents && documents.map((document) => (
                     <DocumentItem isExporting={isExporting} key={document.id} document={document} onDropChunk={handleDropNode} />
                 ))}
             </ul>
-        </div>
+
+        </div >
     </>
     );
 };
 
-export default DocumentShelf;
+export default ProblemBankShelf;

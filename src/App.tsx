@@ -9,6 +9,7 @@ import {
 } from '@tanstack/react-query'
 import { SidebarProvider } from './contexts/useSidebarContext';
 import { ModalProvider } from './contexts/useModal';
+import Notifications from './components/Notifications';
 
 interface AppProps {
   children: any;
@@ -25,6 +26,7 @@ function App({ children }: AppProps) {
             <SidebarProvider>
               <LanguageProvider>
                 <DndProvider backend={HTML5Backend}>
+                  <Notifications />
                   {children}
                 </DndProvider>
               </LanguageProvider>

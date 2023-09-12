@@ -1,16 +1,15 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import useGetDocument from '../../hooks/tools/math/useGetDocument';
-import DocumentShelf from '../../components/document/DocumentShelf';
+import ProblemBankShelf from '../../components/document/ProblemBankShelf';
 
 import { Chunk } from '../../interfaces';
 import MathProblem from '../../components/math/MathProblem';
-import DocumentHeader from '../../components/document/DocumentHeader';
-import AIChatSmallWrapper from '../../components/math/AIChatSmallWrapper';
 import useSubmitDocument from '../../hooks/tools/math/useSubmitDocument';
-import ChunkSidebarWrapper from '../../components/math/ChunkSidebarWrapper';
 import PlusIcon from '../../svg/PlusIcon';
 import useEnvironment from '../../hooks/useEnvironment';
+import CreateDocxModal from '../../components/CreateDocxModal';
+import { useSidebarContext } from '../../contexts/useSidebarContext';
 
 const DocumentDisplay: React.FC = () => {
     const { id } = useParams();
@@ -20,6 +19,8 @@ const DocumentDisplay: React.FC = () => {
     const endpoint2 = `${apiUrl}/math_app/school_document/`;
     const { updateDocument } = useSubmitDocument(endpoint2);
 
+    const { activeChunkIndices, setActiveChunkIndices } = useSidebarContext();
+
     if (isLoading) {
         return <div className="text-white">Loading...</div>;
     }
@@ -27,7 +28,7 @@ const DocumentDisplay: React.FC = () => {
     if (error) {
         return (
             <div className='flex'>
-                <DocumentShelf isExporting={false} />
+                <ProblemBankShelf isExporting={false} />
                 <div className="w-5/6">
                     <div className="text-white text-center mt-2">
                         Error: {error.message}
@@ -86,37 +87,37 @@ const DocumentDisplay: React.FC = () => {
 
     return (
         <div className='flex '>
-            <DocumentShelf isExporting={false} />
+            <ProblemBankShelf isExporting={false} />
             <div className="w-5/6 mt-4" style={{ marginRight: '16.6667%' }}>
                 {/* <DocumentHeader document={document} /> */}
-                <ChunkSidebarWrapper
-                    document={document}
-                >
-                    {document && document.problemChunks
-                        && document.problemChunks.length > 0
-                        && document.problemChunks?.map((chunk, chunkIndex) => {
-                            return (
-                                <div
-                                    key={chunkIndex} className='w-3/4 mx-auto flex flex-row mb-4 bg-gray-900 p-2'>
-                                    <div className='w-full rounded-xl' >
-                                        <MathProblem
-                                            insertChunk={insertChunk}
-                                            updateChunk={updateDocumentChunk}
-                                            key={chunkIndex}
-                                            chunkIndex={chunkIndex}
-                                            problem={chunk}
-                                        />
-                                    </div>
-
+                <h2 className="text-center text-xl text-white my-4">Problem Bank Name: {document.title}</h2>
+                <div className='w-3/4 mx-auto py-2'>
+                    <CreateDocxModal enabled={activeChunkIndices.length > 0} document={document} modalId={"createDocx"} />
+                </div>
+                {document && document.problemChunks
+                    && document.problemChunks.length > 0
+                    && document.problemChunks?.map((chunk, chunkIndex) => {
+                        return (
+                            <div
+                                key={chunkIndex} className='w-3/4 mx-auto flex flex-row mb-4 bg-gray-900 p-2'>
+                                <div className='w-full rounded-xl' >
+                                    <MathProblem
+                                        insertChunk={insertChunk}
+                                        updateChunk={updateDocumentChunk}
+                                        key={chunkIndex}
+                                        chunkIndex={chunkIndex}
+                                        problem={chunk}
+                                    />
                                 </div>
-                            )
-                        })}
-                    {<div className='w-3/4 mx-auto flex flex-row mb-4 bg-gray-900 p-2 justify-center'>
-                        {<button onClick={() => insertChunk((document.problemChunks?.length || 0) + 1)} className="pe-1 text-green-500">
-                            <PlusIcon />
-                        </button>}
-                    </div>}
-                </ChunkSidebarWrapper>
+
+                            </div>
+                        )
+                    })}
+                {<div className='w-3/4 mx-auto flex flex-row mb-4 bg-gray-900 p-2 justify-center'>
+                    {<button onClick={() => insertChunk((document.problemChunks?.length || 0) + 1)} className="pe-1 text-green-500">
+                        <PlusIcon />
+                    </button>}
+                </div>}
             </div>
         </div>
     );

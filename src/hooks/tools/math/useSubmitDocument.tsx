@@ -3,7 +3,7 @@ import { useClerk } from '@clerk/clerk-react';
 import humps from 'humps';
 import { Document } from '../../../interfaces';
 import { MathFormData } from './useSubmitMathForm';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useLanguage } from '../../../contexts/useLanguage';
 import { languageNames } from '../../../helpers/language';
 
@@ -158,6 +158,7 @@ const useSubmitDocument = (endpoint: string) => {
 
 
     const navigate = useNavigate();
+    const { id } = useParams();
 
     const deleteDocumentMutation = useMutation<void, Error, Document>(
         async (document: Document) => {
@@ -180,7 +181,10 @@ const useSubmitDocument = (endpoint: string) => {
                 // Invalidate 'documents' query when deleting a document
                 queryClient.invalidateQueries(['documents']);
                 queryClient.invalidateQueries(['document', context.id]);
-                navigate('/math-app/bank');
+                // if deleting the bank you're currently on, navigate to search
+                if (id == context.id) {
+                    navigate('/math-app');
+                }
             },
         }
     );

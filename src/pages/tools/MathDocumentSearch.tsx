@@ -4,7 +4,7 @@ import Accordion from '../../components/Accordion';
 import GridContainer3x3 from '../../components/grids/GridContainer3x3';
 import DocumentPreview from '../../components/forms/DocumentPreview';
 import MathDocumentSearchForm from '../../components/math/MathDocumentSearchForm';
-import DocumentShelf from '../../components/document/DocumentShelf';
+import ProblemBankShelf from '../../components/document/ProblemBankShelf';
 import useGetDocuments from '../../hooks/tools/math/useGetDocuments';
 import useEnvironment from '../../hooks/useEnvironment';
 
@@ -16,7 +16,7 @@ const MathDocumentSearch: React.FC = () => {
     console.log(documents)
     return (
         <div className="flex">
-            <DocumentShelf isExporting={false} />
+            <ProblemBankShelf isExporting={false} />
             <div className="w-5/6">
                 {/* search */}
                 <MathDocumentSearchForm />

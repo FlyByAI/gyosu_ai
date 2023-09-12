@@ -25,7 +25,6 @@ import Footer from './components/Footer.tsx';
 import ContentWrapper from './components/ContentWrapper.tsx';
 import Attributions from './pages/Attributions.tsx';
 import DocumentDisplay from './pages/tools/DocumentDisplay.tsx';
-import Subscription from './components/Subscription.tsx';
 import LandingPage from './pages/Landing.tsx';
 import MathDocumentSearch from './pages/tools/MathDocumentSearch.tsx';
 import MathGenerate from './pages/tools/MathGenerate.tsx';
@@ -69,7 +68,6 @@ export default function ClerkProviderWithRoutes() {
                                 <Home />
                                 <Footer />
                             </ContentWrapper>
-                            <Subscription />
                         </>
                     }
                 />
@@ -79,8 +77,6 @@ export default function ClerkProviderWithRoutes() {
                         <>
                             <Navbar />
                             <MathGenerate />
-                            <Footer />
-                            <Subscription />
                         </>
                     }
                 />
@@ -90,7 +86,6 @@ export default function ClerkProviderWithRoutes() {
                         <>
                             <Navbar />
                             <DocumentDisplay />
-                            <Subscription />
                         </>
                     }
                 />
@@ -101,7 +96,6 @@ export default function ClerkProviderWithRoutes() {
                             <Navbar />
                             <MathDocumentSearch />
                             <Footer />
-                            <Subscription />
                         </>
                     }
                 />
@@ -112,7 +106,6 @@ export default function ClerkProviderWithRoutes() {
                             <Navbar />
                             <Documents />
                             <Footer />
-                            <Subscription />
                         </>
                     }
                 />
@@ -123,7 +116,6 @@ export default function ClerkProviderWithRoutes() {
                             <Navbar />
                             <MyProblemBanks />
                             <Footer />
-                            <Subscription />
                         </>
                     }
                 />

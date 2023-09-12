@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import 'tailwindcss/tailwind.css';
 import { useClerk, useUser } from '@clerk/clerk-react';
 import { Chunk, ProblemData } from '../../interfaces';
-import DocumentShelf from '../../components/document/DocumentShelf';
+import ProblemBankShelf from '../../components/document/ProblemBankShelf';
 import ChunkManager from '../../components/math/ChunkManager';
 import MathGenerateForm from '../../components/math/MathGenerateForm';
 
@@ -30,9 +30,9 @@ const MathGenerate: React.FC = () => {
 
     return (
         <div className="flex">
-            <DocumentShelf isExporting={false} />
-            <div className="w-5/6" style={{ marginRight: '16.6667%' }}>
-
+            <ProblemBankShelf isExporting={false} />
+            <div className="w-5/6 mt-4" style={{ marginRight: '16.6667%' }}>
+                <h2 className="text-center text-xl text-white my-4">Problem Search</h2>
                 <MathGenerateForm onSubmit={handleSubmit} setProblemData={setProblemData} />
                 <div>
                     {problemData &&

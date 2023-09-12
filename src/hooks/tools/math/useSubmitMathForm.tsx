@@ -7,7 +7,6 @@ import { languageNames } from '../../../helpers/language';
 export interface MathFormData {
     id?: number;
     sourceMaterial: string;
-    documentType: string;
     chapter?: string;
     section: string;
     problemType?: string;
@@ -39,7 +38,7 @@ const useSubmitMathForm = (endpoint: string) => {
                     'Content-Type': 'application/json',
                     'Authorization': token ? `Bearer ${token}` : '',
                 },
-                body: JSON.stringify(humps.decamelizeKeys({ ...formData, chapter: formData.section.split('.')[0], section: formData.section.split(".")[1], ...options }))
+                body: JSON.stringify(humps.decamelizeKeys({ ...formData, ...options }))
             });
 
             if (!response.ok) {

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 
 interface DropdownProps {
-    options: (string | { option_text: string })[] | { [key: string]: { option_text: string } };
+    options: (string | { option_text: string } | { label: string, value: string })[] | { [key: string]: { option_text: string } };
     handleChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
     disabled?: boolean;
     className?: string;
@@ -17,6 +17,8 @@ const mapOptions = (options: DropdownProps['options']) => {
                 return { value: option, label: option };
             } else if ('option_text' in option) {
                 return { value: option.option_text, label: option.option_text };
+            } else if ('label' in option && 'value' in option) {
+                return { value: option.value, label: option.label };
             } else {
                 return { value: `${index}`, label: 'Invalid Option' };
             }
@@ -28,6 +30,7 @@ const mapOptions = (options: DropdownProps['options']) => {
         }));
     }
 };
+
 
 const Dropdown: React.FC<DropdownProps> = ({ options, handleChange, disabled = false, className, defaultValue, label, showSelected }) => {
     const optionsArray = mapOptions(options).filter(key => key.value !== 'option_text');
