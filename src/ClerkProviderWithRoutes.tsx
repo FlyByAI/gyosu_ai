@@ -9,7 +9,6 @@ import {
     Routes,
     Route,
 } from "react-router-dom";
-import Home from './pages/Home.tsx';
 import Contact from './pages/Contact.tsx';
 import Navbar from './components/navbars/Navbar.tsx';
 //Clerk
@@ -56,18 +55,6 @@ export default function ClerkProviderWithRoutes() {
                             <Navbar />
                             <LandingPage />
                             <Footer />
-                        </>
-                    }
-                />
-                <Route
-                    path="/home"
-                    element={
-                        <>
-                            <Navbar />
-                            <ContentWrapper>
-                                <Home />
-                                <Footer />
-                            </ContentWrapper>
                         </>
                     }
                 />
