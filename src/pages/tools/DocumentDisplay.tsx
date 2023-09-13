@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import useGetDocument from '../../hooks/tools/math/useGetDocument';
 import ProblemBankShelf from '../../components/document/ProblemBankShelf';
 
@@ -10,6 +10,7 @@ import PlusIcon from '../../svg/PlusIcon';
 import useEnvironment from '../../hooks/useEnvironment';
 import CreateDocxModal from '../../components/CreateDocxModal';
 import { useSidebarContext } from '../../contexts/useSidebarContext';
+import SearchIcon from '../../svg/SearchIcon';
 
 const DocumentDisplay: React.FC = () => {
     const { id } = useParams();
@@ -89,11 +90,11 @@ const DocumentDisplay: React.FC = () => {
         <div className='flex '>
             <ProblemBankShelf isExporting={false} />
             <div className="w-5/6 mt-4" style={{ marginRight: '16.6667%' }}>
-                {/* <DocumentHeader document={document} /> */}
-                <h2 className="text-center text-xl text-white my-4">Problem Bank Name: {document.title}</h2>
                 <div className='w-3/4 mx-auto py-2'>
                     <CreateDocxModal enabled={activeChunkIndices.length > 0} document={document} modalId={"createDocx"} />
                 </div>
+                {/* <DocumentHeader document={document} /> */}
+                <h2 className="text-center text-xl text-white my-4">Problem Bank: {document.title}</h2>
                 {document && document.problemChunks
                     && document.problemChunks.length > 0
                     && document.problemChunks?.map((chunk, chunkIndex) => {
@@ -107,17 +108,31 @@ const DocumentDisplay: React.FC = () => {
                                         key={chunkIndex}
                                         chunkIndex={chunkIndex}
                                         problem={chunk}
+                                        selectable={true}
                                     />
                                 </div>
 
                             </div>
                         )
                     })}
-                {<div className='w-3/4 mx-auto flex flex-row mb-4 bg-gray-900 p-2 justify-center'>
+                {document && document.problemChunks && document.problemChunks.length === 0 &&
+                    <div className="flex flex-col items-center">
+                        <div className="text-white text-center my-4">
+                            You don't have any problems in this banks yet, try
+                            <Link to="/math-app" className="px-2 text-blue-300 text-bold underline">
+                                Search
+                            </Link>
+
+                        </div>
+
+                    </div>}
+
+                {/* Once we have a trained AI for adding problems from text input, I would like to do that here.. */}
+                {/* {<div className='w-3/4 mx-auto flex flex-row mb-4 bg-gray-900 p-2 justify-center'>
                     {<button onClick={() => insertChunk((document.problemChunks?.length || 0) + 1)} className="pe-1 text-green-500">
                         <PlusIcon />
                     </button>}
-                </div>}
+                </div>} */}
             </div>
         </div>
     );

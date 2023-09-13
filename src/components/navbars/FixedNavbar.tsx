@@ -34,7 +34,7 @@ const FixedNavbar: React.FC = () => {
           Pricing
         </Link>
         <Link to="/math-app" className="text-lg text-white hover:underline dark:text-gray-200 lg:justify-self-end block sm:hidden">
-          Create
+          Problem Search
         </Link>
         <Link to="/math-app/documents" className="text-lg text-white hover:underline dark:text-gray-200 lg:justify-self-end block sm:hidden">
           Documents
@@ -54,7 +54,7 @@ const FixedNavbar: React.FC = () => {
               Pricing
             </Link>
             <Link to="/math-app" className="text-lg text-white mx-3 hover:underline dark:text-gray-200 font-mono font-bold">
-              Create
+              Problem Search
             </Link>
             <Link to="/math-app/documents" className="text-lg text-white mx-3 hover:underline dark:text-gray-200 font-mono font-bold">
               Documents

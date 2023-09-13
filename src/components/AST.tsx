@@ -17,6 +17,10 @@ import { useParams } from 'react-router-dom';
 import useEnvironment from '../hooks/useEnvironment';
 import { Tooltip as ReactTooltip } from "react-tooltip";
 import OverflowMenu from './OverflowMenu';
+import PlusIcon from '../svg/PlusIcon';
+import ArrowLeft from '../svg/ArrowLeftIcon';
+import { useModal } from '../contexts/useModal';
+import AddChunkModal from './AddChunkModal';
 
 
 interface ChunkProps {
@@ -26,12 +30,15 @@ interface ChunkProps {
     updateChunk: (updatedChunk: Chunk, chunkIndex: number) => void;
     chunkIndex: number;
     enableTools?: boolean;
+    selectable?: boolean;
 }
 
-export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updateChunk, chunkIndex, enableTools }) => {
+export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updateChunk, chunkIndex, enableTools, selectable }) => {
 
     const { activeChunkIndices, setActiveChunkIndices } = useSidebarContext();
     const { apiUrl } = useEnvironment();
+
+    const { openModal } = useModal();
 
     const endpoint2 = `${apiUrl}/math_app/school_document/`;
     const { isLoading, updateDocument } = useSubmitDocument(endpoint2);
@@ -102,8 +109,23 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
         <>
             <ReactTooltip
                 id='chunkDragTip'
-                place="top"
-                content={`Drag this on to a problem bank.`}
+                place="right"
+                offset={8}
+                children={<><div className='flex flex-row items-center justify-center'>Click and drag to</div>
+                    <div className='flex flex-row items-center justify-center'>a problem bank.</div>
+                </>}
+                variant="light"
+            />
+            <ReactTooltip
+                id='addChunkTip'
+                place="bottom"
+                content={`Add problem to problem bank.`}
+                variant="light"
+            />
+            <ReactTooltip
+                id='deleteChunkTip'
+                place="bottom"
+                content={`Delete this problem from bank.`}
                 variant="light"
             />
             <div
@@ -111,24 +133,26 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
                 onMouseEnter={() => !isHovered && setIsHovered(true)}
                 onMouseLeave={() => isHovered && setIsHovered(false)}
                 data-tooltip-id='chunkDragTip'
-                className={"border-2 relative border-transparent p-4 w-full " + (isHovered ? " hover:border-green-200 border-dashed hover:border-2 hover:border-purple-dashed" : '') + ((activeChunkIndices.includes(chunkIndex)) ? " bg-blue-900 " : '')}
+                className={"border-2 relative border-transparent p-4 w-full " + (isHovered ? " hover:border-white border-dashed hover:border-2 hover:border-purple-dashed" : '') + ((activeChunkIndices.includes(chunkIndex)) ? " bg-blue-900 " : '')}
             >
                 <div className="absolute top-0 right-0 pe-2 mt-2 text-white">
-                    <OverflowMenu>
-                        <button
+                    <OverflowMenu
+                    >
+                        {id && <button
                             onClick={(e) => {
                                 e.stopPropagation();
                                 deleteChunk(chunkIndex);
                             }}
-                            data-tooltip-id="deleteTip"
-                            className="text-red-500"
+                            data-tooltip-id="deleteChunkTip"
+                            className="text-red-500 flex-row flex w-max"
                         >
-                            <TrashIcon />
-                        </button>
+                            <TrashIcon className='ms-2' />
+                        </button>}
+                        <AddChunkModal chunk={chunk} modalId={'addChunkModal'} enabled={false} />
                     </OverflowMenu>
                 </div>
 
-                {activeChunkIndices.includes(chunkIndex) ?
+                {selectable && (activeChunkIndices.includes(chunkIndex) ?
                     <div className='flex text-green-300 h-4 w-6'>
                         <CheckmarkIcon />
                     </div> :
@@ -138,7 +162,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
                             defaultChecked={activeChunkIndices.includes(chunkIndex)}
                             className="focus:ring-green-500 h-4 w-6 text-green-600 rounded"
                         />
-                    </div>
+                    </div>)
 
                 }
                 {/* {chunk.parentChunkId && <div className='text-gray-400 text-xs'>Parent: {chunk.parentChunkId}</div>} */}
@@ -365,7 +389,7 @@ const ProblemComponent: React.FC<ProblemProps> = ({ parentChunk, parentChunkInde
                             case 'text':
                                 return (
                                     <ReactMarkdown
-                                        className={'z-10 text-gray-200 border-2 border-transparent border-dashed hover:border-2 hover:border-purple-dashed p-1 m-1 group-hover:border-2 group-hover:border-white group-hover:border-dashed'}
+                                        className={'z-10 text-yellow-100 border-2 border-transparent border-dashed hover:border-2 hover:border-purple-dashed p-1 m-1 group-hover:border-2 group-hover:border-yellow-100 group-hover:border-dashed'}
                                         remarkPlugins={[remarkGfm, remarkMath]}
                                         rehypePlugins={[rehypeKatex]}
                                     >

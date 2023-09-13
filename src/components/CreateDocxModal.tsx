@@ -19,20 +19,27 @@ const CreateDocxModal: React.FC<CreateDocxModalProps> = ({ document, modalId, en
 
     return (
         <>
-            <button
-                onClick={handleOpenClick}
-                className={`w-full p-2 rounded ${enabled ? 'bg-blue-500 text-white' : 'bg-gray-400 text-gray-700'}`}
-                data-tooltip-id='selectProblemsTip'
-            >
-                Create Worksheet
-            </button>
-            <ReactTooltip
-                id='selectProblemsTip'
-                place="top"
-                content={`Select some problems to create a worksheet.`}
-                variant="light"
-                opacity={1}
-            />
+            <div className="relative">
+                <div className="sticky top-30 z-5 flex flex-col items-center">
+                    <button
+                        onClick={handleOpenClick}
+                        className={`w-1/2 p-4 rounded text-lg font-bold shadow-lg ${enabled ? 'bg-blue-600 hover:bg-blue-700 text-white' : 'bg-gray-400 text-gray-700'}`}
+                        data-tooltip-id='selectProblemsTip'
+                    >
+                        Create Worksheet
+                    </button>
+                    <ReactTooltip
+                        id='selectProblemsTip'
+                        place="right"
+                        offset={8}
+                        children={<><div className='flex flex-row items-center justify-center'>Select some problems</div>
+                            <div className='flex flex-row items-center justify-center'>to create a worksheet.</div>
+                        </>}
+                        variant="light"
+                        opacity={1}
+                    />
+                </div>
+            </div>
 
             {currentModal === modalId && (
                 <div className="fixed inset-0 flex items-center justify-center z-50 text-white">

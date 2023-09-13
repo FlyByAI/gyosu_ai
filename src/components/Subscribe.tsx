@@ -21,10 +21,10 @@ const Subscribe = () => {
                         <p className='my-4 text-left'>For educators with minimal document creation needs.</p>
                         <h3 className='text-left'>Free</h3>
                         <br></br>
-                        <br></br>
-                        <br></br>
                         {!session && <SubscribeFreeButton className="btn w-1/3 text-white font-bold min-w-fit rounded-md border border-blue-500 shadow-sm p-4 bg-gradient-to-r from-blue-600 to-green-500 hover:from-blue-700 hover:to-green-600 cursor-pointer" />}
                         {session && <SubscribeFreeButton className="w-1/3 text-white font-bold min-w-fit rounded-md shadow-sm p-4 bg-gray-600" />}
+                        <br></br>
+                        <br></br>
                         <br></br>
                         <div className='mb-2' />
                         <hr></hr>

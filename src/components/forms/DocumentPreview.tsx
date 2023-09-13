@@ -8,9 +8,10 @@ import { Document, Table, Image, Text, Math } from '../../interfaces';
 
 interface DocumentPreviewProps {
     document: Document;
+    disabledClick?: boolean;
 }
 
-const DocumentPreview: React.FC<DocumentPreviewProps> = ({ document }) => {
+const DocumentPreview: React.FC<DocumentPreviewProps> = ({ document, disabledClick }) => {
     const [isHovering, setIsHovering] = useState(false);
 
     const { creator, upvotes, tips, id, problemChunks } = document;
@@ -71,36 +72,46 @@ const DocumentPreview: React.FC<DocumentPreviewProps> = ({ document }) => {
         console.log(document, document.problemChunks)
     })
 
+    const contentEmpty = !problemChunks || problemChunks.length === 0;
+
     return (
-        <Link to={`/math-app/document/${id}`}
-            className='m-2 bg-white rounded-2xl relative'
+        <div
+            className={`m-2 bg-white rounded-2xl relative ${disabledClick ? '' : 'cursor-pointer'}`}
             onMouseEnter={() => setIsHovering(true)}
             onMouseLeave={() => setIsHovering(false)}
+            onClick={(e) => { if (disabledClick) e.preventDefault(); }}
         >
             <div className='p-2'>
+                {contentEmpty ? (
+                    <div className="preview-content h-32 p-2 rounded-lg text-xs bg-gray-800 text-center flex items-center justify-center">
+                        <span>This document is empty</span>
+                    </div>
+                ) : (
+                    <div className="preview-content overflow-y-auto h-32 p-2 rounded-lg text-xs bg-gray-800">
+                        {problemChunks?.map((chunk, index) => (
+                            <div key={index}>
+                                {chunk.content.map((contentItem, contentIndex) => (
+                                    <div key={contentIndex}>{renderContent(contentItem.content)}</div>
+                                ))}
+                            </div>
+                        ))}
+                    </div>
+                )}
 
-                <div className="preview-content overflow-y-auto h-32 p-2 rounded-lg text-xs bg-gray-800">
-                    {problemChunks?.map((chunk, index) => (
-                        <div key={index}>
-                            {chunk.content.map((contentItem, contentIndex) => (
-                                <div key={contentIndex}>{renderContent(contentItem.content)}</div>
-                            ))}
-                        </div>
-                    ))}
-                </div>
-
-                <div className="document-footer mt-4 bg-gray-200 p-4 rounded-lg text-sm w-10/12 mx-auto">
+                {!contentEmpty && !disabledClick && <div className="document-footer mt-4 bg-gray-200 p-4 rounded-lg text-sm w-10/12 mx-auto">
                     <h2 className="text-base font-bold">Created by {document.creator || "unknown"}</h2>
-                    {isHovering && (
+                    {!disabledClick && isHovering && (
                         <div className="rounded-b-2xl absolute inset-x-0 top-2/3 bottom-0 bg-gray-600 bg-opacity-70 flex justify-center items-center">
                             <span className="text-white text-xl font-bold">View</span>
                         </div>
                     )}
                     {document.title}
-                </div>
+                </div>}
             </div>
-        </Link>
+        </div>
     );
+
+
 };
 
 export default DocumentPreview;

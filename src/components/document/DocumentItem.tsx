@@ -104,10 +104,10 @@ const DocumentItem: React.FC<DocumentItemProps> = ({ document, onDropChunk, isEx
 
 
     return (
-        <li ref={dropRef} key={document.id} className={`${id == document.id ? "bg-blue-900" : "bg-gray-700"} text-white h-16 p-2 rounded-md overflow-clip relative`} onClick={handleClick}>
-            <div className="absolute bottom-2 right-2 flex space-x-2">
+        <li ref={dropRef} key={document.id} className={`${id == document.id ? "bg-blue-900" : "bg-gray-700"} text-white h-16 p-1 rounded-md overflow-clip relative cursor-pointer`} onClick={handleClick}>
+            <div className="z-10 absolute top-1 right-1 flex space-x-2">
                 <OverflowMenu
-                    variant="top"
+                    variant="bottom"
                 >
                     <button onClick={handleEditClick}
                         className="p-1 text-green-700 rounded"
@@ -116,7 +116,7 @@ const DocumentItem: React.FC<DocumentItemProps> = ({ document, onDropChunk, isEx
                         <EditIcon />
                         <ReactTooltip
                             id='editDocumentTip'
-                            place="right"
+                            place="bottom"
                             positionStrategy="fixed"
                             variant="light"
                             opacity={1}
@@ -128,7 +128,7 @@ const DocumentItem: React.FC<DocumentItemProps> = ({ document, onDropChunk, isEx
                         <TrashIcon />
                         <ReactTooltip
                             id='deleteDocumentTip'
-                            place="right"
+                            place="bottom"
                             positionStrategy="fixed"
                             variant="light"
                             opacity={1}
@@ -137,24 +137,32 @@ const DocumentItem: React.FC<DocumentItemProps> = ({ document, onDropChunk, isEx
                 </OverflowMenu>
             </div>
             {document && document.problemChunks && (
-                <div className="absolute text-sm flex flex-col">
-                    <div className="w-100 truncate">
-                        {isEditing ? (
-                            <input
-                                data-tooltip-id='changeTitleTip'
-                                type="text"
-                                value={title}
-                                onChange={handleTitleChange}
-                                onBlur={handleTitleBlur}
-                                onKeyDown={handleKeyDown}
-                                autoFocus
-                                className="w-full text-black ps-1"
-                            />
-                        ) : (
-                            <h1 onClick={handleEditClick} data-tooltip-id='changeTitleTip' className="truncate">{document.title}</h1>
+                <>
+                    <div className="flex">
+                        {document.problemChunks?.length > 0 && (
+                            <div className="text-white rounded-full p-1 text-xs">
+                                {document.problemChunks.length} Problems
+                            </div>
                         )}
                     </div>
-                </div>
+                    <div className="absolute text-sm flex flex-col">
+                        <div className="w-100 truncate">
+                            {isEditing ? (
+                                <input
+                                    type="text"
+                                    value={title}
+                                    onChange={handleTitleChange}
+                                    onBlur={handleTitleBlur}
+                                    onKeyDown={handleKeyDown}
+                                    autoFocus
+                                    className="w-full text-black ps-1 cursor-text"
+                                />
+                            ) : (
+                                <h1 onClick={handleEditClick} className="truncate cursor-text">{document.title} </h1>
+                            )}
+                        </div>
+                    </div>
+                </>
             )}
         </li>
     );

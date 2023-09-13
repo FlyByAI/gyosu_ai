@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Chunk, EmptyDocument, } from '../../interfaces';
 import MathProblem from './MathProblem';
 import CreateDocxModal from '../CreateDocxModal';
@@ -25,10 +25,10 @@ const ChunkManager: React.FC<ChunkManagerProps> = ({ chunkArray, setChunkArray }
 
     return (
         <div className='flex flex-col'>
-            <div className="text-xl justify-center text-white flex items-center">Problem Search Results</div>
-            <div className='w-3/4 mx-auto py-2'>
+            <div className="text-xl justify-center text-white flex items-center mb-4">Problem Search Results</div>
+            {/* <div className='w-3/4 mx-auto py-2'>
                 {document && <CreateDocxModal enabled={activeChunkIndices.length > 0} document={{} as EmptyDocument} modalId={"createDocx"} />}
-            </div>
+            </div> */}
             {chunkArray?.map((chunk, chunkIndex) => {
                 return (
                     <div key={chunkIndex}
@@ -36,6 +36,7 @@ const ChunkManager: React.FC<ChunkManagerProps> = ({ chunkArray, setChunkArray }
                         <div className='w-full rounded-xl'>
                             <MathProblem
                                 key={chunkIndex}
+                                selectable={false}
                                 chunkIndex={chunkIndex}
                                 problem={chunk}
                                 updateChunk={updateChunk}

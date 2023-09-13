@@ -28,7 +28,7 @@ const useGetDocument = (endpoint: string, documentId: number) => {
         const token = session ? await session.getToken() : 'none';
         return fetchDocument(endpoint, documentId, token);
     }, {
-        enabled: !!session,
+        enabled: !!session && !isNaN(documentId) && documentId !== undefined,
     });
 
     useEffect(() => {

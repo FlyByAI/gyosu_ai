@@ -52,20 +52,21 @@ const SubscribePremiumButton = ({ className }: { className: string }) => {
 
     return (
         <form onSubmit={handleCheckout}>
-            <div className="flex flex-col items-center bg-gray-800">
-                <input
-                    type="text"
-                    name="coupon"
-                    placeholder="Enter coupon"
-                    className="mb-4 p-2 rounded bg-gray-700 w-64"
-                />
-            </div>
+
             <button
                 type="submit"
                 className={`${className} relative group w-32`}
             >
                 <p className="">Subscribe</p>
             </button>
+            <div className="flex flex-col items-center bg-gray-800">
+                <input
+                    type="text"
+                    name="coupon"
+                    placeholder="Enter coupon"
+                    className="mt-4 p-2 rounded bg-gray-700 w-64"
+                />
+            </div>
         </form>
     );
 };
@@ -91,20 +92,20 @@ const SubscribeLiteButton = ({ className }: { className: string }) => {
 
     return (
         <form onSubmit={handleCheckout}>
-            <div className="flex flex-col items-center bg-gray-800">
-                <input
-                    type="text"
-                    name="coupon"
-                    placeholder="Enter coupon"
-                    className="mb-4 p-2 rounded bg-gray-700 w-64"
-                />
-            </div>
             <button
                 type="submit"
                 className={`${className} relative group w-32`}
             >
                 <p className="">Subscribe</p>
             </button>
+            <div className="flex flex-col items-center bg-gray-800">
+                <input
+                    type="text"
+                    name="coupon"
+                    placeholder="Enter coupon"
+                    className="mt-4 p-2 rounded bg-gray-700 w-64"
+                />
+            </div>
         </form>
 
     );
