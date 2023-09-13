@@ -11,6 +11,7 @@ const Notifications = () => {
             onMouseLeave={endPause}
         >
             {toasts.map((toast: any) => {
+                toast.duration = 1500;
                 const offset = calculateOffset(toast, {
                     reverseOrder: false
                 });
@@ -25,7 +26,7 @@ const Notifications = () => {
                     <div
                         key={toast.id}
                         ref={ref}
-                        className={`z-99 p-1 rounded-md bg-white absolute w-96 bg-papayawhip transition-all duration-200 ease-out ${toast.visible ? 'opacity-100' : 'opacity-0'}`}
+                        className={`z-80 p-1 rounded-md bg-white fixed z-90 w-96 bg-papayawhip transition-all duration-200 ease-out ${toast.visible ? 'opacity-100' : 'opacity-0'}`}
                         style={{ transform: `translateY(${offset}px)` }}
                     >
                         {toast.message}

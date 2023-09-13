@@ -22,13 +22,13 @@ function App({ children }: AppProps) {
   return (
     <div className=''>
       <Toaster />
+      <Notifications />
       <QueryClientProvider client={queryClient}>
         <DarkModeProvider>
           <ModalProvider>
             <SidebarProvider>
               <LanguageProvider>
                 <DndProvider backend={HTML5Backend}>
-                  <Notifications />
                   {children}
                 </DndProvider>
               </LanguageProvider>

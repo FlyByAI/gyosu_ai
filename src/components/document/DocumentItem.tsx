@@ -137,13 +137,13 @@ const DocumentItem: React.FC<DocumentItemProps> = ({ document, onDropChunk, isEx
                 </OverflowMenu>
             </div>
             {document && document.problemChunks && (
-                <>
-                    <div className="flex">
-                        {document.problemChunks?.length > 0 && (
-                            <div className="text-white rounded-full p-1 text-xs">
-                                {document.problemChunks.length} Problems
+                <div className="p-1">
+                    <div className="flex h-4">
+                        {
+                            <div className="text-white rounded-full text-xs">
+                                {document.problemChunks.length || "No"} Problems
                             </div>
-                        )}
+                        }
                     </div>
                     <div className="absolute text-sm flex flex-col">
                         <div className="w-100 truncate">
@@ -155,14 +155,18 @@ const DocumentItem: React.FC<DocumentItemProps> = ({ document, onDropChunk, isEx
                                     onBlur={handleTitleBlur}
                                     onKeyDown={handleKeyDown}
                                     autoFocus
-                                    className="w-full text-black ps-1 cursor-text"
+                                    className="w-full text-black cursor-text"
                                 />
                             ) : (
-                                <h1 onClick={handleEditClick} className="truncate cursor-text">{document.title} </h1>
+                                <h1
+                                    onClick={handleEditClick}
+                                    className="truncate cursor-text">
+                                    {document.title}
+                                </h1>
                             )}
                         </div>
                     </div>
-                </>
+                </div>
             )}
         </li>
     );
