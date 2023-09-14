@@ -1,8 +1,7 @@
 import React from 'react';
 import { useModal } from '../contexts/useModal';
-import { Document, Chunk, Problem, Instruction } from '../interfaces';
-import { Tooltip as ReactTooltip } from 'react-tooltip';
-import AddChunkForm from './AddChunkForm';
+import { Chunk } from '../interfaces';
+import AddChunkForm from './forms/AddChunkForm';
 import PlusIcon from '../svg/PlusIcon';
 
 interface AddChunkModalProps {

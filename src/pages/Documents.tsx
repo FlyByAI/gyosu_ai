@@ -47,30 +47,32 @@ const Documents: React.FC = () => {
 
     return (
         <>
-            {!isLoading && documentDownloads && documentDownloads.length > 0 ? (
+            {!isLoading && documentDownloads ? (
                 <div className="flex justify-center items-center  mt-4">
                     <Accordion title={"Documents"} visible={true}>
-                        <ul className="list-inside space-y-4 text-white mt-4">
-                            {documentDownloads.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
-                                .map((doc) => (
-                                    <li key={doc.id} className="border rounded p-4">
-                                        <div onClick={() => handleDocumentClick(doc.blobName)}>
-                                            <span className="text-blue-300 hover:underline cursor-pointer">
-                                                {doc.blobName}
-                                            </span>
-                                        </div>
-                                        <div>Document Type: {doc.docType}</div>
-                                        <div>Timestamp: {new Date(doc.timestamp).toLocaleString()}</div>
-                                        <div>Shared: {doc.shared ? 'Yes' : 'No'}</div>
-                                        <div>Times Downloaded: {doc.timesDownloaded}</div>
-                                        {/* Add other fields as needed */}
-                                    </li>
-                                ))}
-                        </ul>
+                        {documentDownloads.length > 0 ?
+                            <ul className="list-inside space-y-4 text-white mt-4">
+                                {documentDownloads.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
+                                    .map((doc) => (
+                                        <li key={doc.id} className="border rounded p-4">
+                                            <div onClick={() => handleDocumentClick(doc.blobName)}>
+                                                <span className="text-blue-300 hover:underline cursor-pointer">
+                                                    {doc.blobName}
+                                                </span>
+                                            </div>
+                                            <div>Document Type: {doc.docType}</div>
+                                            <div>Timestamp: {new Date(doc.timestamp).toLocaleString()}</div>
+                                            <div>Shared: {doc.shared ? 'Yes' : 'No'}</div>
+                                            <div>Times Downloaded: {doc.timesDownloaded}</div>
+                                            {/* Add other fields as needed */}
+                                        </li>
+                                    ))}
+                            </ul> :
+                            "You don't have any documents yet. "}
                     </Accordion>
                 </div>
             ) : <div className="text-white mt-4 text-center h-screen">
-                {isDownloadLoading ? "Loading..." : "You don't have any documents yet."}
+                Loading...
             </div>}
 
             {error && <p className="text-red-600 mt-4 text-center">Error: {error.message}</p>}
@@ -83,7 +85,6 @@ const Documents: React.FC = () => {
                     <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12"></div>
                 </div>
             )}
-            {!isDownloadLoading && <div> No documents found. </div >}
         </>
     );
 };

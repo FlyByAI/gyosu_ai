@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { Document, Chunk } from '../interfaces';
-import useGetDocuments from '../hooks/tools/math/useGetDocuments';
-import useSubmitDocument from '../hooks/tools/math/useSubmitDocument';
-import useEnvironment from '../hooks/useEnvironment';
+import { Document, Chunk } from '../../interfaces';
+import useGetDocuments from '../../hooks/tools/math/useGetDocuments';
+import useSubmitDocument from '../../hooks/tools/math/useSubmitDocument';
+import useEnvironment from '../../hooks/useEnvironment';
 import { useClerk } from '@clerk/clerk-react';
-import DocumentPreview from './forms/DocumentPreview';
-import { useModal } from '../contexts/useModal';
+import DocumentPreview from './DocumentPreview';
+import { useModal } from '../../contexts/useModal';
 import toast, { useToaster } from 'react-hot-toast/headless';
 
 interface AddChunkFormProps {

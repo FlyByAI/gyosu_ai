@@ -7,9 +7,6 @@ import formOptionsJSON from '../../json/dropdown_data.json';
 import { ProblemData } from '../../interfaces';
 import useEnvironment from '../../hooks/useEnvironment';
 import useSubmitMathForm from '../../hooks/tools/math/useSubmitMathForm';
-import { useLanguage } from '../../contexts/useLanguage';
-import { languageNames } from '../../helpers/language';
-import toast, { useToaster } from 'react-hot-toast/headless';
 
 type MathGenerateFormProps = {
     onSubmit: (data: any) => void;
