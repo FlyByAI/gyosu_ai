@@ -104,6 +104,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
 
     };
 
+    const [isOverflowOpen, setIsOverflowOpen] = useState(false);
 
     return (
         <>
@@ -146,6 +147,8 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
             >
                 <div className="absolute top-0 right-0 pe-2 mt-2 text-white">
                     <OverflowMenu
+                        isOpen={isOverflowOpen}
+                        setIsOpen={setIsOverflowOpen}
                     >
                         {id && <button
                             onClick={(e) => {
