@@ -136,7 +136,6 @@ const LandingPage: React.FC = () => {
                 <div className='w-full md:w-1/2 text-2xl md:text-5xl flex flex-col items-center'>
                     <h1 className="font-bold mb-4">22,000+ Problems</h1>
                     <p className="text-center text-lg">High quality problems sourced from math textbooks.</p>
-                    {/* <p className="text-center text-lg">Drag and drop problems into your own problem banks.</p> */}
                 </div>
                 <div className='w-full md:w-1/2 flex flex-col py-4'>
                     <div className='w-3/4 mx-auto flex flex-row mb-4 bg-gray-900 p-2'>

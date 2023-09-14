@@ -8,7 +8,6 @@ import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 import { DropTargetMonitor, useDrag, useDrop } from 'react-dnd';
 import ToolWrapper from './math/ToolWrapper';
-import ChunkSidebarWrapper from './math/ChunkSidebarWrapper';
 import { useSidebarContext } from '../contexts/useSidebarContext';
 import CheckmarkIcon from '../svg/CheckmarkIcon';
 import TrashIcon from '../svg/TrashIcon';
@@ -16,6 +15,12 @@ import useSubmitDocument from '../hooks/tools/math/useSubmitDocument';
 import useGetDocument from '../hooks/tools/math/useGetDocument';
 import { useParams } from 'react-router-dom';
 import useEnvironment from '../hooks/useEnvironment';
+import { Tooltip as ReactTooltip } from "react-tooltip";
+import OverflowMenu from './OverflowMenu';
+import PlusIcon from '../svg/PlusIcon';
+import ArrowLeft from '../svg/ArrowLeftIcon';
+import { useModal } from '../contexts/useModal';
+import AddChunkModal from './AddChunkModal';
 
 
 interface ChunkProps {
@@ -24,12 +29,16 @@ interface ChunkProps {
     insertChunk?: (chunkIndex: number) => void;
     updateChunk: (updatedChunk: Chunk, chunkIndex: number) => void;
     chunkIndex: number;
+    enableTools?: boolean;
+    selectable?: boolean;
 }
 
-export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updateChunk, chunkIndex }) => {
+export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updateChunk, chunkIndex, enableTools, selectable }) => {
 
     const { activeChunkIndices, setActiveChunkIndices } = useSidebarContext();
     const { apiUrl } = useEnvironment();
+
+    const { openModal } = useModal();
 
     const endpoint2 = `${apiUrl}/math_app/school_document/`;
     const { isLoading, updateDocument } = useSubmitDocument(endpoint2);
@@ -97,81 +106,101 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
 
 
     return (
-
-        <div
-            ref={(node) => ref(drop(node))}
-            onMouseEnter={() => !isHovered && setIsHovered(true)}
-            onMouseLeave={() => isHovered && setIsHovered(false)}
-            className={"border-2 relative border-transparent p-4 w-full " + (isHovered ? " hover:border-green-200 border-dashed hover:border-2 hover:border-purple-dashed" : '') + ((activeChunkIndices.includes(chunkIndex)) ? " bg-blue-900 " : '')}
-        >
-            {isHovered && <button
-                onClick={(e) => {
-                    e.stopPropagation();
-                    deleteChunk(chunkIndex);
-                }}
-                data-tooltip-id="deleteTip"
-                className="absolute top-0 right-0 pe-2 pt-2 text-red-500"
+        <>
+            <ReactTooltip
+                id='chunkDragTip'
+                place="right"
+                offset={8}
+                children={<><div className='flex flex-row items-center justify-center'>Click and drag to</div>
+                    <div className='flex flex-row items-center justify-center'>a problem bank.</div>
+                </>}
+                variant="light"
+            />
+            <ReactTooltip
+                id='addChunkTip'
+                place="bottom"
+                content={`Add problem to problem bank.`}
+                variant="light"
+            />
+            <ReactTooltip
+                id='deleteChunkTip'
+                place="bottom"
+                content={`Delete this problem from bank.`}
+                variant="light"
+            />
+            <div
+                ref={(node) => ref(drop(node))}
+                onMouseEnter={() => !isHovered && setIsHovered(true)}
+                onMouseLeave={() => isHovered && setIsHovered(false)}
+                data-tooltip-id='chunkDragTip'
+                className={"border-2 relative border-transparent p-4 w-full " + (isHovered ? " hover:border-white border-dashed hover:border-2 hover:border-purple-dashed" : '') + ((activeChunkIndices.includes(chunkIndex)) ? " bg-blue-900 " : '')}
             >
-                <TrashIcon />
-            </button>}
-
-            {activeChunkIndices.includes(chunkIndex) ?
-                <div className='flex text-green-300 h-4 w-6'>
-                    <CheckmarkIcon />
-                </div> :
-                <div className='flex'>
-                    <input
-                        type="checkbox"
-                        defaultChecked={activeChunkIndices.includes(chunkIndex)}
-                        className="focus:ring-green-500 h-4 w-6 text-green-600 rounded"
-                    />
+                <div className="absolute top-0 right-0 pe-2 mt-2 text-white">
+                    <OverflowMenu
+                    >
+                        {id && <button
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                deleteChunk(chunkIndex);
+                            }}
+                            data-tooltip-id="deleteChunkTip"
+                            className="text-red-500 flex-row flex w-max"
+                        >
+                            <TrashIcon className='ms-2' />
+                        </button>}
+                        <AddChunkModal chunk={chunk} modalId={'addChunkModal'} enabled={false} />
+                    </OverflowMenu>
                 </div>
 
-            }
-            {/* {chunk.parentChunkId && <div className='text-gray-400 text-xs'>Parent: {chunk.parentChunkId}</div>} */}
+                {selectable && (activeChunkIndices.includes(chunkIndex) ?
+                    <div className='flex text-green-300 h-4 w-6'>
+                        <CheckmarkIcon />
+                    </div> :
+                    <div className='flex'>
+                        <input
+                            type="checkbox"
+                            defaultChecked={activeChunkIndices.includes(chunkIndex)}
+                            className="focus:ring-green-500 h-4 w-6 text-green-600 rounded"
+                        />
+                    </div>)
 
-            {chunk.content.length === 0 && <div className="text-gray-400 p-4">Drag and drop instructions or problems here</div>}
-            {chunk.content.map((item, index) => {
-                return (
-                    <div key={`${item.type}-${index}-${chunk.content.length}`}>
-                        {/* put at upper right, and show on hover */}
+                }
+                {/* {chunk.parentChunkId && <div className='text-gray-400 text-xs'>Parent: {chunk.parentChunkId}</div>} */}
 
-                        {(() => {
-                            switch (item.type) {
-                                case 'instruction':
-                                    return (
-                                        <ToolWrapper
-                                            key={`${item.type}-${index}-${chunk.content.length}`}
-                                            insertChunk={insertChunk}
-                                            updateChunk={updateChunk}
-                                            chunkIndex={chunkIndex}
-                                            chunk={chunk}
-                                            instruction={item}
-                                        >
-                                            <InstructionComponent instructionIndex={index} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} instruction={item} onInstructionHover={setIsHovered} />
-                                        </ToolWrapper>
-                                    );
-                                case 'problem':
-                                    return (
-                                        <ToolWrapper
-                                            key={`${item.type}-${index}-${chunk.content.length}`}
-                                            insertChunk={insertChunk}
-                                            updateChunk={updateChunk}
-                                            chunkIndex={chunkIndex}
-                                            chunk={chunk}
-                                            problem={item}
-                                        >
-                                            <ProblemComponent problemIndex={index} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} problem={item} onInstructionHover={setIsHovered} />
-                                        </ToolWrapper>
-                                    );
-                                default:
-                                    return null;
-                            }
-                        })()}
-                    </div>
-                );
-            })}
-        </div>
+                {chunk.content.map((item, index) => {
+                    const element = (() => {
+                        switch (item.type) {
+                            case 'instruction':
+                                return <InstructionComponent instructionIndex={index} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} instruction={item} onInstructionHover={setIsHovered} />;
+                            case 'problem':
+                                return <ProblemComponent problemIndex={index} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} problem={item} onInstructionHover={setIsHovered} />;
+                            default:
+                                return null;
+                        }
+                    })();
+
+                    const wrappedElement = enableTools ? (
+                        <ToolWrapper
+                            key={`${item.type}-${index}-${chunk.content.length}`}
+                            insertChunk={insertChunk}
+                            updateChunk={updateChunk}
+                            chunkIndex={chunkIndex}
+                            chunk={chunk}
+                            {...(item.type === 'instruction' ? { instruction: item } : { problem: item })}
+                        >
+                            {element}
+                        </ToolWrapper>
+                    ) : element;
+
+                    return (
+                        <div key={`${item.type}-${index}-${chunk.content.length}`}>
+                            {wrappedElement}
+                        </div>
+                    );
+                })}
+
+            </div >
+        </>
     );
 
 };
@@ -360,7 +389,7 @@ const ProblemComponent: React.FC<ProblemProps> = ({ parentChunk, parentChunkInde
                             case 'text':
                                 return (
                                     <ReactMarkdown
-                                        className={'z-10 text-gray-200 border-2 border-transparent border-dashed hover:border-2 hover:border-purple-dashed p-1 m-1 group-hover:border-2 group-hover:border-white group-hover:border-dashed'}
+                                        className={'z-10 text-yellow-100 border-2 border-transparent border-dashed hover:border-2 hover:border-purple-dashed p-1 m-1 group-hover:border-2 group-hover:border-yellow-100 group-hover:border-dashed'}
                                         remarkPlugins={[remarkGfm, remarkMath]}
                                         rehypePlugins={[rehypeKatex]}
                                     >

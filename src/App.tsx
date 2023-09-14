@@ -9,6 +9,8 @@ import {
 } from '@tanstack/react-query'
 import { SidebarProvider } from './contexts/useSidebarContext';
 import { ModalProvider } from './contexts/useModal';
+import Notifications from './components/Notifications';
+import { Toaster } from 'react-hot-toast';
 
 interface AppProps {
   children: any;
@@ -19,6 +21,8 @@ const queryClient = new QueryClient()
 function App({ children }: AppProps) {
   return (
     <div className=''>
+      <Toaster />
+      <Notifications />
       <QueryClientProvider client={queryClient}>
         <DarkModeProvider>
           <ModalProvider>

@@ -1,6 +1,6 @@
 
 import React, { useEffect } from 'react';
-import DocumentShelf from '../../components/document/DocumentShelf';
+import ProblemBankShelf from '../../components/document/ProblemBankShelf';
 import Accordion from '../../components/Accordion';
 import GridContainer3x3 from '../../components/grids/GridContainer3x3';
 import DocumentPreview from '../../components/forms/DocumentPreview';
@@ -29,9 +29,9 @@ const MyProblemBanks: React.FC = () => {
 
     return (
         <div className="flex">
-            <DocumentShelf isExporting={false} />
+            <ProblemBankShelf isExporting={false} />
             <div className="w-5/6 h-screen">
-                <div className="flex flex-row justify-center mt-4">
+                <div className="flex flex-row justify-center mt-4 mx-4">
                     <Accordion title={"My Problem Banks"} visible={true}>
                         <GridContainer3x3>
                             {documents?.map((doc, index) => (

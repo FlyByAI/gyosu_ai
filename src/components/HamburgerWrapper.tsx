@@ -1,4 +1,4 @@
-import React, { useState, ReactNode } from 'react';
+import React, { useState, ReactNode, useEffect } from 'react';
 import Hamburger from 'hamburger-react';
 
 interface HamburgerWrapperProps {
@@ -6,6 +6,17 @@ interface HamburgerWrapperProps {
 }
 const HamburgerWrapper: React.FC<HamburgerWrapperProps> = ({ children }) => {
     const [isOpen, setOpen] = useState(false);
+
+    const closeOnScroll = () => {
+        setOpen(false);
+    };
+
+    useEffect(() => {
+        window.addEventListener('scroll', closeOnScroll);
+        return () => {
+            window.removeEventListener('scroll', closeOnScroll);
+        };
+    }, []);
 
     return (
         <div className="relative">

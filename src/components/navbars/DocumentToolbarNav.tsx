@@ -4,7 +4,6 @@ import { SignedIn, SignedOut, UserButton, SignInButton } from '@clerk/clerk-reac
 import { useDarkMode } from '../../hooks/useDarkMode';
 import LanguageDropdown from '../LanguageDropdown';
 import { getGyosuClerkTheme } from '../../theme/customClerkTheme';
-import DocumentTitle from '../document/DocumentTitle';
 import useGetDocument from '../../hooks/tools/math/useGetDocument';
 import ChevronLeft from '../../svg/ChevronLeft';
 import useSubmitDocument from '../../hooks/tools/math/useSubmitDocument';
@@ -45,7 +44,7 @@ const DocumentToolbarNav: React.FC = () => {
     return (
         <>
             <div className='mt-20'></div> {/* Placeholder */}
-            <header className="z-50 fixed top-0 left-0 w-full px-6 py-4 bg-blue-900 text-white dark:bg-gray-900 dark:text-gray-200">
+            <header className="z-20 fixed top-0 left-0 w-full px-6 py-4 bg-blue-900 text-white dark:bg-gray-900 dark:text-gray-200">
                 <div className="flex justify-between items-center w-full">
                     <div className=" w-1/6">
                         <Link to="/math-app" className="text-3xl font-semibold text-white font-mono flex items-center"><ChevronLeft />Home</Link>
@@ -63,16 +62,6 @@ const DocumentToolbarNav: React.FC = () => {
 
                     </div>
                     <div className="w-1/2 flex justify-end items-center">
-                        {document && <DocumentTitle />}
-                        <button className='text-red-500 mx-2'
-                            data-tooltip-id="deleteDocumentTip"
-                            onClick={handleDeleteClick} disabled={isDeleting} >
-                            <TrashIcon />
-                            <ReactTooltip
-                                id='deleteDocumentTip'
-                                place="bottom"
-                                content={`Delete problem bank`} />
-                        </button>
 
                         <SignedIn>
                             {darkMode ? <UserButton afterSignOutUrl="/" appearance={getGyosuClerkTheme()} /> : <UserButton afterSignOutUrl="http://localhost:5173/" />}
