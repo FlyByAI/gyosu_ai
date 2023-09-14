@@ -64,7 +64,7 @@ const DocumentItem: React.FC<DocumentItemProps> = ({ document, onDropChunk, isEx
     const handleEditClick = (e: React.MouseEvent) => {
         e.stopPropagation();
         setTitle(document?.title || '');
-        setIsEditing(!isEditing);
+        setIsEditing(true);
     };
 
     const handleDeleteClick = (e: React.MouseEvent) => {
@@ -104,71 +104,84 @@ const DocumentItem: React.FC<DocumentItemProps> = ({ document, onDropChunk, isEx
 
 
     return (
-        <li ref={dropRef} key={document.id} className={`${id == document.id ? "bg-blue-900" : "bg-gray-700"} text-white h-16 p-1 rounded-md overflow-clip relative cursor-pointer`} onClick={handleClick}>
-            <div className="z-10 absolute top-1 right-1 flex space-x-2">
-                <OverflowMenu
-                    variant="bottom"
-                >
-                    <button onClick={handleEditClick}
-                        className="p-1 text-green-700 rounded"
-                        data-tooltip-id="editDocumentTip"
+        <>
+            <li ref={dropRef}
+                key={document.id}
+                className={`${id == document.id ? "bg-blue-900" : "bg-gray-700"} text-white h-16 p-1 rounded-md overflow-clip relative cursor-pointer`}
+                onClick={handleClick}
+                data-tooltip-id="hoverDocumentItem"
+            >
+                <div className="z-10 absolute top-1 right-1 flex space-x-2">
+                    <OverflowMenu
+                        variant="bottom"
                     >
-                        <EditIcon />
-                        <ReactTooltip
-                            id='editDocumentTip'
-                            place="bottom"
-                            positionStrategy="fixed"
-                            variant="light"
-                            opacity={1}
-                            content={`Rename`} />
-                    </button>
-                    <button className='text-red-500 px-1 rounded'
-                        data-tooltip-id="deleteDocumentTip"
-                        onClick={handleDeleteClick}>
-                        <TrashIcon />
-                        <ReactTooltip
-                            id='deleteDocumentTip'
-                            place="bottom"
-                            positionStrategy="fixed"
-                            variant="light"
-                            opacity={1}
-                            content={`Delete`} />
-                    </button>
-                </OverflowMenu>
-            </div>
-            {document && document.problemChunks && (
-                <div className="p-1">
-                    <div className="flex h-4">
-                        {
-                            <div className="text-white rounded-full text-xs">
-                                {document.problemChunks.length || "No"} Problems
+                        <button onClick={handleEditClick}
+                            className="p-1 text-green-700 rounded"
+                            data-tooltip-id="editDocumentTip"
+                        >
+                            <EditIcon />
+                            <ReactTooltip
+                                id='editDocumentTip'
+                                place="bottom"
+                                positionStrategy="fixed"
+                                variant="light"
+                                opacity={1}
+                                content={`Rename`} />
+                        </button>
+                        <button className='text-red-500 px-1 rounded'
+                            data-tooltip-id="deleteDocumentTip"
+                            onClick={handleDeleteClick}>
+                            <TrashIcon />
+                            <ReactTooltip
+                                id='deleteDocumentTip'
+                                place="bottom"
+                                positionStrategy="fixed"
+                                variant="light"
+                                opacity={1}
+                                content={`Delete`} />
+                        </button>
+                    </OverflowMenu>
+                </div>
+                {document && document.problemChunks && (
+                    <div className="p-1">
+                        <div className="flex h-4">
+                            {
+                                <div className="text-white rounded-full text-xs">
+                                    {document.problemChunks.length || "No"} Problems
+                                </div>
+                            }
+                        </div>
+                        <div className="absolute text-sm flex flex-col">
+                            <div className="w-100 truncate">
+                                {isEditing ? (
+                                    <input
+                                        type="text"
+                                        value={title}
+                                        onClick={handleEditClick}
+                                        onChange={handleTitleChange}
+                                        onBlur={handleTitleBlur}
+                                        onKeyDown={handleKeyDown}
+                                        autoFocus
+                                        className="w-full text-black cursor-text"
+                                    />
+                                ) : (
+                                    <h1
+                                        className="truncate">
+                                        {document.title}
+                                    </h1>
+                                )}
                             </div>
-                        }
-                    </div>
-                    <div className="absolute text-sm flex flex-col">
-                        <div className="w-100 truncate">
-                            {isEditing ? (
-                                <input
-                                    type="text"
-                                    value={title}
-                                    onChange={handleTitleChange}
-                                    onBlur={handleTitleBlur}
-                                    onKeyDown={handleKeyDown}
-                                    autoFocus
-                                    className="w-full text-black cursor-text"
-                                />
-                            ) : (
-                                <h1
-                                    onClick={handleEditClick}
-                                    className="truncate cursor-text">
-                                    {document.title}
-                                </h1>
-                            )}
                         </div>
                     </div>
-                </div>
-            )}
-        </li>
+                )}
+            </li>
+            <ReactTooltip
+                id='hoverDocumentItem'
+                place="right"
+                variant="light"
+                opacity={1}
+                content={`View this problem bank`} />
+        </>
     );
 };
 

@@ -11,7 +11,6 @@ import { SidebarProvider } from './contexts/useSidebarContext';
 import { ModalProvider } from './contexts/useModal';
 import Notifications from './components/Notifications';
 import { Toaster } from 'react-hot-toast';
-import GyosuJoyride from './components/GyosuJoyride';
 
 interface AppProps {
   children: any;
@@ -24,7 +23,6 @@ function App({ children }: AppProps) {
     <div className=''>
       <Toaster />
       <Notifications />
-      <GyosuJoyride />
       <QueryClientProvider client={queryClient}>
         <DarkModeProvider>
           <ModalProvider>

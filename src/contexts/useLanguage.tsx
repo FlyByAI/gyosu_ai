@@ -28,7 +28,6 @@ export const LanguageProvider = ({ children }: LanguageProviderProps) => {
         if (language !== undefined && i18n.isInitialized) {
             i18n && i18n.changeLanguage(language);
             localStorage.setItem('language', language);
-            console.log('Language changed to: ', language)
         }
     }, [language]);
 
