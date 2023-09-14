@@ -32,7 +32,7 @@ const Subscribe = () => {
                         <p className='my-4 text-left'>Plan includes:</p>
                         <ul className='list-decimal-none list-inside text-left space-y-4 mt-4 flex flex-col'>
                             <li className="flex flex-row"><CheckmarkIcon />Full access to problem database</li>
-                            <li className="flex flex-row"><CheckmarkIcon />Create up to 10 AI generated documents per month</li>
+                            <li className="flex flex-row"><CheckmarkIcon />Create up to 20 AI generated documents per month</li>
                             <li className="flex flex-row"><CheckmarkIcon />50 custom AI problems per month</li>
                             <li className="flex flex-row"><CheckmarkIcon />Limited access to additional features</li>
                         </ul>
