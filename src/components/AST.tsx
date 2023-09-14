@@ -109,13 +109,22 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
         <>
             <ReactTooltip
                 id='chunkDragTip'
-                place="right"
+                place={!id ? "right" : "left-start"}
                 offset={8}
-                children={<><div className='flex flex-row items-center justify-center'>Click and drag to</div>
-                    <div className='flex flex-row items-center justify-center'>a problem bank.</div>
-                </>}
+                positionStrategy='fixed'
+                className='z-10'
+                children={!id ?
+                    <>
+                        <div className='flex flex-row items-center justify-center'>Click and drag to</div>
+                        <div className='flex flex-row items-center justify-center'>a problem bank.</div>
+                    </> : <>
+                        <div className='flex flex-row items-center justify-center'>Click to select </div>
+                        <div className='flex flex-row items-center justify-center'>this problem.</div>
+
+                    </>}
                 variant="light"
             />
+
             <ReactTooltip
                 id='addChunkTip'
                 place="bottom"
@@ -300,7 +309,7 @@ const InstructionComponent: React.FC<InstructionProps> = ({ parentChunk, parentC
                                         remarkPlugins={[remarkGfm, remarkMath]}
                                         rehypePlugins={[rehypeKatex]}
                                     >
-                                        {`${item.value}`}
+                                        {String.raw`${item.value}`}
                                     </ReactMarkdown>
                                 );
                             case 'image':
@@ -413,7 +422,7 @@ const ProblemComponent: React.FC<ProblemProps> = ({ parentChunk, parentChunkInde
                                         remarkPlugins={[remarkGfm, remarkMath]}
                                         rehypePlugins={[rehypeKatex]}
                                     >
-                                        {item.value}
+                                        {String.raw`${item.value}`}
                                     </ReactMarkdown>
                                 );
                             case 'image':

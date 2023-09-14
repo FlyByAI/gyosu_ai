@@ -5,10 +5,11 @@ type OverflowMenuProps = {
     children: React.ReactNode;
     variant?: "top" | "bottom";
     type?: "iconRow" | "default";
+    isOpen: boolean;
+    setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const OverflowMenu: React.FC<OverflowMenuProps> = ({ children, variant, type = "default" }) => {
-    const [isOpen, setIsOpen] = useState(false);
+const OverflowMenu: React.FC<OverflowMenuProps> = ({ children, variant, type = "default", isOpen, setIsOpen }) => {
     const menuRef = useRef<HTMLDivElement>(null);
 
     const handleDocumentClick = (e: MouseEvent) => {

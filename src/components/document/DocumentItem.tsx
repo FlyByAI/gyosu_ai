@@ -65,6 +65,7 @@ const DocumentItem: React.FC<DocumentItemProps> = ({ document, onDropChunk, isEx
         e.stopPropagation();
         setTitle(document?.title || '');
         setIsEditing(true);
+        setIsOverflowOpen(false);
     };
 
     const handleDeleteClick = (e: React.MouseEvent) => {
@@ -74,6 +75,7 @@ const DocumentItem: React.FC<DocumentItemProps> = ({ document, onDropChunk, isEx
             if (confirmDelete) {
                 deleteDocument(document);
             }
+            setIsOverflowOpen(false);
         }
     };
 
@@ -101,6 +103,7 @@ const DocumentItem: React.FC<DocumentItemProps> = ({ document, onDropChunk, isEx
         }
     };
 
+    const [isOverflowOpen, setIsOverflowOpen] = useState(false);
 
 
     return (
@@ -114,6 +117,8 @@ const DocumentItem: React.FC<DocumentItemProps> = ({ document, onDropChunk, isEx
                 <div className="z-10 absolute top-1 right-1 flex space-x-2">
                     <OverflowMenu
                         variant="bottom"
+                        isOpen={isOverflowOpen}
+                        setIsOpen={setIsOverflowOpen}
                     >
                         <button onClick={handleEditClick}
                             className="p-1 text-green-700 rounded"
