@@ -68,7 +68,10 @@ const Documents: React.FC = () => {
                                         </li>
                                     ))}
                             </ul> :
-                            "You don't have any documents yet. "}
+                            <div className='text-white'>
+                                "You don't have any documents yet. "
+                            </div>
+                        }
                     </Accordion>
                 </div>
             ) : <div className="text-white mt-4 text-center h-screen">
