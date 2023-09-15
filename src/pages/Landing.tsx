@@ -133,7 +133,7 @@ const LandingPage: React.FC = () => {
                 </div>
             </section>
             <section className="py-10 h-full bg-pink-100 justify-center text-gray-700 flex flex-col md:flex-row items-center">
-                <div className='w-full md:w-1/2 text-2xl md:text-5xl flex flex-col items-center'>
+                <div className='w-full md:w-1/2 text-2xl md:text-5xl flex flex-col items-center md:ms-4'>
                     <h1 className="font-bold mb-4">22,000+ Problems</h1>
                     <p className="text-center text-lg">High quality problems sourced from math textbooks.</p>
                 </div>
@@ -148,21 +148,20 @@ const LandingPage: React.FC = () => {
                     </div>
                 </div>
             </section>
-            {/* <section className="py-10 h-full bg-pink-100 justify-center text-gray-700 flex flex-col md:flex-row items-center">
-                <div className='w-full md:w-1/2 text-2xl md:text-5xl flex flex-col items-center'>
-                    <h1 className="font-bold mb-4">Chat with AI</h1>
-                    <p className="text-lg">Make the problem more fun</p>
+            <section className="py-10 h-full bg-blue-100 justify-center text-gray-700 flex flex-col md:flex-row items-center">
+                <div className="w-full md:w-1/2 flex flex-col py-4 h-96 items-center justify-center">
+                    <img
+                        className="object-contain h-full max-h-96 border-2 me-8 border-gray-900"
+                        src="/images/landing_page_worksheet_demo.png"
+                        alt="Image 1"
+                    />
                 </div>
-                <div className='w-full md:w-1/2 flex flex-col py-4'>
-                    <div className='w-3/4 mx-auto flex flex-row mb-4 bg-gray-900 p-2'>
-                        <div className='w-full rounded-xl'>
-                            <MathProblem chunkIndex={0}
-                                problem={sampleChunk2 as Chunk}
-                                updateChunk={() => console.log('update')} />
-                        </div>
-                    </div>
+                <div className='w-full mx-auto md:w-1/2 text-2xl md:text-5xl flex flex-col items-center md:me-4'>
+                    <h1 className="text-center font-bold mb-4 mx-auto">Customized Classroom Materials</h1>
+                    <p className="text-center mx-auto text-lg">Created by you in seconds.</p>
                 </div>
-            </section > */}
+            </section>
+
             <section className="p-10 h-full flex items-center" style={{ backgroundImage: `url('/svg/tech-bg.svg')`, backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover' }}>
                 <div className="w-2/3 text-5xl text-gray-800">
                     <h1 className="font-bold" ><LoopingText variant='typed' textArray={['Innovative', 'Impactful', 'Customized']} /></h1><h1>Education</h1>
