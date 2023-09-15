@@ -135,11 +135,11 @@ const ToolBadge: React.FC<ToolBadgeProps> = ({ chunk, instruction, problem, inse
             >
                 <TrashIcon />
             </button>
-            {insertChunk && <button onClick={handleAdd}
+            {/* {insertChunk && <button onClick={handleAdd}
                 data-tooltip-id="insertTip"
                 className="pe-1 text-green-500">
                 <PlusIcon />
-            </button>}
+            </button>} */}
             <ReactTooltip
                 id='deleteTip'
                 place="bottom"
