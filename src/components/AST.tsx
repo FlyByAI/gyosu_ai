@@ -287,13 +287,11 @@ const InstructionComponent: React.FC<InstructionProps> = ({ parentChunk, parentC
                         switch (item.type) {
                             case 'text':
                                 return (
-                                    <ReactMarkdown
+                                    <div
                                         className={"z-10 text-blue-300 border-2 border-transparent border-dashed hover:border-2 hover:border-purple-dashed p-1 m-1 group-hover:border-2 group-hover:border-blue-500 group-hover:border-dashed"}
-                                        remarkPlugins={[remarkGfm, remarkMath]}
-                                        rehypePlugins={[rehypeKatex]}
                                     >
                                         {item.value}
-                                    </ReactMarkdown>
+                                    </div>
                                 );
                             case 'math':
                                 return (
@@ -400,13 +398,11 @@ const ProblemComponent: React.FC<ProblemProps> = ({ parentChunk, parentChunkInde
                         switch (item.type) {
                             case 'text':
                                 return (
-                                    <ReactMarkdown
+                                    <div
                                         className={'z-10 text-yellow-100 border-2 border-transparent border-dashed hover:border-2 hover:border-purple-dashed p-1 m-1 group-hover:border-2 group-hover:border-yellow-100 group-hover:border-dashed'}
-                                        remarkPlugins={[remarkGfm, remarkMath]}
-                                        rehypePlugins={[rehypeKatex]}
                                     >
                                         {item.value}
-                                    </ReactMarkdown>
+                                    </div>
                                 );
                             case 'math':
                                 return (
