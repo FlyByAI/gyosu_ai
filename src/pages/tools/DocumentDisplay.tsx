@@ -109,6 +109,7 @@ const DocumentDisplay: React.FC = () => {
                                         chunkIndex={chunkIndex}
                                         problem={chunk}
                                         selectable={true}
+                                        enableTools={true}
                                     />
                                 </div>
 

@@ -6,12 +6,12 @@ const Notifications = () => {
 
     return (
         <div
-            className="fixed top-30 left-64 transform -translate-x-1/2 z-99"
+            className="fixed top-36 left-72 transform -translate-x-1/2 z-50"
             onMouseEnter={startPause}
             onMouseLeave={endPause}
         >
             {toasts.map((toast: any) => {
-                toast.duration = 1500;
+                toast.duration = 3000;
                 const offset = calculateOffset(toast, {
                     reverseOrder: false
                 });
@@ -22,12 +22,15 @@ const Notifications = () => {
                     }
                 };
 
+                const xPos = toast.x || 0;
+                const yPos = toast.y || 0;
+
                 return (
                     <div
                         key={toast.id}
                         ref={ref}
-                        className={`z-80 p-1 rounded-md bg-white fixed z-90 w-96 bg-papayawhip transition-all duration-200 ease-out ${toast.visible ? 'opacity-100' : 'opacity-0'}`}
-                        style={{ transform: `translateY(${offset}px)` }}
+                        className={`flex items-center text-lg font-bold animate-bounce z-80 p-4 rounded-md bg-green-500 border-2 border-green-200 text-white fixed z-90 w-96 transition-all duration-400 ease-out ${toast.visible ? 'opacity-100' : 'opacity-0'}`}
+                        style={{ left: `${xPos}px`, top: `${yPos}px` }}
                     >
                         {toast.message}
                     </div>
