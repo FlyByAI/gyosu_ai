@@ -32,6 +32,7 @@ import Documents from './pages/Documents.tsx';
 import MyProblemBanks from './pages/tools/MathProblemBanks.tsx';
 import { notSecretConstants } from './constants/notSecretConstants.tsx';
 import useEnvironment from './hooks/useEnvironment.tsx';
+import FAQPage from './pages/FAQPage.tsx';
 
 
 export default function ClerkProviderWithRoutes() {
@@ -103,6 +104,18 @@ export default function ClerkProviderWithRoutes() {
                             <Navbar />
                             <MyProblemBanks />
                             <Footer />
+                        </>
+                    }
+                />
+                <Route
+                    path="/faq"
+                    element={
+                        <>
+                            <Navbar />
+                            <ContentWrapper>
+                                <FAQPage />
+                                <Footer />
+                            </ContentWrapper>
                         </>
                     }
                 />
