@@ -24,7 +24,7 @@ const CreateDocxModal: React.FC<CreateDocxModalProps> = ({ document, modalId, en
                 data-tooltip-id='selectProblemsTip'>
                 <button
                     onClick={handleOpenClick}
-                    className={`w-1/2 p-4 rounded text-lg font-bold shadow-lg ${enabled ? 'bg-blue-600 hover:bg-blue-700 text-white' : 'bg-gray-400 text-gray-700'}`}
+                    className={`w-full md:w-1/2 p-4 rounded text-lg font-bold shadow-lg ${enabled ? 'bg-blue-600 hover:bg-blue-700 text-white' : 'bg-gray-400 text-gray-700'}`}
                 >
                     Create Worksheet
                 </button>
