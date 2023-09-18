@@ -11,6 +11,7 @@ import { SidebarProvider } from './contexts/useSidebarContext';
 import { ModalProvider } from './contexts/useModal';
 import Notifications from './components/Notifications';
 import { Toaster } from 'react-hot-toast';
+import { ScreenSizeProvider } from './contexts/ScreenSizeContext';
 
 interface AppProps {
   children: any;
@@ -28,9 +29,11 @@ function App({ children }: AppProps) {
           <ModalProvider>
             <SidebarProvider>
               <LanguageProvider>
-                <DndProvider backend={HTML5Backend}>
-                  {children}
-                </DndProvider>
+                <ScreenSizeProvider>
+                  <DndProvider backend={HTML5Backend}>
+                    {children}
+                  </DndProvider>
+                </ScreenSizeProvider>
               </LanguageProvider>
             </SidebarProvider>
           </ModalProvider>

@@ -11,6 +11,7 @@ import useEnvironment from '../hooks/useEnvironment';
 import CreateDocxModal from '../components/CreateDocxModal';
 import { useSidebarContext } from '../contexts/useSidebarContext';
 import SearchIcon from '../svg/SearchIcon';
+import { useScreenSize } from '../contexts/ScreenSizeContext';
 
 const ProblemBank: React.FC = () => {
     const { id } = useParams();
@@ -21,6 +22,8 @@ const ProblemBank: React.FC = () => {
     const { updateDocument } = useSubmitDocument(endpoint2);
 
     const { activeChunkIndices, setActiveChunkIndices } = useSidebarContext();
+
+    const { isDesktop } = useScreenSize();
 
     if (isLoading) {
         return <div className="text-white">Loading...</div>;
@@ -86,10 +89,11 @@ const ProblemBank: React.FC = () => {
         updateDocument({ document: updatedDocument });
     };
 
+
     return (
         <div className='flex '>
             <ProblemBankShelf isExporting={false} />
-            <div className="w-5/6 mt-4" style={{ marginRight: '16.6667%' }}>
+            <div className="w-5/6 mt-4" style={{ marginRight: isDesktop ? '16.6667%' : "0" }}>
                 <div className='w-3/4 mx-auto py-2'>
                     <CreateDocxModal enabled={activeChunkIndices.length > 0} document={document} modalId={"createDocx"} />
                 </div>

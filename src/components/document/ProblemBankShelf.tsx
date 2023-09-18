@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 import toast, { useToaster } from 'react-hot-toast/headless';
 import InfoCircle from '../../svg/InfoCircle';
 import SearchIcon from '../../svg/SearchIcon';
+import { useScreenSize } from '../../contexts/ScreenSizeContext';
 
 
 
@@ -31,6 +32,8 @@ const ProblemBankShelf: React.FC<ProblemBankShelfProps> = ({ isExporting }) => {
     const { documents, isLoading, error } = useGetDocuments(endpoint);
     const endpoint2 = `${apiUrl}/math_app/school_document/`;
     const { submitDocument, updateDocument } = useSubmitDocument(endpoint2);
+
+    const { isDesktop } = useScreenSize();
 
     const handleAddDocument = async () => {
         const newDocument: Document = {
@@ -87,14 +90,15 @@ const ProblemBankShelf: React.FC<ProblemBankShelfProps> = ({ isExporting }) => {
 
     };
 
+
     const createButtonClass = documents && documents.length > 0
         ? "spacing-x-2 items-center justify-center w-full bg-blue-500 hover:bg-blue-700 h-10 p-2 rounded-md text-white font-extrabold flex-row flex"
         : "spacing-x-2 items-center justify-center w-full bg-green-500 hover:bg-green-700 h-10 p-4 rounded-md text-white font-extrabold text-lg flex-row flex";
 
     return (<>
 
-        <div style={{ marginLeft: '16.6667%' }} />
-        <div className="flex z-10 flex-col w-1/6 bg-gray-800 p-2 fixed" style={{ top: '80px', height: `calc(100vh - 80px)` }}>
+        <div style={{ marginLeft: isDesktop ? '16.6667%' : "33%" }} />
+        <div className="flex z-10 flex-col w-1/3 md:w-1/6 bg-gray-800 p-2 fixed" style={{ top: '80px', height: `calc(100vh - 80px)` }}>
             <div className="flex flex-col justify-between items-center mb-2">
                 <Link to="/math-app" className="items-center justify-center  hover:underline w-full text-blue-400 rounded-md text-xl font-extrabold flex-row flex">
                     Search <SearchIcon className='ps-2 h-8' />
@@ -107,7 +111,7 @@ const ProblemBankShelf: React.FC<ProblemBankShelfProps> = ({ isExporting }) => {
                 </button>
             </div>
 
-            <ul className="space-y-2  overflow-y-auto">
+            <ul className="space-y-2 overflow-y-auto">
                 {documents && documents.map((document) => (
                     <DocumentItem isExporting={isExporting} key={document.id} document={document} onDropChunk={handleDropNode} />
                 ))}

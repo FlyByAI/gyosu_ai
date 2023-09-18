@@ -140,7 +140,7 @@ const MathGenerateForm: React.FC<MathGenerateFormProps> = ({ onSubmit, setProble
     return (
         <>
             <div className="flex justify-center items-center">
-                <div className="w-3/4 bg-gray-700 rounded-lg p-4 my-4 shadow-lg items-center flex flex-col">
+                <div className="w-full md:w-3/4 mx-4 md:mx-0 bg-gray-700 rounded-lg p-4 my-4 shadow-lg items-center flex flex-col">
                     <div className="flex flex-col lg:flex-row justify-center items-center w-full">
                         <Dropdown
                             showSelected={false}
@@ -172,7 +172,7 @@ const MathGenerateForm: React.FC<MathGenerateFormProps> = ({ onSubmit, setProble
                             options={problemTypeOptions}
                             defaultValue={problemType}
                             handleChange={handleChangeProblemType}
-                            className="form-select block w-full lg:w-1/3"
+                            className="form-select block me-2 w-full lg:w-1/3"
                         />
                     </div>
                     <SubmitButton
