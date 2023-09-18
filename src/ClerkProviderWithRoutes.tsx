@@ -27,7 +27,7 @@ import DocumentDisplay from './pages/tools/DocumentDisplay.tsx';
 import LandingPage from './pages/Landing.tsx';
 import MathDocumentSearch from './pages/tools/MathDocumentSearch.tsx';
 import MathGenerate from './pages/tools/MathGenerate.tsx';
-import Subscribe from './components/Subscribe.tsx';
+import Pricing from './components/Pricing.tsx';
 import Documents from './pages/Documents.tsx';
 import MyProblemBanks from './pages/tools/MathProblemBanks.tsx';
 import { notSecretConstants } from './constants/notSecretConstants.tsx';
@@ -137,7 +137,7 @@ export default function ClerkProviderWithRoutes() {
                         <>
                             <Navbar />
                             <ContentWrapper>
-                                <Subscribe />
+                                <Pricing />
                             </ContentWrapper>
                         </>
                     }

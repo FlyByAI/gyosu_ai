@@ -6,7 +6,7 @@ import FreeTierButton from './FreeTierButton';
 import { useClerk } from '@clerk/clerk-react';
 import CheckmarkIcon from '../svg/CheckmarkIcon';
 
-const Subscribe = () => {
+const Pricing = () => {
 
     const { session } = useClerk();
 
@@ -78,4 +78,4 @@ const Subscribe = () => {
     );
 };
 
-export default Subscribe;
+export default Pricing;
