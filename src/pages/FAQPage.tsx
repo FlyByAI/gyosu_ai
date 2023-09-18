@@ -50,7 +50,7 @@ const FAQPage: React.FC = () => {
             <h1 className="text-4xl font-semibold text-center mb-6">Frequently Asked Questions</h1>
             {faqs.map((faq, index) => (
                 <Accordion key={index} title={faq.question} visible={false}>
-                    <p>{faq.answer}</p>
+                    <p className='my-4'>{faq.answer}</p>
                 </Accordion>
             ))}
         </div>

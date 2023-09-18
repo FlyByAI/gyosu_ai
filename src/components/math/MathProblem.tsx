@@ -11,6 +11,7 @@ interface MathProblemProps {
     updateChunk: (updatedChunk: Chunk, chunkIndex: number) => void;
     enableTools?: boolean;
     selectable?: boolean;
+    disableInstructionProblemDrag?: boolean;
 }
 
 const MathProblem: React.FC<MathProblemProps> = ({ problem, chunkIndex, insertChunk, updateChunk, enableTools, selectable }) => {

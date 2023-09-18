@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { SignedIn, SignedOut, UserButton, SignInButton } from '@clerk/clerk-react';
-import { useDarkMode } from '../../hooks/useDarkMode';
+import { useDarkMode } from '../../contexts/useDarkMode';
 import LanguageDropdown from '../LanguageDropdown';
 import { getGyosuClerkTheme } from '../../theme/customClerkTheme';
 import Hamburger from 'hamburger-react'
@@ -31,6 +31,9 @@ const RegularNavbar: React.FC = () => {
                 </div>
             </div>
             <nav className="grid grid-cols-2 gap-2 lg:flex lg:space-x-3 pt-4">
+                <Link to="/faq" className="text-lg text-white hover:underline dark:text-gray-200 lg:justify-self-end block sm:hidden">
+                    How To
+                </Link>
                 <Link to="/subscribe" className="text-lg text-white hover:underline dark:text-gray-200 lg:justify-self-end block sm:hidden">
                     Pricing
                 </Link>
@@ -51,6 +54,9 @@ const RegularNavbar: React.FC = () => {
                 <Link to="/" className="text-3xl font-semibold text-white font-mono">Gyosu.ai</Link>
                 <div className="flex items-center">
                     <nav>
+                        <Link to="/faq" className="text-lg text-white mx-3 hover:underline dark:text-gray-200 font-mono font-bold">
+                            How To
+                        </Link>
                         <Link to="/subscribe" className="text-lg text-white mx-3 hover:underline dark:text-gray-200 font-mono font-bold">
                             Pricing
                         </Link>

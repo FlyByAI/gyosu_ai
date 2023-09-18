@@ -6,17 +6,17 @@ import FreeTierButton from './FreeTierButton';
 import { useClerk } from '@clerk/clerk-react';
 import CheckmarkIcon from '../svg/CheckmarkIcon';
 
-const Subscribe = () => {
+const Pricing = () => {
 
     const { session } = useClerk();
 
     return (
         <div className='text-white text-l'>
             <section id="pricing">
-                <div className='flex flex-row justify-between'>
+                <div className='flex flex-col md:flex-row justify-between'>
 
                     {/* Card Container */}
-                    <div className="tier w-1/3 p-6 rounded-md shadow-lg bg-gray-800 border border-gray-700 mr-4">
+                    <div className="tier w-full md:w-1/3 p-6 rounded-md shadow-lg bg-gray-800 border border-gray-700 my-4 md:mx-4">
                         <h2 className='text-2xl font-semibold mb-1 text-center'>Free</h2>
                         <p className='my-4 text-left'>For educators with minimal document creation needs.</p>
                         <h3 className='text-left'>Free</h3>
@@ -39,7 +39,7 @@ const Subscribe = () => {
                     </div>
 
                     {/* Educator Tier Card */}
-                    <div className="tier w-1/3 p-6 rounded-md shadow-lg bg-gray-800 border border-gray-700 mx-2">
+                    <div className="tier w-full md:w-1/3 p-6 rounded-md shadow-lg bg-gray-800 border border-gray-700 my-4 md:mx-4">
                         <h2 className='text-2xl font-semibold mb-1 text-center'>Educator</h2>
                         <p className='my-4 text-left'>For teachers with normal class needs.</p>
                         <h3 className='text-left'>$5/Month</h3>
@@ -56,7 +56,7 @@ const Subscribe = () => {
                     </div>
 
                     {/* Premium Tier Card */}
-                    <div className="tier w-1/3 p-6 rounded-md shadow-lg bg-gray-800 border border-gray-700 ml-4">
+                    <div className="tier w-full md:w-1/3 p-6 rounded-md shadow-lg bg-gray-800 border border-gray-700 my-4 md:mx-4">
                         <h2 className='text-2xl font-semibold mb-1 text-center'>School</h2>
                         <p className='my-4 text-left'>For Schools with advanced educational needs.</p>
                         <h3 className='text-left'>$9/Month</h3>
@@ -78,4 +78,4 @@ const Subscribe = () => {
     );
 };
 
-export default Subscribe;
+export default Pricing;

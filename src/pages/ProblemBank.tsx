@@ -1,18 +1,19 @@
 import React, { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import useGetDocument from '../../hooks/tools/math/useGetDocument';
-import ProblemBankShelf from '../../components/document/ProblemBankShelf';
+import useGetDocument from '../hooks/tools/math/useGetDocument';
+import ProblemBankShelf from '../components/document/ProblemBankShelf';
 
-import { Chunk } from '../../interfaces';
-import MathProblem from '../../components/math/MathProblem';
-import useSubmitDocument from '../../hooks/tools/math/useSubmitDocument';
-import PlusIcon from '../../svg/PlusIcon';
-import useEnvironment from '../../hooks/useEnvironment';
-import CreateDocxModal from '../../components/CreateDocxModal';
-import { useSidebarContext } from '../../contexts/useSidebarContext';
-import SearchIcon from '../../svg/SearchIcon';
+import { Chunk } from '../interfaces';
+import MathProblem from '../components/math/MathProblem';
+import useSubmitDocument from '../hooks/tools/math/useSubmitDocument';
+import PlusIcon from '../svg/PlusIcon';
+import useEnvironment from '../hooks/useEnvironment';
+import CreateDocxModal from '../components/CreateDocxModal';
+import { useSidebarContext } from '../contexts/useSidebarContext';
+import SearchIcon from '../svg/SearchIcon';
+import { useScreenSize } from '../contexts/ScreenSizeContext';
 
-const DocumentDisplay: React.FC = () => {
+const ProblemBank: React.FC = () => {
     const { id } = useParams();
     const { apiUrl } = useEnvironment();
     const { isLoading, error, document } = useGetDocument(`${apiUrl}/math_app/school_document/`, Number(id));
@@ -21,6 +22,8 @@ const DocumentDisplay: React.FC = () => {
     const { updateDocument } = useSubmitDocument(endpoint2);
 
     const { activeChunkIndices, setActiveChunkIndices } = useSidebarContext();
+
+    const { isDesktop } = useScreenSize();
 
     if (isLoading) {
         return <div className="text-white">Loading...</div>;
@@ -86,10 +89,11 @@ const DocumentDisplay: React.FC = () => {
         updateDocument({ document: updatedDocument });
     };
 
+
     return (
         <div className='flex '>
             <ProblemBankShelf isExporting={false} />
-            <div className="w-5/6 mt-4" style={{ marginRight: '16.6667%' }}>
+            <div className="w-5/6 mt-4" style={{ marginRight: isDesktop ? '16.6667%' : "0" }}>
                 <div className='w-3/4 mx-auto py-2'>
                     <CreateDocxModal enabled={activeChunkIndices.length > 0} document={document} modalId={"createDocx"} />
                 </div>
@@ -104,11 +108,12 @@ const DocumentDisplay: React.FC = () => {
                                 <div className='w-full rounded-xl' >
                                     <MathProblem
                                         insertChunk={insertChunk}
+                                        selectable={true}
+                                        disableInstructionProblemDrag={true}
                                         updateChunk={updateDocumentChunk}
                                         key={chunkIndex}
                                         chunkIndex={chunkIndex}
                                         problem={chunk}
-                                        selectable={true}
                                         enableTools={true}
                                     />
                                 </div>
@@ -139,4 +144,4 @@ const DocumentDisplay: React.FC = () => {
     );
 };
 
-export default DocumentDisplay;
+export default ProblemBank;

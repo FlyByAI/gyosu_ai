@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import 'tailwindcss/tailwind.css';
 import { useClerk, useUser } from '@clerk/clerk-react';
-import { Chunk, ProblemData } from '../../interfaces';
-import ProblemBankShelf from '../../components/document/ProblemBankShelf';
-import ChunkManager from '../../components/math/ChunkManager';
-import MathGenerateForm from '../../components/math/MathGenerateForm';
+import { Chunk, ProblemData } from '../interfaces';
+import ProblemBankShelf from '../components/document/ProblemBankShelf';
+import ChunkManager from '../components/math/ChunkManager';
+import MathGenerateForm from '../components/math/MathGenerateForm';
+import { useScreenSize } from '../contexts/ScreenSizeContext';
 
 
 const MathGenerate: React.FC = () => {
@@ -28,10 +29,12 @@ const MathGenerate: React.FC = () => {
         }
     }, [session, openSignIn])
 
+    const { isDesktop } = useScreenSize();
+
     return (
         <div className="flex">
             <ProblemBankShelf isExporting={false} />
-            <div className="w-5/6 mt-4" style={{ marginRight: '16.6667%' }}>
+            <div className="w-5/6 mt-4" style={{ marginRight: isDesktop ? '16.6667%' : "0" }}>
                 <MathGenerateForm onSubmit={handleSubmit} setProblemData={setProblemData} />
                 <div>
                     {problemData &&

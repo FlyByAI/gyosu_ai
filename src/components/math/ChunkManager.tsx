@@ -37,6 +37,7 @@ const ChunkManager: React.FC<ChunkManagerProps> = ({ chunkArray, setChunkArray }
                             <MathProblem
                                 key={chunkIndex}
                                 selectable={false}
+                                disableInstructionProblemDrag={true}
                                 chunkIndex={chunkIndex}
                                 problem={chunk}
                                 updateChunk={updateChunk}
