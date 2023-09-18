@@ -30,10 +30,11 @@ interface ChunkProps {
     updateChunk: (updatedChunk: Chunk, chunkIndex: number) => void;
     chunkIndex: number;
     enableTools?: boolean;
-    selectable?: boolean;
+    disableInstructionProblemDrag?: boolean;
+    selectable?: boolean; //used to disable drag and drop for instructions and problems when on the search
 }
 
-export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updateChunk, chunkIndex, enableTools, selectable }) => {
+export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updateChunk, chunkIndex, enableTools, selectable, disableInstructionProblemDrag }) => {
 
     const { activeChunkIndices, setActiveChunkIndices } = useSidebarContext();
     const { apiUrl } = useEnvironment();
@@ -43,12 +44,12 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
     const endpoint2 = `${apiUrl}/math_app/school_document/`;
     const { isLoading, updateDocument } = useSubmitDocument(endpoint2);
 
+    const [isHovered, setIsHovered] = useState(false);
+
     const [, ref] = useDrag({
         type: CHUNK_DRAG_TYPE,
         item: { ...chunk, content: chunk.content } as Chunk
     });
-
-    const [isHovered, setIsHovered] = useState(false);
 
     //do this in instruction and problem too so they can be dragged on
     const [, drop] = useDrop({
@@ -174,18 +175,17 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
                             defaultChecked={activeChunkIndices.includes(chunkIndex)}
                             className="focus:ring-green-500 h-4 w-6 text-green-600 rounded"
                         />
-                    </div>)
-
-                }
+                    </div>
+                )}
                 {/* {chunk.parentChunkId && <div className='text-gray-400 text-xs'>Parent: {chunk.parentChunkId}</div>} */}
 
                 {chunk.content.map((item, index) => {
                     const element = (() => {
                         switch (item.type) {
                             case 'instruction':
-                                return <InstructionComponent instructionIndex={index} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} instruction={item} onInstructionHover={setIsHovered} />;
+                                return <InstructionComponent instructionIndex={index} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} instruction={item} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
                             case 'problem':
-                                return <ProblemComponent problemIndex={index} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} problem={item} onInstructionHover={setIsHovered} />;
+                                return <ProblemComponent problemIndex={index} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} problem={item} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
                             default:
                                 return null;
                         }
@@ -232,9 +232,10 @@ interface InstructionProps {
     instructionIndex: number;
     edit?: boolean;
     onInstructionHover: (hovered: boolean) => void; // Function to change the parent's hover state
+    disableInstructionProblemDrag?: boolean; //used to disable drag and drop for instructions and problems when on the search
 }
 
-const InstructionComponent: React.FC<InstructionProps> = ({ parentChunk, parentChunkIndex, updateChunk, instruction, instructionIndex }) => {
+const InstructionComponent: React.FC<InstructionProps> = ({ parentChunk, parentChunkIndex, updateChunk, instruction, instructionIndex, disableInstructionProblemDrag }) => {
     const [, ref] = useDrag({
         type: INSTRUCTION_DRAG_TYPE,
         item: { ...instruction, content: instruction.content } as Instruction,
@@ -280,7 +281,10 @@ const InstructionComponent: React.FC<InstructionProps> = ({ parentChunk, parentC
     }
 
     return (
-        <div ref={(node) => ref(drop(node))} className="flex group flex-row flex-wrap">
+
+        <div
+            ref={(node) => disableInstructionProblemDrag ? ref(drop(node)) : node}
+            className="flex group flex-row flex-wrap">
             {instruction.content.map((item, index) => (
                 <span key={index} style={{ display: 'inline' }}>
                     {(() => {
@@ -288,7 +292,7 @@ const InstructionComponent: React.FC<InstructionProps> = ({ parentChunk, parentC
                             case 'text':
                                 return (
                                     <div
-                                        className={"z-10 text-blue-300 border-2 border-transparent border-dashed hover:border-2 hover:border-purple-dashed p-1 m-1 group-hover:border-2 group-hover:border-blue-500 group-hover:border-dashed"}
+                                        className={"z-10 text-blue-300 border-2 border-transparent border-dashed hover:border-2 p-1 m-1 group-hover:border-2 group-hover:border-dashed"}
                                     >
                                         {item.value}
                                     </div>
@@ -296,7 +300,7 @@ const InstructionComponent: React.FC<InstructionProps> = ({ parentChunk, parentC
                             case 'math':
                                 return (
                                     <ReactMarkdown
-                                        className={"z-10 text-yellow-200 border-2 border-transparent border-dashed hover:border-2 hover:border-purple-dashed p-1 m-1 group-hover:border-2 group-hover:border-yellow-300 group-hover:border-dashed"}
+                                        className={"z-10 text-yellow-200 border-2 border-transparent border-dashed hover:border-2 p-1 m-1 group-hover:border-2 group-hover:border-dashed"}
                                         remarkPlugins={[remarkGfm, remarkMath]}
                                         rehypePlugins={[rehypeKatex]}
                                     >
@@ -306,7 +310,7 @@ const InstructionComponent: React.FC<InstructionProps> = ({ parentChunk, parentC
                             case 'table':
                                 return (
                                     <ReactMarkdown
-                                        className={"z-10 text-purple-300 border-gray-100  border-2 border-transparent border-dashed hover:border-2 hover:border-purple-dashed p-1 m-1 group-hover:border-2 group-hover:border-purple-500 group-hover:border-dashed"}
+                                        className={"z-10 text-purple-300 border-gray-100  border-2 border-transparent border-dashed hover:border-2 p-1 m-1 group-hover:border-2 group-hover:border-dashed"}
                                         remarkPlugins={[remarkGfm, remarkMath]}
                                         rehypePlugins={[rehypeKatex]}
                                     >
@@ -318,7 +322,7 @@ const InstructionComponent: React.FC<InstructionProps> = ({ parentChunk, parentC
                                     <img
                                         src={item.value}
                                         alt="Description"
-                                        className="z-10 p-1 m-1 border-2 border-transparent border-dashed hover:border-2 hover:border-purple-dashed group-hover:border-2 group-hover:border-purple-500 group-hover:border-dashed"
+                                        className="z-10 p-1 m-1 border-2 border-transparent border-dashed hover:border-2 group-hover:border-2 group-hover:border-dashed"
                                     />
                                 );
                             default:
@@ -343,9 +347,11 @@ interface ProblemProps {
     problemIndex: number;
     edit?: boolean;
     onInstructionHover: (hovered: boolean) => void; // Function to change the parent's hover state
+
+    disableInstructionProblemDrag?: boolean; //used to disable drag and drop for instructions and problems when on the search
 }
 
-const ProblemComponent: React.FC<ProblemProps> = ({ parentChunk, parentChunkIndex, updateChunk, problem, problemIndex }) => {
+const ProblemComponent: React.FC<ProblemProps> = ({ parentChunk, parentChunkIndex, updateChunk, problem, problemIndex, disableInstructionProblemDrag }) => {
     const [, ref] = useDrag({
         type: PROBLEM_DRAG_TYPE,
         item: { ...problem, content: problem.content } as Problem,
@@ -377,7 +383,6 @@ const ProblemComponent: React.FC<ProblemProps> = ({ parentChunk, parentChunkInde
             const updatedChunk = { ...parentChunk, content: filteredContent };
             updateChunk(updatedChunk, parentChunkIndex);
         }
-
     });
 
     function processLatexString(latex_string: string): string {
@@ -391,7 +396,9 @@ const ProblemComponent: React.FC<ProblemProps> = ({ parentChunk, parentChunkInde
     }
 
     return (
-        <div ref={(node) => ref(drop(node))} className="flex group flex-row flex-wrap">
+        <div
+            ref={(node) => disableInstructionProblemDrag ? ref(drop(node)) : node}
+            className="flex group flex-row flex-wrap">
             {problem.content.map((item, index) => (
                 <span key={index} style={{ display: 'inline' }}>
                     {(() => {
@@ -399,7 +406,7 @@ const ProblemComponent: React.FC<ProblemProps> = ({ parentChunk, parentChunkInde
                             case 'text':
                                 return (
                                     <div
-                                        className={'z-10 text-yellow-100 border-2 border-transparent border-dashed hover:border-2 hover:border-purple-dashed p-1 m-1 group-hover:border-2 group-hover:border-yellow-100 group-hover:border-dashed'}
+                                        className={'z-10 text-yellow-100 border-2 border-transparent border-dashed hover:border-2 p-1 m-1 group-hover:border-2 group-hover:border-dashed'}
                                     >
                                         {item.value}
                                     </div>
@@ -407,7 +414,7 @@ const ProblemComponent: React.FC<ProblemProps> = ({ parentChunk, parentChunkInde
                             case 'math':
                                 return (
                                     <ReactMarkdown
-                                        className={"z-10 text-purple-300 border-gray-100 border-2 border-transparent border-dashed hover:border-2 hover:border-purple-dashed p-1 m-1 group-hover:border-2 group-hover:border-purple-500 group-hover:border-dashed"}
+                                        className={"z-10 text-purple-300 border-gray-100 border-2 border-transparent border-dashed hover:border-2 p-1 m-1 group-hover:border-2 group-hover:border-dashed"}
                                         remarkPlugins={[remarkGfm, remarkMath]}
                                         rehypePlugins={[rehypeKatex]}
                                     >
@@ -417,7 +424,7 @@ const ProblemComponent: React.FC<ProblemProps> = ({ parentChunk, parentChunkInde
                             case 'table':
                                 return (
                                     <ReactMarkdown
-                                        className={"z-10 text-purple-300 border-gray-100 border-2 border-transparent border-dashed hover:border-2 hover:border-purple-dashed p-1 m-1 group-hover:border-2 group-hover:border-purple-500 group-hover:border-dashed"}
+                                        className={"z-10 text-purple-300 border-gray-100 border-2 border-transparent border-dashed hover:border-2 p-1 m-1 group-hover:border-2 group-hover:border-dashed"}
                                         remarkPlugins={[remarkGfm, remarkMath]}
                                         rehypePlugins={[rehypeKatex]}
                                     >
@@ -429,7 +436,7 @@ const ProblemComponent: React.FC<ProblemProps> = ({ parentChunk, parentChunkInde
                                     <img
                                         src={item.value}
                                         alt="Description"
-                                        className="z-10 p-1 m-1 border-2 border-transparent border-dashed hover:border-2 hover:border-purple-dashed group-hover:border-2 group-hover:border-purple-500 group-hover:border-dashed"
+                                        className="z-10 p-1 m-1 border-2 border-transparent border-dashed hover:border-2 group-hover:border-2 group-hover:border-dashed"
                                     />
                                 );
                             default:
