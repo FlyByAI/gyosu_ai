@@ -144,7 +144,7 @@ const MathGenerateForm: React.FC<MathGenerateFormProps> = ({ onSubmit, setProble
                     <div className="flex flex-col lg:flex-row justify-center items-center w-full">
                         <Dropdown
                             showSelected={false}
-                            label={"Source Material"}
+                            label={"Textbook"}
                             options={sourceMaterialOptions}
                             defaultValue={sourceMaterial}
                             handleChange={handleSourceMaterialChange}

@@ -5,6 +5,7 @@ import useGetDocumentDownloads from '../hooks/tools/math/useGetDocumentDownloads
 import useGetDocumentDownload from '../hooks/tools/math/useGetDocumentDownload';
 import { Chunk } from '../interfaces';
 import useEnvironment from '../hooks/useEnvironment';
+import useCreateAnswerKey from '../hooks/tools/math/useCreateAnswerKey';
 
 
 export interface DocumentDownload {
@@ -15,6 +16,15 @@ export interface DocumentDownload {
     shared: boolean;
     timesDownloaded: number;
     sourceData: Chunk[];
+    signedUrl?: string;
+    answerKey: {
+        blobName: string;
+        signedUrl?: string;
+    };
+}
+
+interface AnswerKeyResponse {
+    blobName: string;
     signedUrl?: string;
 }
 
@@ -31,19 +41,18 @@ const Documents: React.FC = () => {
     const { apiUrl } = useEnvironment();
     const { documentDownloads, isLoading, error } = useGetDocumentDownloads(`${apiUrl}/math_app/cloud_storage_document/list/`)
     const { getDocumentDownload, isLoading: isDownloadLoading, data, error: downloadError } = useGetDocumentDownload(`${apiUrl}/math_app`);
+    const { createAnswerKey, isLoading: isAnswerKeyLoading, error: answerKeyError } = useCreateAnswerKey(`${apiUrl}/math_app`);
 
     const user = useUser();
 
     const handleDocumentClick = (blobName: string) => {
-        const newWindow = window.open('', '_blank'); // Preemptively open a new window
-        getDocumentDownload(blobName, newWindow);  // Fetch the document and populate the new window
+        const newWindow = window.open('', '_blank');
+        getDocumentDownload(blobName, newWindow);
     };
 
-    useEffect(() => {
-        if (data?.signedUrl) {
-            window.location.href = data.signedUrl;
-        }
-    }, [data]);
+    const handleGenerateAnswerKey = (id: number | string, blobName: string) => {
+        createAnswerKey(id, blobName);
+    };
 
     return (
         <>
@@ -64,7 +73,17 @@ const Documents: React.FC = () => {
                                             <div>Timestamp: {new Date(doc.timestamp).toLocaleString()}</div>
                                             <div>Shared: {doc.shared ? 'Yes' : 'No'}</div>
                                             <div>Times Downloaded: {doc.timesDownloaded}</div>
-                                            {/* Add other fields as needed */}
+                                            {!doc.answerKey?.blobName ? <div onClick={() => handleGenerateAnswerKey(doc.id, doc.blobName)}>
+                                                <span className="text-yellow-300 hover:underline cursor-pointer">
+                                                    Generate Answer Key
+                                                </span>
+                                            </div> :
+                                                <div onClick={() => handleDocumentClick(doc.answerKey.blobName)}>
+                                                    <span className="text-yellow-300 hover:underline cursor-pointer">
+                                                        Download Answer Key
+                                                    </span>
+                                                </div>
+                                            }
                                         </li>
                                     ))}
                             </ul> :

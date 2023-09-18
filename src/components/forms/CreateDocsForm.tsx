@@ -17,7 +17,7 @@ const CreateDocxForm: React.FC<CreateDocsFormProps> = ({ document }) => {
     const { createDocx, isLoading } = useCreateDocx(`${apiUrl}/math_app/generate_docx/`);
     const { id } = useParams();
 
-    const [downloadLinks, setDownloadLinks] = useState<{ docxUrl: string; pdfUrl: string; fileName: string } | null>(null);
+    const [downloadLinks, setDownloadLinks] = useState<{ docxUrl: string; pdfUrl: string; fileName: string, answerKeyUrl?: string; } | null>(null);
 
     // Moved formState and related logic here
     const [formState, setFormState] = useState({
@@ -38,8 +38,9 @@ const CreateDocxForm: React.FC<CreateDocsFormProps> = ({ document }) => {
         localStorage.setItem('formState', JSON.stringify(formState));
     }, [formState]);
 
-    const handleCreate = () => {
-        toast("Creating worksheet... This may take up to 1 minute to complete.")
+    const handleCreate = (event: React.FormEvent) => {
+        const nativeEvent = event.nativeEvent as MouseEvent;
+        toast("Creating worksheet... This may take up to 1 minute to complete.");
         setDownloadLinks(null);  // Reset download links
         const selectedChunks = activeChunkIndices.map(index => document.problemChunks?.[index]).filter(Boolean) as Chunk[];
         createDocx({ chunks: selectedChunks, ...formState }, {
@@ -53,7 +54,7 @@ const CreateDocxForm: React.FC<CreateDocsFormProps> = ({ document }) => {
         <div>
             <form onSubmit={(e) => {
                 e.preventDefault();
-                handleCreate();
+                handleCreate(e);
             }}
             >
                 <div className="text-xl font-bold mb-2">
@@ -112,14 +113,14 @@ const CreateDocxForm: React.FC<CreateDocsFormProps> = ({ document }) => {
 
             {/* Download buttons */}
             {!isLoading && downloadLinks && (
-                <>
-                    <button onClick={() => window.open(downloadLinks.docxUrl, '_blank')} className="p-2 bg-green-700 mt-4 rounded-md w-1/3">
+                <div className="flex">
+                    <button onClick={() => window.open(downloadLinks.docxUrl, '_blank')} className="p-2 bg-green-700 hover:bg-green-800 mt-4 rounded-md w-1/3">
                         Download DOCX
                     </button>
-                    <button onClick={() => window.open(downloadLinks.pdfUrl, '_blank')} className="ms-2 p-2 bg-green-700 mt-4 rounded-md w-1/3">
+                    <button onClick={() => window.open(downloadLinks.pdfUrl, '_blank')} className="ms-2 p-2 bg-green-700 hover:bg-green-800 mt-4 rounded-md w-1/3">
                         Download PDF
                     </button>
-                </>
+                </div>
             )}
         </div>
     );
