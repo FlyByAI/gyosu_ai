@@ -90,10 +90,10 @@ const LandingPage: React.FC = () => {
 
     return (
         <div>
-            <section className="h-full flex flex-col md:flex-row items-center" style={{ backgroundImage: `url('/svg/dark-bg.svg')`, backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover' }}>
+            <section className="flex flex-col md:flex-row items-center" style={{ backgroundImage: `url('/svg/dark-bg.svg')`, backgroundPosition: 'inherit', backgroundRepeat: 'repeat-y' }}>
                 <img className="w-3/4 md:w-1/3 h-auto mx-auto md:mx-0" src="/svg/teacher1.svg" alt="Image 1" />
                 <div className="ml-0 md:ml-20 w-full md:w-2/3 text-center md:text-left text-3xl md:text-5xl text-gray-300 p-4">
-                    <p className="font-bold mt-4">Create math <LoopingText variant='typed' textArray={['worksheets', 'problems', 'quizzes', 'exams']} /></p>
+                    <p className="font-bold mt-4 flex-col"><div className='mb-4'>Create math </div><LoopingText variant='typed' textArray={['worksheets', 'problems', 'quizzes', 'exams']} /></p>
                     <p className="font-bold mt-4">with AI</p>
                     <p className="mt-4 text-lg">Generative AI, for math teachers.</p>
                     <Link className="text-sm" to="/math-app">
@@ -162,8 +162,8 @@ const LandingPage: React.FC = () => {
                 </div>
             </section>
 
-            <section className="p-10 h-full flex items-center" style={{ backgroundImage: `url('/svg/tech-bg.svg')`, backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover' }}>
-                <div className="w-2/3 text-5xl text-gray-800">
+            <section className="p-10 h-full flex items-center" style={{ backgroundImage: `url('/svg/tech-bg.svg')`, backgroundPosition: 'inherit', backgroundRepeat: 'no-repeat' }}>
+                <div className="w-2/3 text-3xl text-gray-800">
                     <h1 className="font-bold" ><LoopingText variant='typed' textArray={['Innovative', 'Impactful', 'Customized']} /></h1><h1>Education</h1>
                     <h1 className="font-bold"></h1>
                     <p className="mt-4 text-lg">starts with you.</p>
