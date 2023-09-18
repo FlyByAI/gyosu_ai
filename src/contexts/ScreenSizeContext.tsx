@@ -21,12 +21,10 @@ export const ScreenSizeProvider = ({ children }: { children: React.ReactNode }) 
         const handleResize = () => {
             if (window.matchMedia('(min-width: 768px)').matches) {
                 setIsDesktop(true);
-                console.log('desktop');
-                console.log("16")
+                // console.log('size desktop');
             } else {
                 setIsDesktop(false);
-                console.log('mobile');
-                console.log("33")
+                // console.log('size mobile');
             }
         };
 
