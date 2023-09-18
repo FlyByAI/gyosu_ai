@@ -104,11 +104,12 @@ const DocumentDisplay: React.FC = () => {
                                 <div className='w-full rounded-xl' >
                                     <MathProblem
                                         insertChunk={insertChunk}
+                                        selectable={true}
+                                        disableInstructionProblemDrag={true}
                                         updateChunk={updateDocumentChunk}
                                         key={chunkIndex}
                                         chunkIndex={chunkIndex}
                                         problem={chunk}
-                                        selectable={true}
                                         enableTools={true}
                                     />
                                 </div>
