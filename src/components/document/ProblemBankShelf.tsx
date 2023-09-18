@@ -4,7 +4,7 @@ import { Document, Chunk, Problem, Instruction, CHUNK_TYPE } from '../../interfa
 import DocumentItem from './DocumentItem';
 import useGetDocuments from '../../hooks/tools/math/useGetDocuments';
 import useSubmitDocument from '../../hooks/tools/math/useSubmitDocument';
-import useEnvironment from '../../contexts/useEnvironment';
+import useEnvironment from '../../hooks/useEnvironment';
 import { Link } from 'react-router-dom';
 import toast, { useToaster } from 'react-hot-toast/headless';
 import InfoCircle from '../../svg/InfoCircle';

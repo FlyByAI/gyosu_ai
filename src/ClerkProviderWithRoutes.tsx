@@ -31,7 +31,7 @@ import Pricing from './components/Pricing.tsx';
 import Documents from './pages/Documents.tsx';
 import MyProblemBanks from './pages/MathProblemBanks.tsx';
 import { notSecretConstants } from './constants/notSecretConstants.tsx';
-import useEnvironment from './contexts/useEnvironment.tsx';
+import useEnvironment from './hooks/useEnvironment.tsx';
 import FAQPage from './pages/FAQPage.tsx';
 
 

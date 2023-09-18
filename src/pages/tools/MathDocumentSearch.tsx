@@ -6,7 +6,7 @@ import DocumentPreview from '../../components/forms/DocumentPreview';
 import MathDocumentSearchForm from '../../components/math/MathDocumentSearchForm';
 import ProblemBankShelf from '../../components/document/ProblemBankShelf';
 import useGetDocuments from '../../hooks/tools/math/useGetDocuments';
-import useEnvironment from '../../contexts/useEnvironment';
+import useEnvironment from '../../hooks/useEnvironment';
 
 const MathDocumentSearch: React.FC = () => {
     const { apiUrl } = useEnvironment();

@@ -7,7 +7,7 @@ import { Chunk } from '../interfaces';
 import MathProblem from '../components/math/MathProblem';
 import useSubmitDocument from '../hooks/tools/math/useSubmitDocument';
 import PlusIcon from '../svg/PlusIcon';
-import useEnvironment from '../contexts/useEnvironment';
+import useEnvironment from '../hooks/useEnvironment';
 import CreateDocxModal from '../components/CreateDocxModal';
 import { useSidebarContext } from '../contexts/useSidebarContext';
 import SearchIcon from '../svg/SearchIcon';

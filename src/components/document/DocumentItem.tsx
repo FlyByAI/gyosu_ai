@@ -10,7 +10,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import useSubmitDocument from '../../hooks/tools/math/useSubmitDocument';
 import useGetDocument from '../../hooks/tools/math/useGetDocument';
 import { Tooltip as ReactTooltip } from "react-tooltip";
-import useEnvironment from '../../contexts/useEnvironment';
+import useEnvironment from '../../hooks/useEnvironment';
 import OverflowMenu from "../OverflowMenu";
 // ... other imports
 

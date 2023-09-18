@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useClerk } from '@clerk/clerk-react';
 import { loadStripe } from '@stripe/stripe-js';
 import { notSecretConstants } from '../../constants/notSecretConstants';
-import useEnvironment from '../../contexts/useEnvironment';
+import useEnvironment from '../useEnvironment';
 
 interface ICheckoutResponse {
     message: string;

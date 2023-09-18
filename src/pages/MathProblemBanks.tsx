@@ -6,7 +6,7 @@ import GridContainer3x3 from '../components/grids/GridContainer3x3';
 import DocumentPreview from '../components/forms/DocumentPreview';
 import useGetDocuments from '../hooks/tools/math/useGetDocuments';
 import { useClerk } from '@clerk/clerk-react';
-import useEnvironment from '../contexts/useEnvironment';
+import useEnvironment from '../hooks/useEnvironment';
 
 const MyProblemBanks: React.FC = () => {
 

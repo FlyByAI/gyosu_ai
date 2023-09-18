@@ -11,7 +11,7 @@ import TrashIcon from '../../svg/TrashIcon';
 import HamburgerWrapper from '../HamburgerWrapper';
 import ManageSubscriptionButton from '../ManageSubscriptionButton';
 import { Tooltip as ReactTooltip } from "react-tooltip";
-import useEnvironment from '../../contexts/useEnvironment';
+import useEnvironment from '../../hooks/useEnvironment';
 
 const DocumentToolbarNav: React.FC = () => {
     const { darkMode } = useDarkMode();

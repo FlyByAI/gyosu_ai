@@ -1,6 +1,6 @@
 import useFetchSubscriptionInfo from '../hooks/subscription/useFetchSubscriptionInfo';
 import useActivateTrial from '../hooks/subscription/useActivateTrial';
-import useEnvironment from '../contexts/useEnvironment';
+import useEnvironment from '../hooks/useEnvironment';
 
 
 

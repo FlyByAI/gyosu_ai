@@ -3,7 +3,7 @@ import React from 'react';
 import CheckIcon from '../svg/CheckIcon';
 import useInitiatePortalSession from '../hooks/subscription/useInitiatePortalSession';
 import useFetchSubscriptionInfo from '../hooks/subscription/useFetchSubscriptionInfo';
-import useEnvironment from '../contexts/useEnvironment';
+import useEnvironment from '../hooks/useEnvironment';
 
 const ManageSubscriptionButton: React.FC = () => {
 
