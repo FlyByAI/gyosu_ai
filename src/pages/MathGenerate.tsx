@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import 'tailwindcss/tailwind.css';
 import { useClerk, useUser } from '@clerk/clerk-react';
-import { Chunk, ProblemData } from '../../interfaces';
-import ProblemBankShelf from '../../components/document/ProblemBankShelf';
-import ChunkManager from '../../components/math/ChunkManager';
-import MathGenerateForm from '../../components/math/MathGenerateForm';
+import { Chunk, ProblemData } from '../interfaces';
+import ProblemBankShelf from '../components/document/ProblemBankShelf';
+import ChunkManager from '../components/math/ChunkManager';
+import MathGenerateForm from '../components/math/MathGenerateForm';
 
 
 const MathGenerate: React.FC = () => {

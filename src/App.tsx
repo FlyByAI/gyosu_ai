@@ -1,5 +1,5 @@
 import './App.css';
-import { DarkModeProvider } from './hooks/useDarkMode';
+import { DarkModeProvider } from './contexts/useDarkMode';
 import { LanguageProvider } from './contexts/useLanguage';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';

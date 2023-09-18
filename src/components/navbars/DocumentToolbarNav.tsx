@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { SignedIn, SignedOut, UserButton, SignInButton } from '@clerk/clerk-react';
-import { useDarkMode } from '../../hooks/useDarkMode';
+import { useDarkMode } from '../../contexts/useDarkMode';
 import LanguageDropdown from '../LanguageDropdown';
 import { getGyosuClerkTheme } from '../../theme/customClerkTheme';
 import useGetDocument from '../../hooks/tools/math/useGetDocument';
@@ -11,7 +11,7 @@ import TrashIcon from '../../svg/TrashIcon';
 import HamburgerWrapper from '../HamburgerWrapper';
 import ManageSubscriptionButton from '../ManageSubscriptionButton';
 import { Tooltip as ReactTooltip } from "react-tooltip";
-import useEnvironment from '../../hooks/useEnvironment';
+import useEnvironment from '../../contexts/useEnvironment';
 
 const DocumentToolbarNav: React.FC = () => {
     const { darkMode } = useDarkMode();

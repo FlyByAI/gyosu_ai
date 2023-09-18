@@ -4,7 +4,7 @@ import { Chunk, Document, EmptyDocument } from '../../interfaces';
 import useCreateDocx, { DocxAction } from '../../hooks/tools/math/useCreateDocs';
 import { Tooltip as ReactTooltip } from "react-tooltip";
 import { useParams } from 'react-router-dom';
-import useEnvironment from '../../hooks/useEnvironment';
+import useEnvironment from '../../contexts/useEnvironment';
 import toast from 'react-hot-toast/headless';
 
 interface CreateDocsFormProps {

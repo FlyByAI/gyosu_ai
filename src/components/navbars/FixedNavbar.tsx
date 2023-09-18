@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { SignedIn, SignedOut, UserButton, SignInButton } from '@clerk/clerk-react';
-import { useDarkMode } from '../../hooks/useDarkMode';
+import { useDarkMode } from '../../contexts/useDarkMode';
 import LanguageDropdown from '../LanguageDropdown';
 import { getGyosuClerkTheme } from '../../theme/customClerkTheme';
 import HamburgerWrapper from '../HamburgerWrapper';

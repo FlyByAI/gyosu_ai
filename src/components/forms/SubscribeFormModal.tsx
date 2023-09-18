@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useClerk } from '@clerk/clerk-react';
 import useIpAddress from '../../hooks/useIpAddress';
 import useSubmitSubscribe from '../../hooks/useSubscribe';
-import useEnvironment from '../../hooks/useEnvironment';
+import useEnvironment from '../../contexts/useEnvironment';
 
 
 interface SubscribeFormModalProps {

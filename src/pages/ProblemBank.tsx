@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import useGetDocument from '../../hooks/tools/math/useGetDocument';
-import ProblemBankShelf from '../../components/document/ProblemBankShelf';
+import useGetDocument from '../hooks/tools/math/useGetDocument';
+import ProblemBankShelf from '../components/document/ProblemBankShelf';
 
-import { Chunk } from '../../interfaces';
-import MathProblem from '../../components/math/MathProblem';
-import useSubmitDocument from '../../hooks/tools/math/useSubmitDocument';
-import PlusIcon from '../../svg/PlusIcon';
-import useEnvironment from '../../hooks/useEnvironment';
-import CreateDocxModal from '../../components/CreateDocxModal';
-import { useSidebarContext } from '../../contexts/useSidebarContext';
-import SearchIcon from '../../svg/SearchIcon';
+import { Chunk } from '../interfaces';
+import MathProblem from '../components/math/MathProblem';
+import useSubmitDocument from '../hooks/tools/math/useSubmitDocument';
+import PlusIcon from '../svg/PlusIcon';
+import useEnvironment from '../contexts/useEnvironment';
+import CreateDocxModal from '../components/CreateDocxModal';
+import { useSidebarContext } from '../contexts/useSidebarContext';
+import SearchIcon from '../svg/SearchIcon';
 
-const DocumentDisplay: React.FC = () => {
+const ProblemBank: React.FC = () => {
     const { id } = useParams();
     const { apiUrl } = useEnvironment();
     const { isLoading, error, document } = useGetDocument(`${apiUrl}/math_app/school_document/`, Number(id));
@@ -140,4 +140,4 @@ const DocumentDisplay: React.FC = () => {
     );
 };
 
-export default DocumentDisplay;
+export default ProblemBank;

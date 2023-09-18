@@ -1,12 +1,12 @@
 
 import React, { useEffect } from 'react';
-import ProblemBankShelf from '../../components/document/ProblemBankShelf';
-import Accordion from '../../components/Accordion';
-import GridContainer3x3 from '../../components/grids/GridContainer3x3';
-import DocumentPreview from '../../components/forms/DocumentPreview';
-import useGetDocuments from '../../hooks/tools/math/useGetDocuments';
+import ProblemBankShelf from '../components/document/ProblemBankShelf';
+import Accordion from '../components/Accordion';
+import GridContainer3x3 from '../components/grids/GridContainer3x3';
+import DocumentPreview from '../components/forms/DocumentPreview';
+import useGetDocuments from '../hooks/tools/math/useGetDocuments';
 import { useClerk } from '@clerk/clerk-react';
-import useEnvironment from '../../hooks/useEnvironment';
+import useEnvironment from '../contexts/useEnvironment';
 
 const MyProblemBanks: React.FC = () => {
 

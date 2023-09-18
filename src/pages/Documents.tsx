@@ -4,7 +4,7 @@ import { useClerk, useUser } from '@clerk/clerk-react';
 import useGetDocumentDownloads from '../hooks/tools/math/useGetDocumentDownloads';
 import useGetDocumentDownload from '../hooks/tools/math/useGetDocumentDownload';
 import { Chunk } from '../interfaces';
-import useEnvironment from '../hooks/useEnvironment';
+import useEnvironment from '../contexts/useEnvironment';
 
 
 export interface DocumentDownload {

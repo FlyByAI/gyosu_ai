@@ -5,7 +5,7 @@ import Dropdown from '../forms/Dropdown';
 import { useClerk, useUser } from '@clerk/clerk-react';
 import formOptionsJSON from '../../json/dropdown_data.json';
 import { ProblemData } from '../../interfaces';
-import useEnvironment from '../../hooks/useEnvironment';
+import useEnvironment from '../../contexts/useEnvironment';
 import useSubmitMathForm from '../../hooks/tools/math/useSubmitMathForm';
 
 type MathGenerateFormProps = {

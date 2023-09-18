@@ -23,15 +23,15 @@ import Terms from './pages/Terms.tsx';
 import Footer from './components/Footer.tsx';
 import ContentWrapper from './components/ContentWrapper.tsx';
 import Attributions from './pages/Attributions.tsx';
-import DocumentDisplay from './pages/tools/DocumentDisplay.tsx';
+import ProblemBank from './pages/ProblemBank.tsx';
 import LandingPage from './pages/Landing.tsx';
 import MathDocumentSearch from './pages/tools/MathDocumentSearch.tsx';
-import MathGenerate from './pages/tools/MathGenerate.tsx';
+import MathGenerate from './pages/MathGenerate.tsx';
 import Pricing from './components/Pricing.tsx';
 import Documents from './pages/Documents.tsx';
-import MyProblemBanks from './pages/tools/MathProblemBanks.tsx';
+import MyProblemBanks from './pages/MathProblemBanks.tsx';
 import { notSecretConstants } from './constants/notSecretConstants.tsx';
-import useEnvironment from './hooks/useEnvironment.tsx';
+import useEnvironment from './contexts/useEnvironment.tsx';
 import FAQPage from './pages/FAQPage.tsx';
 
 
@@ -73,7 +73,7 @@ export default function ClerkProviderWithRoutes() {
                     element={
                         <>
                             <Navbar />
-                            <DocumentDisplay />
+                            <ProblemBank />
                         </>
                     }
                 />

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { MathFormData } from '../../hooks/tools/math/useSubmitMathForm';
 import useSubmitDocument from '../../hooks/tools/math/useSubmitDocument';
 import ViewIcon from '../../svg/ViewIcon';
-import useEnvironment from '../../hooks/useEnvironment';
+import useEnvironment from '../../contexts/useEnvironment';
 
 interface PublishMarkdownDocumentProps {
     markdown: string;

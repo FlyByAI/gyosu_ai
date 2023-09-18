@@ -2,7 +2,7 @@ import React, { FormEvent } from 'react';
 
 import useInitiateCheckout from '../hooks/subscription/useInitiateCheckout';
 import { Link } from 'react-router-dom';
-import useEnvironment from '../hooks/useEnvironment';
+import useEnvironment from '../contexts/useEnvironment';
 import { useClerk } from '@clerk/clerk-react';
 import { use } from 'i18next';
 

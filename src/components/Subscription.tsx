@@ -1,7 +1,7 @@
 import React from 'react';
 import { useClerk } from '@clerk/clerk-react';
 import useFetchSubscriptionInfo from '../hooks/subscription/useFetchSubscriptionInfo';
-import useEnvironment from '../hooks/useEnvironment';
+import useEnvironment from '../contexts/useEnvironment';
 
 const Subscription: React.FC = () => {
     const { apiUrl } = useEnvironment();

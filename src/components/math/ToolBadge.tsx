@@ -8,7 +8,7 @@ import useSubmitFeedback from "../../hooks/useSubmitFeedback";
 import { useState } from "react";
 import TrashIcon from "../../svg/TrashIcon";
 import { Tooltip as ReactTooltip } from "react-tooltip";
-import useEnvironment from "../../hooks/useEnvironment";
+import useEnvironment from "../../contexts/useEnvironment";
 
 
 interface ToolBadgeProps {

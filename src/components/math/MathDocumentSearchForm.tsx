@@ -9,7 +9,7 @@ import useSearchMathDocuments from '../../hooks/tools/math/useSearchDocuments';
 import Accordion from '../Accordion';
 import GridContainer3x3 from '../grids/GridContainer3x3';
 import DocumentPreview from '../forms/DocumentPreview';
-import useEnvironment from '../../hooks/useEnvironment';
+import useEnvironment from '../../contexts/useEnvironment';
 
 
 const MathDocumentSearchForm: React.FC = () => {

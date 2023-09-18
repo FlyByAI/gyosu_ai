@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import SendIcon from "../../svg/SendIcon";
 import { Chunk, ProblemData } from "../../interfaces";
 import useSubmitTextWithChunk from "../../hooks/tools/math/useSubmitTextWithChunk";
-import useEnvironment from "../../hooks/useEnvironment";
+import useEnvironment from "../../contexts/useEnvironment";
 
 interface AIChatSmallWrapperProps {
     children: React.ReactNode;
