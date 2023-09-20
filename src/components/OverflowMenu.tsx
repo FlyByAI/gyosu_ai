@@ -53,7 +53,7 @@ const OverflowMenu: React.FC<OverflowMenuProps> = ({ children, variant, type = "
         <div className="relative" ref={menuRef}>
             {isOpen && (
                 <div
-                    className={`p-2 text-black absolute ${variant === "top" ? "-top-12" : "top-0"} right-0 flex flex-row-reverse items-center bg-gray-200 rounded-lg`}
+                    className={`p-2 text-black absolute ${variant === "top" ? "-top-12" : "top-0"} right-0 flex flex-row-reverse items-center bg-gray-700 rounded-lg`}
                 >
                     {renderMenuContent()}
                 </div>
@@ -64,7 +64,7 @@ const OverflowMenu: React.FC<OverflowMenuProps> = ({ children, variant, type = "
                         e.stopPropagation();
                         setIsOpen(true);
                     }}
-                    className=""
+                    className="m-1"
                 >
                     <DotsVerticalIcon />
                 </button>

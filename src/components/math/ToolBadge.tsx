@@ -24,7 +24,6 @@ interface ToolBadgeProps {
 const ToolBadge: React.FC<ToolBadgeProps> = ({ chunk, instruction, problem, insertChunk, updateChunk, chunkIndex, hidden }) => {
 
     const { apiUrl } = useEnvironment();
-    const { submitReroll } = useSubmitReroll(`${apiUrl}/math_app/reroll/`);
 
     const { submitFeedback } = useSubmitFeedback(`${apiUrl}/math_app/feedback/problem/`)
 
@@ -33,18 +32,6 @@ const ToolBadge: React.FC<ToolBadgeProps> = ({ chunk, instruction, problem, inse
         chunk: chunk,
         ...(instruction ? { instruction } : {}),
         ...(problem ? { problem } : {})
-    };
-
-
-    const handleReroll = async () => {
-        console.log("reroll", payload);
-
-        try {
-            const updatedChunk = await submitReroll({ chunk, action: 'reroll', instruction, problem });
-            updateChunk(updatedChunk.chunk, chunkIndex);
-        } catch (error) {
-            console.error("An error occurred during reroll:", error);
-        }
     };
 
 
@@ -90,7 +77,7 @@ const ToolBadge: React.FC<ToolBadgeProps> = ({ chunk, instruction, problem, inse
     const handleThumbUpClick = () => {
         openModal("feedbackModal",
             <FeedbackForm
-                feedbackLabel={"Chunk Feedback"}
+                feedbackLabel={`${payload.instruction ? "Instruction" : "Problem"} Feedback`}
                 rating={"thumbsUp"}
                 onSubmitFeedback={submitFeedback}
                 onClose={handleCloseModal}
@@ -102,7 +89,7 @@ const ToolBadge: React.FC<ToolBadgeProps> = ({ chunk, instruction, problem, inse
     const handleThumbDownClick = () => {
         openModal("feedbackModal",
             <FeedbackForm
-                feedbackLabel={"Chunk Feedback"}
+                feedbackLabel={`${payload.instruction ? "Instruction" : "Problem"} Feedback`}
                 rating={"thumbsDown"}
                 onSubmitFeedback={submitFeedback}
                 onClose={handleCloseModal}
@@ -113,7 +100,7 @@ const ToolBadge: React.FC<ToolBadgeProps> = ({ chunk, instruction, problem, inse
 
 
     return (
-        <div className={`bg-gray-100 rounded-full p-3 flex space-x-2 absolute transform translate-x-full -translate-y-full flex-row + ${hidden ? "hidden" : ""}`}>
+        <div className={`z-30 bg-gray-100 rounded-full p-3 flex space-x-2 absolute transform translate-x-full -translate-y-full flex-row + ${hidden ? "hidden" : ""}`}>
             <button onClick={handleThumbUpClick} className=""
                 data-tooltip-id="reviewTip"
             >
@@ -135,11 +122,6 @@ const ToolBadge: React.FC<ToolBadgeProps> = ({ chunk, instruction, problem, inse
             >
                 <TrashIcon />
             </button>
-            {/* {insertChunk && <button onClick={handleAdd}
-                data-tooltip-id="insertTip"
-                className="pe-1 text-green-500">
-                <PlusIcon />
-            </button>} */}
             <ReactTooltip
                 id='deleteTip'
                 place="bottom"
@@ -147,7 +129,7 @@ const ToolBadge: React.FC<ToolBadgeProps> = ({ chunk, instruction, problem, inse
             <ReactTooltip
                 id='reviewTip'
                 place="bottom"
-                content={`Rate this exercise`} />
+                content={`Rate this ${payload.instruction ? "instruction" : "problem"}`} />
             <ReactTooltip
                 id='insertTip'
                 place="bottom"

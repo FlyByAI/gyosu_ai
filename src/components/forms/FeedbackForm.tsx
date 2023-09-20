@@ -8,27 +8,26 @@ interface FeedbackFormProps {
     onSubmitFeedback: (data: IFeedbackData) => void;
     data: ChunkInstructionProblem;
     onClose: () => void;
+    responseQuestions?: string[];
 }
 
-const FeedbackForm: React.FC<FeedbackFormProps> = ({ feedbackLabel, rating, onSubmitFeedback, data, onClose }) => {
-    const [comment, setComment] = useState<string>("");
-
-    const [issueType, setIssueType] = useState<{ [key: string]: boolean }>({});
-
-    const responseQuestions = [ // can extend this to be more dynamic as a prop
+const FeedbackForm: React.FC<FeedbackFormProps> = ({ feedbackLabel, rating, onSubmitFeedback, data, onClose,
+    responseQuestions = [ //default
         'How was the problem quality?',
         'Was this problem mistake-free?',
         'Was it easy to understand?',
         'Was the answer correct?',
-    ];
+    ] }) => {
+    const [comment, setComment] = useState<string>("");
+
+    const [issueType, setIssueType] = useState<{ [key: string]: boolean }>({});
+
 
     const toggleIssue = (issueName: string, thumbRating: 'thumbsUp' | 'thumbsDown') => {
         setIssueType((prevIssueType) => {
             return { ...prevIssueType, [issueName]: thumbRating === 'thumbsUp' };
         });
     };
-
-
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
