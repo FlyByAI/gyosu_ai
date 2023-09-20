@@ -34,7 +34,7 @@ const MathGenerate: React.FC = () => {
     return (
         <div className="flex">
             <ProblemBankShelf isExporting={false} />
-            <div className="w-5/6 mt-4" style={{ marginRight: isDesktop ? '16.6667%' : "0" }}>
+            <div className="w-5/6 mt-4 overflow-x-hidden" style={{ marginRight: isDesktop ? '16.6667%' : "0" }}>
                 <MathGenerateForm onSubmit={handleSubmit} setProblemData={setProblemData} />
                 <div>
                     {problemData &&
