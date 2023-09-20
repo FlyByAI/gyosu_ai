@@ -7,6 +7,8 @@ import { useClerk } from '@clerk/clerk-react';
 import DocumentPreview from './DocumentPreview';
 import { useModal } from '../../contexts/useModal';
 import toast, { useToaster } from 'react-hot-toast/headless';
+import PlusIcon from '../../svg/PlusIcon';
+import { Tooltip as ReactTooltip } from "react-tooltip";
 
 interface AddChunkFormProps {
     chunk: Chunk;
@@ -30,7 +32,7 @@ const AddChunkForm: React.FC<AddChunkFormProps> = ({ chunk, preview }) => {
     const endpoint = `${apiUrl}/math_app/school_document/list/`;
     const { documents, error } = useGetDocuments(endpoint);
     const endpoint2 = `${apiUrl}/math_app/school_document/`;
-    const { updateDocument } = useSubmitDocument(endpoint2);
+    const { updateDocument, submitDocument } = useSubmitDocument(endpoint2);
 
     const selectedDocument = documents?.find((doc) => doc.id === selectedBank);
 
@@ -53,6 +55,22 @@ const AddChunkForm: React.FC<AddChunkFormProps> = ({ chunk, preview }) => {
         return <div>Error loading documents: {(error as unknown as Error).message}</div>;
     }
 
+    const handleAddDocument = async () => {
+        const newDocument: Document = {
+            title: `Document ${(documents?.length || 0) + 1}`,
+            upvotes: 0,
+            tips: 0,
+            last_modified_by: '',
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+            problemChunks: [] as Chunk[],
+        };
+
+        const responseData = await submitDocument({ document: newDocument });
+        toast('Created new problem bank...');
+
+    };
+
     return (
         <div className="flex flex-col">
             <label className="text-white mb-2">Select Problem Bank:</label>
@@ -71,14 +89,32 @@ const AddChunkForm: React.FC<AddChunkFormProps> = ({ chunk, preview }) => {
                     <DocumentPreview disabledClick document={selectedDocument} />
                 </div>
             )}
-            <button
-                className="bg-blue-500 text-white p-2 rounded w-1/2"
-                disabled={!selectedBank}
-                onClick={handleDocumentClick}
-            >
-                Add to Selected Bank
-            </button>
-        </div>
+            <div className='flex flex-row'>
+                <button
+                    className={`p-2 rounded w-1/2 me-2 ${selectedBank ? "bg-blue-500 text-white" : "bg-gray-500 text-gray-300"}`}
+                    disabled={!selectedBank}
+                    onClick={handleDocumentClick}
+                    data-tooltip-id={!selectedBank ? 'addChunkModelButtonDisabled' : ""}
+                >
+                    Add to Selected Bank
+                </button>
+                <button onClick={handleAddDocument}
+                    className="bg-blue-500 text-white p-2 rounded w-1/2">
+                    Create New Problem Bank
+                </button>
+            </div>
+            {!selectedBank && (
+                <ReactTooltip
+                    id='addChunkModelButtonDisabled'
+                    place="bottom"
+                    children={<><div className='flex flex-row items-center justify-center'>Select a problem bank</div>
+                        <div className='flex flex-row items-center justify-center'> to add this problem to.</div>
+                    </>}
+                    variant="light"
+                />
+            )}
+
+        </div >
     );
 };
 
