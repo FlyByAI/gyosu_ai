@@ -75,7 +75,7 @@ const CreateDocxForm: React.FC<CreateDocsFormProps> = ({ document }) => {
                     />
                 </div>
                 <div className="my-4">
-                    <label className="block">Persona</label>
+                    <label className="block">Persona (for Real-World Application section at the top)</label>
                     <input
                         type="text"
                         className='bg-gray-600'
@@ -84,7 +84,7 @@ const CreateDocxForm: React.FC<CreateDocsFormProps> = ({ document }) => {
                     />
                 </div>
                 <div className="my-4">
-                    <label className="block">Theme</label>
+                    <label className="block">Theme (for Real-World Application section at the top)</label>
                     <input
                         type="text"
                         placeholder="Pets, Space, etc."

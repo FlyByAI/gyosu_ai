@@ -147,7 +147,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
                 className={"border-2 relative border-transparent p-4 w-full " + (isHovered ? " hover:border-white border-dashed hover:border-2 hover:border-purple-dashed" : '') + ((activeChunkIndices.includes(chunkIndex)) ? " bg-blue-900 " : '')}
             >
                 <div className="absolute top-0 right-0 pe-2 mt-2 text-white">
-                    <OverflowMenu
+                    {/* <OverflowMenu
                         isOpen={isOverflowOpen}
                         setIsOpen={setIsOverflowOpen}
                     >
@@ -162,7 +162,9 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
                             <TrashIcon className='ms-2' />
                         </button>}
                         <AddChunkModal chunk={chunk} modalId={'addChunkModal'} enabled={false} />
-                    </OverflowMenu>
+                    </OverflowMenu> */}
+                    <AddChunkModal variant={"button"} chunk={chunk} modalId={'addChunkModal'} enabled={false} />
+
                 </div>
 
                 {selectable && (activeChunkIndices.includes(chunkIndex) ?
