@@ -6,6 +6,7 @@ import { Tooltip as ReactTooltip } from "react-tooltip";
 import { useParams } from 'react-router-dom';
 import useEnvironment from '../../hooks/useEnvironment';
 import toast from 'react-hot-toast/headless';
+import Feedback from '../Feedback';
 
 interface CreateDocsFormProps {
     document: Document | EmptyDocument;
@@ -56,10 +57,12 @@ const CreateDocxForm: React.FC<CreateDocsFormProps> = ({ document }) => {
                 handleCreate();
             }}
             >
-                <div className="text-xl font-bold mb-2">
-                    Worksheet Creator
+                <div className='flex flex-row justify-between'>
+                    <div className="text-xl font-bold mb-2">
+                        Worksheet Creator
+                    </div>
+                    <Feedback feedbackLabel={'Create Worksheet Feedback'} data={undefined} responseQuestions={["Please tell us what we can do better. "]} />
                 </div>
-
                 <div className="text-l mb-2">
                     <p>Select problems to include in your worksheet. After selecting, click "Create Worksheet" to generate a DOCX and PDF file.</p>
                 </div>

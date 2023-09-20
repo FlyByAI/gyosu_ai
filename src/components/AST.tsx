@@ -21,6 +21,7 @@ import PlusIcon from '../svg/PlusIcon';
 import ArrowLeft from '../svg/ArrowLeftIcon';
 import { useModal } from '../contexts/useModal';
 import AddChunkModal from './AddChunkModal';
+import Feedback from './Feedback';
 
 
 interface ChunkProps {
@@ -146,8 +147,9 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
                 data-tooltip-id='chunkDragTip'
                 className={"border-2 relative border-transparent p-4 w-full " + (isHovered ? " hover:border-white border-dashed hover:border-2 hover:border-purple-dashed" : '') + ((activeChunkIndices.includes(chunkIndex)) ? " bg-blue-900 " : '')}
             >
-                <div className="absolute top-0 right-0 pe-2 mt-2 text-white">
-                    {/* <OverflowMenu
+                <div className="absolute top-0 right-0 pe-2 mt-2 text-white flex-row flex">
+                    <AddChunkModal variant={"button"} chunk={chunk} modalId={'addChunkModal'} enabled={false} />
+                    <OverflowMenu
                         isOpen={isOverflowOpen}
                         setIsOpen={setIsOverflowOpen}
                     >
@@ -161,10 +163,10 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
                         >
                             <TrashIcon className='ms-2' />
                         </button>}
+                        <Feedback feedbackLabel={'Chunk Feedback'} data={chunk} />
                         <AddChunkModal chunk={chunk} modalId={'addChunkModal'} enabled={false} />
-                    </OverflowMenu> */}
-                    <AddChunkModal variant={"button"} chunk={chunk} modalId={'addChunkModal'} enabled={false} />
 
+                    </OverflowMenu>
                 </div>
 
                 {selectable && (activeChunkIndices.includes(chunkIndex) ?
