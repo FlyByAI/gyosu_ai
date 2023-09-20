@@ -96,7 +96,7 @@ const AddChunkForm: React.FC<AddChunkFormProps> = ({ chunk, preview }) => {
                     onClick={handleDocumentClick}
                     data-tooltip-id={!selectedBank ? 'addChunkModelButtonDisabled' : ""}
                 >
-                    Add to Selected Bank
+                    Add
                 </button>
                 <button onClick={handleAddDocument}
                     className="bg-blue-500 text-white p-2 rounded w-1/2">
