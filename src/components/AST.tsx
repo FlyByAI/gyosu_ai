@@ -163,7 +163,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
                         >
                             <TrashIcon className='ms-2' />
                         </button>}
-                        <Feedback feedbackLabel={'Chunk Feedback'} data={chunk} />
+                        <Feedback feedbackLabel={'Chunk Feedback'} data={{ chunk: chunk }} />
                         <AddChunkModal chunk={chunk} modalId={'addChunkModal'} enabled={false} />
 
                     </OverflowMenu>
