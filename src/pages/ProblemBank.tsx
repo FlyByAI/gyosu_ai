@@ -93,7 +93,7 @@ const ProblemBank: React.FC = () => {
     return (
         <div className='flex '>
             <ProblemBankShelf isExporting={false} />
-            <div className="w-5/6 mt-4" style={{ marginRight: isDesktop ? '16.6667%' : "0" }}>
+            <div className="w-5/6 mt-4 overflow-x-hidden" style={{ marginRight: isDesktop ? '16.6667%' : "0" }}>
                 <div className='w-3/4 mx-auto py-2'>
                     <CreateDocxModal enabled={activeChunkIndices.length > 0} document={document} modalId={"createDocx"} />
                 </div>
