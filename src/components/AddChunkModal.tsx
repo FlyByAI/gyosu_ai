@@ -11,12 +11,13 @@ interface AddChunkModalProps {
     variant?: string;
 }
 
-const AddChunkModal: React.FC<AddChunkModalProps> = ({ chunk, modalId, enabled, variant }) => {
+const AddChunkModal: React.FC<AddChunkModalProps> = ({ chunk, modalId, variant }) => {
     const { currentModal, closeModal, openModal } = useModal();
 
     const handleOpenClick = () => {
         openModal(modalId, <AddChunkForm chunk={chunk} />);
     };
+
 
     return (
         <>
