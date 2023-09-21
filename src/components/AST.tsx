@@ -22,6 +22,7 @@ import ArrowLeft from '../svg/ArrowLeftIcon';
 import { useModal } from '../contexts/useModal';
 import AddChunkModal from './AddChunkModal';
 import Feedback from './Feedback';
+import { useDragContext } from '../contexts/DragContext';
 
 
 interface ChunkProps {
@@ -36,6 +37,7 @@ interface ChunkProps {
 }
 
 export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updateChunk, chunkIndex, enableTools, selectable, disableInstructionProblemDrag }) => {
+    const { setDragState } = useDragContext();
 
     const { activeChunkIndices, setActiveChunkIndices } = useSidebarContext();
     const { apiUrl } = useEnvironment();
@@ -49,7 +51,13 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
 
     const [, ref] = useDrag({
         type: CHUNK_DRAG_TYPE,
-        item: { ...chunk, content: chunk.content } as Chunk
+        item: () => {
+            setDragState({ isDragging: true, dragType: CHUNK_DRAG_TYPE });
+            return { ...chunk, content: chunk.content } as Chunk;
+        },
+        end: () => {
+            setDragState({ isDragging: false, dragType: null });
+        },
     });
 
     //do this in instruction and problem too so they can be dragged on
@@ -145,9 +153,9 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
                 onMouseEnter={() => !isHovered && setIsHovered(true)}
                 onMouseLeave={() => isHovered && setIsHovered(false)}
                 data-tooltip-id='chunkDragTip'
-                className={"border-2 relative border-transparent p-4 w-full " + (isHovered ? " hover:border-white border-dashed hover:border-2 hover:border-purple-dashed" : '') + ((activeChunkIndices.includes(chunkIndex)) ? " bg-blue-900 " : '')}
+                className={"border-2 relative border-transparent p-4 pt-8 w-full " + (isHovered ? " hover:border-white border-dashed hover:border-2 hover:border-purple-dashed" : '') + ((activeChunkIndices.includes(chunkIndex)) ? " bg-blue-900 " : '')}
             >
-                <div className="absolute top-0 right-0 pe-2 mt-2 text-white flex-row flex">
+                <div className="absolute top-0 right-0 text-white flex-row flex mt-2">
                     <AddChunkModal variant={"button"} chunk={chunk} modalId={'addChunkModal'} enabled={false} />
                     <OverflowMenu
                         isOpen={isOverflowOpen}
@@ -240,9 +248,17 @@ interface InstructionProps {
 }
 
 const InstructionComponent: React.FC<InstructionProps> = ({ parentChunk, parentChunkIndex, updateChunk, instruction, instructionIndex, disableInstructionProblemDrag }) => {
+    const { setDragState } = useDragContext();
+
     const [, ref] = useDrag({
         type: INSTRUCTION_DRAG_TYPE,
-        item: { ...instruction, content: instruction.content } as Instruction,
+        item: () => {
+            setDragState({ isDragging: true, dragType: INSTRUCTION_DRAG_TYPE });
+            return { ...instruction, content: instruction.content } as Instruction;
+        },
+        end: () => {
+            setDragState({ isDragging: false, dragType: null });
+        },
     });
 
     const [, drop] = useDrop({
@@ -296,7 +312,7 @@ const InstructionComponent: React.FC<InstructionProps> = ({ parentChunk, parentC
                             case 'text':
                                 return (
                                     <div
-                                        className={"z-10 text-blue-300 border-2 border-transparent border-dashed hover:border-2 p-1 m-1 group-hover:border-2 group-hover:border-dashed"}
+                                        className={"text-xs md:text-md z-10 text-blue-300 border-2 border-transparent border-dashed hover:border-2 p-1 m-1 group-hover:border-2 group-hover:border-dashed"}
                                     >
                                         {item.value}
                                     </div>
@@ -304,7 +320,7 @@ const InstructionComponent: React.FC<InstructionProps> = ({ parentChunk, parentC
                             case 'math':
                                 return (
                                     <ReactMarkdown
-                                        className={"z-10 text-yellow-200 border-2 border-transparent border-dashed hover:border-2 p-1 m-1 group-hover:border-2 group-hover:border-dashed"}
+                                        className={"text-xs md:text-md z-10 text-yellow-200 border-2 border-transparent border-dashed hover:border-2 p-1 m-1 group-hover:border-2 group-hover:border-dashed"}
                                         remarkPlugins={[remarkGfm, remarkMath]}
                                         rehypePlugins={[rehypeKatex]}
                                     >
@@ -314,7 +330,7 @@ const InstructionComponent: React.FC<InstructionProps> = ({ parentChunk, parentC
                             case 'table':
                                 return (
                                     <ReactMarkdown
-                                        className={"z-10 text-purple-300 border-gray-100  border-2 border-transparent border-dashed hover:border-2 p-1 m-1 group-hover:border-2 group-hover:border-dashed"}
+                                        className={"text-xs md:text-md z-10 text-purple-300 border-gray-100  border-2 border-transparent border-dashed hover:border-2 p-1 m-1 group-hover:border-2 group-hover:border-dashed"}
                                         remarkPlugins={[remarkGfm, remarkMath]}
                                         rehypePlugins={[rehypeKatex]}
                                     >
@@ -326,7 +342,7 @@ const InstructionComponent: React.FC<InstructionProps> = ({ parentChunk, parentC
                                     <img
                                         src={item.value}
                                         alt="Description"
-                                        className="z-10 p-1 m-1 border-2 border-transparent border-dashed hover:border-2 group-hover:border-2 group-hover:border-dashed"
+                                        className="text-xs md:text-md z-10 p-1 m-1 border-2 border-transparent border-dashed hover:border-2 group-hover:border-2 group-hover:border-dashed"
                                     />
                                 );
                             default:
@@ -356,9 +372,17 @@ interface ProblemProps {
 }
 
 const ProblemComponent: React.FC<ProblemProps> = ({ parentChunk, parentChunkIndex, updateChunk, problem, problemIndex, disableInstructionProblemDrag }) => {
+    const { setDragState } = useDragContext();
+
     const [, ref] = useDrag({
         type: PROBLEM_DRAG_TYPE,
-        item: { ...problem, content: problem.content } as Problem,
+        item: () => {
+            setDragState({ isDragging: true, dragType: PROBLEM_DRAG_TYPE });
+            return { ...problem, content: problem.content } as Problem;
+        },
+        end: () => {
+            setDragState({ isDragging: false, dragType: null });
+        },
     });
 
     const [, drop] = useDrop({
@@ -410,7 +434,7 @@ const ProblemComponent: React.FC<ProblemProps> = ({ parentChunk, parentChunkInde
                             case 'text':
                                 return (
                                     <div
-                                        className={'z-10 text-yellow-100 border-2 border-transparent border-dashed hover:border-2 p-1 m-1 group-hover:border-2 group-hover:border-dashed'}
+                                        className={'text-xs md:text-md z-10 text-yellow-100 border-2 border-transparent border-dashed hover:border-2 p-1 m-1 group-hover:border-2 group-hover:border-dashed'}
                                     >
                                         {item.value}
                                     </div>
@@ -418,7 +442,7 @@ const ProblemComponent: React.FC<ProblemProps> = ({ parentChunk, parentChunkInde
                             case 'math':
                                 return (
                                     <ReactMarkdown
-                                        className={"z-10 text-purple-300 border-gray-100 border-2 border-transparent border-dashed hover:border-2 p-1 m-1 group-hover:border-2 group-hover:border-dashed"}
+                                        className={"text-xs md:text-md z-10 text-purple-300 border-gray-100 border-2 border-transparent border-dashed hover:border-2 p-1 m-1 group-hover:border-2 group-hover:border-dashed"}
                                         remarkPlugins={[remarkGfm, remarkMath]}
                                         rehypePlugins={[rehypeKatex]}
                                     >
@@ -428,7 +452,7 @@ const ProblemComponent: React.FC<ProblemProps> = ({ parentChunk, parentChunkInde
                             case 'table':
                                 return (
                                     <ReactMarkdown
-                                        className={"z-10 text-purple-300 border-gray-100 border-2 border-transparent border-dashed hover:border-2 p-1 m-1 group-hover:border-2 group-hover:border-dashed"}
+                                        className={"text-xs md:text-md z-10 text-purple-300 border-gray-100 border-2 border-transparent border-dashed hover:border-2 p-1 m-1 group-hover:border-2 group-hover:border-dashed"}
                                         remarkPlugins={[remarkGfm, remarkMath]}
                                         rehypePlugins={[rehypeKatex]}
                                     >
@@ -440,7 +464,7 @@ const ProblemComponent: React.FC<ProblemProps> = ({ parentChunk, parentChunkInde
                                     <img
                                         src={item.value}
                                         alt="Description"
-                                        className="z-10 p-1 m-1 border-2 border-transparent border-dashed hover:border-2 group-hover:border-2 group-hover:border-dashed"
+                                        className="text-xs md:text-md z-10 p-1 m-1 border-2 border-transparent border-dashed hover:border-2 group-hover:border-2 group-hover:border-dashed"
                                     />
                                 );
                             default:

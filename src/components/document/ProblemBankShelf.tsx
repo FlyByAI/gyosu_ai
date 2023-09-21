@@ -98,13 +98,11 @@ const ProblemBankShelf: React.FC<ProblemBankShelfProps> = ({ isExporting }) => {
     return (<>
 
         <div style={{ marginLeft: isDesktop ? '16.6667%' : "33%" }} />
-        <div className="flex z-10 flex-col w-1/3 md:w-1/6 bg-gray-800 p-2 fixed" style={{ top: '80px', height: `calc(100vh - 80px)` }}>
+        <div className="flex z-10 flex-col w-1/3 md:w-1/6 bg-gray-800 p-2 fixed" style={{ top: isDesktop ? "80px" : "144px", height: `calc(100vh - ${isDesktop ? "80px" : "144px"})` }}>
             <div className="flex flex-col justify-between items-center mb-2">
-                <Link to="/math-app" className="items-center justify-center  hover:underline w-full text-blue-400 rounded-md text-xl font-extrabold flex-row flex">
-                    Search <SearchIcon className='ps-2 h-8' />
+                <Link to="/math-app" className="p-4 items-center justify-center  hover:underline w-full bg-blue-500 text-sm md:text-lg text-white rounded-md font-extrabold flex-row flex">
+                    <div className='w-5/6'>Find new problems</div> {isDesktop ? <SearchIcon className='' /> : null}
                 </Link>
-                <hr className="mt-4 w-full" />
-
                 <h3 className="text-white text-lg mt-4 mb-2 flex-row flex items-center">Problem Banks</h3>
                 <button onClick={handleAddDocument} className={createButtonClass}>
                     Create<PlusIcon className="ps-2 h-8 w-8" />

@@ -32,7 +32,7 @@ const ChunkManager: React.FC<ChunkManagerProps> = ({ chunkArray, setChunkArray }
             {chunkArray?.map((chunk, chunkIndex) => {
                 return (
                     <div key={chunkIndex}
-                        className='w-3/4 mx-auto flex flex-row mb-4 bg-gray-900 p-2'>
+                        className='w-full md:w-3/4 mx-auto flex flex-row mb-4 bg-gray-900 p-2'>
                         <div className='w-full rounded-xl'>
                             <MathProblem
                                 key={chunkIndex}

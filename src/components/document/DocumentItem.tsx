@@ -12,7 +12,7 @@ import useGetDocument from '../../hooks/tools/math/useGetDocument';
 import { Tooltip as ReactTooltip } from "react-tooltip";
 import useEnvironment from '../../hooks/useEnvironment';
 import OverflowMenu from "../OverflowMenu";
-// ... other imports
+import { useDragContext } from "../../contexts/DragContext";
 
 interface DocumentItemProps {
     document: Document;
@@ -38,7 +38,7 @@ const DocumentItem: React.FC<DocumentItemProps> = ({ document, onDropChunk, isEx
         setTitle(fetchedDocument?.title || '');
     }, [fetchedDocument]);
 
-    const [, dropRef] = useDrop({
+    const [{ isOver, canDrop }, dropRef] = useDrop({
         accept: [CHUNK_DRAG_TYPE, PROBLEM_DRAG_TYPE, INSTRUCTION_DRAG_TYPE],
         drop: (item: Instruction | Problem | Chunk) => {
             if (document.id) {
@@ -55,7 +55,30 @@ const DocumentItem: React.FC<DocumentItemProps> = ({ document, onDropChunk, isEx
                 }
             }
         },
+        collect: (monitor) => ({
+            isOver: monitor.isOver(),
+            canDrop: monitor.canDrop(),
+        }),
     });
+
+    const getDropStyle = (): string => {
+        if (isOver && canDrop) {
+            return "bg-green-500";  // your custom style when element can be dropped
+        }
+        if (isOver) {
+            return "bg-yellow-500";
+        }
+        return "";
+    };
+
+    const { dragState } = useDragContext();
+
+    const getDragStyle = (): string => {
+        if (dragState.isDragging && dragState.dragType === CHUNK_DRAG_TYPE) {
+            return "border-green-400 border-dashed";
+        }
+        return "";
+    };
 
     const handleClick = () => {
         navigate(`/math-app/document/${document.id}/${isExporting ? "export" : ""}`);
@@ -110,7 +133,7 @@ const DocumentItem: React.FC<DocumentItemProps> = ({ document, onDropChunk, isEx
         <>
             <li ref={dropRef}
                 key={document.id}
-                className={`${id == document.id ? "bg-blue-900" : "bg-gray-700"} text-white h-16 p-1 rounded-md overflow-clip relative cursor-pointer`}
+                className={`${id == document.id ? "bg-blue-900" : "bg-gray-700"} text-white h-16 p-1 rounded-md overflow-clip relative cursor-pointer border-2 border-transparent ` + getDropStyle() + " " + getDragStyle()}
                 onClick={handleClick}
                 data-tooltip-id="hoverDocumentItem"
             >
