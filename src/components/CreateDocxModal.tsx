@@ -46,7 +46,7 @@ const CreateDocxModal: React.FC<CreateDocxModalProps> = ({ document, modalId, en
 
             {currentModal === modalId && (
                 <div className="fixed inset-0 flex items-center justify-center z-40 text-white">
-                    <div className="bg-gray-800 p-2 rounded shadow-lg w-5/6 md:w-3/4 max-w-2xl">
+                    <div className="bg-gray-800 p-2 rounded shadow-lg w-5/6 md:w-3/4 max-w-2xl max-h-[80vh] overflow-y-auto">
                         <div className="bg-gray-700 p-4 rounded shadow-lg">
                             <CreateDocxForm document={document} />
                             <button onClick={closeModal} className="mt-4 w-64 bg-red-500 hover:bg-red-700 p-2 rounded-md">
