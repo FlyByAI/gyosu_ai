@@ -133,6 +133,7 @@ export interface Chunk {
     id?: number;
     parentId?: number;
     mongoChunkId?: string;
+    chunkId?: string;
     type: "chunk";
     content: (Instruction | Problem)[];
     source?: Source;

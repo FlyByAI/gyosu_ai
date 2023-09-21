@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useModal } from '../contexts/useModal';
 import { Chunk } from '../interfaces';
 import AddChunkForm from './forms/AddChunkForm';

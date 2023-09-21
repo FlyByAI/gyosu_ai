@@ -159,7 +159,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
                 className={"border-2 relative border-transparent p-4 pt-8 w-full " + (isHovered ? " hover:border-white border-dashed hover:border-2 hover:border-purple-dashed" : '') + ((activeChunkIndices.includes(chunkIndex)) ? " bg-blue-900 " : '')}
             >
                 <div className="absolute top-0 right-0 text-white flex-row flex mt-2">
-                    <AddChunkModal variant={"button"} chunk={chunk} modalId={'addChunkModal'} enabled={false} />
+                    <AddChunkModal variant={"button"} chunk={chunk} modalId={'addChunkModal' + chunk.chunkId} enabled={false} />
                     <OverflowMenu
                         isOpen={isOverflowOpen}
                         setIsOpen={setIsOverflowOpen}
@@ -175,7 +175,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
                             <TrashIcon className='ms-2' />
                         </button>}
                         <Feedback feedbackLabel={'Chunk Feedback'} data={{ chunk: chunk }} />
-                        <AddChunkModal chunk={chunk} modalId={'addChunkModal'} enabled={false} />
+                        <AddChunkModal chunk={chunk} modalId={'addChunkModal' + chunk.chunkId} enabled={false} />
 
                     </OverflowMenu>
                 </div>

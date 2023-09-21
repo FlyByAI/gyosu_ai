@@ -46,7 +46,7 @@ const AddChunkForm: React.FC<AddChunkFormProps> = ({ chunk, preview }) => {
                     problemChunks: [...(doc.problemChunks || []), chunk],
                 };
                 await updateDocument({ document: updatedDocument });
-                toast(`Added to problem bank: ${updatedDocument.title}`);
+                toast(`Added ${chunk.chunkId} to problem bank: ${updatedDocument.title}`);
                 closeModal();
             }
         }
