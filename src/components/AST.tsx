@@ -22,6 +22,7 @@ import ArrowLeft from '../svg/ArrowLeftIcon';
 import { useModal } from '../contexts/useModal';
 import AddChunkModal from './AddChunkModal';
 import Feedback from './Feedback';
+import { useDragContext } from '../contexts/DragContext';
 
 
 interface ChunkProps {
@@ -36,6 +37,7 @@ interface ChunkProps {
 }
 
 export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updateChunk, chunkIndex, enableTools, selectable, disableInstructionProblemDrag }) => {
+    const { setDragState } = useDragContext();
 
     const { activeChunkIndices, setActiveChunkIndices } = useSidebarContext();
     const { apiUrl } = useEnvironment();
@@ -49,7 +51,13 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
 
     const [, ref] = useDrag({
         type: CHUNK_DRAG_TYPE,
-        item: { ...chunk, content: chunk.content } as Chunk
+        item: () => {
+            setDragState({ isDragging: true, dragType: CHUNK_DRAG_TYPE });
+            return { ...chunk, content: chunk.content } as Chunk;
+        },
+        end: () => {
+            setDragState({ isDragging: false, dragType: null });
+        },
     });
 
     //do this in instruction and problem too so they can be dragged on
@@ -240,9 +248,17 @@ interface InstructionProps {
 }
 
 const InstructionComponent: React.FC<InstructionProps> = ({ parentChunk, parentChunkIndex, updateChunk, instruction, instructionIndex, disableInstructionProblemDrag }) => {
+    const { setDragState } = useDragContext();
+
     const [, ref] = useDrag({
         type: INSTRUCTION_DRAG_TYPE,
-        item: { ...instruction, content: instruction.content } as Instruction,
+        item: () => {
+            setDragState({ isDragging: true, dragType: INSTRUCTION_DRAG_TYPE });
+            return { ...instruction, content: instruction.content } as Instruction;
+        },
+        end: () => {
+            setDragState({ isDragging: false, dragType: null });
+        },
     });
 
     const [, drop] = useDrop({
@@ -356,9 +372,17 @@ interface ProblemProps {
 }
 
 const ProblemComponent: React.FC<ProblemProps> = ({ parentChunk, parentChunkIndex, updateChunk, problem, problemIndex, disableInstructionProblemDrag }) => {
+    const { setDragState } = useDragContext();
+
     const [, ref] = useDrag({
         type: PROBLEM_DRAG_TYPE,
-        item: { ...problem, content: problem.content } as Problem,
+        item: () => {
+            setDragState({ isDragging: true, dragType: PROBLEM_DRAG_TYPE });
+            return { ...problem, content: problem.content } as Problem;
+        },
+        end: () => {
+            setDragState({ isDragging: false, dragType: null });
+        },
     });
 
     const [, drop] = useDrop({

@@ -18,8 +18,6 @@ const AddChunkModal: React.FC<AddChunkModalProps> = ({ chunk, modalId, enabled, 
         openModal(modalId, <AddChunkForm chunk={chunk} />);
     };
 
-    console.log(enabled)
-
     return (
         <>
             <button

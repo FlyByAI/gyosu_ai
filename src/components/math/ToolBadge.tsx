@@ -122,18 +122,6 @@ const ToolBadge: React.FC<ToolBadgeProps> = ({ chunk, instruction, problem, inse
             >
                 <TrashIcon />
             </button>
-            <ReactTooltip
-                id='deleteTip'
-                place="bottom"
-                content={`Delete this ${payload.instruction ? "instruction" : "problem"} from this exercise`} />
-            <ReactTooltip
-                id='reviewTip'
-                place="bottom"
-                content={`Rate this ${payload.instruction ? "instruction" : "problem"}`} />
-            <ReactTooltip
-                id='insertTip'
-                place="bottom"
-                content={`Insert a new exercise above this one`} />
         </div>
     );
 };

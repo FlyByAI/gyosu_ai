@@ -12,6 +12,7 @@ import { ModalProvider } from './contexts/useModal';
 import Notifications from './components/Notifications';
 import { Toaster } from 'react-hot-toast';
 import { ScreenSizeProvider } from './contexts/ScreenSizeContext';
+import { DragProvider } from './contexts/DragContext';
 
 interface AppProps {
   children: any;
@@ -30,9 +31,11 @@ function App({ children }: AppProps) {
             <SidebarProvider>
               <LanguageProvider>
                 <ScreenSizeProvider>
-                  <DndProvider backend={HTML5Backend}>
-                    {children}
-                  </DndProvider>
+                  <DragProvider>
+                    <DndProvider backend={HTML5Backend}>
+                      {children}
+                    </DndProvider>
+                  </DragProvider>
                 </ScreenSizeProvider>
               </LanguageProvider>
             </SidebarProvider>
