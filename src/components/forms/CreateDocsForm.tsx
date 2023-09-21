@@ -54,47 +54,47 @@ const CreateDocxForm: React.FC<CreateDocsFormProps> = ({ document }) => {
     const { isDesktop } = useScreenSize();
 
     return (
-        <div className=''>
-            <form onSubmit={(e) => {
+        <>
+            <form className='overflow-y-auto' onSubmit={(e) => {
                 e.preventDefault();
                 handleCreate();
             }}
             >
-                <div className='flex flex-row justify-between'>
-                    <div className="text-xl font-bold mb-2">
+                <div className='flex flex-row justify-between items-center mb-2'>
+                    <div className="text-xl font-bold w-64">
                         Worksheet Creator
                     </div>
                     <Feedback feedbackLabel={'Create Worksheet Feedback'} data={undefined} responseQuestions={["Please tell us what we can do better. "]} />
                 </div>
-                <div className="text-l mb-2">
-                    <p>Select problems to include in your worksheet. After selecting, click "Create Worksheet" to generate a DOCX and PDF file.</p>
+                <div className="text-md mb-2">
+                    <p className="font-bold">Fill in the details below:</p>
                 </div>
 
                 {/* Moved form elements */}
-                <div className="my-4">
+                <div className="my-2">
                     <label className="block">Title</label>
                     <input
                         type="text"
-                        className='bg-gray-600'
+                        className='bg-gray-800 p-1 ps-2 mt-1'
                         value={formState.title}
                         onChange={e => setFormState({ ...formState, title: e.target.value })}
                     />
                 </div>
-                <div className="my-4">
+                <div className="my-2">
                     <label className="block">Persona (for Real-World Application section at the top)</label>
                     <input
                         type="text"
-                        className='bg-gray-600'
+                        className='bg-gray-800 p-1 ps-2 mt-1'
                         value={formState.persona}
                         onChange={e => setFormState({ ...formState, persona: e.target.value })}
                     />
                 </div>
-                <div className="my-4">
+                <div className="my-2">
                     <label className="block">Theme (for Real-World Application section at the top)</label>
                     <input
                         type="text"
                         placeholder="Pets, Space, etc."
-                        className='bg-gray-600'
+                        className='bg-gray-800 p-1 ps-2 mt-1'
                         value={formState.theme}
                         onChange={e => setFormState({ ...formState, theme: e.target.value })}
                     />
@@ -105,7 +105,7 @@ const CreateDocxForm: React.FC<CreateDocsFormProps> = ({ document }) => {
                     disabled={isLoading || activeChunkIndices.length === 0}
                     type="submit"
                     data-tooltip-id={"createWorksheetTip"}
-                    className={`mt-2 w-64 px-4 py-2 bg-blue-500 hover:bg-blue-700 rounded-md border-2 text-white ${activeChunkIndices.length === 0 || isLoading ? " opacity-50" : ""}`}
+                    className={`mt-2 w-full px-4 py-2 bg-blue-500 hover:bg-blue-700 rounded-md border-2 text-white ${activeChunkIndices.length === 0 || isLoading ? " opacity-50" : ""}`}
                 >
                     {isLoading ? "Creating..." : "Create Worksheet"}
                 </button>
@@ -121,15 +121,18 @@ const CreateDocxForm: React.FC<CreateDocsFormProps> = ({ document }) => {
                 <>
                     <p className='mt-4'>Note: Problems sometimes will not show in chrome on mobile.</p>
                     <p>We recommend opening in Word or Google Docs to view.</p>
-                    <button onClick={() => window.open(downloadLinks.docxUrl, '_blank')} className="p-2 bg-green-700 mt-4 rounded-md w-1/3">
-                        Download DOCX
-                    </button>
-                    <button onClick={() => window.open(downloadLinks.pdfUrl, '_blank')} className="ms-2 p-2 bg-green-700 mt-4 rounded-md w-1/3">
-                        Download PDF
-                    </button>
+                    <div className="inline-flex space-x-2 mt-4">
+                        <button onClick={() => window.open(downloadLinks.docxUrl, '_blank')} className="p-2 bg-green-700 rounded-md w-1/2">
+                            Download DOCX
+                        </button>
+                        <button onClick={() => window.open(downloadLinks.pdfUrl, '_blank')} className="p-2 bg-green-700 rounded-md w-1/2">
+                            Download PDF
+                        </button>
+                    </div>
                 </>
+
             )}
-        </div>
+        </>
     );
 
 };
