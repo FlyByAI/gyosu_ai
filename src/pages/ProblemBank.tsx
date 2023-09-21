@@ -94,11 +94,11 @@ const ProblemBank: React.FC = () => {
         <div className='flex '>
             <ProblemBankShelf isExporting={false} />
             <div className="w-5/6 mt-4 overflow-x-hidden" style={{ marginRight: isDesktop ? '16.6667%' : "0" }}>
-                <div className='w-full md:w-3/4 mx-auto py-2'>
+                <div className='w-5/6 md:w-3/4 mx-auto py-2'>
                     <CreateDocxModal enabled={activeChunkIndices.length > 0} document={document} modalId={"createDocx"} />
                 </div>
                 {/* <DocumentHeader document={document} /> */}
-                <h2 className="text-center text-xl text-white my-4">Problem Bank: {document.title}</h2>
+                <h2 className="text-center text-xl text-white m-4">Problem Bank: {document.title}</h2>
                 {document && document.problemChunks
                     && document.problemChunks.length > 0
                     && document.problemChunks?.map((chunk, chunkIndex) => {
