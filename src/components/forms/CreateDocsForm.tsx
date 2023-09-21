@@ -54,7 +54,7 @@ const CreateDocxForm: React.FC<CreateDocsFormProps> = ({ document }) => {
     const { isDesktop } = useScreenSize();
 
     return (
-        <div>
+        <div className=''>
             <form onSubmit={(e) => {
                 e.preventDefault();
                 handleCreate();

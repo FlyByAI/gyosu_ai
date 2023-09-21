@@ -23,8 +23,7 @@ const queryClient = new QueryClient()
 function App({ children }: AppProps) {
   return (
     <div className=''>
-      <Toaster />
-      <Notifications />
+
       <QueryClientProvider client={queryClient}>
         <DarkModeProvider>
           <ModalProvider>
@@ -33,6 +32,8 @@ function App({ children }: AppProps) {
                 <ScreenSizeProvider>
                   <DragProvider>
                     <DndProvider backend={HTML5Backend}>
+                      <Toaster />
+                      <Notifications />
                       {children}
                     </DndProvider>
                   </DragProvider>

@@ -1,12 +1,15 @@
 import { useToaster } from "react-hot-toast/headless";
+import { useScreenSize } from "../contexts/ScreenSizeContext";
 
 const Notifications = () => {
     const { toasts, handlers } = useToaster();
     const { startPause, endPause, calculateOffset, updateHeight } = handlers;
 
+    const { isDesktop } = useScreenSize();
+
     return (
         <div
-            className="fixed top-36 left-72 transform -translate-x-1/2 z-50"
+            className={isDesktop ? `fixed top-36 left-72 transform -translate-x-1/2 z-50` : "transform top-36 fixed z-50"}
             onMouseEnter={startPause}
             onMouseLeave={endPause}
         >
@@ -29,7 +32,7 @@ const Notifications = () => {
                     <div
                         key={toast.id}
                         ref={ref}
-                        className={`flex items-center text-lg font-bold animate-bounce z-80 p-4 rounded-md bg-green-500 border-2 border-green-200 text-white fixed z-90 w-96 transition-all duration-400 ease-out ${toast.visible ? 'opacity-100' : 'opacity-0'}`}
+                        className={`flex items-center text-lg font-bold animate-bounce z-80 p-4 rounded-md bg-green-500 border-2 border-green-200 text-white fixed z-90 ${isDesktop ? "w-96" : "w-80"} transition-all duration-400 ease-out ${toast.visible ? 'opacity-100' : 'opacity-0'}`}
                         style={{ left: `${xPos}px`, top: `${yPos}px` }}
                     >
                         {toast.message}
