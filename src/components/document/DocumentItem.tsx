@@ -13,6 +13,7 @@ import { Tooltip as ReactTooltip } from "react-tooltip";
 import useEnvironment from '../../hooks/useEnvironment';
 import OverflowMenu from "../OverflowMenu";
 import { useDragContext } from "../../contexts/DragContext";
+import { useScreenSize } from "../../contexts/ScreenSizeContext";
 
 interface DocumentItemProps {
     document: Document;
@@ -128,6 +129,7 @@ const DocumentItem: React.FC<DocumentItemProps> = ({ document, onDropChunk, isEx
 
     const [isOverflowOpen, setIsOverflowOpen] = useState(false);
 
+    const { isDesktop } = useScreenSize();
 
     return (
         <>
@@ -148,25 +150,25 @@ const DocumentItem: React.FC<DocumentItemProps> = ({ document, onDropChunk, isEx
                             data-tooltip-id="editDocumentTip"
                         >
                             <EditIcon />
-                            <ReactTooltip
+                            {isDesktop && <ReactTooltip
                                 id='editDocumentTip'
                                 place="bottom"
                                 positionStrategy="fixed"
                                 variant="light"
                                 opacity={1}
-                                content={`Rename`} />
+                                content={`Rename`} />}
                         </button>
                         <button className='text-red-500 px-1 rounded'
                             data-tooltip-id="deleteDocumentTip"
                             onClick={handleDeleteClick}>
                             <TrashIcon />
-                            <ReactTooltip
+                            {isDesktop && <ReactTooltip
                                 id='deleteDocumentTip'
                                 place="bottom"
                                 positionStrategy="fixed"
                                 variant="light"
                                 opacity={1}
-                                content={`Delete`} />
+                                content={`Delete`} />}
                         </button>
                     </OverflowMenu>
                 </div>
@@ -203,12 +205,12 @@ const DocumentItem: React.FC<DocumentItemProps> = ({ document, onDropChunk, isEx
                     </div>
                 )}
             </li>
-            <ReactTooltip
+            {isDesktop && <ReactTooltip
                 id='hoverDocumentItem'
                 place="right"
                 variant="light"
                 opacity={1}
-                content={`View this problem bank`} />
+                content={`View this problem bank`} />}
         </>
     );
 };

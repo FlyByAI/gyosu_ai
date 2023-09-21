@@ -23,6 +23,7 @@ import { useModal } from '../contexts/useModal';
 import AddChunkModal from './AddChunkModal';
 import Feedback from './Feedback';
 import { useDragContext } from '../contexts/DragContext';
+import { useScreenSize } from '../contexts/ScreenSizeContext';
 
 
 interface ChunkProps {
@@ -116,9 +117,11 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
 
     const [isOverflowOpen, setIsOverflowOpen] = useState(false);
 
+    const { isDesktop } = useScreenSize();
+
     return (
         <>
-            <ReactTooltip
+            {isDesktop && <ReactTooltip
                 id='chunkDragTip'
                 place={!id ? "right" : "left-start"}
                 offset={8}
@@ -134,20 +137,20 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
 
                     </>}
                 variant="light"
-            />
+            />}
 
-            <ReactTooltip
+            {isDesktop && <ReactTooltip
                 id='addChunkTip'
                 place="bottom"
                 content={`Add problem to problem bank.`}
                 variant="light"
-            />
-            <ReactTooltip
+            />}
+            {isDesktop && <ReactTooltip
                 id='deleteChunkTip'
                 place="bottom"
                 content={`Delete this problem from bank.`}
                 variant="light"
-            />
+            />}
             <div
                 ref={(node) => ref(drop(node))}
                 onMouseEnter={() => !isHovered && setIsHovered(true)}

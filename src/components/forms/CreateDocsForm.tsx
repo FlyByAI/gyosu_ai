@@ -7,6 +7,7 @@ import { useParams } from 'react-router-dom';
 import useEnvironment from '../../hooks/useEnvironment';
 import toast from 'react-hot-toast/headless';
 import Feedback from '../Feedback';
+import { useScreenSize } from '../../contexts/ScreenSizeContext';
 
 interface CreateDocsFormProps {
     document: Document | EmptyDocument;
@@ -49,6 +50,8 @@ const CreateDocxForm: React.FC<CreateDocsFormProps> = ({ document }) => {
             }
         });
     };
+
+    const { isDesktop } = useScreenSize();
 
     return (
         <div>
@@ -106,11 +109,11 @@ const CreateDocxForm: React.FC<CreateDocsFormProps> = ({ document }) => {
                 >
                     {isLoading ? "Creating..." : "Create Worksheet"}
                 </button>
-                <ReactTooltip
+                {isDesktop && <ReactTooltip
                     id='createWorksheetTip'
                     place="bottom"
                     content={activeChunkIndices.length === 0 ? `You must select a problem` : ""}
-                />
+                />}
             </form>
 
             {/* Download buttons */}

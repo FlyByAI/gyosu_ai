@@ -3,6 +3,7 @@ import { useModal } from '../contexts/useModal';
 import { Document, EmptyDocument } from '../interfaces';
 import CreateDocxForm from './forms/CreateDocsForm';
 import { Tooltip as ReactTooltip } from "react-tooltip";
+import { useScreenSize } from '../contexts/ScreenSizeContext';
 
 interface CreateDocxModalProps {
     document: Document | EmptyDocument;
@@ -17,6 +18,8 @@ const CreateDocxModal: React.FC<CreateDocxModalProps> = ({ document, modalId, en
         openModal(modalId, <CreateDocxForm document={document} />);
     };
 
+    const { isDesktop } = useScreenSize();
+
     return (
         <>
             <div
@@ -24,11 +27,12 @@ const CreateDocxModal: React.FC<CreateDocxModalProps> = ({ document, modalId, en
                 data-tooltip-id='selectProblemsTip'>
                 <button
                     onClick={handleOpenClick}
+                    disabled={!enabled}
                     className={`w-full md:w-1/2 p-4 rounded text-lg font-bold shadow-lg ${enabled ? 'bg-blue-600 hover:bg-blue-700 text-white' : 'bg-gray-400 text-gray-700'}`}
                 >
                     Create Worksheet
                 </button>
-                <ReactTooltip
+                {isDesktop && <ReactTooltip
                     id='selectProblemsTip'
                     place="right"
                     offset={-40}
@@ -37,7 +41,7 @@ const CreateDocxModal: React.FC<CreateDocxModalProps> = ({ document, modalId, en
                     </>}
                     variant="light"
                     opacity={1}
-                />
+                />}
             </div>
 
             {currentModal === modalId && (

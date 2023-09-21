@@ -9,6 +9,7 @@ import { useModal } from '../../contexts/useModal';
 import toast, { useToaster } from 'react-hot-toast/headless';
 import PlusIcon from '../../svg/PlusIcon';
 import { Tooltip as ReactTooltip } from "react-tooltip";
+import { useScreenSize } from '../../contexts/ScreenSizeContext';
 
 interface AddChunkFormProps {
     chunk: Chunk;
@@ -66,10 +67,13 @@ const AddChunkForm: React.FC<AddChunkFormProps> = ({ chunk, preview }) => {
             problemChunks: [] as Chunk[],
         };
 
-        const responseData = await submitDocument({ document: newDocument });
+        await submitDocument({ document: newDocument });
         toast('Created new problem bank...');
 
     };
+
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const { isDesktop } = useScreenSize();
 
     return (
         <div className="flex flex-col">
@@ -104,7 +108,7 @@ const AddChunkForm: React.FC<AddChunkFormProps> = ({ chunk, preview }) => {
                 </button>
             </div>
             {!selectedBank && (
-                <ReactTooltip
+                isDesktop && <ReactTooltip
                     id='addChunkModelButtonDisabled'
                     place="bottom"
                     children={<><div className='flex flex-row items-center justify-center'>Select a problem bank</div>
