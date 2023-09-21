@@ -60,18 +60,18 @@ const CreateDocxForm: React.FC<CreateDocsFormProps> = ({ document }) => {
                 handleCreate();
             }}
             >
-                <div className='flex flex-row justify-between'>
-                    <div className="text-xl font-bold mb-2">
+                <div className='flex flex-row justify-between items-center mb-2'>
+                    <div className="text-xl font-bold w-64">
                         Worksheet Creator
                     </div>
                     <Feedback feedbackLabel={'Create Worksheet Feedback'} data={undefined} responseQuestions={["Please tell us what we can do better. "]} />
                 </div>
-                <div className="text-l mb-2">
-                    <p>Select problems to include in your worksheet. After selecting, click "Create Worksheet" to generate a DOCX and PDF file.</p>
+                <div className="text-md mb-2">
+                    <p className="font-bold">Fill in the details below:</p>
                 </div>
 
                 {/* Moved form elements */}
-                <div className="my-4">
+                <div className="my-2">
                     <label className="block">Title</label>
                     <input
                         type="text"
@@ -80,7 +80,7 @@ const CreateDocxForm: React.FC<CreateDocsFormProps> = ({ document }) => {
                         onChange={e => setFormState({ ...formState, title: e.target.value })}
                     />
                 </div>
-                <div className="my-4">
+                <div className="my-2">
                     <label className="block">Persona (for Real-World Application section at the top)</label>
                     <input
                         type="text"
@@ -89,7 +89,7 @@ const CreateDocxForm: React.FC<CreateDocsFormProps> = ({ document }) => {
                         onChange={e => setFormState({ ...formState, persona: e.target.value })}
                     />
                 </div>
-                <div className="my-4">
+                <div className="my-2">
                     <label className="block">Theme (for Real-World Application section at the top)</label>
                     <input
                         type="text"
@@ -105,7 +105,7 @@ const CreateDocxForm: React.FC<CreateDocsFormProps> = ({ document }) => {
                     disabled={isLoading || activeChunkIndices.length === 0}
                     type="submit"
                     data-tooltip-id={"createWorksheetTip"}
-                    className={`mt-2 w-full px-4 py-2 bg-blue-500 hover:bg-blue-700 rounded-md text-white ${activeChunkIndices.length === 0 || isLoading ? " opacity-50" : ""}`}
+                    className={`mt-2 w-full px-4 py-2 bg-blue-500 hover:bg-blue-700 rounded-md border-2 text-white ${activeChunkIndices.length === 0 || isLoading ? " opacity-50" : ""}`}
                 >
                     {isLoading ? "Creating..." : "Create Worksheet"}
                 </button>
