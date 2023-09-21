@@ -119,14 +119,14 @@ const CreateDocxForm: React.FC<CreateDocsFormProps> = ({ document }) => {
             {/* Download buttons */}
             {!isLoading && downloadLinks && (
                 <>
-                    <div className="inline-flex space-x-2 mt-4">
-                        <button onClick={() => window.open(downloadLinks.docxUrl, '_blank')} className="p-2 bg-green-700 rounded-md w-1/2">
-                            Download DOCX
-                        </button>
-                        <button onClick={() => window.open(downloadLinks.pdfUrl, '_blank')} className="p-2 bg-green-700 rounded-md w-1/2">
-                            Download PDF
-                        </button>
-                    </div>
+                    <p className='mt-4'>Note: Problems sometimes will not show in chrome on mobile.</p>
+                    <p>We recommend opening in Word or Google Docs to view.</p>
+                    <button onClick={() => window.open(downloadLinks.docxUrl, '_blank')} className="p-2 bg-green-700 mt-4 rounded-md w-1/3">
+                        Download DOCX
+                    </button>
+                    <button onClick={() => window.open(downloadLinks.pdfUrl, '_blank')} className="ms-2 p-2 bg-green-700 mt-4 rounded-md w-1/3">
+                        Download PDF
+                    </button>
                 </>
             )}
         </div>
