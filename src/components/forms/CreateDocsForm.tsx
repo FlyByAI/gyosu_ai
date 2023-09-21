@@ -75,7 +75,7 @@ const CreateDocxForm: React.FC<CreateDocsFormProps> = ({ document }) => {
                     <label className="block">Title</label>
                     <input
                         type="text"
-                        className='bg-gray-600'
+                        className='bg-gray-800 p-1 ps-2 mt-1'
                         value={formState.title}
                         onChange={e => setFormState({ ...formState, title: e.target.value })}
                     />
@@ -84,7 +84,7 @@ const CreateDocxForm: React.FC<CreateDocsFormProps> = ({ document }) => {
                     <label className="block">Persona (for Real-World Application section at the top)</label>
                     <input
                         type="text"
-                        className='bg-gray-600'
+                        className='bg-gray-800 p-1 ps-2 mt-1'
                         value={formState.persona}
                         onChange={e => setFormState({ ...formState, persona: e.target.value })}
                     />
@@ -94,7 +94,7 @@ const CreateDocxForm: React.FC<CreateDocsFormProps> = ({ document }) => {
                     <input
                         type="text"
                         placeholder="Pets, Space, etc."
-                        className='bg-gray-600'
+                        className='bg-gray-800 p-1 ps-2 mt-1'
                         value={formState.theme}
                         onChange={e => setFormState({ ...formState, theme: e.target.value })}
                     />
@@ -105,7 +105,7 @@ const CreateDocxForm: React.FC<CreateDocsFormProps> = ({ document }) => {
                     disabled={isLoading || activeChunkIndices.length === 0}
                     type="submit"
                     data-tooltip-id={"createWorksheetTip"}
-                    className={`mt-2 w-64 px-4 py-2 bg-blue-500 hover:bg-blue-700 rounded-md border-2 text-white ${activeChunkIndices.length === 0 || isLoading ? " opacity-50" : ""}`}
+                    className={`mt-2 w-full px-4 py-2 bg-blue-500 hover:bg-blue-700 rounded-md text-white ${activeChunkIndices.length === 0 || isLoading ? " opacity-50" : ""}`}
                 >
                     {isLoading ? "Creating..." : "Create Worksheet"}
                 </button>
