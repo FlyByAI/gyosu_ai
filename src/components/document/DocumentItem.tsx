@@ -78,7 +78,7 @@ const DocumentItem: React.FC<DocumentItemProps> = ({ document, onDropChunk, isEx
         if (dragState.isDragging && dragState.dragType === CHUNK_DRAG_TYPE) {
             return "border-green-400 border-dashed";
         }
-        return "";
+        return "border-transparent";
     };
 
     const handleClick = () => {
@@ -135,7 +135,7 @@ const DocumentItem: React.FC<DocumentItemProps> = ({ document, onDropChunk, isEx
         <>
             <li ref={dropRef}
                 key={document.id}
-                className={`${id == document.id ? "bg-blue-900" : "bg-gray-700"} text-white h-16 p-1 rounded-md overflow-clip relative cursor-pointer border-2 border-transparent ` + getDropStyle() + " " + getDragStyle()}
+                className={`${id == document.id ? "bg-blue-900" : "bg-gray-700"} text-white h-16 p-1 rounded-md overflow-clip relative cursor-pointer border-2 ` + getDropStyle() + " " + getDragStyle()}
                 onClick={handleClick}
                 data-tooltip-id="hoverDocumentItem"
             >

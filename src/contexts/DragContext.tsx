@@ -23,9 +23,9 @@ export const useDragContext = () => {
 export const DragProvider = ({ children }: { children: React.ReactNode }) => {
     const [dragState, setDragState] = useState<DragState>({ isDragging: false, dragType: null });
 
-    useEffect(() => {
-        console.log(dragState)
-    }, [dragState])
+    // useEffect(() => {
+    //     console.log(dragState)
+    // }, [dragState])
 
     return (
         <DragContext.Provider value={{ dragState, setDragState }}>
