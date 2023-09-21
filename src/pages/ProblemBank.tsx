@@ -104,7 +104,7 @@ const ProblemBank: React.FC = () => {
                     && document.problemChunks?.map((chunk, chunkIndex) => {
                         return (
                             <div
-                                key={chunkIndex} className='w-3/4 mx-auto flex flex-row mb-4 bg-gray-900 p-2'>
+                                key={chunkIndex} className='w-full md:w-3/4 mx-auto flex flex-row mb-4 bg-gray-900 p-2'>
                                 <div className='w-full rounded-xl' >
                                     <MathProblem
                                         insertChunk={insertChunk}

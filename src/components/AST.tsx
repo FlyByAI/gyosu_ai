@@ -153,9 +153,9 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
                 onMouseEnter={() => !isHovered && setIsHovered(true)}
                 onMouseLeave={() => isHovered && setIsHovered(false)}
                 data-tooltip-id='chunkDragTip'
-                className={"border-2 relative border-transparent p-4 w-full " + (isHovered ? " hover:border-white border-dashed hover:border-2 hover:border-purple-dashed" : '') + ((activeChunkIndices.includes(chunkIndex)) ? " bg-blue-900 " : '')}
+                className={"border-2 relative border-transparent p-4 pt-8 w-full " + (isHovered ? " hover:border-white border-dashed hover:border-2 hover:border-purple-dashed" : '') + ((activeChunkIndices.includes(chunkIndex)) ? " bg-blue-900 " : '')}
             >
-                <div className="absolute top-0 right-0 pe-2 mt-2 text-white flex-row flex">
+                <div className="absolute top-0 right-0 text-white flex-row flex mt-2">
                     <AddChunkModal variant={"button"} chunk={chunk} modalId={'addChunkModal'} enabled={false} />
                     <OverflowMenu
                         isOpen={isOverflowOpen}
@@ -312,7 +312,7 @@ const InstructionComponent: React.FC<InstructionProps> = ({ parentChunk, parentC
                             case 'text':
                                 return (
                                     <div
-                                        className={"z-10 text-blue-300 border-2 border-transparent border-dashed hover:border-2 p-1 m-1 group-hover:border-2 group-hover:border-dashed"}
+                                        className={"text-xs md:text-md z-10 text-blue-300 border-2 border-transparent border-dashed hover:border-2 p-1 m-1 group-hover:border-2 group-hover:border-dashed"}
                                     >
                                         {item.value}
                                     </div>
@@ -320,7 +320,7 @@ const InstructionComponent: React.FC<InstructionProps> = ({ parentChunk, parentC
                             case 'math':
                                 return (
                                     <ReactMarkdown
-                                        className={"z-10 text-yellow-200 border-2 border-transparent border-dashed hover:border-2 p-1 m-1 group-hover:border-2 group-hover:border-dashed"}
+                                        className={"text-xs md:text-md z-10 text-yellow-200 border-2 border-transparent border-dashed hover:border-2 p-1 m-1 group-hover:border-2 group-hover:border-dashed"}
                                         remarkPlugins={[remarkGfm, remarkMath]}
                                         rehypePlugins={[rehypeKatex]}
                                     >
@@ -330,7 +330,7 @@ const InstructionComponent: React.FC<InstructionProps> = ({ parentChunk, parentC
                             case 'table':
                                 return (
                                     <ReactMarkdown
-                                        className={"z-10 text-purple-300 border-gray-100  border-2 border-transparent border-dashed hover:border-2 p-1 m-1 group-hover:border-2 group-hover:border-dashed"}
+                                        className={"text-xs md:text-md z-10 text-purple-300 border-gray-100  border-2 border-transparent border-dashed hover:border-2 p-1 m-1 group-hover:border-2 group-hover:border-dashed"}
                                         remarkPlugins={[remarkGfm, remarkMath]}
                                         rehypePlugins={[rehypeKatex]}
                                     >
@@ -342,7 +342,7 @@ const InstructionComponent: React.FC<InstructionProps> = ({ parentChunk, parentC
                                     <img
                                         src={item.value}
                                         alt="Description"
-                                        className="z-10 p-1 m-1 border-2 border-transparent border-dashed hover:border-2 group-hover:border-2 group-hover:border-dashed"
+                                        className="text-xs md:text-md z-10 p-1 m-1 border-2 border-transparent border-dashed hover:border-2 group-hover:border-2 group-hover:border-dashed"
                                     />
                                 );
                             default:
@@ -434,7 +434,7 @@ const ProblemComponent: React.FC<ProblemProps> = ({ parentChunk, parentChunkInde
                             case 'text':
                                 return (
                                     <div
-                                        className={'z-10 text-yellow-100 border-2 border-transparent border-dashed hover:border-2 p-1 m-1 group-hover:border-2 group-hover:border-dashed'}
+                                        className={'text-xs md:text-md z-10 text-yellow-100 border-2 border-transparent border-dashed hover:border-2 p-1 m-1 group-hover:border-2 group-hover:border-dashed'}
                                     >
                                         {item.value}
                                     </div>
@@ -442,7 +442,7 @@ const ProblemComponent: React.FC<ProblemProps> = ({ parentChunk, parentChunkInde
                             case 'math':
                                 return (
                                     <ReactMarkdown
-                                        className={"z-10 text-purple-300 border-gray-100 border-2 border-transparent border-dashed hover:border-2 p-1 m-1 group-hover:border-2 group-hover:border-dashed"}
+                                        className={"text-xs md:text-md z-10 text-purple-300 border-gray-100 border-2 border-transparent border-dashed hover:border-2 p-1 m-1 group-hover:border-2 group-hover:border-dashed"}
                                         remarkPlugins={[remarkGfm, remarkMath]}
                                         rehypePlugins={[rehypeKatex]}
                                     >
@@ -452,7 +452,7 @@ const ProblemComponent: React.FC<ProblemProps> = ({ parentChunk, parentChunkInde
                             case 'table':
                                 return (
                                     <ReactMarkdown
-                                        className={"z-10 text-purple-300 border-gray-100 border-2 border-transparent border-dashed hover:border-2 p-1 m-1 group-hover:border-2 group-hover:border-dashed"}
+                                        className={"text-xs md:text-md z-10 text-purple-300 border-gray-100 border-2 border-transparent border-dashed hover:border-2 p-1 m-1 group-hover:border-2 group-hover:border-dashed"}
                                         remarkPlugins={[remarkGfm, remarkMath]}
                                         rehypePlugins={[rehypeKatex]}
                                     >
@@ -464,7 +464,7 @@ const ProblemComponent: React.FC<ProblemProps> = ({ parentChunk, parentChunkInde
                                     <img
                                         src={item.value}
                                         alt="Description"
-                                        className="z-10 p-1 m-1 border-2 border-transparent border-dashed hover:border-2 group-hover:border-2 group-hover:border-dashed"
+                                        className="text-xs md:text-md z-10 p-1 m-1 border-2 border-transparent border-dashed hover:border-2 group-hover:border-2 group-hover:border-dashed"
                                     />
                                 );
                             default:
