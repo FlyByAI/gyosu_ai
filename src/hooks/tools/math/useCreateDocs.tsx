@@ -44,7 +44,10 @@ const useCreateDocx = (endpoint = 'api/math_app/generate_docx/') => {
             });
 
             if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || errorData.message || `HTTP error! status: ${response.status}`);
+                }
             }
 
             const responseData = await response.json().then((json) => humps.camelizeKeys(json));

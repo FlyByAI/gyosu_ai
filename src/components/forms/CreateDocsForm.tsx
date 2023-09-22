@@ -16,7 +16,7 @@ interface CreateDocsFormProps {
 const CreateDocxForm: React.FC<CreateDocsFormProps> = ({ document }) => {
     const { activeChunkIndices, setActiveChunkIndices } = useSidebarContext();
     const { apiUrl } = useEnvironment();
-    const { createDocx, isLoading } = useCreateDocx(`${apiUrl}/math_app/generate_docx/`);
+    const { createDocx, isLoading, error } = useCreateDocx(`${apiUrl}/math_app/generate_docx/`);
     const { id } = useParams();
 
     const [downloadLinks, setDownloadLinks] = useState<{ docxUrl: string; pdfUrl: string; fileName: string } | null>(null);
@@ -109,6 +109,11 @@ const CreateDocxForm: React.FC<CreateDocsFormProps> = ({ document }) => {
                 >
                     {isLoading ? "Creating..." : "Create Worksheet"}
                 </button>
+                {!isLoading && error && (
+                    <div className="mt-4 text-red-500">
+                        {`Error: ${error.message}`}
+                    </div>
+                )}
                 {isDesktop && <ReactTooltip
                     id='createWorksheetTip'
                     place="bottom"
