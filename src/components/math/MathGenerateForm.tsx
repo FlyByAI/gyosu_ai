@@ -141,6 +141,8 @@ const MathGenerateForm: React.FC<MathGenerateFormProps> = ({ onSubmit, setProble
         <>
             <div className="flex justify-center items-center">
                 <div className="w-full md:w-3/4 mx-4 md:mx-0 bg-gray-700 rounded-lg p-4 my-4 shadow-lg items-center flex flex-col">
+                    <h1 className="text-2xl font-bold text-center mb-4 text-white">Problem Search</h1>
+                    <p className="text-center text-white mb-6">Fill out the form to find problems suitable for your class.</p>
                     <div className="flex flex-col lg:flex-row justify-center items-center w-full">
                         <Dropdown
                             showSelected={false}

@@ -115,6 +115,7 @@ export interface Document {
     documentType?: string;
     problemChunks?: Chunk[];
     shared?: boolean;
+    updatedAt: string;
 }
 
 export interface Source {
