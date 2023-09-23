@@ -30,22 +30,18 @@ const FixedNavbar: React.FC = () => {
         </div>
       </div>
       <nav className="grid grid-cols-2 gap-2 lg:flex lg:space-x-3 pt-4">
+        <Link to="/math-app" className="text-lg text-white hover:underline dark:text-gray-200 lg:justify-self-end block sm:hidden">
+          Problem Search
+        </Link>
+        <Link to="/math-app/documents" className="text-lg text-white hover:underline dark:text-gray-200 lg:justify-self-end block sm:hidden">
+          My Documents
+        </Link>
         <Link to="/faq" className="text-lg text-white hover:underline dark:text-gray-200 lg:justify-self-end block sm:hidden">
           How To
         </Link>
         <Link to="/subscribe" className="text-lg text-white hover:underline dark:text-gray-200 lg:justify-self-end block sm:hidden">
           Pricing
         </Link>
-        <Link to="/math-app" className="text-lg text-white hover:underline dark:text-gray-200 lg:justify-self-end block sm:hidden">
-          Problem Search
-        </Link>
-        <Link to="/math-app/documents" className="text-lg text-white hover:underline dark:text-gray-200 lg:justify-self-end block sm:hidden">
-          Documents
-        </Link>
-        {/* <Link to="/math-app/bank" className="text-lg text-white hover:underline dark:text-gray-200 lg:justify-self-end block sm:hidden">
-          Search
-        </Link> */}
-
       </nav>
 
       {/* desktop */}
@@ -53,22 +49,18 @@ const FixedNavbar: React.FC = () => {
         <Link to="/" className="text-3xl font-semibold text-white font-mono">Gyosu.ai</Link>
         <div className="flex items-center">
           <nav>
+            <Link to="/math-app" className="text-lg text-white mx-3 hover:underline dark:text-gray-200 font-mono font-bold">
+              Problem Search
+            </Link>
+            <Link to="/math-app/documents" className="text-lg text-white mx-3 hover:underline dark:text-gray-200 font-mono font-bold">
+              My Documents
+            </Link>
             <Link to="/faq" className="text-lg text-white mx-3 hover:underline dark:text-gray-200 font-mono font-bold">
               How To
             </Link>
             <Link to="/subscribe" className="text-lg text-white mx-3 hover:underline dark:text-gray-200 font-mono font-bold">
               Pricing
             </Link>
-            <Link to="/math-app" className="text-lg text-white mx-3 hover:underline dark:text-gray-200 font-mono font-bold">
-              Problem Search
-            </Link>
-            <Link to="/math-app/documents" className="text-lg text-white mx-3 hover:underline dark:text-gray-200 font-mono font-bold">
-              Documents
-            </Link>
-            {/* <Link to="/math-app/search" className="text-lg text-white mx-3 hover:underline dark:text-gray-200 font-mono font-bold">
-              Search
-            </Link> */}
-
           </nav>
           <SignedIn>
             {darkMode ? <UserButton afterSignOutUrl="/" appearance={getGyosuClerkTheme()} /> : <UserButton afterSignOutUrl="http://localhost:5173/" />}
