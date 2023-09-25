@@ -41,20 +41,21 @@ const MathGenerate: React.FC = () => {
                         <h1 className="text-2xl font-bold text-center mb-4 text-white">Problem Search</h1>
 
                         <div className="text-center text-white mb-4">
-                            <span className="font-bold">Step 1:</span> Select textbook problems or competition problems:
+                            <span className="font-bold">Step 1: Select source type</span>
+
                         </div>
                         <div className="flex space-x-4 mb-8">
                             <button
                                 onClick={() => setFormType('Textbook')}
-                                className={`p-2 ${formType === 'Textbook' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-black'}`}
+                                className={`p-4 text-lg rounded-lg shadow-md transform transition-all duration-300 ${formType === 'Textbook' ? 'bg-blue-500 text-white hover:scale-105' : 'bg-gray-200 text-black hover:bg-gray-300'}`}
                             >
                                 Textbooks
                             </button>
                             <button
                                 onClick={() => setFormType('Competition')}
-                                className={`p-2 ${formType === 'Competition' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-black'}`}
+                                className={`p-4 text-lg rounded-lg shadow-md transform transition-all duration-300 ${formType === 'Competition' ? 'bg-blue-500 text-white hover:scale-105' : 'bg-gray-200 text-black hover:bg-gray-300'}`}
                             >
-                                Competition Math Problems
+                                Competition Math
                             </button>
                         </div>
 
