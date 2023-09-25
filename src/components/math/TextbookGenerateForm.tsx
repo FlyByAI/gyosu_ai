@@ -144,7 +144,7 @@ const TextbookGenerateForm: React.FC<TextbookGenerateFormProps> = ({ onSubmit, s
             <div className="flex flex-col lg:flex-row justify-center items-center w-full">
                 <Dropdown
                     showSelected={false}
-                    label={"Source Material"}
+                    label={"Textbook"}
                     options={sourceMaterialOptions}
                     defaultValue={sourceMaterial}
                     handleChange={handleSourceMaterialChange}
