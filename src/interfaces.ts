@@ -1,7 +1,24 @@
 
+export interface GenerateFormData {
+    data: TextbookProblemData | CompetitionData;
+}
+
+export interface TextbookProblemData {
+    problemType: string;
+    chapter: string;
+    section: string;
+    documentType: string;
+    sourceMaterial: string;
+}
+
+export interface CompetitionData {
+    problemType: string;
+    level: string;
+}
 
 export interface ProblemData {
     problemType: string;
+    chapter: string;
     section: string;
     documentType: string;
     sourceMaterial: string;
@@ -109,13 +126,12 @@ export interface Document {
     creator?: string;
     upvotes?: number;
     tips?: number;
-    last_modified_by: string;
-    created_at: string; // Using string for simplicity, consider using a date/time library like day.js or luxon for better date/time handling
-    updated_at: string; // Same as above
+    lastModifiedBy: string;
+    createdAt: string; // Using string for simplicity, consider using a date/time library like day.js or luxon for better date/time handling
+    updatedAt: string; // Same as above
     documentType?: string;
     problemChunks?: Chunk[];
     shared?: boolean;
-    updatedAt: string;
 }
 
 export interface Source {

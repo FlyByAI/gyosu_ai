@@ -1,0 +1,183 @@
+{
+  "competition_math": {
+    "label": "Competition Math",
+    "problem_types": {
+      "label": "Problem Types",
+      "Algebra": {
+        "label": "Algebra",
+        "levels": [
+          {
+            "label": "Level 1",
+            "value": "Level 1"
+          },
+          {
+            "label": "Level 2",
+            "value": "Level 2"
+          },
+          {
+            "label": "Level 3",
+            "value": "Level 3"
+          },
+          {
+            "label": "Level 4",
+            "value": "Level 4"
+          },
+          {
+            "label": "Level 5",
+            "value": "Level 5"
+          }
+        ]
+      },
+      "Counting & Probability": {
+        "label": "Counting & Probability",
+        "levels": [
+          {
+            "label": "Level 1",
+            "value": "Level 1"
+          },
+          {
+            "label": "Level 2",
+            "value": "Level 2"
+          },
+          {
+            "label": "Level 3",
+            "value": "Level 3"
+          },
+          {
+            "label": "Level 4",
+            "value": "Level 4"
+          },
+          {
+            "label": "Level 5",
+            "value": "Level 5"
+          }
+        ]
+      },
+      "Geometry": {
+        "label": "Geometry",
+        "levels": [
+          {
+            "label": "Level 1",
+            "value": "Level 1"
+          },
+          {
+            "label": "Level 2",
+            "value": "Level 2"
+          },
+          {
+            "label": "Level 3",
+            "value": "Level 3"
+          },
+          {
+            "label": "Level 4",
+            "value": "Level 4"
+          },
+          {
+            "label": "Level 5",
+            "value": "Level 5"
+          }
+        ]
+      },
+      "Intermediate Algebra": {
+        "label": "Intermediate Algebra",
+        "levels": [
+          {
+            "label": "Level 1",
+            "value": "Level 1"
+          },
+          {
+            "label": "Level 2",
+            "value": "Level 2"
+          },
+          {
+            "label": "Level 3",
+            "value": "Level 3"
+          },
+          {
+            "label": "Level 4",
+            "value": "Level 4"
+          },
+          {
+            "label": "Level 5",
+            "value": "Level 5"
+          }
+        ]
+      },
+      "Number Theory": {
+        "label": "Number Theory",
+        "levels": [
+          {
+            "label": "Level 1",
+            "value": "Level 1"
+          },
+          {
+            "label": "Level 2",
+            "value": "Level 2"
+          },
+          {
+            "label": "Level 3",
+            "value": "Level 3"
+          },
+          {
+            "label": "Level 4",
+            "value": "Level 4"
+          },
+          {
+            "label": "Level 5",
+            "value": "Level 5"
+          }
+        ]
+      },
+      "Prealgebra": {
+        "label": "Prealgebra",
+        "levels": [
+          {
+            "label": "Level 1",
+            "value": "Level 1"
+          },
+          {
+            "label": "Level 2",
+            "value": "Level 2"
+          },
+          {
+            "label": "Level 3",
+            "value": "Level 3"
+          },
+          {
+            "label": "Level 4",
+            "value": "Level 4"
+          },
+          {
+            "label": "Level 5",
+            "value": "Level 5"
+          }
+        ]
+      },
+      "Precalculus": {
+        "label": "Precalculus",
+        "levels": [
+          {
+            "label": "Level 1",
+            "value": "Level 1"
+          },
+          {
+            "label": "Level 2",
+            "value": "Level 2"
+          },
+          {
+            "label": "Level 3",
+            "value": "Level 3"
+          },
+          {
+            "label": "Level 4",
+            "value": "Level 4"
+          },
+          {
+            "label": "Level 5",
+            "value": "Level 5"
+          }
+        ]
+      }
+    }
+  }
+}

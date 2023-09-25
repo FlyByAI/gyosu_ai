@@ -40,9 +40,9 @@ const ProblemBankShelf: React.FC<ProblemBankShelfProps> = ({ isExporting }) => {
             title: `Document ${(documents?.length || 0) + 1}`,
             upvotes: 0,
             tips: 0,
-            last_modified_by: '',
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString(),
+            lastModifiedBy: '',
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
             problemChunks: [] as Chunk[],
         };
 

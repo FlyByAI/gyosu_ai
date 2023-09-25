@@ -3,6 +3,7 @@ import humps from 'humps';
 import { useState } from 'react';
 import { useLanguage } from '../../../contexts/useLanguage';
 import { languageNames } from '../../../helpers/language';
+import { GenerateFormData } from '../../../interfaces';
 
 export interface MathFormData {
     id?: number;
@@ -26,7 +27,7 @@ const useSubmitMathForm = (endpoint: string) => {
     const { language } = useLanguage();
     const options = { site_language: languageNames[language] };
 
-    const submitMathForm = async (formData: MathFormData) => {
+    const submitMathForm = async (formData: GenerateFormData) => {
         setLoading(true);
         setError(null);
         try {
@@ -38,7 +39,7 @@ const useSubmitMathForm = (endpoint: string) => {
                     'Content-Type': 'application/json',
                     'Authorization': token ? `Bearer ${token}` : '',
                 },
-                body: JSON.stringify(humps.decamelizeKeys({ ...formData, ...options }))
+                body: JSON.stringify(humps.decamelizeKeys({ ...formData.data, ...options }))
             });
 
             if (!response.ok) {

@@ -25,7 +25,6 @@ import ContentWrapper from './components/ContentWrapper.tsx';
 import Attributions from './pages/Attributions.tsx';
 import ProblemBank from './pages/ProblemBank.tsx';
 import LandingPage from './pages/Landing.tsx';
-import MathDocumentSearch from './pages/tools/MathDocumentSearch.tsx';
 import MathGenerate from './pages/MathGenerate.tsx';
 import Pricing from './components/Pricing.tsx';
 import Documents from './pages/Documents.tsx';
@@ -77,7 +76,7 @@ export default function ClerkProviderWithRoutes() {
                         </>
                     }
                 />
-                <Route
+                {/* <Route
                     path="/math-app/search"
                     element={
                         <>
@@ -86,7 +85,7 @@ export default function ClerkProviderWithRoutes() {
                             <Footer />
                         </>
                     }
-                />
+                /> */}
                 <Route
                     path="/math-app/documents"
                     element={
