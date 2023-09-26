@@ -134,7 +134,7 @@ const TextbookGenerateForm: React.FC<TextbookGenerateFormProps> = ({ onSubmit, s
 
     useEffect(() => {
         if (data) {
-            onSubmit(data.response || data)
+            onSubmit(data)
         }
     }, [data, onSubmit])
 
