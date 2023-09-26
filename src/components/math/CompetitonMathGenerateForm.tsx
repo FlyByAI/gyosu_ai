@@ -80,7 +80,7 @@ const CompetitionMathGenerateForm: React.FC<CompetitionMathGenerateFormProps> = 
 
     useEffect(() => {
         if (data) {
-            onSubmit(data.response || data)
+            onSubmit(data)
         }
     }, [data, onSubmit])
 
