@@ -194,7 +194,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
                 )}
                 {/* {chunk.parentChunkId && <div className='text-gray-400 text-xs'>Parent: {chunk.parentChunkId}</div>} */}
 
-                {chunk.content.map((item, index) => {
+                {chunk?.content?.map((item, index) => {
                     const element = (() => {
                         switch (item.type) {
                             case 'instruction':
