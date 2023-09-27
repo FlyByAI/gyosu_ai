@@ -5,7 +5,7 @@ import useGetDocumentDownloads from '../hooks/tools/math/useGetDocumentDownloads
 import useGetDocumentDownload from '../hooks/tools/math/useGetDocumentDownload';
 import { Chunk } from '../interfaces';
 import useEnvironment from '../hooks/useEnvironment';
-import DocumentDetails from '../components/document/DocumentDetails';
+import useCreateAnswerKey from '../hooks/tools/math/useCreateAnswerKey';
 
 
 export interface DocumentDownload {
@@ -16,6 +16,15 @@ export interface DocumentDownload {
     shared: boolean;
     timesDownloaded: number;
     sourceData: Chunk[];
+    signedUrl?: string;
+    answerKey: {
+        blobName: string;
+        signedUrl?: string;
+    };
+}
+
+interface AnswerKeyResponse {
+    blobName: string;
     signedUrl?: string;
 }
 
@@ -31,8 +40,19 @@ const Documents: React.FC = () => {
 
     const { apiUrl } = useEnvironment();
     const { documentDownloads, isLoading, error } = useGetDocumentDownloads(`${apiUrl}/math_app/cloud_storage_document/list/`)
+    const { getDocumentDownload, isLoading: isDownloadLoading, data, error: downloadError } = useGetDocumentDownload(`${apiUrl}/math_app`);
+    const { createAnswerKey, isLoading: isAnswerKeyLoading, error: answerKeyError } = useCreateAnswerKey(`${apiUrl}/math_app`);
 
     const user = useUser();
+
+    const handleDocumentClick = (blobName: string) => {
+        const newWindow = window.open('', '_blank');
+        getDocumentDownload(blobName, newWindow);
+    };
+
+    const handleGenerateAnswerKey = (id: number | string, blobName: string) => {
+        createAnswerKey(id, blobName);
+    };
 
     return (
         <>
@@ -43,7 +63,28 @@ const Documents: React.FC = () => {
                             <ul className="list-inside space-y-4 text-white mt-4">
                                 {documentDownloads.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
                                     .map((doc) => (
-                                        <DocumentDetails documentDownload={doc} />
+                                        <li key={doc.id} className="border rounded p-4">
+                                            <div onClick={() => handleDocumentClick(doc.blobName)}>
+                                                <span className="text-blue-300 hover:underline cursor-pointer">
+                                                    {doc.blobName}
+                                                </span>
+                                            </div>
+                                            <div>Document Type: {doc.docType}</div>
+                                            <div>Timestamp: {new Date(doc.timestamp).toLocaleString()}</div>
+                                            <div>Shared: {doc.shared ? 'Yes' : 'No'}</div>
+                                            <div>Times Downloaded: {doc.timesDownloaded}</div>
+                                            {!doc.answerKey?.blobName ? <div onClick={() => handleGenerateAnswerKey(doc.id, doc.blobName)}>
+                                                <span className="text-yellow-300 hover:underline cursor-pointer">
+                                                    Generate Answer Key
+                                                </span>
+                                            </div> :
+                                                <div onClick={() => handleDocumentClick(doc.answerKey.blobName)}>
+                                                    <span className="text-yellow-300 hover:underline cursor-pointer">
+                                                        Download Answer Key
+                                                    </span>
+                                                </div>
+                                            }
+                                        </li>
                                     ))}
                             </ul>
                             :

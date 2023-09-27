@@ -19,7 +19,7 @@ const CreateDocxForm: React.FC<CreateDocsFormProps> = ({ document }) => {
     const { createDocx, isLoading, error } = useCreateDocx(`${apiUrl}/math_app/generate_docx/`);
     const { id } = useParams();
 
-    const [downloadLinks, setDownloadLinks] = useState<{ docxUrl: string; pdfUrl: string; fileName: string } | null>(null);
+    const [downloadLinks, setDownloadLinks] = useState<{ docxUrl: string; pdfUrl: string; fileName: string, answerKeyUrl?: string; } | null>(null);
 
     // Moved formState and related logic here
     const [formState, setFormState] = useState({
@@ -40,8 +40,9 @@ const CreateDocxForm: React.FC<CreateDocsFormProps> = ({ document }) => {
         localStorage.setItem('formState', JSON.stringify(formState));
     }, [formState]);
 
-    const handleCreate = () => {
-        toast("Creating worksheet... This may take up to 1 minute to complete.")
+    const handleCreate = (event: React.FormEvent) => {
+        const nativeEvent = event.nativeEvent as MouseEvent;
+        toast("Creating worksheet... This may take up to 1 minute to complete.");
         setDownloadLinks(null);  // Reset download links
         const selectedChunks = activeChunkIndices.map(index => document.problemChunks?.[index]).filter(Boolean) as Chunk[];
         createDocx({ chunks: selectedChunks, ...formState }, {
@@ -57,7 +58,7 @@ const CreateDocxForm: React.FC<CreateDocsFormProps> = ({ document }) => {
         <>
             <form className='overflow-y-auto' onSubmit={(e) => {
                 e.preventDefault();
-                handleCreate();
+                handleCreate(e);
             }}
             >
                 <div className='flex flex-row justify-between items-center mb-2'>
