@@ -30,10 +30,6 @@ const CompetitionMathGenerateForm: React.FC<CompetitionMathGenerateFormProps> = 
         .map(type => ({ label: formOptionsObj.problem_types[type].label, value: type }));
 
 
-    useEffect(() => {
-        console.log(problemType)
-    }, [problemType])
-
     const levelOptions = formOptionsObj?.problem_types?.[problemType]?.levels || [];
 
     const { apiUrl } = useEnvironment();
