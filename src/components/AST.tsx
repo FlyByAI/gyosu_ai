@@ -43,8 +43,6 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
     const { activeChunkIndices, setActiveChunkIndices } = useSidebarContext();
     const { apiUrl } = useEnvironment();
 
-    const { openModal } = useModal();
-
     const endpoint2 = `${apiUrl}/math_app/school_document/`;
     const { isLoading, updateDocument } = useSubmitDocument(endpoint2);
 
@@ -293,15 +291,15 @@ const InstructionComponent: React.FC<InstructionProps> = ({ parentChunk, parentC
 
     });
 
-    function processLatexString(latex_string: string): string {
-        const result = latex_string.replace(/^\\\(/, '')
-            .replace(/\\\)$/g, '')
-            .replace(/^\\\\$/gm, '')
-            .replace(/\\\\\n/g, '')
-            .replace(/\n/g, '')
-            .trim();
-        return result;
-    }
+    // function processLatexString(latex_string: string): string {
+    //     const result = latex_string.replace(/^\\\(/, '')
+    //         .replace(/\\\)$/g, '')
+    //         .replace(/^\\\\$/gm, '')
+    //         .replace(/\\\\\n/g, '')
+    //         .replace(/\n/g, '')
+    //         .trim();
+    //     return latex_string;
+    // }
 
     return (
 
@@ -327,7 +325,7 @@ const InstructionComponent: React.FC<InstructionProps> = ({ parentChunk, parentC
                                         remarkPlugins={[remarkGfm, remarkMath]}
                                         rehypePlugins={[rehypeKatex]}
                                     >
-                                        {`$$${processLatexString(item.value)}$$`}
+                                        {`${item.value}`}
                                     </ReactMarkdown>
                                 );
                             case 'table':
@@ -416,15 +414,15 @@ const ProblemComponent: React.FC<ProblemProps> = ({ parentChunk, parentChunkInde
         }
     });
 
-    function processLatexString(latex_string: string): string {
-        const result = latex_string.replace(/^\\\(/, '')
-            .replace(/\\\)$/g, '')
-            .replace(/^\\\\$/gm, '')
-            .replace(/\\\\\n/g, '')
-            .replace(/\n/g, '')
-            .trim();
-        return result;
-    }
+    // function processLatexString(latex_string: string): string {
+    //     const result = latex_string.replace(/^\\\(/, '')
+    //         .replace(/\\\)$/g, '')
+    //         .replace(/^\\\\$/gm, '')
+    //         .replace(/\\\\\n/g, '')
+    //         .replace(/\n/g, '')
+    //         .trim();
+    //     return latex_string;
+    // }
 
     return (
         <div
@@ -449,7 +447,7 @@ const ProblemComponent: React.FC<ProblemProps> = ({ parentChunk, parentChunkInde
                                         remarkPlugins={[remarkGfm, remarkMath]}
                                         rehypePlugins={[rehypeKatex]}
                                     >
-                                        {`$$${processLatexString(item.value)}$$`}
+                                        {`${item.value}`}
                                     </ReactMarkdown>
                                 );
                             case 'table':
