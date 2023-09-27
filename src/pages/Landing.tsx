@@ -8,90 +8,10 @@ import LoopingText from '../components/LoopingText';
 
 const LandingPage: React.FC = () => {
 
-    const sampleChunk: Chunk = {
-        "id": 445,
-        "type": "chunk",
-        "content": [
-            {
-                "type": "instruction",
-                "content": [
-                    {
-                        "type": "text",
-                        "value": "For the following exercises, find the domain of each function using interval notation."
-                    }
-                ],
-            },
-            {
-                "type": "problem",
-                "content": [
-                    {
-                        "type": "math",
-                        "value": "f(x) = - 2x(x - 1)(x - 2)"
-                    }
-                ],
-            },
-            {
-                "type": "problem",
-                "content": [
-                    {
-                        "type": "math",
-                        "value": "\\begin{array}{l}\n \\\\\n{f(x) = \\sqrt[{}]{x^{2} + 4}}\n\\end{array}"
-                    }
-                ],
-            },
-            {
-                "type": "problem",
-                "content": [
-                    {
-                        "type": "math",
-                        "value": "f(x) = \\sqrt[3]{x - 1}"
-                    }
-                ],
-            },
-            {
-                "type": "problem",
-                "content": [
-                    {
-                        "type": "math",
-                        "value": "{f(x) =}\\frac{5}{\\sqrt{x - 3}}"
-                    }
-                ],
-            },
-            {
-                "type": "problem",
-                "content": [
-                    {
-                        "type": "math",
-                        "value": "f(x) = \\frac{\\sqrt{x - 4}}{\\sqrt{x - 6}}"
-                    }
-                ],
-            },
-            {
-                "type": "problem",
-                "content": [
-                    {
-                        "type": "math",
-                        "value": "f(x) = \\frac{x}{x}"
-                    }
-                ],
-            },
-            {
-                "type": "problem",
-                "content": [
-                    {
-                        "type": "math",
-                        "value": "f(x) = \\frac{x^{2} - 9x}{x^{2} - 81}"
-                    }
-                ],
-            }
-        ],
-
-    }
-
     return (
         <div>
             <section className="h-full flex flex-col md:flex-row items-center" style={{ backgroundImage: `url('/svg/dark-bg.svg')`, backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundColor: '#0b1536' }}>
-                <img className="w-3/4 md:w-1/3 h-auto mx-auto md:mx-0" src="/svg/teacher1.svg" alt="Image 1" />
+                <img className="w-3/4 md:w-1/3 h-auto mx-auto md:mx-0" src="/svg/teacher1.svg" alt="Teacher illustration with open book" />
                 <div className="ml-0 md:ml-20 w-full md:w-2/3 text-center md:text-left text-3xl md:text-5xl text-gray-300 p-4">
                     <p className="font-bold mt-4 flex-col"><div className='mb-4'>Create math </div><LoopingText variant='typed' textArray={['worksheets', 'problems', 'quizzes', 'exams']} /></p>
                     <p className="font-bold mt-4">with AI</p>
@@ -104,29 +24,27 @@ const LandingPage: React.FC = () => {
                     </Link>
                 </div>
             </section>
-
-
             <section className="h-full bg-gray-100 justify-center py-8 text-gray-700 flex flex-col items-center">
-                <div className='font-bold w-full text-center text-3xl md:text-5xl mb-4'>
+                <h1 className='font-bold w-full text-center text-3xl md:text-5xl mb-4'>
                     Teacher burnout is a major problem.
-                </div>
+                </h1>
                 <div className='w-full text-center text-xl mb-8'>
                     We believe we can be a part of your solution.
                 </div>
 
                 <div className='flex flex-col md:flex-row space-x-0 space-y-16 md:space-x-16 md:space-y-0 w-3/4 h-full'>
                     <div className="w-full xl:w-1/3 text-gray-800 max-w-lg p-4 bg-orange-100 flex flex-col items-center rounded-3xl">
-                        <img className="w-1/4 sm:w-1/3 h-auto m-6" src="/svg/time.svg" alt="Time" />
+                        <img className="w-1/4 sm:w-1/3 h-auto m-6" src="/svg/time.svg" alt="Time Illustration" />
                         <div className="text-center text-2xl font-bold mb-4">Save Time</div>
                         <div className='text-left text-lg'>Spend more time with your students, spend less time finding problems & creating content.</div>
                     </div>
                     <div className="w-full xl:w-1/3 text-gray-800 max-w-lg p-4 bg-blue-100 flex flex-col items-center rounded-3xl">
-                        <img className="w-1/4 sm:w-1/3 h-auto m-6" src="/svg/pencilwrench.svg" alt="Customization" />
+                        <img className="w-1/4 sm:w-1/3 h-auto m-6" src="/svg/pencilwrench.svg" alt="Customization Illustration" />
                         <div className="text-center text-2xl font-bold mb-4">Customize</div>
                         <div className='text-left text-lg'>Every year, class, and student is unique. Create customized content just for them.</div>
                     </div>
                     <div className="w-full xl:w-1/3 text-gray-800 max-w-lg p-4 bg-pink-100 flex flex-col items-center rounded-3xl">
-                        <img className="w-1/4 sm:w-1/3 h-auto m-6" src="/svg/ai.svg" alt="AI" />
+                        <img className="w-1/4 sm:w-1/3 h-auto m-6" src="/svg/ai.svg" alt="AI Illustration" />
                         <div className="text-center text-2xl font-bold mb-4">AI</div>
                         <div className="text-left text-lg">AI generated math problems that you can trust.</div>
                     </div>
@@ -140,10 +58,7 @@ const LandingPage: React.FC = () => {
                 <div className='w-full md:w-1/2 flex flex-col py-4'>
                     <div className='w-3/4 mx-auto flex flex-row mb-4 bg-gray-900 p-2'>
                         <div className='w-full rounded-xl'>
-                            {/* <MathProblem chunkIndex={0}
-                                problem={sampleChunk as Chunk}
-                                updateChunk={() => console.log('update')} /> */}
-                            <img className='w-full' src="images/chunkcomponent.png" alt="AI" />
+                            <img className='w-full' src="images/chunkcomponent.png" alt="Math problem component with latex" />
                         </div>
                     </div>
                 </div>
@@ -153,7 +68,7 @@ const LandingPage: React.FC = () => {
                     <img
                         className="object-contain h-full max-h-96 border-2 me-8 border-gray-900"
                         src="/images/landing_page_worksheet_demo.png"
-                        alt="Image 1"
+                        alt="Math Worksheet - Understanding Functions and Relations"
                     />
                 </div>
                 <div className='w-full mx-auto md:w-1/2 text-2xl md:text-5xl flex flex-col items-center md:me-4'>
@@ -174,7 +89,7 @@ const LandingPage: React.FC = () => {
                         </button>
                     </Link>
                 </div>
-                <img className="w-1/3 h-auto" src="/svg/teacher2.svg" alt="Image 1" />
+                <img className="w-1/3 h-auto" src="/svg/teacher2.svg" alt="Teacher illustration with stack of books" />
             </section>
         </div >
     );
