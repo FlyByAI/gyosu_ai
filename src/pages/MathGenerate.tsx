@@ -74,13 +74,15 @@ const MathGenerate: React.FC = () => {
 
                     </div>
 
-                    <div>
-                        {problemData &&
-                            chunkArray.length > 0 &&
-                            <ChunkManager
-                                setChunkArray={setChunkArray}
-                                chunkArray={chunkArray}
-                            />}
+                    <div className="w-full md:w-3/4 mx-4 md:mx-0 rounded-lg p-4 my-4 shadow-lg items-center flex flex-col">
+                        <div className='w-full md:w-5/6'>
+                            {problemData &&
+                                chunkArray.length > 0 &&
+                                <ChunkManager
+                                    setChunkArray={setChunkArray}
+                                    chunkArray={chunkArray}
+                                />}
+                        </div>
                     </div>
                 </div>
             </div>
