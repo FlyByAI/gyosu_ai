@@ -8,6 +8,7 @@ import {
     useNavigate,
     Routes,
     Route,
+    useLocation,
 } from "react-router-dom";
 import Contact from './pages/Contact.tsx';
 import Navbar from './components/navbars/Navbar.tsx';
@@ -32,6 +33,8 @@ import MyProblemBanks from './pages/MathProblemBanks.tsx';
 import { notSecretConstants } from './constants/notSecretConstants.tsx';
 import useEnvironment from './hooks/useEnvironment.tsx';
 import FAQPage from './pages/FAQPage.tsx';
+import { Helmet } from "react-helmet";
+import { getSchemaMarkup } from './helpers/getSchemaMarkup.ts';
 
 
 export default function ClerkProviderWithRoutes() {
@@ -41,12 +44,19 @@ export default function ClerkProviderWithRoutes() {
 
     const clerkKey = env == "production" ? notSecretConstants.clerk.PUBLISHABLE_KEY : notSecretConstants.clerk.PUBLISHABLE_DEV_KEY
 
+    const location = useLocation();
+
     return (
         <ClerkProvider
             publishableKey={clerkKey}
             navigate={(to) => navigate(to)}
             appearance={getGyosuClerkTheme()}
         >
+            <Helmet>
+                <script type="application/ld+json">
+                    {getSchemaMarkup(location)}
+                </script>
+            </Helmet>
             <Routes>
                 <Route
                     path="/"
@@ -76,16 +86,6 @@ export default function ClerkProviderWithRoutes() {
                         </>
                     }
                 />
-                {/* <Route
-                    path="/math-app/search"
-                    element={
-                        <>
-                            <Navbar />
-                            <MathDocumentSearch />
-                            <Footer />
-                        </>
-                    }
-                /> */}
                 <Route
                     path="/math-app/documents"
                     element={
