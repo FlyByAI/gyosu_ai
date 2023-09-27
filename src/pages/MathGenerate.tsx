@@ -44,7 +44,7 @@ const MathGenerate: React.FC = () => {
                             <span className="font-bold">Step 1: Select source type</span>
 
                         </div>
-                        <div className="flex space-x-4 mb-8">
+                        <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 mb-8">
                             <button
                                 onClick={() => setFormType('Textbook')}
                                 className={`p-4 text-lg rounded-lg shadow-md transform transition-all duration-300 ${formType === 'Textbook' ? 'bg-blue-500 text-white hover:scale-105' : 'bg-gray-200 text-black hover:bg-gray-300'}`}
@@ -64,10 +64,10 @@ const MathGenerate: React.FC = () => {
                         </div>
 
                         {formType ? (
-                            <>
+                            <div className='w-full md:w-5/6'>
                                 {formType === 'Textbook' && <TextbookGenerateForm onSubmit={handleSubmit} setProblemData={setProblemData} />}
                                 {formType === 'Competition' && <CompetitonMathGenerateForm onSubmit={handleSubmit} setProblemData={setProblemData} />}
-                            </>
+                            </div>
                         ) : (
                             <p className="text-center text-white mt-4">Please complete Step 1 to proceed.</p>
                         )}
