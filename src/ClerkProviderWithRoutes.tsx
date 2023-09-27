@@ -33,7 +33,7 @@ import MyProblemBanks from './pages/MathProblemBanks.tsx';
 import { notSecretConstants } from './constants/notSecretConstants.tsx';
 import useEnvironment from './hooks/useEnvironment.tsx';
 import FAQPage from './pages/FAQPage.tsx';
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 import { getSchemaMarkup } from './helpers/getSchemaMarkup.ts';
 
 
