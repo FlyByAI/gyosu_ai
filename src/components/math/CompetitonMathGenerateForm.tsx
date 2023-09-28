@@ -82,14 +82,14 @@ const CompetitionMathGenerateForm: React.FC<CompetitionMathGenerateFormProps> = 
 
     return (
         <>
-            <div className="flex flex-col lg:flex-row justify-center items-center w-full">
+            <div className="flex flex-col justify-center items-center w-full">
                 <Dropdown
                     showSelected={false}
                     label={"Problem Type"}
                     options={problemTypeOptions}
                     defaultValue={problemType}
                     handleChange={handleProblemTypeChange}
-                    className="form-select block w-full lg:w-1/3"
+                    className="form-select block w-full lg:w-2/3"
                 />
                 <Dropdown
                     showSelected={false}
@@ -97,14 +97,17 @@ const CompetitionMathGenerateForm: React.FC<CompetitionMathGenerateFormProps> = 
                     options={levelOptions}
                     defaultValue={level}
                     handleChange={handleLevelChange}
-                    className="form-select block w-full lg:w-1/3"
+                    className="form-select block w-full lg:w-2/3"
                 />
+                <SubmitButton
+                    buttonText={"Search"}
+                    handleClick={handleMathSubmit}
+                    className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full lg:w-1/2"
+                />
+
+
             </div>
-            <SubmitButton
-                buttonText={"Search"}
-                handleClick={handleMathSubmit}
-                className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded self-center w-1/2"
-            />
+
             {error && <p className="text-red-600 mt-4 text-center">Error: {error}</p>}
             {error && !user?.user?.username && <p className="text-red-600 mt-4 text-center">Note: {"Our tools require you to be signed in."}</p>}
             {isLoading && <p className="dark:text-white">Loading...</p>}
