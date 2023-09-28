@@ -26,7 +26,7 @@ const CreateDocxForm: React.FC<CreateDocsFormProps> = ({ document }) => {
         title: 'My Worksheet',
         persona: "Math Teacher",
         theme: "",
-        action: "worksheet" as DocxAction
+        action: "worksheet" as DocxAction,
     });
 
     // Your local storage logic
@@ -133,6 +133,9 @@ const CreateDocxForm: React.FC<CreateDocsFormProps> = ({ document }) => {
                         </button>
                         <button onClick={() => window.open(downloadLinks.pdfUrl, '_blank')} className="p-2 bg-green-700 rounded-md w-1/2">
                             Download PDF
+                        </button>
+                        <button onClick={() => window.open(downloadLinks.answerKeyUrl, '_blank')} className="p-2 text-black bg-yellow-500 rounded-md w-1/2">
+                            Download Answer Key
                         </button>
                     </div>
                 </>

@@ -17,10 +17,7 @@ export interface DocumentDownload {
     timesDownloaded: number;
     sourceData: Chunk[];
     signedUrl?: string;
-    answerKey: {
-        blobName: string;
-        signedUrl?: string;
-    };
+    answerKeyBlobName: string;
 }
 
 interface AnswerKeyResponse {
@@ -73,12 +70,12 @@ const Documents: React.FC = () => {
                                             <div>Timestamp: {new Date(doc.timestamp).toLocaleString()}</div>
                                             <div>Shared: {doc.shared ? 'Yes' : 'No'}</div>
                                             <div>Times Downloaded: {doc.timesDownloaded}</div>
-                                            {!doc.answerKey?.blobName ? <div onClick={() => handleGenerateAnswerKey(doc.id, doc.blobName)}>
-                                                <span className="text-yellow-300 hover:underline cursor-pointer">
-                                                    Generate Answer Key
+                                            {!doc.answerKeyBlobName ? <div>
+                                                <span className="text-white-300 hover:underline cursor-pointer">
+                                                    No Answer Key
                                                 </span>
                                             </div> :
-                                                <div onClick={() => handleDocumentClick(doc.answerKey.blobName)}>
+                                                <div onClick={() => handleDocumentClick(doc.answerKeyBlobName)}>
                                                     <span className="text-yellow-300 hover:underline cursor-pointer">
                                                         Download Answer Key
                                                     </span>
