@@ -34,7 +34,8 @@ const useGetDocumentDownloads = (endpoint: string) => {
         if (session) {
             query.refetch();
         }
-    }, [session, query]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [session]);
 
     return {
         getDocumentDownloads: query.refetch,

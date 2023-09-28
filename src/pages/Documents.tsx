@@ -5,6 +5,7 @@ import useGetDocumentDownloads from '../hooks/tools/math/useGetDocumentDownloads
 import useGetDocumentDownload from '../hooks/tools/math/useGetDocumentDownload';
 import { Chunk } from '../interfaces';
 import useEnvironment from '../hooks/useEnvironment';
+import useCreateAnswerKey from '../hooks/tools/math/useCreateAnswerKey';
 
 
 export interface DocumentDownload {
@@ -15,6 +16,12 @@ export interface DocumentDownload {
     shared: boolean;
     timesDownloaded: number;
     sourceData: Chunk[];
+    signedUrl?: string;
+    answerKeyBlobName: string;
+}
+
+interface AnswerKeyResponse {
+    blobName: string;
     signedUrl?: string;
 }
 
@@ -31,19 +38,18 @@ const Documents: React.FC = () => {
     const { apiUrl } = useEnvironment();
     const { documentDownloads, isLoading, error } = useGetDocumentDownloads(`${apiUrl}/math_app/cloud_storage_document/list/`)
     const { getDocumentDownload, isLoading: isDownloadLoading, data, error: downloadError } = useGetDocumentDownload(`${apiUrl}/math_app`);
+    const { createAnswerKey, isLoading: isAnswerKeyLoading, error: answerKeyError } = useCreateAnswerKey(`${apiUrl}/math_app`);
 
     const user = useUser();
 
     const handleDocumentClick = (blobName: string) => {
-        const newWindow = window.open('', '_blank'); // Preemptively open a new window
-        getDocumentDownload(blobName, newWindow);  // Fetch the document and populate the new window
+        const newWindow = window.open('', '_blank');
+        getDocumentDownload(blobName, newWindow);
     };
 
-    useEffect(() => {
-        if (data?.signedUrl) {
-            window.location.href = data.signedUrl;
-        }
-    }, [data]);
+    const handleGenerateAnswerKey = (id: number | string, blobName: string) => {
+        createAnswerKey(id, blobName);
+    };
 
     return (
         <>
@@ -64,10 +70,21 @@ const Documents: React.FC = () => {
                                             <div>Timestamp: {new Date(doc.timestamp).toLocaleString()}</div>
                                             <div>Shared: {doc.shared ? 'Yes' : 'No'}</div>
                                             <div>Times Downloaded: {doc.timesDownloaded}</div>
-                                            {/* Add other fields as needed */}
+                                            {!doc.answerKeyBlobName ? <div>
+                                                <span className="text-white-300 hover:underline cursor-pointer">
+                                                    No Answer Key
+                                                </span>
+                                            </div> :
+                                                <div onClick={() => handleDocumentClick(doc.answerKeyBlobName)}>
+                                                    <span className="text-yellow-300 hover:underline cursor-pointer">
+                                                        Download Answer Key
+                                                    </span>
+                                                </div>
+                                            }
                                         </li>
                                     ))}
-                            </ul> :
+                            </ul>
+                            :
                             <div className='text-white'>
                                 "You don't have any documents yet. "
                             </div>
@@ -77,17 +94,8 @@ const Documents: React.FC = () => {
             ) : <div className="text-white mt-4 text-center h-screen">
                 Loading...
             </div>}
-
             {error && <p className="text-red-600 mt-4 text-center">Error: {error.message}</p>}
-            {downloadError && <p className="text-red-600 mt-4 text-center">Download Error: {downloadError.message}</p>}
             {error && !user?.user?.username && <p className="text-red-600 mt-4 text-center">Note: Our tools require you to be signed in.</p>}
-
-            {isDownloadLoading && <p className="dark:text-white">Loading...</p>}
-            {isDownloadLoading && (
-                <div className="flex justify-center mt-4">
-                    <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12"></div>
-                </div>
-            )}
         </>
     );
 };

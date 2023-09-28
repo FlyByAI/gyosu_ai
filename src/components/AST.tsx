@@ -43,8 +43,6 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
     const { activeChunkIndices, setActiveChunkIndices } = useSidebarContext();
     const { apiUrl } = useEnvironment();
 
-    const { openModal } = useModal();
-
     const endpoint2 = `${apiUrl}/math_app/school_document/`;
     const { isLoading, updateDocument } = useSubmitDocument(endpoint2);
 
@@ -194,7 +192,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
                 )}
                 {/* {chunk.parentChunkId && <div className='text-gray-400 text-xs'>Parent: {chunk.parentChunkId}</div>} */}
 
-                {chunk.content.map((item, index) => {
+                {chunk?.content?.map((item, index) => {
                     const element = (() => {
                         switch (item.type) {
                             case 'instruction':
@@ -293,15 +291,15 @@ const InstructionComponent: React.FC<InstructionProps> = ({ parentChunk, parentC
 
     });
 
-    function processLatexString(latex_string: string): string {
-        const result = latex_string.replace(/^\\\(/, '')
-            .replace(/\\\)$/g, '')
-            .replace(/^\\\\$/gm, '')
-            .replace(/\\\\\n/g, '')
-            .replace(/\n/g, '')
-            .trim();
-        return result;
-    }
+    // function processLatexString(latex_string: string): string {
+    //     const result = latex_string.replace(/^\\\(/, '')
+    //         .replace(/\\\)$/g, '')
+    //         .replace(/^\\\\$/gm, '')
+    //         .replace(/\\\\\n/g, '')
+    //         .replace(/\n/g, '')
+    //         .trim();
+    //     return latex_string;
+    // }
 
     return (
 
@@ -315,7 +313,7 @@ const InstructionComponent: React.FC<InstructionProps> = ({ parentChunk, parentC
                             case 'text':
                                 return (
                                     <div
-                                        className={"text-xs md:text-md z-10 text-blue-300 border-2 border-transparent border-dashed hover:border-2 p-1 m-1 group-hover:border-2 group-hover:border-dashed"}
+                                        className={"text-xs md:text-lg z-10 text-blue-300 border-2 border-transparent border-dashed hover:border-2 p-1 m-1 group-hover:border-2 group-hover:border-dashed"}
                                     >
                                         {item.value}
                                     </div>
@@ -323,17 +321,17 @@ const InstructionComponent: React.FC<InstructionProps> = ({ parentChunk, parentC
                             case 'math':
                                 return (
                                     <ReactMarkdown
-                                        className={"text-xs md:text-md z-10 text-yellow-200 border-2 border-transparent border-dashed hover:border-2 p-1 m-1 group-hover:border-2 group-hover:border-dashed"}
+                                        className={"text-xs md:text-lg z-10 text-yellow-200 border-2 border-transparent border-dashed hover:border-2 p-1 m-1 group-hover:border-2 group-hover:border-dashed"}
                                         remarkPlugins={[remarkGfm, remarkMath]}
                                         rehypePlugins={[rehypeKatex]}
                                     >
-                                        {`$$${processLatexString(item.value)}$$`}
+                                        {`${item.value}`}
                                     </ReactMarkdown>
                                 );
                             case 'table':
                                 return (
                                     <ReactMarkdown
-                                        className={"text-xs md:text-md z-10 text-purple-300 border-gray-100  border-2 border-transparent border-dashed hover:border-2 p-1 m-1 group-hover:border-2 group-hover:border-dashed"}
+                                        className={"text-xs md:text-lg z-10 text-purple-300 border-gray-100  border-2 border-transparent border-dashed hover:border-2 p-1 m-1 group-hover:border-2 group-hover:border-dashed"}
                                         remarkPlugins={[remarkGfm, remarkMath]}
                                         rehypePlugins={[rehypeKatex]}
                                     >
@@ -345,7 +343,7 @@ const InstructionComponent: React.FC<InstructionProps> = ({ parentChunk, parentC
                                     <img
                                         src={item.value}
                                         alt="Description"
-                                        className="text-xs md:text-md z-10 p-1 m-1 border-2 border-transparent border-dashed hover:border-2 group-hover:border-2 group-hover:border-dashed"
+                                        className="text-xs md:text-lg z-10 p-1 m-1 border-2 border-transparent border-dashed hover:border-2 group-hover:border-2 group-hover:border-dashed"
                                     />
                                 );
                             default:
@@ -416,15 +414,15 @@ const ProblemComponent: React.FC<ProblemProps> = ({ parentChunk, parentChunkInde
         }
     });
 
-    function processLatexString(latex_string: string): string {
-        const result = latex_string.replace(/^\\\(/, '')
-            .replace(/\\\)$/g, '')
-            .replace(/^\\\\$/gm, '')
-            .replace(/\\\\\n/g, '')
-            .replace(/\n/g, '')
-            .trim();
-        return result;
-    }
+    // function processLatexString(latex_string: string): string {
+    //     const result = latex_string.replace(/^\\\(/, '')
+    //         .replace(/\\\)$/g, '')
+    //         .replace(/^\\\\$/gm, '')
+    //         .replace(/\\\\\n/g, '')
+    //         .replace(/\n/g, '')
+    //         .trim();
+    //     return latex_string;
+    // }
 
     return (
         <div
@@ -437,7 +435,7 @@ const ProblemComponent: React.FC<ProblemProps> = ({ parentChunk, parentChunkInde
                             case 'text':
                                 return (
                                     <div
-                                        className={'text-xs md:text-md z-10 text-yellow-100 border-2 border-transparent border-dashed hover:border-2 p-1 m-1 group-hover:border-2 group-hover:border-dashed'}
+                                        className={'text-xs md:text-lg z-10 text-yellow-100 border-2 border-transparent border-dashed hover:border-2 p-1 m-1 group-hover:border-2 group-hover:border-dashed'}
                                     >
                                         {item.value}
                                     </div>
@@ -445,17 +443,17 @@ const ProblemComponent: React.FC<ProblemProps> = ({ parentChunk, parentChunkInde
                             case 'math':
                                 return (
                                     <ReactMarkdown
-                                        className={"text-xs md:text-md z-10 text-purple-300 border-gray-100 border-2 border-transparent border-dashed hover:border-2 p-1 m-1 group-hover:border-2 group-hover:border-dashed"}
+                                        className={"text-xs md:text-lg z-10 text-purple-300 border-gray-100 border-2 border-transparent border-dashed hover:border-2 p-1 m-1 group-hover:border-2 group-hover:border-dashed"}
                                         remarkPlugins={[remarkGfm, remarkMath]}
                                         rehypePlugins={[rehypeKatex]}
                                     >
-                                        {`$$${processLatexString(item.value)}$$`}
+                                        {`${item.value}`}
                                     </ReactMarkdown>
                                 );
                             case 'table':
                                 return (
                                     <ReactMarkdown
-                                        className={"text-xs md:text-md z-10 text-purple-300 border-gray-100 border-2 border-transparent border-dashed hover:border-2 p-1 m-1 group-hover:border-2 group-hover:border-dashed"}
+                                        className={"text-xs md:text-lg z-10 text-purple-300 border-gray-100 border-2 border-transparent border-dashed hover:border-2 p-1 m-1 group-hover:border-2 group-hover:border-dashed"}
                                         remarkPlugins={[remarkGfm, remarkMath]}
                                         rehypePlugins={[rehypeKatex]}
                                     >
@@ -467,7 +465,7 @@ const ProblemComponent: React.FC<ProblemProps> = ({ parentChunk, parentChunkInde
                                     <img
                                         src={item.value}
                                         alt="Description"
-                                        className="text-xs md:text-md z-10 p-1 m-1 border-2 border-transparent border-dashed hover:border-2 group-hover:border-2 group-hover:border-dashed"
+                                        className="text-xs md:text-lg z-10 p-1 m-1 border-2 border-transparent border-dashed hover:border-2 group-hover:border-2 group-hover:border-dashed"
                                     />
                                 );
                             default:
