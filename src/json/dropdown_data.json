@@ -5624,7 +5624,7 @@
     }
   },
   "elementary-algebra-2e-textbook": {
-    "label": "elementary-algebra-2e-textbook",
+    "label": "Elementary Algebra-2e",
     "chapters": {
       "1": {
         "label": "Foundations",
@@ -6894,7 +6894,7 @@
     }
   },
   "intermediate-algebra-2e-textbook": {
-    "label": "intermediate-algebra-2e-textbook",
+    "label": "Intermediate Algebra-2e",
     "chapters": {
       "1": {
         "label": "Foundations",
