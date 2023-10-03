@@ -13,6 +13,7 @@ import Notifications from './components/Notifications';
 import { Toaster } from 'react-hot-toast';
 import { ScreenSizeProvider } from './contexts/ScreenSizeContext';
 import { DragProvider } from './contexts/DragContext';
+import { HelmetProvider } from 'react-helmet-async';
 
 interface AppProps {
   children: any;
@@ -30,13 +31,15 @@ function App({ children }: AppProps) {
             <SidebarProvider>
               <LanguageProvider>
                 <ScreenSizeProvider>
-                  <DragProvider>
-                    <DndProvider backend={HTML5Backend}>
-                      <Toaster />
-                      <Notifications />
-                      {children}
-                    </DndProvider>
-                  </DragProvider>
+                  <HelmetProvider>
+                    <DragProvider>
+                      <DndProvider backend={HTML5Backend}>
+                        <Toaster />
+                        <Notifications />
+                        {children}
+                      </DndProvider>
+                    </DragProvider>
+                  </HelmetProvider>
                 </ScreenSizeProvider>
               </LanguageProvider>
             </SidebarProvider>

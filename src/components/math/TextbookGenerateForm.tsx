@@ -4,16 +4,16 @@ import SubmitButton from '../forms/SubmitButton';
 import Dropdown from '../forms/Dropdown';
 import { useClerk, useUser } from '@clerk/clerk-react';
 import formOptionsJSON from '../../json/dropdown_data.json';
-import { ProblemData } from '../../interfaces';
+import { GenerateFormData, ProblemData, TextbookProblemData } from '../../interfaces';
 import useEnvironment from '../../hooks/useEnvironment';
 import useSubmitMathForm from '../../hooks/tools/math/useSubmitMathForm';
 
-type MathGenerateFormProps = {
+type TextbookGenerateFormProps = {
     onSubmit: (data: any) => void;
-    setProblemData: (problemData: ProblemData) => void; // Include the type of ProblemData
+    setGenerateFormData: (problemData: GenerateFormData) => void; // Include the type of ProblemData
 };
 
-const MathGenerateForm: React.FC<MathGenerateFormProps> = ({ onSubmit, setProblemData }) => {
+const TextbookGenerateForm: React.FC<TextbookGenerateFormProps> = ({ onSubmit, setGenerateFormData }) => {
 
     const formOptionsObj = Object(formOptionsJSON);
     const [sourceMaterial, setSourceMaterial] = useState<string>(Object.keys(formOptionsObj)[0]);
@@ -47,15 +47,16 @@ const MathGenerateForm: React.FC<MathGenerateFormProps> = ({ onSubmit, setProble
     const { isLoading, error, submitMathForm, data } = useSubmitMathForm(`${apiUrl}/math_app/generate/`)
 
     useEffect(() => {
-        const problemData: ProblemData = {
+        const problemData: TextbookProblemData = {
             sourceMaterial,
+            chapter,
             section,
             problemType,
             documentType: "Worksheet",
         };
 
-        setProblemData(problemData);
-    }, [sourceMaterial, section, problemType, setProblemData]);
+        setGenerateFormData({ data: problemData });
+    }, [sourceMaterial, chapter, section, problemType, setGenerateFormData]);
 
     const handleChapterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const newChapter = event.target.value;
@@ -116,8 +117,15 @@ const MathGenerateForm: React.FC<MathGenerateFormProps> = ({ onSubmit, setProble
 
     const handleMathSubmit = async () => {
         if (session) {
-            const formData = { chapter, section, userInput: "", problemType, sourceMaterial }
-            await submitMathForm(formData);
+            const formData = {
+                chapter: chapter,
+                section: section,
+                problemType: problemType,
+                sourceMaterial: sourceMaterial,
+                documentType: "worksheet"
+            } as TextbookProblemData;
+
+            await submitMathForm({ data: formData });
         }
         else {
             openSignIn()
@@ -126,61 +134,51 @@ const MathGenerateForm: React.FC<MathGenerateFormProps> = ({ onSubmit, setProble
 
     useEffect(() => {
         if (data) {
-            onSubmit(data.response)
-        }
-    }, [data, onSubmit])
-
-    useEffect(() => {
-        if (data) {
             onSubmit(data)
         }
     }, [data, onSubmit])
 
-
     return (
         <>
-            <div className="flex justify-center items-center">
-                <div className="w-full md:w-3/4 mx-4 md:mx-0 bg-gray-700 rounded-lg p-4 my-4 shadow-lg items-center flex flex-col">
-                    <div className="flex flex-col lg:flex-row justify-center items-center w-full">
-                        <Dropdown
-                            showSelected={false}
-                            label={"Source Material"}
-                            options={sourceMaterialOptions}
-                            defaultValue={sourceMaterial}
-                            handleChange={handleSourceMaterialChange}
-                            className="form-select block me-2 w-full lg:w-1/3"
-                        />
-                        <Dropdown
-                            showSelected={false}
-                            label={"Chapter"}
-                            options={chapterOptions}
-                            defaultValue={chapter}
-                            handleChange={handleChapterChange}
-                            className="form-select block me-2 w-full lg:w-1/3"
-                        />
-                        <Dropdown
-                            showSelected={false}
-                            label={"Section"}
-                            options={sectionOptions}
-                            defaultValue={section}
-                            handleChange={handleSectionChange}
-                            className="form-select block me-2 w-full lg:w-1/3"
-                        />
-                        <Dropdown
-                            showSelected={false}
-                            label={"Problem Type"}
-                            options={problemTypeOptions}
-                            defaultValue={problemType}
-                            handleChange={handleChangeProblemType}
-                            className="form-select block me-2 w-full lg:w-1/3"
-                        />
-                    </div>
-                    <SubmitButton
-                        buttonText={"Search"}
-                        handleClick={handleMathSubmit}
-                        className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded self-center w-1/2"
-                    />
-                </div>
+            <div className="flex flex-col justify-center items-center w-full">
+                <Dropdown
+                    showSelected={false}
+                    label={"Textbook"}
+                    options={sourceMaterialOptions}
+                    defaultValue={sourceMaterial}
+                    handleChange={handleSourceMaterialChange}
+                    className="form-select block w-full lg:w-2/3"
+                />
+                <Dropdown
+                    showSelected={false}
+                    label={"Chapter"}
+                    options={chapterOptions}
+                    defaultValue={chapter}
+                    handleChange={handleChapterChange}
+                    className="form-select block w-full lg:w-2/3"
+                />
+                <Dropdown
+                    showSelected={false}
+                    label={"Section"}
+                    options={sectionOptions}
+                    defaultValue={section}
+                    handleChange={handleSectionChange}
+                    className="form-select block w-full lg:w-2/3"
+                />
+                <Dropdown
+                    showSelected={false}
+                    label={"Problem Type"}
+                    options={problemTypeOptions}
+                    defaultValue={problemType}
+                    handleChange={handleChangeProblemType}
+                    className="form-select block w-full lg:w-2/3"
+                />
+                <SubmitButton
+                    buttonText={"Search"}
+                    handleClick={handleMathSubmit}
+                    className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full lg:w-1/2"
+                />
+
             </div>
             {error && <p className="text-red-600 mt-4 text-center">Error: {error}</p>}
             {error && !user?.user?.username && <p className="text-red-600 mt-4 text-center">Note: {"Our tools require you to be signed in."}</p>}
@@ -196,5 +194,5 @@ const MathGenerateForm: React.FC<MathGenerateFormProps> = ({ onSubmit, setProble
     );
 };
 
-export default MathGenerateForm;
+export default TextbookGenerateForm;
 

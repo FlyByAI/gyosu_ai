@@ -3,6 +3,7 @@ import { Chunk, EmptyDocument, } from '../../interfaces';
 import MathProblem from './MathProblem';
 import CreateDocxModal from '../CreateDocxModal';
 import { useSidebarContext } from '../../contexts/useSidebarContext';
+import PlusIcon from '../../svg/PlusIcon';
 
 interface ChunkManagerProps {
     chunkArray: Chunk[];
@@ -25,14 +26,11 @@ const ChunkManager: React.FC<ChunkManagerProps> = ({ chunkArray, setChunkArray }
 
     return (
         <div className='flex flex-col'>
-            <div className="text-xl justify-center text-white flex items-center mb-4">Problem Search Results</div>
-            {/* <div className='w-3/4 mx-auto py-2'>
-                {document && <CreateDocxModal enabled={activeChunkIndices.length > 0} document={{} as EmptyDocument} modalId={"createDocx"} />}
-            </div> */}
+            <div className="text-xl justify-center text-white flex items-center mb-4">Step 3: Add problems to a problem bank</div>
             {chunkArray?.map((chunk, chunkIndex) => {
                 return (
                     <div key={chunkIndex}
-                        className='w-full md:w-3/4 mx-auto flex flex-row mb-4 bg-gray-900 p-2'>
+                        className='w-full mx-auto flex flex-row mb-4 bg-gray-900 p-2'>
                         <div className='w-full rounded-xl'>
                             <MathProblem
                                 key={chunkIndex}

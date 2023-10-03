@@ -8,6 +8,7 @@ import {
     useNavigate,
     Routes,
     Route,
+    useLocation,
 } from "react-router-dom";
 import Contact from './pages/Contact.tsx';
 import Navbar from './components/navbars/Navbar.tsx';
@@ -25,7 +26,6 @@ import ContentWrapper from './components/ContentWrapper.tsx';
 import Attributions from './pages/Attributions.tsx';
 import ProblemBank from './pages/ProblemBank.tsx';
 import LandingPage from './pages/Landing.tsx';
-import MathDocumentSearch from './pages/tools/MathDocumentSearch.tsx';
 import MathGenerate from './pages/MathGenerate.tsx';
 import Pricing from './components/Pricing.tsx';
 import Documents from './pages/Documents.tsx';
@@ -33,6 +33,8 @@ import MyProblemBanks from './pages/MathProblemBanks.tsx';
 import { notSecretConstants } from './constants/notSecretConstants.tsx';
 import useEnvironment from './hooks/useEnvironment.tsx';
 import FAQPage from './pages/FAQPage.tsx';
+import { Helmet } from "react-helmet-async";
+import { getSchemaMarkup } from './helpers/getSchemaMarkup.ts';
 
 
 export default function ClerkProviderWithRoutes() {
@@ -42,12 +44,19 @@ export default function ClerkProviderWithRoutes() {
 
     const clerkKey = env == "production" ? notSecretConstants.clerk.PUBLISHABLE_KEY : notSecretConstants.clerk.PUBLISHABLE_DEV_KEY
 
+    const location = useLocation();
+
     return (
         <ClerkProvider
             publishableKey={clerkKey}
             navigate={(to) => navigate(to)}
             appearance={getGyosuClerkTheme()}
         >
+            <Helmet>
+                <script type="application/ld+json">
+                    {getSchemaMarkup(location)}
+                </script>
+            </Helmet>
             <Routes>
                 <Route
                     path="/"
@@ -74,16 +83,6 @@ export default function ClerkProviderWithRoutes() {
                         <>
                             <Navbar />
                             <ProblemBank />
-                        </>
-                    }
-                />
-                <Route
-                    path="/math-app/search"
-                    element={
-                        <>
-                            <Navbar />
-                            <MathDocumentSearch />
-                            <Footer />
                         </>
                     }
                 />

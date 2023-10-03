@@ -40,9 +40,9 @@ const ProblemBankShelf: React.FC<ProblemBankShelfProps> = ({ isExporting }) => {
             title: `Document ${(documents?.length || 0) + 1}`,
             upvotes: 0,
             tips: 0,
-            last_modified_by: '',
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString(),
+            lastModifiedBy: '',
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
             problemChunks: [] as Chunk[],
         };
 
@@ -110,9 +110,12 @@ const ProblemBankShelf: React.FC<ProblemBankShelfProps> = ({ isExporting }) => {
             </div>
 
             <ul className="space-y-2 overflow-y-auto">
-                {documents && documents.map((document) => (
-                    <DocumentItem isExporting={isExporting} key={document.id} document={document} onDropChunk={handleDropNode} />
-                ))}
+                {documents && [...documents]
+                    .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
+                    .map((document) => (
+                        <DocumentItem isExporting={isExporting} key={document.id} document={document} onDropChunk={handleDropNode} />
+                    ))
+                }
             </ul>
         </div >
     </>

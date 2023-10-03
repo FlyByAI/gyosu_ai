@@ -19,14 +19,14 @@ const CreateDocxForm: React.FC<CreateDocsFormProps> = ({ document }) => {
     const { createDocx, isLoading, error } = useCreateDocx(`${apiUrl}/math_app/generate_docx/`);
     const { id } = useParams();
 
-    const [downloadLinks, setDownloadLinks] = useState<{ docxUrl: string; pdfUrl: string; fileName: string } | null>(null);
+    const [downloadLinks, setDownloadLinks] = useState<{ docxUrl: string; pdfUrl: string; fileName: string, answerKeyUrl?: string; } | null>(null);
 
     // Moved formState and related logic here
     const [formState, setFormState] = useState({
         title: 'My Worksheet',
         persona: "Math Teacher",
         theme: "",
-        action: "worksheet" as DocxAction
+        action: "worksheet" as DocxAction,
     });
 
     // Your local storage logic
@@ -40,8 +40,9 @@ const CreateDocxForm: React.FC<CreateDocsFormProps> = ({ document }) => {
         localStorage.setItem('formState', JSON.stringify(formState));
     }, [formState]);
 
-    const handleCreate = () => {
-        toast("Creating worksheet... This may take up to 1 minute to complete.")
+    const handleCreate = (event: React.FormEvent) => {
+        const nativeEvent = event.nativeEvent as MouseEvent;
+        toast("Creating worksheet... This may take up to 1 minute to complete.");
         setDownloadLinks(null);  // Reset download links
         const selectedChunks = activeChunkIndices.map(index => document.problemChunks?.[index]).filter(Boolean) as Chunk[];
         createDocx({ chunks: selectedChunks, ...formState }, {
@@ -57,7 +58,7 @@ const CreateDocxForm: React.FC<CreateDocsFormProps> = ({ document }) => {
         <>
             <form className='overflow-y-auto' onSubmit={(e) => {
                 e.preventDefault();
-                handleCreate();
+                handleCreate(e);
             }}
             >
                 <div className='flex flex-row justify-between items-center mb-2'>
@@ -105,7 +106,7 @@ const CreateDocxForm: React.FC<CreateDocsFormProps> = ({ document }) => {
                     disabled={isLoading || activeChunkIndices.length === 0}
                     type="submit"
                     data-tooltip-id={"createWorksheetTip"}
-                    className={`mt-2 w-full px-4 py-2 bg-blue-500 hover:bg-blue-700 rounded-md border-2 text-white ${activeChunkIndices.length === 0 || isLoading ? " opacity-50" : ""}`}
+                    className={`mt-2 w-full px-4 py-2 bg-green-600 hover:bg-green-700 rounded-md border-2 text-white ${activeChunkIndices.length === 0 || isLoading ? " opacity-50" : ""}`}
                 >
                     {isLoading ? "Creating..." : "Create Worksheet"}
                 </button>
@@ -132,6 +133,9 @@ const CreateDocxForm: React.FC<CreateDocsFormProps> = ({ document }) => {
                         </button>
                         <button onClick={() => window.open(downloadLinks.pdfUrl, '_blank')} className="p-2 bg-green-700 rounded-md w-1/2">
                             Download PDF
+                        </button>
+                        <button onClick={() => window.open(downloadLinks.answerKeyUrl, '_blank')} className="p-2 text-black bg-yellow-500 rounded-md w-1/2">
+                            Download Answer Key
                         </button>
                     </div>
                 </>
