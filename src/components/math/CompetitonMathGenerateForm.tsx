@@ -10,10 +10,10 @@ import { useClerk, useUser } from '@clerk/clerk-react';
 
 type CompetitionMathGenerateFormProps = {
     onSubmit: (data: any) => void;
-    setProblemData: (problemData: GenerateFormData) => void;
+    setGenerateFormData: (problemData: GenerateFormData) => void;
 };
 
-const CompetitionMathGenerateForm: React.FC<CompetitionMathGenerateFormProps> = ({ onSubmit, setProblemData }) => {
+const CompetitionMathGenerateForm: React.FC<CompetitionMathGenerateFormProps> = ({ onSubmit, setGenerateFormData }) => {
     const formOptionsObj = Object(formOptionsJSON)["competition_math"];
 
     const [problemType, setProblemType] = useState<string>(() => {
@@ -47,8 +47,8 @@ const CompetitionMathGenerateForm: React.FC<CompetitionMathGenerateFormProps> = 
             problemType,
             level,
         };
-        setProblemData({ data: problemData });
-    }, [problemType, level, setProblemData]);
+        setGenerateFormData({ data: problemData });
+    }, [problemType, level, setGenerateFormData]);
 
     const handleProblemTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const newProblemType = event.target.value;

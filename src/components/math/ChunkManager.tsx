@@ -3,6 +3,7 @@ import { Chunk, EmptyDocument, } from '../../interfaces';
 import MathProblem from './MathProblem';
 import CreateDocxModal from '../CreateDocxModal';
 import { useSidebarContext } from '../../contexts/useSidebarContext';
+import PlusIcon from '../../svg/PlusIcon';
 
 interface ChunkManagerProps {
     chunkArray: Chunk[];
@@ -25,7 +26,7 @@ const ChunkManager: React.FC<ChunkManagerProps> = ({ chunkArray, setChunkArray }
 
     return (
         <div className='flex flex-col'>
-            <div className="text-xl justify-center text-white flex items-center mb-4">Problem Search Results</div>
+            <div className="text-xl justify-center text-white flex items-center mb-4">Step 3: Add problems to a problem bank</div>
             {chunkArray?.map((chunk, chunkIndex) => {
                 return (
                     <div key={chunkIndex}

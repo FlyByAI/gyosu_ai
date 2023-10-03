@@ -93,12 +93,14 @@ const ProblemBank: React.FC = () => {
     return (
         <div className='flex '>
             <ProblemBankShelf isExporting={false} />
+            <div className='fixed bottom-8 left-[67.3333%] md:left-[50%] transform -translate-x-1/2 z-20 w-[200px] md:w-[700px]'>
+                <CreateDocxModal enabled={activeChunkIndices.length > 0} document={document} modalId={"createDocx"} />
+            </div>
+
             <div className="w-5/6 mt-4 overflow-x-hidden" style={{ marginRight: isDesktop ? '16.6667%' : "0" }}>
-                <div className='w-5/6 md:w-3/4 mx-auto py-2'>
-                    <CreateDocxModal enabled={activeChunkIndices.length > 0} document={document} modalId={"createDocx"} />
-                </div>
                 {/* <DocumentHeader document={document} /> */}
                 <h2 className="text-center text-xl text-white m-4">Problem Bank: {document.title}</h2>
+                <p className="text-center text-lg text-white m-4">Select problems then select create a worksheet</p>
                 {document && document.problemChunks
                     && document.problemChunks.length > 0
                     && document.problemChunks?.map((chunk, chunkIndex) => {

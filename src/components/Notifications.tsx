@@ -25,15 +25,13 @@ const Notifications = () => {
                     }
                 };
 
-                const xPos = toast.x || 0;
-                const yPos = toast.y || 0;
+                const bgColorClass = toast.id === 'error-toast' ? 'bg-red-500' : 'bg-green-500';
 
                 return (
                     <div
                         key={toast.id}
                         ref={ref}
-                        className={`flex items-center text-lg font-bold animate-bounce z-80 p-4 rounded-md bg-green-500 border-2 border-green-200 text-white fixed z-90 ${isDesktop ? "w-96" : "w-80"} transition-all duration-400 ease-out ${toast.visible ? 'opacity-100' : 'opacity-0'}`}
-                        style={{ left: `${xPos}px`, top: `${yPos}px` }}
+                        className={`flex items-center text-lg font-bold animate-bounce z-80 p-4 rounded-md ${bgColorClass} border-2 text-white fixed z-90 ${isDesktop ? "w-96" : "w-80"} transition-all duration-400 ease-out ${toast.visible ? 'opacity-100' : 'opacity-0'}`}
                     >
                         {toast.message}
                     </div>
