@@ -178,18 +178,20 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
                     </OverflowMenu>
                 </div>
 
-                {selectable && (activeChunkIndices.includes(chunkIndex) ?
-                    <div className='flex text-green-300 h-4 w-6'>
-                        <CheckmarkIcon />
-                    </div> :
-                    <div className='flex'>
-                        <input
-                            type="checkbox"
-                            defaultChecked={activeChunkIndices.includes(chunkIndex)}
-                            className="focus:ring-green-500 h-4 w-6 text-green-600 rounded"
-                        />
-                    </div>
-                )}
+                <div className='pb-4 pe-4'>
+                    {selectable && (activeChunkIndices.includes(chunkIndex) ?
+                        <div className='flex text-green-300 h-4 w-6 mb-1'>
+                            <CheckmarkIcon />
+                        </div> :
+                        <div className='flex'>
+                            <input
+                                type="checkbox"
+                                defaultChecked={activeChunkIndices.includes(chunkIndex)}
+                                className="focus:ring-green-500 mt-1 h-4 w-6 text-green-600 rounded"
+                            />
+                        </div>
+                    )}
+                </div>
                 {/* {chunk.parentChunkId && <div className='text-gray-400 text-xs'>Parent: {chunk.parentChunkId}</div>} */}
 
                 {chunk?.content?.map((item, index) => {
