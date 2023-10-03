@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import 'tailwindcss/tailwind.css';
 import { useClerk, useUser } from '@clerk/clerk-react';
 import { Chunk, GenerateFormData, ProblemData, TextbookProblemData } from '../interfaces';
@@ -15,7 +15,7 @@ const MathGenerate: React.FC = () => {
 
     const [chunkArray, setChunkArray] = useState<Chunk[]>([]);
 
-    const [problemData, setProblemData] = useState<GenerateFormData | undefined>(undefined);
+    const [generateFormData, setGenerateFormData] = useState<GenerateFormData | undefined>(undefined);
 
     const [formType, setFormType] = useState<'Textbook' | 'Competition' | null>();
 
@@ -31,6 +31,18 @@ const MathGenerate: React.FC = () => {
     }, [session, openSignIn])
 
     const { isDesktop } = useScreenSize();
+
+    const myRef = useRef<HTMLDivElement | null>(null);
+
+    useEffect(() => {
+        if (chunkArray && Object.keys(chunkArray).length > 0 && myRef.current) {
+            const rect = myRef.current.getBoundingClientRect();
+            const offset = 150; // Adjust to your needs
+            const y = rect.top + window.scrollY - offset;
+            window.scrollTo({ top: y, behavior: 'smooth' });
+        }
+    }, [chunkArray]);
+
 
     return (
         <div className="flex">
@@ -65,8 +77,8 @@ const MathGenerate: React.FC = () => {
 
                         {formType ? (
                             <div className='w-full md:w-5/6'>
-                                {formType === 'Textbook' && <TextbookGenerateForm onSubmit={handleSubmit} setProblemData={setProblemData} />}
-                                {formType === 'Competition' && <CompetitonMathGenerateForm onSubmit={handleSubmit} setProblemData={setProblemData} />}
+                                {formType === 'Textbook' && <TextbookGenerateForm onSubmit={handleSubmit} setGenerateFormData={setGenerateFormData} />}
+                                {formType === 'Competition' && <CompetitonMathGenerateForm onSubmit={handleSubmit} setGenerateFormData={setGenerateFormData} />}
                             </div>
                         ) : (
                             <p className="text-center text-white mt-4">Please complete Step 1 to proceed.</p>
@@ -74,9 +86,9 @@ const MathGenerate: React.FC = () => {
 
                     </div>
 
-                    <div className="w-full md:w-3/4 mx-4 md:mx-0 rounded-lg p-4 my-4 shadow-lg items-center flex flex-col">
+                    <div ref={myRef} className="w-full md:w-3/4 mx-4 md:mx-0 rounded-lg p-4 my-4 shadow-lg items-center flex flex-col">
                         <div className='w-full md:w-5/6'>
-                            {problemData &&
+                            {generateFormData &&
                                 chunkArray.length > 0 &&
                                 <ChunkManager
                                     setChunkArray={setChunkArray}
