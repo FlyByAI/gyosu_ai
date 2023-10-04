@@ -82,14 +82,14 @@ const CompetitionMathGenerateForm: React.FC<CompetitionMathGenerateFormProps> = 
 
     return (
         <>
-            <div className="flex flex-col justify-center items-center w-full">
+            <div className="flex flex-col justify-center items-center w-full mx-auto">
                 <Dropdown
                     showSelected={false}
                     label={"Problem Type"}
                     options={problemTypeOptions}
                     defaultValue={problemType}
                     handleChange={handleProblemTypeChange}
-                    className="form-select block w-full lg:w-2/3"
+                    className="form-select block w-full"
                 />
                 <Dropdown
                     showSelected={false}
@@ -97,7 +97,7 @@ const CompetitionMathGenerateForm: React.FC<CompetitionMathGenerateFormProps> = 
                     options={levelOptions}
                     defaultValue={level}
                     handleChange={handleLevelChange}
-                    className="form-select block w-full lg:w-2/3"
+                    className="form-select block w-full"
                 />
                 <SubmitButton
                     buttonText={"Search"}
