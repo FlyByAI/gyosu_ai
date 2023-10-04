@@ -52,17 +52,7 @@ const ToolWrapper: React.FC<ToolWrapperProps> = ({ children, chunk, instruction,
             onMouseLeave={() => setIsHovered(false)}
         >
             <AppModal modalId={'feedbackModal'} />
-            <div>
-                <ToolBadge
-                    hidden={!isClicked && !isHovered}
-                    chunk={chunk}
-                    instruction={instruction}
-                    problem={problem}
-                    updateChunk={updateChunk}
-                    insertChunk={insertChunk || undefined}
-                    chunkIndex={chunkIndex}
-                />
-            </div>
+
             {children}
         </div>
     );

@@ -198,9 +198,9 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
                     const element = (() => {
                         switch (item.type) {
                             case 'instruction':
-                                return <InstructionComponent instructionIndex={index} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} instruction={item} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
+                                return <InstructionComponent chunkIndex={chunkIndex} instructionIndex={index} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} instruction={item} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
                             case 'problem':
-                                return <ProblemComponent problemIndex={index} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} problem={item} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
+                                return <ProblemComponent chunkIndex={chunkIndex} problemIndex={index} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} problem={item} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
                             default:
                                 return null;
                         }
@@ -234,11 +234,6 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
 
 
 interface InstructionProps {
-    instruction: Instruction;
-    edit?: boolean;
-}
-
-interface InstructionProps {
     parentChunk: Chunk;
     parentChunkIndex: number;
     updateChunk: (updatedChunk: Chunk, chunkIndex: number) => void;
@@ -248,9 +243,11 @@ interface InstructionProps {
     edit?: boolean;
     onInstructionHover: (hovered: boolean) => void; // Function to change the parent's hover state
     disableInstructionProblemDrag?: boolean; //used to disable drag and drop for instructions and problems when on the search
+
+    chunkIndex: number;
 }
 
-const InstructionComponent: React.FC<InstructionProps> = ({ parentChunk, parentChunkIndex, updateChunk, instruction, instructionIndex, disableInstructionProblemDrag }) => {
+const InstructionComponent: React.FC<InstructionProps> = ({ chunkIndex, parentChunk, parentChunkIndex, updateChunk, instruction, instructionIndex, disableInstructionProblemDrag }) => {
     const { setDragState } = useDragContext();
 
     const [, ref] = useDrag({
@@ -292,20 +289,19 @@ const InstructionComponent: React.FC<InstructionProps> = ({ parentChunk, parentC
         }
 
     });
-
-    // function processLatexString(latex_string: string): string {
-    //     const result = latex_string.replace(/^\\\(/, '')
-    //         .replace(/\\\)$/g, '')
-    //         .replace(/^\\\\$/gm, '')
-    //         .replace(/\\\\\n/g, '')
-    //         .replace(/\n/g, '')
-    //         .trim();
-    //     return latex_string;
-    // }
+    const { activeChunkIndices, setActiveChunkIndices } = useSidebarContext();
 
     return (
 
         <div
+            onClick={() => {
+                if (activeChunkIndices.includes(chunkIndex)) {
+                    setActiveChunkIndices(activeChunkIndices.filter(chunkIndex => chunkIndex !== chunkIndex));
+                } else {
+                    setActiveChunkIndices([...activeChunkIndices, chunkIndex]);
+                }
+            }
+            }
             ref={(node) => disableInstructionProblemDrag ? ref(drop(node)) : node}
             className="flex group flex-row flex-wrap">
             {instruction.content.map((item, index) => (
@@ -372,9 +368,10 @@ interface ProblemProps {
     onInstructionHover: (hovered: boolean) => void; // Function to change the parent's hover state
 
     disableInstructionProblemDrag?: boolean; //used to disable drag and drop for instructions and problems when on the search
+    chunkIndex: number;
 }
 
-const ProblemComponent: React.FC<ProblemProps> = ({ parentChunk, parentChunkIndex, updateChunk, problem, problemIndex, disableInstructionProblemDrag }) => {
+const ProblemComponent: React.FC<ProblemProps> = ({ chunkIndex, parentChunk, parentChunkIndex, updateChunk, problem, problemIndex, disableInstructionProblemDrag }) => {
     const { setDragState } = useDragContext();
 
     const [, ref] = useDrag({
@@ -416,18 +413,19 @@ const ProblemComponent: React.FC<ProblemProps> = ({ parentChunk, parentChunkInde
         }
     });
 
-    // function processLatexString(latex_string: string): string {
-    //     const result = latex_string.replace(/^\\\(/, '')
-    //         .replace(/\\\)$/g, '')
-    //         .replace(/^\\\\$/gm, '')
-    //         .replace(/\\\\\n/g, '')
-    //         .replace(/\n/g, '')
-    //         .trim();
-    //     return latex_string;
-    // }
+    const { activeChunkIndices, setActiveChunkIndices } = useSidebarContext();
 
     return (
+
         <div
+            onClick={() => {
+                if (activeChunkIndices.includes(chunkIndex)) {
+                    setActiveChunkIndices(activeChunkIndices.filter(chunkIndex => chunkIndex !== chunkIndex));
+                } else {
+                    setActiveChunkIndices([...activeChunkIndices, chunkIndex]);
+                }
+            }
+            }
             ref={(node) => disableInstructionProblemDrag ? ref(drop(node)) : node}
             className="flex group flex-row flex-wrap">
             {problem.content.map((item, index) => (
