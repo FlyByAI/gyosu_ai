@@ -97,8 +97,12 @@ const ProblemBank: React.FC = () => {
 
             <div className="w-5/6 mt-4 overflow-x-hidden" style={{ marginRight: isDesktop ? '16.6667%' : "0" }}>
                 {/* <DocumentHeader document={document} /> */}
-                <h2 className="text-center text-xl text-white m-4">Problem Bank: {document.title}</h2>
-                <p className="text-center text-lg text-white m-4">Select problems then select create a worksheet</p>
+                {/* <h2 className="text-center text-xl text-white m-4">Problem Bank: {document.title}</h2> */}
+                <ol>
+                    <li className="text-center text-lg text-white m-4 italic">Step 1: Select problems</li>
+                    <li className="text-center text-lg text-white m-4 italic">Step 2: Click "Create Worksheet"</li>
+                </ol>
+
                 {document && document.problemChunks
                     && document.problemChunks.length > 0
                     && document.problemChunks?.map((chunk, chunkIndex) => {
