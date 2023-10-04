@@ -26,7 +26,7 @@ const ChunkManager: React.FC<ChunkManagerProps> = ({ chunkArray, setChunkArray }
 
     return (
         <div className='flex flex-col'>
-            <div className="text-xl justify-center text-white flex items-center mb-4">Step 3: Add problems to a problem bank</div>
+            <div className="text-xl justify-center text-white flex items-center mb-4 italic">Step 3: Add problems to a problem bank, then open the problem bank.</div>
             {chunkArray?.map((chunk, chunkIndex) => {
                 return (
                     <div key={chunkIndex}

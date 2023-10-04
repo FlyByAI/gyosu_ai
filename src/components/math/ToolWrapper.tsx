@@ -17,7 +17,7 @@ interface ToolWrapperProps {
     chunkIndex: number;
 }
 
-const ToolWrapper: React.FC<ToolWrapperProps> = ({ children, chunk, instruction, problem, insertChunk, updateChunk, chunkIndex }) => {
+const ToolWrapper: React.FC<ToolWrapperProps> = ({ children }) => {
     const [isHovered, setIsHovered] = useState(false);
     const [isClicked, setIsClicked] = useState(false);
     const wrapperRef = useRef<HTMLDivElement>(null);
@@ -52,17 +52,7 @@ const ToolWrapper: React.FC<ToolWrapperProps> = ({ children, chunk, instruction,
             onMouseLeave={() => setIsHovered(false)}
         >
             <AppModal modalId={'feedbackModal'} />
-            <div>
-                <ToolBadge
-                    hidden={!isClicked && !isHovered}
-                    chunk={chunk}
-                    instruction={instruction}
-                    problem={problem}
-                    updateChunk={updateChunk}
-                    insertChunk={insertChunk || undefined}
-                    chunkIndex={chunkIndex}
-                />
-            </div>
+
             {children}
         </div>
     );
