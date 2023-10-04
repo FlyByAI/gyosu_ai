@@ -17,7 +17,7 @@ interface ToolWrapperProps {
     chunkIndex: number;
 }
 
-const ToolWrapper: React.FC<ToolWrapperProps> = ({ children, chunk, instruction, problem, insertChunk, updateChunk, chunkIndex }) => {
+const ToolWrapper: React.FC<ToolWrapperProps> = ({ children }) => {
     const [isHovered, setIsHovered] = useState(false);
     const [isClicked, setIsClicked] = useState(false);
     const wrapperRef = useRef<HTMLDivElement>(null);
