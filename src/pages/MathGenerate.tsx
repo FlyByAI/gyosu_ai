@@ -75,14 +75,10 @@ const MathGenerate: React.FC = () => {
                             {formType && <span className="font-bold items-left ml-4 italic">Step 2: Search for problems using drop downs</span>}
                         </div>
 
-                        {formType ? (
-                            <div className='class="w-full mx-auto md:w-5/6"'>
-                                {formType === 'Textbook' && <TextbookGenerateForm onSubmit={handleSubmit} setGenerateFormData={setGenerateFormData} />}
-                                {formType === 'Competition' && <CompetitonMathGenerateForm onSubmit={handleSubmit} setGenerateFormData={setGenerateFormData} />}
-                            </div>
-                        ) : (
-                            <p className="text-center text-white mt-4">Please complete Step 1 to proceed.</p>
-                        )}
+                        <div className='class="w-full mx-auto md:w-5/6"'>
+                            {formType === 'Textbook' && <TextbookGenerateForm onSubmit={handleSubmit} setGenerateFormData={setGenerateFormData} />}
+                            {formType === 'Competition' && <CompetitonMathGenerateForm onSubmit={handleSubmit} setGenerateFormData={setGenerateFormData} />}
+                        </div>
 
                     </div>
 
