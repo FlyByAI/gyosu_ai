@@ -3,11 +3,13 @@ import { useSidebarContext } from '../../contexts/useSidebarContext';
 import { Chunk, Document, EmptyDocument } from '../../interfaces';
 import useCreateDocx, { DocxAction } from '../../hooks/tools/math/useCreateDocs';
 import { Tooltip as ReactTooltip } from "react-tooltip";
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import useEnvironment from '../../hooks/useEnvironment';
 import toast from 'react-hot-toast/headless';
 import Feedback from '../Feedback';
 import { useScreenSize } from '../../contexts/ScreenSizeContext';
+import DocxSVG from '../../svg/DocxSVG';
+import PdfSVG from '../../svg/PdfSVG';
 
 interface CreateDocsFormProps {
     document: Document | EmptyDocument;
@@ -125,22 +127,25 @@ const CreateDocxForm: React.FC<CreateDocsFormProps> = ({ document }) => {
             {/* Download buttons */}
             {!isLoading && downloadLinks && (
                 <>
-                    <p className='mt-4'>Note: Problems sometimes will not show in chrome on mobile.</p>
-                    <p>We recommend opening in Word or Google Docs to view.</p>
-                    <div className="inline-flex space-x-2 mt-4">
-                        <button onClick={() => window.open(downloadLinks.docxUrl, '_blank')} className="p-2 bg-green-700 rounded-md w-1/2">
-                            Download DOCX
+                    <p className='mt-2'>Your document is ready!</p>
+                    <div className="inline-flex space-x-2 mt-2">
+                        <button onClick={() => window.open(downloadLinks.docxUrl, '_blank')} className="p-2 bg-green-700 rounded-md w-1/2 flex flex-row">
+                            <span className='flex flex-row me-4'>Download Docx</span><span className='py-1 bg-white rounded-md'> <DocxSVG height="40px" width="40px" color="#0167b3" /></span>
                         </button>
-                        <button onClick={() => window.open(downloadLinks.pdfUrl, '_blank')} className="p-2 bg-green-700 rounded-md w-1/2">
-                            Download PDF
+                        <button onClick={() => window.open(downloadLinks.pdfUrl, '_blank')} className="p-2 bg-green-700 rounded-md w-1/2 flex flex-row">
+                            <span className='flex flex-row me-4'>Download PDF</span><span className='py-1 bg-white rounded-md'> <PdfSVG height="40px" width="40px" color="#ff1510" /></span>
                         </button>
                         <button onClick={() => window.open(downloadLinks.answerKeyUrl, '_blank')} className="p-2 text-black bg-yellow-500 rounded-md w-1/2">
                             Download Answer Key
                         </button>
                     </div>
+                    <p className='mt-2'>Previously created documents: <Link className="text-blue-400 font-bold" to="/math-app/documents">My Documents</Link></p>
+                    <p className='mt-2'>Note: Problems sometimes will not show in chrome on mobile. We recommend opening in Word or Google Docs to view.</p>
+
                 </>
 
-            )}
+            )
+            }
         </>
     );
 
