@@ -1,9 +1,9 @@
 
 
 
-const DocxSVG = ({ height, width, color }: { height?: string, width?: string, color?: string }) => {
+const DocxSVG = ({ height, width, color, className }: { height?: string, width?: string, color?: string, className?: string }) => {
 	return (
-		<svg fill={color} version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
+		<svg className={className} fill={color} version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
 			width={width} height={height} viewBox="0 0 548.291 548.291">
 			<g>
 				<path d="M486.201,196.121h-13.166v-63.525c0-0.399-0.062-0.795-0.115-1.2c-0.021-2.522-0.825-5-2.552-6.96L364.657,3.675

@@ -1,9 +1,9 @@
 
 
 
-const PdfSVG = ({ height, width, color }: { height?: string, width?: string, color?: string }) => {
+const PdfSVG = ({ height, width, color, className }: { height?: string, width?: string, color?: string, className?: string }) => {
 	return (
-		<svg fill={color} version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
+		<svg className={className} fill={color} version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
 			width={width} height={height} viewBox="0 0 550.801 550.801">
 			<g>
 				<path d="M160.381,282.225c0-14.832-10.299-23.684-28.474-23.684c-7.414,0-12.437,0.715-15.071,1.432V307.6
