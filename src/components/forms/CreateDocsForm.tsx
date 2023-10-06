@@ -129,14 +129,14 @@ const CreateDocxForm: React.FC<CreateDocsFormProps> = ({ document }) => {
                 <>
                     <p className='mt-2'>Your document is ready!</p>
                     <div className="inline-flex space-x-2 mt-2">
-                        <button onClick={() => window.open(downloadLinks.docxUrl, '_blank')} className="p-2 bg-green-700 rounded-md w-1/2 flex flex-row">
+                        <button onClick={() => window.open(downloadLinks.docxUrl, '_blank')} className="p-2 bg-green-600 hover:bg-green-700 rounded-md w-1/3 flex flex-row">
                             <span className='flex flex-row me-4'>Download Docx</span><span className='py-1 bg-white rounded-md'> <DocxSVG height="40px" width="40px" color="#0167b3" /></span>
                         </button>
-                        <button onClick={() => window.open(downloadLinks.pdfUrl, '_blank')} className="p-2 bg-green-700 rounded-md w-1/2 flex flex-row">
+                        <button onClick={() => window.open(downloadLinks.pdfUrl, '_blank')} className="p-2 bg-green-600 hover:bg-green-700 rounded-md w-1/3 flex flex-row">
                             <span className='flex flex-row me-4'>Download PDF</span><span className='py-1 bg-white rounded-md'> <PdfSVG height="40px" width="40px" color="#ff1510" /></span>
                         </button>
-                        <button onClick={() => window.open(downloadLinks.answerKeyUrl, '_blank')} className="p-2 text-black bg-yellow-500 rounded-md w-1/2">
-                            Download Answer Key
+                        <button onClick={() => window.open(downloadLinks.answerKeyUrl, '_blank')} className="p-2 text-black bg-yellow-400 hover:bg-yellow-500 rounded-md w-1/3 flex flex-row">
+                            <span className='flex flex-row me-4'>Answer Key</span><span className='py-1 bg-white rounded-md'>  <PdfSVG height="40px" width="40px" color="#ebb305" /></span>
                         </button>
                     </div>
                     <p className='mt-2'>Previously created documents: <Link className="text-blue-400 font-bold" to="/math-app/documents">My Documents</Link></p>
