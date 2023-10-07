@@ -19,7 +19,6 @@ export interface DocumentDownload {
     timesDownloaded: number;
     sourceData: Chunk[];
     signedUrl?: string;
-    blobName: string;
     documentOrAnswerKey: "document" | "answer_key";
 }
 
