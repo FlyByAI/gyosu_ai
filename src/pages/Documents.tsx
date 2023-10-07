@@ -19,7 +19,7 @@ export interface DocumentDownload {
     timesDownloaded: number;
     sourceData: Chunk[];
     signedUrl?: string;
-    answerKeyBlobName: string;
+    blobName: string;
     documentOrAnswerKey: "document" | "answer_key";
 }
 
@@ -75,12 +75,12 @@ const Documents: React.FC = () => {
                                                     <div>Timestamp: {new Date(doc.timestamp).toLocaleString()}</div>
                                                     <div>Shared: {doc.shared ? 'Yes' : 'No'}</div>
                                                     <div>Times Downloaded: {doc.timesDownloaded}</div>
-                                                    {!doc.answerKeyBlobName ? <div>
+                                                    {!doc.blobName ? <div>
                                                         <span className="text-white-300 hover:underline cursor-pointer">
                                                             No Answer Key
                                                         </span>
                                                     </div> :
-                                                        <div onClick={() => handleDocumentClick(doc.answerKeyBlobName, "answer_key")}>
+                                                        <div onClick={() => handleDocumentClick(doc.blobName, "answer_key")}>
                                                             <span className="text-yellow-300 hover:underline cursor-pointer">
                                                                 Download Answer Key
                                                             </span>
@@ -104,12 +104,12 @@ const Documents: React.FC = () => {
                                                             </span>
                                                         </div>
                                                     }
-                                                    {!doc.answerKeyBlobName ? <div className="w-1/2">
+                                                    {!doc.blobName ? <div className="w-1/2">
                                                         <span className="text-white-300 ">
                                                             No Answer Key
                                                         </span>
                                                     </div> :
-                                                        <div onClick={() => handleDocumentClick(doc.answerKeyBlobName, "answer_key")} className="w-1/2">
+                                                        <div onClick={() => handleDocumentClick(doc.blobName, "answer_key")} className="w-1/2">
                                                             <span className="text-yellow-500 hover:underline cursor-pointer">
                                                                 <PdfSVG height="80px" width="80px" color="#ebb305" className='bg-white py-1 rounded-md mb-2' />
                                                                 Download Answer Key
