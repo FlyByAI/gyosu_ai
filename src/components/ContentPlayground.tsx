@@ -4,8 +4,18 @@ import useGetDocuments from '../hooks/tools/math/useGetDocuments';
 // import { useSubmitContentPlaygroundForm } from 'path_to_your_hook';
 // import { useYourProblemBankHook } from 'path_to_your_problem_bank_hook';
 import formOptionsJSON from '../json/dropdown_data.json';
+import { useClerk } from '@clerk/clerk-react';
 
 const ContentPlayground = () => {
+
+    const { session, openSignIn } = useClerk();
+    useEffect(() => {
+        if (!session) {
+            openSignIn()
+        }
+    }, [session, openSignIn])
+
+
     const [formData, setFormData] = useState({
         textbook: '',
         useExistingBank: true,
@@ -51,11 +61,12 @@ const ContentPlayground = () => {
 
 
     return (
-        <div className="flex justify-center items-center h-screen">
-            <div className="flex space-x-20">
+        <div className="flex justify-center mt-8" style={{ height: 'calc(100vh - 140px)' }}>
+            <div className="w-full flex space-x-10 mx-auto justify-center">
 
                 {/* Left Form Card */}
-                <div className="w-2/5 bg-white p-6 rounded-md shadow-md">
+                <div className="relative w-2/5 bg-white p-6 rounded-md shadow-md overflow-y-scroll" style={{ maxHeight: 'calc(100vh - 60px)' }}>
+
                     <form onSubmit={handleSubmit}>
                         <div className="mb-4">
                             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="textbook">
@@ -173,7 +184,9 @@ const ContentPlayground = () => {
                         <button type="submit" className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                             Submit
                         </button>
+
                     </form>
+
                 </div>
 
                 {/* Right Output Card */}

@@ -108,6 +108,15 @@ export default function ClerkProviderWithRoutes() {
                     }
                 />
                 <Route
+                    path="/math-app/playground"
+                    element={
+                        <>
+                            <Navbar />
+                            <ContentPlayground />
+                        </>
+                    }
+                />
+                <Route
                     path="/faq"
                     element={
                         <>
@@ -174,17 +183,6 @@ export default function ClerkProviderWithRoutes() {
                             <ContentWrapper>
                                 <Attributions />
                                 <Footer />
-                            </ContentWrapper>
-                        </>
-                    }
-                />
-                <Route
-                    path="/playground"
-                    element={
-                        <>
-                            <Navbar />
-                            <ContentWrapper>
-                                <ContentPlayground />
                             </ContentWrapper>
                         </>
                     }
