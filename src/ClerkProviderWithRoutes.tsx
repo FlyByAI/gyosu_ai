@@ -35,6 +35,7 @@ import useEnvironment from './hooks/useEnvironment.tsx';
 import FAQPage from './pages/FAQPage.tsx';
 import { Helmet } from "react-helmet-async";
 import { getSchemaMarkup } from './helpers/getSchemaMarkup.ts';
+import ContentPlayground from './components/ContentPlayground.tsx';
 
 
 export default function ClerkProviderWithRoutes() {
@@ -173,6 +174,17 @@ export default function ClerkProviderWithRoutes() {
                             <ContentWrapper>
                                 <Attributions />
                                 <Footer />
+                            </ContentWrapper>
+                        </>
+                    }
+                />
+                <Route
+                    path="/playground"
+                    element={
+                        <>
+                            <Navbar />
+                            <ContentWrapper>
+                                <ContentPlayground />
                             </ContentWrapper>
                         </>
                     }
