@@ -5,6 +5,7 @@ import useGetDocuments from '../hooks/tools/math/useGetDocuments';
 // import { useYourProblemBankHook } from 'path_to_your_problem_bank_hook';
 import formOptionsJSON from '../json/dropdown_data.json';
 import { useClerk } from '@clerk/clerk-react';
+import useSubmitPlayground, { PlaygroundFormData } from '../hooks/tools/math/useSubmitPlayground';
 
 const ContentPlayground = () => {
 
@@ -24,9 +25,13 @@ const ContentPlayground = () => {
         contentType: '',
         contentLength: '',
         additionalDetails: ''
-    });
+    } as PlaygroundFormData);
 
     const { apiUrl } = useEnvironment();
+
+    const submitPlaygroundEndpoint = `${apiUrl}/math_app/playground/`;
+    const { submitPlayground, isLoading, error: submitPlaygroundError, data: playgroundData } = useSubmitPlayground(submitPlaygroundEndpoint);
+
     const endpoint = `${apiUrl}/math_app/school_document/list/`;
     const { documents, error } = useGetDocuments(endpoint);
 
@@ -45,7 +50,8 @@ const ContentPlayground = () => {
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        // submitTextWithChunk(formData); // Uncomment when your hook is ready.
+        submitPlayground(formData); // Uncomment when your hook is ready.
+        console.log("submit playground")
     };
 
     const handleChangeTextbook = (e: ChangeEvent<HTMLSelectElement>) => {
@@ -132,7 +138,7 @@ const ContentPlayground = () => {
                                     value={formData.teachingTarget}
                                     onChange={handleChange}
                                     className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                    placeholder="What are you trying to teach?"
+                                    placeholder="What topic are you trying to teach?"
                                 />
                             </div>
                         )}
@@ -192,10 +198,10 @@ const ContentPlayground = () => {
                 {/* Right Output Card */}
                 <div className="w-2/5 bg-white p-6 rounded-md shadow-md">
                     {/* Uncomment below when your hook is ready */}
-                    {/* {isLoading && <p>Loading...</p>} */}
-                    {/* {error && <p className="text-red-500">{error.message}</p>} */}
-                    {/* {data && <p>{data}</p>} */}
-                    <p>Output will be displayed here.</p>
+                    {isLoading && <p>Loading...</p>}
+                    {submitPlaygroundError && <p className="text-red-500">{submitPlaygroundError}</p>}
+                    {playgroundData ? <p>{playgroundData.response}</p> : <p>Output will be displayed here.</p>}
+
                 </div>
 
             </div>
