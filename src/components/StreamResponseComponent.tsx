@@ -48,10 +48,14 @@ function StreamedResponseComponent() {
             }
         };
 
-        fetchData();
+        // Delaying the fetch request by 1 second
+        const timeoutId = setTimeout(() => {
+            fetchData();
+        }, 1000);
 
-        // Cleanup function to cancel the fetch operation if the component is unmounted
+        // Cleanup function to cancel the fetch operation and the timeout if the component is unmounted
         return () => {
+            clearTimeout(timeoutId);
             abortController.abort();
         };
     }, []); // Empty dependency array ensures the effect runs once when the component mounts
