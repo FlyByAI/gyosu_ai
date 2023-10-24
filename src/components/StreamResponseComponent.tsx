@@ -26,9 +26,9 @@ function StreamedResponseComponent() {
 
                 setData("");
 
-                reader?.read().then(function processText({ done, value }) {
+                reader?.read().then(function processText({ done, value }): Promise<void> {
                     if (done) {
-                        return;
+                        return Promise.resolve();
                     }
 
                     console.log(decoder.decode(value))
@@ -39,7 +39,7 @@ function StreamedResponseComponent() {
                     // Read and process the next chunk
                     return reader.read().then(processText);
                 });
-            } catch (error) {
+            } catch (error: any) {
                 if (error.name === 'AbortError') {
                     console.log('Fetch aborted');
                 } else {
