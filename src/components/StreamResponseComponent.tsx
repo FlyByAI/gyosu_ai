@@ -5,7 +5,7 @@ function StreamedResponseComponent() {
 
     const [data, setData] = useState('');
     const { apiUrl } = useEnvironment();
-    const streamPlaygroundEndpoint = `${apiUrl}/math_app/playground/stream/`;
+    const streamPlaygroundEndpoint = `${apiUrl}/math_app/playground/stream_example/`;
 
     useEffect(() => {
         const abortController = new AbortController();
