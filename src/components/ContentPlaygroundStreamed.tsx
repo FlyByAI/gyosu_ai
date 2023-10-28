@@ -31,7 +31,7 @@ const ContentPlayGroundStreamed = () => {
     const endpoint = `${apiUrl}/math_app/school_document/list/`;
     const { documents, error } = useGetDocuments(endpoint);
 
-    const playgroundEndpoint = `${apiUrl}/math_app/playground/stream_example/`;
+    const playgroundEndpoint = `${apiUrl}/math_app/playground/stream/`;
 
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
