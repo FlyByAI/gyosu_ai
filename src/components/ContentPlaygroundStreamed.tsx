@@ -70,11 +70,11 @@ const ContentPlayGroundStreamed = () => {
 
 
     return (
-        <div className="flex justify-center mt-8" style={{ height: 'calc(100vh - 140px)' }}>
-            <div className="w-full flex space-x-10 mx-auto justify-center">
+        <div className="flex justify-center mt-12 md:mt-0" style={{ height: 'calc(100vh - 140px)' }}>
+            <div className="w-full flex md:space-x-10 mx-auto justify-center flex-col md:flex-row h-fit">
 
                 {/* Left Form Card */}
-                <div className="relative w-2/5 bg-white p-6 rounded-md shadow-md overflow-y-scroll h-fit" style={{ maxHeight: 'calc(100vh - 60px)' }}>
+                <div className="relative w-full md:w-2/5 mb-4 md:mb-0 bg-white p-6 rounded-md shadow-md overflow-y-scroll h-fit" style={{ maxHeight: 'calc(100vh - 60px)' }}>
 
 
 
@@ -104,7 +104,7 @@ const ContentPlayGroundStreamed = () => {
 
 
                 {/* Right Output Card */}
-                <div className="w-2/5 bg-white p-6 rounded-md shadow-md h-fit">
+                <div className="w-full md:w-2/5 bg-white p-6 rounded-md shadow-md h-fit">
 
                     <StreamedResponseComponent endpoint={playgroundEndpoint} onSubmit={handleSubmit} />
                 </div>

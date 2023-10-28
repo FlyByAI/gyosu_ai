@@ -112,7 +112,9 @@ export default function ClerkProviderWithRoutes() {
                     element={
                         <>
                             <Navbar />
-                            <ContentPlaygroundStreamed />
+                            <ContentWrapper>
+                                <ContentPlaygroundStreamed />
+                            </ContentWrapper>
                         </>
                     }
                 />
