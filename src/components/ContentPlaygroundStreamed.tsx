@@ -195,7 +195,7 @@ const ContentPlayGroundStreamed = () => {
                 </div>
 
                 {/* Right Output Card */}
-                <div className="w-2/5 bg-white p-6 rounded-md shadow-md">
+                <div className="w-2/5 bg-white p-6 rounded-md shadow-md h-fit">
                     <StreamedResponseComponent endpoint={playgroundEndpoint} onSubmit={handleSubmit} />
                 </div>
 
