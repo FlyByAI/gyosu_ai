@@ -49,9 +49,11 @@ const CreateDocsFromMarkdownComponent = ({ markdown }: CreateDocsFromMarkdownCom
                         <button onClick={() => window.open(downloadLinks.pdfUrl, '_blank')} className="p-2 bg-green-600 hover:bg-green-700 rounded-md w-1/3 flex flex-row">
                             <span className='flex flex-row me-4'>Download PDF</span><span className='py-1 bg-white rounded-md'><PdfSVG height="40px" width="40px" color="#ff1510" /></span>
                         </button>
-                        <button onClick={() => window.open(downloadLinks.answerKeyUrl, '_blank')} className="p-2 text-black bg-yellow-400 hover:bg-yellow-500 rounded-md w-1/3 flex flex-row">
-                            <span className='flex flex-row me-4'>Answer Key</span><span className='py-1 bg-white rounded-md'><PdfSVG height="40px" width="40px" color="#ebb305" /></span>
-                        </button>
+                        {downloadLinks.answerKeyUrl ? (
+                            <button onClick={() => window.open(downloadLinks.answerKeyUrl, '_blank')} className="p-2 text-black bg-yellow-400 hover:bg-yellow-500 rounded-md w-1/3 flex flex-row">
+                                <span className='flex flex-row me-4'>Answer Key</span><span className='py-1 bg-white rounded-md'><PdfSVG height="40px" width="40px" color="#ebb305" /></span>
+                            </button>
+                        ) : "Answer Key Not Available"}
                     </div>
                     <p className='mt-2'>Previously created documents: <Link className="text-blue-400 font-bold" to="/math-app/documents">My Documents</Link></p>
                     <p className='mt-2'>Note: Problems sometimes will not show in chrome on mobile. We recommend opening in Word or Google Docs to view.</p>
