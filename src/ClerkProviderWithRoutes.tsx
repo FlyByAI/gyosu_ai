@@ -35,8 +35,7 @@ import useEnvironment from './hooks/useEnvironment.tsx';
 import FAQPage from './pages/FAQPage.tsx';
 import { Helmet } from "react-helmet-async";
 import { getSchemaMarkup } from './helpers/getSchemaMarkup.ts';
-import ContentPlayground from './components/ContentPlayground.tsx';
-import StreamedResponseComponent from './components/StreamResponseComponent.tsx';
+import ContentPlaygroundStreamed from './components/ContentPlaygroundStreamed.tsx';
 
 
 export default function ClerkProviderWithRoutes() {
@@ -109,20 +108,11 @@ export default function ClerkProviderWithRoutes() {
                     }
                 />
                 <Route
-                    path="/math-app/playground"
+                    path="/math-app/playground/streamed"
                     element={
                         <>
                             <Navbar />
-                            <ContentPlayground />
-                        </>
-                    }
-                />
-                <Route
-                    path="/math-app/playground/stream"
-                    element={
-                        <>
-                            <Navbar />
-                            <StreamedResponseComponent />
+                            <ContentPlaygroundStreamed />
                         </>
                     }
                 />

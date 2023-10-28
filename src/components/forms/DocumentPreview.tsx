@@ -4,7 +4,7 @@ import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 import { Link } from 'react-router-dom';
-import { Document, Table, Image, Text, Math } from '../../interfaces';
+import { Document, Table, Image, Text, Math, Subproblem } from '../../interfaces';
 
 interface DocumentPreviewProps {
     document: Document;
@@ -16,7 +16,7 @@ const DocumentPreview: React.FC<DocumentPreviewProps> = ({ document, disabledCli
 
     const { creator, upvotes, tips, id, problemChunks } = document;
 
-    const renderContent = (content: (Text | Math | Table | Image)[]) => {
+    const renderContent = (content: (Text | Math | Table | Image | Subproblem)[]) => {
         return content.map((item, index) => {
             switch (item.type) {
                 case 'text':

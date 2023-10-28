@@ -1,68 +1,37 @@
-import React, { useEffect, useState } from 'react';
-import useEnvironment from '../hooks/useEnvironment';
+import React, { useCallback } from 'react';
+import useStreamedResponse from '../hooks/tools/math/useStreamedResponse';
 
-function StreamedResponseComponent() {
+interface StreamedResponseProps {
+    endpoint: string;
+    initialBodyContent?: any;
+    headers?: any;
+    onSubmit?: (startStreaming: (bodyContent: any) => void) => void;
+}
 
-    const [data, setData] = useState('');
-    const { apiUrl } = useEnvironment();
-    const streamPlaygroundEndpoint = `${apiUrl}/math_app/playground/stream_example/`;
+function StreamedResponseComponent({
+    endpoint,
+    initialBodyContent = {},
+    headers = {},
+    onSubmit
+}: StreamedResponseProps) {
+    const { data, isLoading, error, startStreaming } = useStreamedResponse(endpoint, headers);
 
-    useEffect(() => {
-        const abortController = new AbortController();
-        const fetchData = async () => {
-            try {
-                const response = await fetch(streamPlaygroundEndpoint, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        // include other headers such as CSRF tokens if necessary
-                    },
-                    body: JSON.stringify({ /* your POST data here */ }),
-                    signal: abortController.signal, // passing the signal to the fetch call
-                });
-
-                const reader = response?.body?.getReader();
-                const decoder = new TextDecoder('utf-8');
-
-                setData("");
-
-                reader?.read().then(function processText({ done, value }): Promise<void> {
-                    if (done) {
-                        return Promise.resolve();
-                    }
-
-                    console.log(decoder.decode(value))
-
-                    // Decode the text and append it to the state
-                    setData((prevData) => prevData + decoder.decode(value));
-
-                    // Read and process the next chunk
-                    return reader.read().then(processText);
-                });
-            } catch (error: any) {
-                if (error.name === 'AbortError') {
-                    console.log('Fetch aborted');
-                } else {
-                    console.error('An unexpected error occurred:', error);
-                }
-            }
-        };
-
-        // Delaying the fetch request by 1 second
-        const timeoutId = setTimeout(() => {
-            fetchData();
-        }, 1000);
-
-        // Cleanup function to cancel the fetch operation and the timeout if the component is unmounted
-        return () => {
-            clearTimeout(timeoutId);
-            abortController.abort();
-        };
-    }, []); // Empty dependency array ensures the effect runs once when the component mounts
+    const handleSubmit = useCallback(() => {
+        if (onSubmit) {
+            onSubmit(startStreaming);
+        } else {
+            startStreaming(initialBodyContent);
+        }
+    }, [startStreaming, onSubmit, initialBodyContent]);
 
     return (
-        <div className='text-white flex justify-center'>
-            <p>Streamed Data: {data}</p>
+        <div className='flex flex-col  justify-center'>
+            <button onClick={handleSubmit}>Submit</button>
+            <div>
+                {isLoading && <p>Loading...</p>}
+                {error && <p>Error: {error}</p>}
+                {data && <p>Streamed Data: {data}</p>}
+            </div>
         </div>
     );
 }
