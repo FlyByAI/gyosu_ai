@@ -1,4 +1,5 @@
 import { useClerk } from '@clerk/clerk-react';
+import humps from 'humps';
 import { useCallback, useEffect, useState } from 'react';
 
 const useStreamedResponse = (endpoint: string, headers: any) => {
@@ -14,7 +15,6 @@ const useStreamedResponse = (endpoint: string, headers: any) => {
         const fetchData = async () => {
             try {
                 setLoading(true);
-
                 const response = await fetch(endpoint, {
                     method: 'POST',
                     headers: {
@@ -22,7 +22,7 @@ const useStreamedResponse = (endpoint: string, headers: any) => {
                         'Authorization': token ? `Bearer ${token}` : '',
                         ...headers
                     },
-                    body: JSON.stringify(bodyContent),
+                    body: JSON.stringify(humps.decamelizeKeys(bodyContent)),
                     signal: abortController.signal,
                 });
 

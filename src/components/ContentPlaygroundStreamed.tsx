@@ -44,8 +44,7 @@ const ContentPlayGroundStreamed = () => {
 
     const handleSubmit = (startStreaming: (bodyContent: any) => void) => {
         console.log("hand submit")
-        const bodyContent = { ...formData }
-        startStreaming(bodyContent);
+        startStreaming(formData);
         console.log("submit playground")
     };
 
