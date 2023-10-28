@@ -19,7 +19,7 @@ const ContentPlayGroundStreamed = () => {
     const [formData, setFormData] = useState({
         textbook: '',
         useExistingBank: true,
-        problemBank: null,
+        problemBankId: null,
         teachingTarget: '',
         contentType: '',
         contentLength: '',
@@ -94,7 +94,7 @@ const ContentPlayGroundStreamed = () => {
                             <select
                                 id="problemBank"
                                 name="problemBank"
-                                value={formData.problemBank || ''}
+                                value={formData.problemBankId || ''}
                                 onChange={handleChange}
                                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                             >

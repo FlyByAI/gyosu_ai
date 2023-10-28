@@ -7,7 +7,7 @@ import { languageNames } from '../../../helpers/language';
 export interface PlaygroundFormData {
     textbook: string;
     useExistingBank: boolean;
-    problemBank: number | null;
+    problemBankId: number | null;
     teachingTarget: string;
     contentType: string;
     contentLength: string;
