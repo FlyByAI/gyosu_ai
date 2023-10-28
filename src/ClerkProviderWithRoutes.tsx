@@ -108,7 +108,7 @@ export default function ClerkProviderWithRoutes() {
                     }
                 />
                 <Route
-                    path="/math-app/playground/streamed"
+                    path="/math-app/playground"
                     element={
                         <>
                             <Navbar />
