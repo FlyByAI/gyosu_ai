@@ -30,11 +30,13 @@ function StreamedResponseComponent({
 
     return (
         <div className='flex flex-col justify-center'>
-            <button onClick={handleSubmit}>Submit</button>
+            <button
+                className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                onClick={handleSubmit}>Submit</button>
             <div>
                 {isLoading && <p>Loading...</p>}
                 {error && <p>Error: {error}</p>}
-                {data && <p>Streamed Data: {
+                {data && <p>
                     <ReactMarkdown
                         className="text-sm z-10 p-1 m-1 border-2 border-transparent border-dashed hover:border-yellow-500"
                         remarkPlugins={[remarkGfm, remarkMath]}
@@ -42,7 +44,7 @@ function StreamedResponseComponent({
                     >
                         {`${data}`}
                     </ReactMarkdown>
-                }</p>}
+                </p>}
             </div>
         </div>
     );

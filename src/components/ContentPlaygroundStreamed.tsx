@@ -62,13 +62,13 @@ const ContentPlayGroundStreamed = () => {
 
     return (
         <div className="flex justify-center mt-8" style={{ height: 'calc(100vh - 140px)' }}>
-            <div className="w-full flex space-x-10 mx-auto justify-center">
+            <div className="w-full flex space-x-10 mx-auto justify-center h-32">
 
                 {/* Left Form Card */}
                 <div className="relative w-2/5 bg-white p-6 rounded-md shadow-md overflow-y-scroll" style={{ maxHeight: 'calc(100vh - 60px)' }}>
 
 
-
+                    {/* 
                     <div className="mb-4">
                         <label className="block text-gray-700 text-sm font-bold mb-2">
                             Problem Selection:
@@ -84,27 +84,27 @@ const ContentPlayGroundStreamed = () => {
                         </select>
                     </div>
 
-                    {formData.useExistingBank ? (
+                    {formData.useExistingBank ? ( */}
 
-                        <div className="mb-4">
-                            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="problemBankId">
-                                Select a Problem Bank:
-                            </label>
-                            <select
-                                id="problemBankId"
-                                name="problemBankId"
-                                value={formData.problemBankId || ''}
-                                onChange={handleChange}
-                                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                            >
-                                <option value="" disabled>Select a bank</option>
-                                {documents?.map((doc) => (
-                                    <option value={doc.id} key={doc.id}>{doc.title}</option>
-                                ))}
-                            </select>
-                        </div>
+                    <div className="mb-4">
+                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="problemBankId">
+                            Select a Problem Bank:
+                        </label>
+                        <select
+                            id="problemBankId"
+                            name="problemBankId"
+                            value={formData.problemBankId || ''}
+                            onChange={handleChange}
+                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        >
+                            <option value="" disabled>Select a bank</option>
+                            {documents?.map((doc) => (
+                                <option value={doc.id} key={doc.id}>{doc.title}</option>
+                            ))}
+                        </select>
+                    </div>
 
-                    ) : (
+                    {/* ) : (
                         <>
                             <div className="mb-4">
                                 <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="textbook">
@@ -139,9 +139,9 @@ const ContentPlayGroundStreamed = () => {
                                 />
                             </div>
                         </>
-                    )}
+                    )} */}
 
-                    <div className="mb-4">
+                    {/* <div className="mb-4">
                         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="contentType">
                             Content Type:
                         </label>
@@ -154,9 +154,9 @@ const ContentPlayGroundStreamed = () => {
                             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                             placeholder="Worksheet, Class Activity, Quiz..."
                         />
-                    </div>
+                    </div> */}
 
-                    <div className="mb-4">
+                    {/* <div className="mb-4">
                         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="contentLength">
                             Content Length:
                         </label>
@@ -169,9 +169,9 @@ const ContentPlayGroundStreamed = () => {
                             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                             placeholder="1 page, 1 paragraph, etc."
                         />
-                    </div>
+                    </div> */}
 
-                    <div className="mb-4">
+                    {/* <div className="mb-4">
                         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="additionalDetails">
                             Additional Details:
                         </label>
@@ -183,13 +183,13 @@ const ContentPlayGroundStreamed = () => {
                             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                             placeholder="Any additional details for the AI"
                         />
-                    </div>
+                    </div> */}
 
-                    <button
+                    {/* <button
                         onClick={() => handleSubmit}
                         className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                         Submit
-                    </button>
+                    </button> */}
 
 
                 </div>
