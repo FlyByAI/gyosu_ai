@@ -4,7 +4,8 @@ import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 import { Link } from 'react-router-dom';
-import { Document, Table, Image, Text, Math, Subproblem } from '../../interfaces';
+import { Document, Table, Image, Text, Math, Subproblem, Subproblems } from '../../interfaces';
+import SubproblemComponent from '../AST';
 
 interface DocumentPreviewProps {
     document: Document;
@@ -16,7 +17,7 @@ const DocumentPreview: React.FC<DocumentPreviewProps> = ({ document, disabledCli
 
     const { creator, upvotes, tips, id, problemChunks } = document;
 
-    const renderContent = (content: (Text | Math | Table | Image | Subproblem)[]) => {
+    const renderContent = (content: (Text | Math | Table | Image | Subproblems)[]) => {
         return content.map((item, index) => {
             switch (item.type) {
                 case 'text':
@@ -59,6 +60,16 @@ const DocumentPreview: React.FC<DocumentPreviewProps> = ({ document, disabledCli
                             alt="Description"
                             className="z-10 p-1 m-1 border-2 border-transparent border-dashed hover:border-2 hover:border-purple-dashed group-hover:border-2 group-hover:border-purple-500 group-hover:border-dashed"
                         />
+                    );
+                case 'subproblems':
+                    return (
+                        <div key={index} className="flex flex-col">
+                            {item.content.map((subproblem, subproblemIndex) => (
+                                <div key={subproblemIndex} className="flex flex-row">
+                                    <SubproblemComponent subproblem={subproblem} />
+                                </div>
+                            ))}
+                        </div>
                     );
                 default:
                     return null;
