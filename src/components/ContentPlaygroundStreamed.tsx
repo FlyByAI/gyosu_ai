@@ -51,22 +51,20 @@ const ContentPlayGroundStreamed = () => {
         }
 
         setFormError(null); // Clear any previous error
-        console.log("hand submit");
         startStreaming(formData);
-        console.log("submit playground");
     };
 
 
-    const handleChangeTextbook = (e: ChangeEvent<HTMLSelectElement>) => {
-        const { value } = e.target;
-        setFormData(prevState => ({
-            ...prevState,
-            textbook: value,
-        }));
-    };
+    // const handleChangeTextbook = (e: ChangeEvent<HTMLSelectElement>) => {
+    //     const { value } = e.target;
+    //     setFormData(prevState => ({
+    //         ...prevState,
+    //         textbook: value,
+    //     }));
+    // };
 
-    const formOptionsObj = Object(formOptionsJSON);
-    const sourceMaterialOptions = Object.keys(formOptionsObj).map(sm => ({ label: formOptionsObj[sm].label, value: sm }));
+    // const formOptionsObj = Object(formOptionsJSON);
+    // const sourceMaterialOptions = Object.keys(formOptionsObj).map(sm => ({ label: formOptionsObj[sm].label, value: sm }));
 
 
     return (
