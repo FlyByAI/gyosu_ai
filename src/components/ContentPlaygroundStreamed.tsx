@@ -54,28 +54,12 @@ const ContentPlayGroundStreamed = () => {
         startStreaming(formData);
     };
 
-
-    // const handleChangeTextbook = (e: ChangeEvent<HTMLSelectElement>) => {
-    //     const { value } = e.target;
-    //     setFormData(prevState => ({
-    //         ...prevState,
-    //         textbook: value,
-    //     }));
-    // };
-
-    // const formOptionsObj = Object(formOptionsJSON);
-    // const sourceMaterialOptions = Object.keys(formOptionsObj).map(sm => ({ label: formOptionsObj[sm].label, value: sm }));
-
-
     return (
         <div className="flex justify-center mt-12 md:mt-0" style={{ height: 'calc(100vh - 140px)' }}>
             <div className="w-full flex md:space-x-10 mx-auto justify-center flex-col md:flex-row h-fit">
 
                 {/* Left Form Card */}
                 <div className="relative w-full md:w-2/5 mb-4 md:mb-0 bg-white p-6 rounded-md shadow-md overflow-y-scroll h-fit" style={{ maxHeight: 'calc(100vh - 60px)' }}>
-
-
-
                     <div className="mb-4">
                         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="problemBankId">
                             Select a Problem Bank:
@@ -92,21 +76,14 @@ const ContentPlayGroundStreamed = () => {
                                 <option value={doc.id} key={doc.id}>{doc.title}</option>
                             ))}
                         </select>
-
                     </div>
                     {formError && <p className="bg-white text-red-500 text-xs italic mt-2 my-2">{formError}</p>}
-
                 </div>
-
-
-
 
                 {/* Right Output Card */}
                 <div className="w-full md:w-2/5 bg-white p-6 rounded-md shadow-md h-fit">
-
                     <StreamedResponseComponent endpoint={playgroundEndpoint} onSubmit={handleSubmit} />
                 </div>
-
             </div>
         </div>
     );

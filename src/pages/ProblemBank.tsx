@@ -80,12 +80,10 @@ const ProblemBank: React.FC = () => {
 
 
     const updateDocumentChunk = (chunk: Chunk, index: number) => {
-        // Update the specific chunk in the document
 
         const updatedChunks = document.problemChunks?.map((c, i) => (i === index ? { ...chunk, id: undefined } : c)) || [];
         const updatedDocument = { ...document, problemChunks: updatedChunks };
 
-        // Submit the change, triggering the updateDocument mutation
         updateDocument({ document: updatedDocument });
     };
 
@@ -96,8 +94,6 @@ const ProblemBank: React.FC = () => {
             <CreateDocxModal enabled={activeChunkIndices.length > 0} document={document} modalId={"createDocx"} />
 
             <div className="w-5/6 mt-4 overflow-x-hidden" style={{ marginRight: isDesktop ? '16.6667%' : "0" }}>
-                {/* <DocumentHeader document={document} /> */}
-                {/* <h2 className="text-center text-xl text-white m-4">Problem Bank: {document.title}</h2> */}
                 <ol>
                     <li className="text-center text-lg text-white m-4 italic">Step 1: Select problems</li>
                     <li className="text-center text-lg text-white m-4 italic">Step 2: Click "Create Worksheet"</li>
@@ -136,13 +132,6 @@ const ProblemBank: React.FC = () => {
                         </div>
 
                     </div>}
-
-                {/* Once we have a trained AI for adding problems from text input, I would like to do that here.. */}
-                {/* {<div className='w-3/4 mx-auto flex flex-row mb-4 bg-gray-900 p-2 justify-center'>
-                    {<button onClick={() => insertChunk((document.problemChunks?.length || 0) + 1)} className="pe-1 text-green-500">
-                        <PlusIcon />
-                    </button>}
-                </div>} */}
             </div>
         </div>
     );
