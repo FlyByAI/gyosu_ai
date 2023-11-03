@@ -36,6 +36,7 @@ import FAQPage from './pages/FAQPage.tsx';
 import { Helmet } from "react-helmet-async";
 import { getSchemaMarkup } from './helpers/getSchemaMarkup.ts';
 import ContentPlaygroundStreamed from './components/ContentPlaygroundStreamed.tsx';
+import ContentMultipleStreamedExample from './components/ContentMultipleStreamedExample.tsx';
 
 
 export default function ClerkProviderWithRoutes() {
@@ -114,6 +115,17 @@ export default function ClerkProviderWithRoutes() {
                             <Navbar />
                             <ContentWrapper>
                                 <ContentPlaygroundStreamed />
+                            </ContentWrapper>
+                        </>
+                    }
+                />
+                <Route
+                    path="/math-app/multipleKeyStreamExample"
+                    element={
+                        <>
+                            <Navbar />
+                            <ContentWrapper>
+                                <ContentMultipleStreamedExample />
                             </ContentWrapper>
                         </>
                     }

@@ -1,5 +1,5 @@
-import React, { useCallback } from 'react';
-import useStreamedResponse from '../hooks/tools/math/useStreamedResponse';
+import React, { useCallback, useState, useEffect } from 'react';
+import useStreamedMultikeyResponse from '../hooks/tools/math/useStreamedMultikeyResponse';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
@@ -13,13 +13,17 @@ interface StreamedResponseProps {
     onSubmit?: (startStreaming: (bodyContent: any) => void) => void;
 }
 
-function StreamedResponseComponent({
+interface StreamedData {
+    [key: string]: string;
+}
+
+const StreamedResponseMultikeyComponent: React.FC<StreamedResponseProps> = ({
     endpoint,
     initialBodyContent = {},
     headers = {},
     onSubmit
-}: StreamedResponseProps) {
-    const { data, isLoading, error, startStreaming } = useStreamedResponse(endpoint, headers);
+}) => {
+    const { data, isLoading, error, startStreaming } = useStreamedMultikeyResponse(endpoint, headers);
 
     const handleSubmit = useCallback(() => {
         if (onSubmit) {
@@ -29,7 +33,6 @@ function StreamedResponseComponent({
         }
     }, [startStreaming, onSubmit, initialBodyContent]);
 
-
     return (
         <div className='flex flex-col justify-center'>
             <button
@@ -38,24 +41,22 @@ function StreamedResponseComponent({
             <div>
                 {isLoading && <p>Loading...</p>}
                 {error && <p>Error: {error}</p>}
-                {data && <>
-                    <p>
+                {data && Object.entries(data).map(([key, value]) => (
+                    <div key={key}>
+                        <h3 className="font-bold">{key.replace(/_/g, ' ').toUpperCase()}</h3>
                         <ReactMarkdown
                             className="text-sm z-10 p-1 m-1 border-2 border-transparent border-dashed hover:border-yellow-500"
                             remarkPlugins={[remarkGfm, remarkMath]}
                             rehypePlugins={[rehypeKatex]}
                         >
-                            {`${data}`}
+                            {value}
                         </ReactMarkdown>
-                    </p>
-                    <div>
-                        <CreateDocsFromMarkdownComponent markdown={data} />
+                        <CreateDocsFromMarkdownComponent markdown={value} />
                     </div>
-                </>
-                }
+                ))}
             </div>
         </div>
     );
 }
 
-export default StreamedResponseComponent;
+export default StreamedResponseMultikeyComponent;
