@@ -1,76 +1,73 @@
-import React, { useState } from 'react';
-import formOptionsJSON from '../json/dropdown_data.json';
-import Dropdown from '../components/forms/Dropdown';
-import StreamedResponseMultikeyComponent from '../components/StreamResponseMultiKeyComponent';
+import React, { useState, useEffect, useRef } from 'react';
+import { useParams } from 'react-router-dom';
 import useEnvironment from '../hooks/useEnvironment';
+import useChat from '../hooks/useChat';
+
+export interface IChatMessage {
+    role: string;
+    content: string;
+}
+
+interface RouteParams {
+    sessionId?: string;
+}
 
 const GyosuAIChat = () => {
-    const formOptionsObj = Object(formOptionsJSON);
-    const [sourceMaterial, setSourceMaterial] = useState<string>(Object.keys(formOptionsObj)[0]);
+    const [messages, setMessages] = useState<IChatMessage[]>([]);
     const [userInput, setUserInput] = useState('');
-    const sourceMaterialOptions = Object.keys(formOptionsObj).map(sm => ({ label: formOptionsObj[sm].label, value: sm }));
+    const { apiUrl } = useEnvironment();
+    const { sessionId = '' } = useParams();
+    const { sendMessage, chatData } = useChat(`${apiUrl}/math_app/chat/`, sessionId);
+    const endOfMessagesRef = useRef(null);
 
-    const handleSourceMaterialChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        const newSourceMaterial = event.target.value;
-        setSourceMaterial(newSourceMaterial);
+    useEffect(() => {
+        // Scroll to the latest message
+        endOfMessagesRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, [messages]);
+
+    useEffect(() => {
+        // Update messages state when chatData changes
+        if (chatData?.messages) {
+            setMessages(chatData.messages);
+        }
+    }, [chatData]); // Depend on chatData
+
+    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setUserInput(event.target.value);
     };
 
-    const { apiUrl } = useEnvironment();
-
-    const agentEndpoint = `${apiUrl}/math_app/agent/`;
-
-    const [formError, setFormError] = useState<string | null>(null);
-
-    const handleSubmit = (startStreaming: (bodyContent: any) => void) => {
-        console.log('Data submitted:', { sourceMaterial, userInput });
-
-        setFormError(null); // Clear any previous error
-
-        if (userInput.trim() === '') {
-            setFormError('Please enter text for search before submitting.');
-            return;
-        }
-
-        setFormError(null); // Clear any previous error
-        startStreaming({ data: { sourceMaterial, userInput } });
-
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        const newMessage: IChatMessage = { role: 'user', content: userInput };
+        sendMessage(newMessage, messages); // Send message via the hook
+        setMessages([...messages, newMessage]); // Optimistically update the UI
+        setUserInput('');
     };
 
     return (
         <>
-            <div className="w-full max-w-xl flex-col justify-center mx-auto">
-                <div className="w-full">
-                    <label className="block tracking-wide text-white text-md font-bold mb-2" htmlFor="textbook-dropdown">
-                        Textbook
-                    </label>
-                    <div className="relative">
-                        <Dropdown
-                            showSelected={false}
-                            label={""}
-                            options={sourceMaterialOptions}
-                            defaultValue={sourceMaterial}
-                            handleChange={handleSourceMaterialChange}
-                            className="form-select block w-full"
-                        />
+            <div className="h-60vh overflow-y-scroll p-2 border border-gray-300">
+                {messages.map((message, index) => (
+                    <div key={index} className={`p-2 my-1 border border-gray-200 rounded max-w-80% ${message.role === 'user' ? 'ml-auto bg-blue-100' : 'mr-auto bg-gray-100'}`}>
+                        <strong>{message.role}</strong>
+                        <p>{message.content}</p>
                     </div>
-                </div>
-                <div className="w-full">
-                    <label className="block tracking-wide text-white text-md font-bold mb-2" htmlFor="user-input">
-                        Search for problems
-                    </label>
-                    <textarea
-                        id="user-input"
-                        className="form-select block w-full mb-4 p-2"
-                        placeholder="Ask a question..."
-                        rows={4}
-                        value={userInput}
-                        onChange={(e) => setUserInput(e.target.value)}
-                    />
-                    {formError && <p className="text-red-500 text-xs italic mt-2 my-2">{formError}</p>}
-                </div>
-                <StreamedResponseMultikeyComponent endpoint={agentEndpoint} onSubmit={handleSubmit} />
+                ))}
+                <div ref={endOfMessagesRef} />
             </div>
-
+            <form onSubmit={handleSubmit} className="flex mt-2">
+                <input
+                    type="text"
+                    name="input"
+                    placeholder="Type your message..."
+                    value={userInput}
+                    onChange={handleInputChange}
+                    className="flex-grow p-2 mr-2 rounded border border-gray-300"
+                />
+                <button type="submit" className="px-4 py-2 rounded bg-blue-500 text-white">
+                    Send
+                </button>
+            </form>
         </>
     );
 };

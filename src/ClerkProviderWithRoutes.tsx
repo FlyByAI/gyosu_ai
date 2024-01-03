@@ -121,6 +121,16 @@ export default function ClerkProviderWithRoutes() {
                     }
                 />
                 <Route
+                    path="/math-app/chat"
+                    element={
+                        <>
+                            <Navbar />
+                            <GyosuAIChat />
+                            <Footer />
+                        </>
+                    }
+                />
+                <Route
                     path="/math-app/playground"
                     element={
                         <>
