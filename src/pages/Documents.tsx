@@ -6,6 +6,8 @@ import useGetDocumentDownload from '../hooks/tools/math/useGetDocumentDownload';
 import { Chunk } from '../interfaces';
 import useEnvironment from '../hooks/useEnvironment';
 import useCreateAnswerKey from '../hooks/tools/math/useCreateAnswerKey';
+import PdfSVG from '../svg/PdfSVG';
+import DocxSVG from '../svg/DocxSVG';
 
 
 export interface DocumentDownload {
@@ -17,7 +19,7 @@ export interface DocumentDownload {
     timesDownloaded: number;
     sourceData: Chunk[];
     signedUrl?: string;
-    answerKeyBlobName: string;
+    documentOrAnswerKey: "document" | "answer_key";
 }
 
 interface AnswerKeyResponse {
@@ -42,9 +44,9 @@ const Documents: React.FC = () => {
 
     const user = useUser();
 
-    const handleDocumentClick = (blobName: string) => {
+    const handleDocumentClick = (blobName: string, documentOrAnswerKey: "document" | "answer_key") => {
         const newWindow = window.open('', '_blank');
-        getDocumentDownload(blobName, newWindow);
+        getDocumentDownload(blobName, newWindow, documentOrAnswerKey);
     };
 
     const handleGenerateAnswerKey = (id: number | string, blobName: string) => {
@@ -60,30 +62,68 @@ const Documents: React.FC = () => {
                             <ul className="list-inside space-y-4 text-white mt-4">
                                 {documentDownloads.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
                                     .map((doc) => (
-                                        <li key={doc.id} className="border rounded p-4">
-                                            <div onClick={() => handleDocumentClick(doc.blobName)}>
-                                                <span className="text-blue-300 hover:underline cursor-pointer">
-                                                    {doc.blobName}
-                                                </span>
-                                            </div>
-                                            <div>Document Type: {doc.docType}</div>
-                                            <div>Timestamp: {new Date(doc.timestamp).toLocaleString()}</div>
-                                            <div>Shared: {doc.shared ? 'Yes' : 'No'}</div>
-                                            <div>Times Downloaded: {doc.timesDownloaded}</div>
-                                            {!doc.answerKeyBlobName ? <div>
-                                                <span className="text-white-300 hover:underline cursor-pointer">
-                                                    No Answer Key
-                                                </span>
-                                            </div> :
-                                                <div onClick={() => handleDocumentClick(doc.answerKeyBlobName)}>
-                                                    <span className="text-yellow-300 hover:underline cursor-pointer">
-                                                        Download Answer Key
-                                                    </span>
+                                        <div key={doc.id}>
+                                            <li className="border rounded p-4 flex flex-row justify-between">
+                                                <div className='w-3/4'>
+                                                    <div onClick={() => handleDocumentClick(doc.blobName, "document")}>
+                                                        <span className="text-blue-300 hover:underline cursor-pointer">
+                                                            {doc.blobName}
+                                                        </span>
+                                                    </div>
+                                                    <div>Document Type: {doc.docType}</div>
+                                                    <div>Timestamp: {new Date(doc.timestamp).toLocaleString()}</div>
+                                                    <div>Shared: {doc.shared ? 'Yes' : 'No'}</div>
+                                                    <div>Times Downloaded: {doc.timesDownloaded}</div>
+                                                    {!doc.blobName ? <div>
+                                                        <span className="text-white-300 hover:underline cursor-pointer">
+                                                            No Answer Key
+                                                        </span>
+                                                    </div> :
+                                                        <div onClick={() => handleDocumentClick(doc.blobName, "answer_key")}>
+                                                            <span className="text-yellow-300 hover:underline cursor-pointer">
+                                                                Download Answer Key
+                                                            </span>
+                                                        </div>
+                                                    }
                                                 </div>
-                                            }
-                                        </li>
+                                                <div className='w-1/4 flex flex-row justify-between'>
+                                                    {doc.docType.toUpperCase() == "PDF" &&
+                                                        <div onClick={() => handleDocumentClick(doc.blobName, "document")} className="w-1/2">
+                                                            <span className="text-blue-300 hover:underline cursor-pointer">
+                                                                <PdfSVG height="80px" width="80px" color="#cc1510" className='bg-white py-1 rounded-md mb-2' />
+                                                                Download {doc.docType.toUpperCase()}
+                                                            </span>
+                                                        </div>
+                                                    }
+                                                    {doc.docType.toUpperCase() == "DOCX" &&
+                                                        <div onClick={() => handleDocumentClick(doc.blobName, "document")} className="w-1/2">
+                                                            <span className="text-blue-300 hover:underline cursor-pointer">
+                                                                <DocxSVG height="80px" width="80px" color="#0167b3" className='bg-white py-1 rounded-md mb-2' />
+                                                                Download {doc.docType.toUpperCase()}
+                                                            </span>
+                                                        </div>
+                                                    }
+                                                    {!doc.blobName ? <div className="w-1/2">
+                                                        <span className="text-white-300 ">
+                                                            No Answer Key
+                                                        </span>
+                                                    </div> :
+                                                        <div onClick={() => handleDocumentClick(doc.blobName, "answer_key")} className="w-1/2">
+                                                            <span className="text-yellow-500 hover:underline cursor-pointer">
+                                                                <PdfSVG height="80px" width="80px" color="#ebb305" className='bg-white py-1 rounded-md mb-2' />
+                                                                Download Answer Key
+                                                            </span>
+                                                        </div>
+                                                    }
+                                                </div>
+                                            </li>
+
+
+                                        </div>
+
                                     ))}
                             </ul>
+
                             :
                             <div className='text-white'>
                                 "You don't have any documents yet. "

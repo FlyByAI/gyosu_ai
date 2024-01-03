@@ -10,10 +10,10 @@ import useSubmitMathForm from '../../hooks/tools/math/useSubmitMathForm';
 
 type TextbookGenerateFormProps = {
     onSubmit: (data: any) => void;
-    setProblemData: (problemData: GenerateFormData) => void; // Include the type of ProblemData
+    setGenerateFormData: (problemData: GenerateFormData) => void; // Include the type of ProblemData
 };
 
-const TextbookGenerateForm: React.FC<TextbookGenerateFormProps> = ({ onSubmit, setProblemData }) => {
+const TextbookGenerateForm: React.FC<TextbookGenerateFormProps> = ({ onSubmit, setGenerateFormData }) => {
 
     const formOptionsObj = Object(formOptionsJSON);
     const [sourceMaterial, setSourceMaterial] = useState<string>(Object.keys(formOptionsObj)[0]);
@@ -55,8 +55,8 @@ const TextbookGenerateForm: React.FC<TextbookGenerateFormProps> = ({ onSubmit, s
             documentType: "Worksheet",
         };
 
-        setProblemData({ data: problemData });
-    }, [sourceMaterial, chapter, section, problemType, setProblemData]);
+        setGenerateFormData({ data: problemData });
+    }, [sourceMaterial, chapter, section, problemType, setGenerateFormData]);
 
     const handleChapterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const newChapter = event.target.value;
@@ -147,7 +147,7 @@ const TextbookGenerateForm: React.FC<TextbookGenerateFormProps> = ({ onSubmit, s
                     options={sourceMaterialOptions}
                     defaultValue={sourceMaterial}
                     handleChange={handleSourceMaterialChange}
-                    className="form-select block w-full lg:w-2/3"
+                    className="form-select block w-full"
                 />
                 <Dropdown
                     showSelected={false}
@@ -155,7 +155,7 @@ const TextbookGenerateForm: React.FC<TextbookGenerateFormProps> = ({ onSubmit, s
                     options={chapterOptions}
                     defaultValue={chapter}
                     handleChange={handleChapterChange}
-                    className="form-select block w-full lg:w-2/3"
+                    className="form-select block w-full"
                 />
                 <Dropdown
                     showSelected={false}
@@ -163,7 +163,7 @@ const TextbookGenerateForm: React.FC<TextbookGenerateFormProps> = ({ onSubmit, s
                     options={sectionOptions}
                     defaultValue={section}
                     handleChange={handleSectionChange}
-                    className="form-select block w-full lg:w-2/3"
+                    className="form-select block w-full"
                 />
                 <Dropdown
                     showSelected={false}
@@ -171,7 +171,7 @@ const TextbookGenerateForm: React.FC<TextbookGenerateFormProps> = ({ onSubmit, s
                     options={problemTypeOptions}
                     defaultValue={problemType}
                     handleChange={handleChangeProblemType}
-                    className="form-select block w-full lg:w-2/3"
+                    className="form-select block w-full"
                 />
                 <SubmitButton
                     buttonText={"Search"}

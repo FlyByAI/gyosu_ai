@@ -10,10 +10,10 @@ import { useClerk, useUser } from '@clerk/clerk-react';
 
 type CompetitionMathGenerateFormProps = {
     onSubmit: (data: any) => void;
-    setProblemData: (problemData: GenerateFormData) => void;
+    setGenerateFormData: (problemData: GenerateFormData) => void;
 };
 
-const CompetitionMathGenerateForm: React.FC<CompetitionMathGenerateFormProps> = ({ onSubmit, setProblemData }) => {
+const CompetitionMathGenerateForm: React.FC<CompetitionMathGenerateFormProps> = ({ onSubmit, setGenerateFormData }) => {
     const formOptionsObj = Object(formOptionsJSON)["competition_math"];
 
     const [problemType, setProblemType] = useState<string>(() => {
@@ -47,8 +47,8 @@ const CompetitionMathGenerateForm: React.FC<CompetitionMathGenerateFormProps> = 
             problemType,
             level,
         };
-        setProblemData({ data: problemData });
-    }, [problemType, level, setProblemData]);
+        setGenerateFormData({ data: problemData });
+    }, [problemType, level, setGenerateFormData]);
 
     const handleProblemTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const newProblemType = event.target.value;
@@ -82,14 +82,14 @@ const CompetitionMathGenerateForm: React.FC<CompetitionMathGenerateFormProps> = 
 
     return (
         <>
-            <div className="flex flex-col justify-center items-center w-full">
+            <div className="flex flex-col justify-center items-center w-full mx-auto">
                 <Dropdown
                     showSelected={false}
                     label={"Problem Type"}
                     options={problemTypeOptions}
                     defaultValue={problemType}
                     handleChange={handleProblemTypeChange}
-                    className="form-select block w-full lg:w-2/3"
+                    className="form-select block w-full"
                 />
                 <Dropdown
                     showSelected={false}
@@ -97,7 +97,7 @@ const CompetitionMathGenerateForm: React.FC<CompetitionMathGenerateFormProps> = 
                     options={levelOptions}
                     defaultValue={level}
                     handleChange={handleLevelChange}
-                    className="form-select block w-full lg:w-2/3"
+                    className="form-select block w-full"
                 />
                 <SubmitButton
                     buttonText={"Search"}

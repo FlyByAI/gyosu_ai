@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import 'katex/dist/katex.min.css';
 import KaTeX from 'katex';
-import { CHUNK_DRAG_TYPE, CHUNK_TYPE, Chunk, Document, INSTRUCTION_DRAG_TYPE, INSTRUCTION_TYPE, Instruction, PROBLEM_DRAG_TYPE, PROBLEM_TYPE, Problem } from '../interfaces';
+import { CHUNK_DRAG_TYPE, CHUNK_TYPE, Chunk, Document, INSTRUCTION_DRAG_TYPE, INSTRUCTION_TYPE, Instruction, PROBLEM_DRAG_TYPE, PROBLEM_TYPE, Problem, Subproblem, Subproblems } from '../interfaces';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
@@ -178,27 +178,29 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
                     </OverflowMenu>
                 </div>
 
-                {selectable && (activeChunkIndices.includes(chunkIndex) ?
-                    <div className='flex text-green-300 h-4 w-6'>
-                        <CheckmarkIcon />
-                    </div> :
-                    <div className='flex'>
-                        <input
-                            type="checkbox"
-                            defaultChecked={activeChunkIndices.includes(chunkIndex)}
-                            className="focus:ring-green-500 h-4 w-6 text-green-600 rounded"
-                        />
-                    </div>
-                )}
+                <div className='pb-4 pe-4'>
+                    {selectable && (activeChunkIndices.includes(chunkIndex) ?
+                        <div className='flex text-green-300 h-4 w-6 mb-1'>
+                            <CheckmarkIcon />
+                        </div> :
+                        <div className='flex'>
+                            <input
+                                type="checkbox"
+                                defaultChecked={activeChunkIndices.includes(chunkIndex)}
+                                className="focus:ring-green-500 mt-1 h-4 w-6 text-green-600 rounded"
+                            />
+                        </div>
+                    )}
+                </div>
                 {/* {chunk.parentChunkId && <div className='text-gray-400 text-xs'>Parent: {chunk.parentChunkId}</div>} */}
 
                 {chunk?.content?.map((item, index) => {
                     const element = (() => {
                         switch (item.type) {
                             case 'instruction':
-                                return <InstructionComponent instructionIndex={index} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} instruction={item} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
+                                return <InstructionComponent chunkIndex={chunkIndex} instructionIndex={index} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} instruction={item} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
                             case 'problem':
-                                return <ProblemComponent problemIndex={index} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} problem={item} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
+                                return <ProblemComponent chunkIndex={chunkIndex} problemIndex={index} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} problem={item} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
                             default:
                                 return null;
                         }
@@ -232,11 +234,6 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
 
 
 interface InstructionProps {
-    instruction: Instruction;
-    edit?: boolean;
-}
-
-interface InstructionProps {
     parentChunk: Chunk;
     parentChunkIndex: number;
     updateChunk: (updatedChunk: Chunk, chunkIndex: number) => void;
@@ -246,9 +243,11 @@ interface InstructionProps {
     edit?: boolean;
     onInstructionHover: (hovered: boolean) => void; // Function to change the parent's hover state
     disableInstructionProblemDrag?: boolean; //used to disable drag and drop for instructions and problems when on the search
+
+    chunkIndex: number;
 }
 
-const InstructionComponent: React.FC<InstructionProps> = ({ parentChunk, parentChunkIndex, updateChunk, instruction, instructionIndex, disableInstructionProblemDrag }) => {
+const InstructionComponent: React.FC<InstructionProps> = ({ chunkIndex, parentChunk, parentChunkIndex, updateChunk, instruction, instructionIndex, disableInstructionProblemDrag }) => {
     const { setDragState } = useDragContext();
 
     const [, ref] = useDrag({
@@ -290,20 +289,19 @@ const InstructionComponent: React.FC<InstructionProps> = ({ parentChunk, parentC
         }
 
     });
-
-    // function processLatexString(latex_string: string): string {
-    //     const result = latex_string.replace(/^\\\(/, '')
-    //         .replace(/\\\)$/g, '')
-    //         .replace(/^\\\\$/gm, '')
-    //         .replace(/\\\\\n/g, '')
-    //         .replace(/\n/g, '')
-    //         .trim();
-    //     return latex_string;
-    // }
+    const { activeChunkIndices, setActiveChunkIndices } = useSidebarContext();
 
     return (
 
         <div
+            onClick={() => {
+                if (activeChunkIndices.includes(chunkIndex)) {
+                    setActiveChunkIndices(activeChunkIndices.filter(chunkIndex => chunkIndex !== chunkIndex));
+                } else {
+                    setActiveChunkIndices([...activeChunkIndices, chunkIndex]);
+                }
+            }
+            }
             ref={(node) => disableInstructionProblemDrag ? ref(drop(node)) : node}
             className="flex group flex-row flex-wrap">
             {instruction.content.map((item, index) => (
@@ -346,6 +344,8 @@ const InstructionComponent: React.FC<InstructionProps> = ({ parentChunk, parentC
                                         className="text-xs md:text-lg z-10 p-1 m-1 border-2 border-transparent border-dashed hover:border-2 group-hover:border-2 group-hover:border-dashed"
                                     />
                                 );
+                            case 'subproblems':
+                                return <SubproblemsComponent subproblems={item} />;
                             default:
                                 return null;
                         }
@@ -370,9 +370,10 @@ interface ProblemProps {
     onInstructionHover: (hovered: boolean) => void; // Function to change the parent's hover state
 
     disableInstructionProblemDrag?: boolean; //used to disable drag and drop for instructions and problems when on the search
+    chunkIndex: number;
 }
 
-const ProblemComponent: React.FC<ProblemProps> = ({ parentChunk, parentChunkIndex, updateChunk, problem, problemIndex, disableInstructionProblemDrag }) => {
+const ProblemComponent: React.FC<ProblemProps> = ({ chunkIndex, parentChunk, parentChunkIndex, updateChunk, problem, problemIndex, disableInstructionProblemDrag }) => {
     const { setDragState } = useDragContext();
 
     const [, ref] = useDrag({
@@ -414,18 +415,19 @@ const ProblemComponent: React.FC<ProblemProps> = ({ parentChunk, parentChunkInde
         }
     });
 
-    // function processLatexString(latex_string: string): string {
-    //     const result = latex_string.replace(/^\\\(/, '')
-    //         .replace(/\\\)$/g, '')
-    //         .replace(/^\\\\$/gm, '')
-    //         .replace(/\\\\\n/g, '')
-    //         .replace(/\n/g, '')
-    //         .trim();
-    //     return latex_string;
-    // }
+    const { activeChunkIndices, setActiveChunkIndices } = useSidebarContext();
 
     return (
+
         <div
+            onClick={() => {
+                if (activeChunkIndices.includes(chunkIndex)) {
+                    setActiveChunkIndices(activeChunkIndices.filter(chunkIndex => chunkIndex !== chunkIndex));
+                } else {
+                    setActiveChunkIndices([...activeChunkIndices, chunkIndex]);
+                }
+            }
+            }
             ref={(node) => disableInstructionProblemDrag ? ref(drop(node)) : node}
             className="flex group flex-row flex-wrap">
             {problem.content.map((item, index) => (
@@ -468,6 +470,8 @@ const ProblemComponent: React.FC<ProblemProps> = ({ parentChunk, parentChunkInde
                                         className="text-xs md:text-lg z-10 p-1 m-1 border-2 border-transparent border-dashed hover:border-2 group-hover:border-2 group-hover:border-dashed"
                                     />
                                 );
+                            case 'subproblems':
+                                return <SubproblemsComponent subproblems={item} />;
                             default:
                                 return null;
                         }
@@ -479,4 +483,64 @@ const ProblemComponent: React.FC<ProblemProps> = ({ parentChunk, parentChunkInde
     );
 };
 
-export default ProblemComponent;
+interface SubproblemsProps {
+    subproblems: Subproblems;
+}
+
+const SubproblemsComponent: React.FC<SubproblemsProps> = ({ subproblems }) => {
+    return (
+        <div className="flex flex-col">
+            {subproblems.content.map((subproblem, index) => (
+                <SubproblemComponent key={index} subproblem={subproblem} />
+            ))}
+        </div>
+    );
+};
+
+interface SubproblemProps {
+    subproblem: Subproblem
+}
+
+const SubproblemComponent: React.FC<{ subproblem: Subproblem }> = ({ subproblem }: SubproblemProps) => {
+    return (
+        <div className="flex flex-col items-center text-xs md:text-lg z-10 p-1 m-1 border-2 border-transparent border-dashed hover:border-2 group-hover:border-2 group-hover:border-dashed">
+            <div className="mb-2 font-bold">{subproblem.label}</div>
+            {subproblem.content.map((item, index) => (
+                <span key={index}>
+                    {(() => {
+                        switch (item.type) {
+                            case 'text':
+                                return <div className="text-xs md:text-lg z-10 p-1 m-1 border-2 border-transparent border-dashed hover:border-blue-500">{item.value}</div>;
+                            case 'math':
+                                return (
+                                    <ReactMarkdown
+                                        className="text-xs md:text-lg z-10 p-1 m-1 border-2 border-transparent border-dashed hover:border-yellow-500"
+                                        remarkPlugins={[remarkGfm, remarkMath]}
+                                        rehypePlugins={[rehypeKatex]}
+                                    >
+                                        {`${item.value}`}
+                                    </ReactMarkdown>
+                                );
+                            case 'table':
+                                return (
+                                    <ReactMarkdown
+                                        className="text-xs md:text-lg z-10 p-1 m-1 border-2 border-transparent border-dashed hover:border-purple-500"
+                                        remarkPlugins={[remarkGfm, remarkMath]}
+                                        rehypePlugins={[rehypeKatex]}
+                                    >
+                                        {String.raw`${item.value}`}
+                                    </ReactMarkdown>
+                                );
+                            case 'image':
+                                return <img src={item.value} alt="Description" className="text-xs md:text-lg z-10 p-1 m-1 border-2 border-transparent border-dashed hover:border-green-500" />;
+                            default:
+                                return null;
+                        }
+                    })()}
+                </span>
+            ))}
+        </div>
+    );
+};
+
+export default SubproblemComponent;

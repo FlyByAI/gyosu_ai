@@ -35,6 +35,9 @@ import useEnvironment from './hooks/useEnvironment.tsx';
 import FAQPage from './pages/FAQPage.tsx';
 import { Helmet } from "react-helmet-async";
 import { getSchemaMarkup } from './helpers/getSchemaMarkup.ts';
+import ContentPlaygroundStreamed from './components/ContentPlaygroundStreamed.tsx';
+import ContentMultipleStreamedExample from './components/ContentMultipleStreamedExample.tsx';
+import GyosuAIChat from './pages/GyosuAIChat.tsx';
 
 
 export default function ClerkProviderWithRoutes() {
@@ -78,6 +81,17 @@ export default function ClerkProviderWithRoutes() {
                     }
                 />
                 <Route
+                    path="/math-app/agent"
+                    element={
+                        <>
+                            <Navbar />
+                            <ContentWrapper>
+                                <GyosuAIChat />
+                            </ContentWrapper>
+                        </>
+                    }
+                />
+                <Route
                     path="/math-app/document/:id"
                     element={
                         <>
@@ -103,6 +117,28 @@ export default function ClerkProviderWithRoutes() {
                             <Navbar />
                             <MyProblemBanks />
                             <Footer />
+                        </>
+                    }
+                />
+                <Route
+                    path="/math-app/playground"
+                    element={
+                        <>
+                            <Navbar />
+                            <ContentWrapper>
+                                <ContentPlaygroundStreamed />
+                            </ContentWrapper>
+                        </>
+                    }
+                />
+                <Route
+                    path="/math-app/multipleKeyStreamExample"
+                    element={
+                        <>
+                            <Navbar />
+                            <ContentWrapper>
+                                <ContentMultipleStreamedExample />
+                            </ContentWrapper>
                         </>
                     }
                 />

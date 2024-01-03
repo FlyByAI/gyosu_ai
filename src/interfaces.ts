@@ -158,16 +158,26 @@ export interface Chunk {
 
 export interface Instruction {
     type: typeof INSTRUCTION_TYPE;
-    content: (Text | Math | Table | Image)[];
+    content: (Text | Math | Table | Image | Subproblems)[];
     instructionId?: number;
 }
 
 export interface Problem {
     type: typeof PROBLEM_TYPE;
-    content: (Text | Math | Table | Image)[];
+    content: (Text | Math | Table | Image | Subproblems)[];
     problemId?: number;
 }
 
+export interface Subproblems {
+    type: "subproblems";
+    content: (Subproblem)[];
+}
+
+export interface Subproblem {
+    type: "subproblem";
+    label: string;
+    content: (Text | Math | Table | Image)[];
+}
 export interface Text {
     type: "text";
     value: string;
