@@ -50,7 +50,6 @@ const MathGenerate: React.FC = () => {
             <div className="w-5/6 mt-4 overflow-x-hidden" style={{ marginRight: isDesktop ? '16.6667%' : "0" }}>
                 <div className="flex justify-start items-center flex-col">
                     <div className="w-full md:w-2/3 mx-4 md:mx-0 bg-gray-700 rounded-lg p-4 my-4 shadow-lg flex flex-col">
-                        {/* <h1 className="text-2xl font-bold text-center mb-4 text-white">Problem Search</h1> */}
 
                         <div className="text-left text-white mb-4">
                             <span className="font-bold items-left ml-4 italic">Step 1: Select Problem Source</span>

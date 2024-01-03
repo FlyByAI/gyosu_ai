@@ -45,7 +45,7 @@ const StreamedResponseMultikeyComponent: React.FC<StreamedResponseProps> = ({
                     <div key={key}>
                         <h3 className="font-bold">{key.replace(/_/g, ' ').toUpperCase()}</h3>
                         <ReactMarkdown
-                            className="text-sm z-10 p-1 m-1 border-2 border-transparent border-dashed hover:border-yellow-500"
+                            className="text-sm z-10 p-1 m-1 border-2 border-transparent border-dashed "
                             remarkPlugins={[remarkGfm, remarkMath]}
                             rehypePlugins={[rehypeKatex]}
                         >
@@ -55,7 +55,7 @@ const StreamedResponseMultikeyComponent: React.FC<StreamedResponseProps> = ({
                     </div>
                 ))}
             </div>
-        </div>
+        </div >
     );
 }
 

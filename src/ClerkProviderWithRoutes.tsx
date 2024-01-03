@@ -37,6 +37,7 @@ import { Helmet } from "react-helmet-async";
 import { getSchemaMarkup } from './helpers/getSchemaMarkup.ts';
 import ContentPlaygroundStreamed from './components/ContentPlaygroundStreamed.tsx';
 import ContentMultipleStreamedExample from './components/ContentMultipleStreamedExample.tsx';
+import GyosuAIChat from './pages/GyosuAIChat.tsx';
 
 
 export default function ClerkProviderWithRoutes() {
@@ -76,6 +77,17 @@ export default function ClerkProviderWithRoutes() {
                         <>
                             <Navbar />
                             <MathGenerate />
+                        </>
+                    }
+                />
+                <Route
+                    path="/math-app/agent"
+                    element={
+                        <>
+                            <Navbar />
+                            <ContentWrapper>
+                                <GyosuAIChat />
+                            </ContentWrapper>
                         </>
                     }
                 />

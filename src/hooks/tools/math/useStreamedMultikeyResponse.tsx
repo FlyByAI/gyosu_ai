@@ -6,17 +6,27 @@ interface StreamedData {
     [key: string]: string;
 }
 
+interface StreamedBodyContentPayload {
+    data: AIChatPayload
+}
+
+interface AIChatPayload {
+    sourceMaterial: string;
+    userInput: string;
+}
+
 const useStreamedMultikeyResponse = (endpoint: string, headers: any) => {
     const [data, setData] = useState<StreamedData>({});
     const [isLoading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
     const { session } = useClerk();
 
-    const startStreaming = useCallback(async (bodyContent: any) => {
+    const startStreaming = useCallback(async (bodyContent: StreamedBodyContentPayload) => {
         const abortController = new AbortController();
         const token = session ? await session.getToken() : 'none';
 
         const fetchData = async () => {
+            setData({});
             try {
                 setLoading(true);
                 const response = await fetch(endpoint, {
@@ -26,7 +36,7 @@ const useStreamedMultikeyResponse = (endpoint: string, headers: any) => {
                         'Authorization': token ? `Bearer ${token}` : '',
                         ...headers
                     },
-                    body: JSON.stringify(humps.decamelizeKeys(bodyContent)),
+                    body: JSON.stringify(humps.decamelizeKeys(bodyContent.data)),
                     signal: abortController.signal,
                 });
 

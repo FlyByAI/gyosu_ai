@@ -38,7 +38,7 @@ const Dropdown: React.FC<DropdownProps> = ({ options, handleChange, disabled = f
 
     return (
         <div className={className}>
-            <h2 className="h-6 text-lg mb-2 text-white text-left">{label + (showSelected ? ": " + selectedValue : "")}</h2>
+            {label && <h2 className="h-6 text-lg mb-2 text-white text-left">{label + (showSelected ? ": " + selectedValue : "")}</h2>}
             <select
                 disabled={disabled}
                 value={selectedValue}
