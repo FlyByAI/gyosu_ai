@@ -55,7 +55,7 @@ const GyosuAIChat = () => {
         setMessages(prev => [...prev, newMessage]); // Add new user message to the chat
         
         // Add a placeholder for the streaming response
-        const streamingPlaceholder: IChatMessage = { role: 'bot', content: 'Waiting for response...' };
+        const streamingPlaceholder: IChatMessage = { role: 'assistant', content: 'Waiting for response...' };
         setMessages(prev => [...prev, streamingPlaceholder]);
         // Set the index for the new streaming message
         const newStreamingIndex = messages.length + 1; // +1 because we're adding two messages
