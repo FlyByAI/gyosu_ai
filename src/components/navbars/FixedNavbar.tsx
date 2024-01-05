@@ -33,7 +33,7 @@ const FixedNavbar: React.FC = () => {
         <Link to="/math-app/chat" className="text-lg text-white hover:underline dark:text-gray-200 lg:justify-self-end block sm:hidden">
           Chat
         </Link>
-        <Link to="/math-app/playground" className="text-lg text-white mx-3 hover:underline dark:text-gray-200 font-mono font-bold">
+        <Link to="/math-app/playground" className="text-lg text-white hover:underline dark:text-gray-200 lg:justify-self-end block sm:hidden">
           Playground
         </Link>
         <Link to="/math-app" className="text-lg text-white hover:underline dark:text-gray-200 lg:justify-self-end block sm:hidden">
