@@ -112,11 +112,11 @@ const GyosuAIChat = () => {
                     Send
                 </button>
             </form>
-            {streamedData && (
+            {/* {streamedData && (
                 <div>
                     <CreateDocsFromMarkdownComponent markdown={streamedData} />
                 </div>
-            )}
+            )} */}
         </>
     );
 };
