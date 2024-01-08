@@ -83,7 +83,7 @@ const GyosuAIChat = () => {
         }
         // Otherwise, allow the default behavior (Shift + Enter for a new line)
     };
-    
+
     return (
         <>
             <div className="h-60vh overflow-y-scroll p-2 border border-gray-300">
@@ -94,13 +94,21 @@ const GyosuAIChat = () => {
                             message.content.split(/\n\s*\n/).map((chunk, idx) => (
                                 <React.Fragment key={idx}>
                                     <ReactMarkdown
-                                        className="text-md z-10 p-1 m-1 border-2 border-transparent border-dashed py-0"
-                                        remarkPlugins={[remarkGfm, remarkMath]}
-                                        rehypePlugins={[rehypeKatex]}
+                                        className="text-md z-10 p-1 m-1 border-2 border-transparent border-dashed"
+                                        remarkPlugins={[remarkMath]}
+                                        rehypePlugins={[
+                                            [rehypeKatex, {
+                                                // Define custom delimiters for inline and block math
+                                                delimiters: [
+                                                    { left: "\\(", right: "\\)", display: false },
+                                                    { left: "\\[", right: "\\]", display: true },
+                                                ],
+                                            }],
+                                        ]}
                                     >
                                         {chunk.trim()}
                                     </ReactMarkdown>
-                                    {idx < message.content.split(/\n\s*\n/).length - 1 && <br/>}
+                                    {idx < message.content.split(/\n\s*\n/).length - 1 && <br />}
                                 </React.Fragment>
                             ))
                         ) :
@@ -128,7 +136,7 @@ const GyosuAIChat = () => {
             </form>
         </>
     );
-    
+
 };
 
 export default GyosuAIChat;
