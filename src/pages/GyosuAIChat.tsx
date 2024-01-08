@@ -89,16 +89,20 @@ const GyosuAIChat = () => {
             <div className="h-60vh overflow-y-scroll p-2 border border-gray-300">
                 {messages.map((message, index) => (
                     <div key={index} className={`p-2 my-1 border border-gray-200 rounded max-w-80% ${message.role === 'user' ? 'ml-auto bg-blue-100' : 'mr-auto bg-gray-100'}`}>
-                        <strong>{message.role == "bot" ? "gyosu bot" : message.role}</strong>
+                        <strong>{message.role}</strong>
                         {message.role === 'assistant' ? (
-                            <ReactMarkdown
-                                className="text-md z-10 p-1 m-1 border-2 border-transparent border-dashed"
-                                remarkPlugins={[remarkGfm, remarkMath]}
-                                rehypePlugins={[rehypeKatex]}
-                            >
-                                {message.content}
-                            </ReactMarkdown>
-
+                            message.content.split(/\n\s*\n/).map((chunk, idx) => (
+                                <React.Fragment key={idx}>
+                                    <ReactMarkdown
+                                        className="text-md z-10 p-1 m-1 border-2 border-transparent border-dashed py-0"
+                                        remarkPlugins={[remarkGfm, remarkMath]}
+                                        rehypePlugins={[rehypeKatex]}
+                                    >
+                                        {chunk.trim()}
+                                    </ReactMarkdown>
+                                    {idx < message.content.split(/\n\s*\n/).length - 1 && <br/>}
+                                </React.Fragment>
+                            ))
                         ) :
                             <p>{message.content}</p>
                         }
@@ -114,7 +118,7 @@ const GyosuAIChat = () => {
                     placeholder="Type your message..."
                     value={userInput}
                     onChange={handleInputChange}
-                    onKeyDown={handleKeyPress} // Handle the key press event
+                    onKeyDown={handleKeyPress}
                     className="flex-grow p-2 mr-2 rounded border border-gray-300"
                     rows={3}
                 />
@@ -122,13 +126,9 @@ const GyosuAIChat = () => {
                     Send
                 </button>
             </form>
-            {/* {streamedData && (
-                <div>
-                    <CreateDocsFromMarkdownComponent markdown={streamedData} />
-                </div>
-            )} */}
         </>
     );
+    
 };
 
 export default GyosuAIChat;
