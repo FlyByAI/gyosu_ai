@@ -41,19 +41,19 @@ const GyosuAIChat = () => {
     useEffect(() => {
         if (streamedData && typeof streamingIndex === 'number') {
             // Update the streaming message with the new content
-            setMessages(prev => prev.map((msg, idx) => idx === streamingIndex ? {...msg, content: streamedData} : msg));
+            setMessages(prev => prev.map((msg, idx) => idx === streamingIndex ? { ...msg, content: streamedData } : msg));
         }
     }, [streamedData, streamingIndex]);
 
-    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setUserInput(event.target.value);
+    const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+        setUserInput(event.target.value); // Update the text in the textarea
     };
 
     const handleChatSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const newMessage: IChatMessage = { role: 'user', content: userInput };
         setMessages(prev => [...prev, newMessage]); // Add new user message to the chat
-        
+
         // Add a placeholder for the streaming response
         const streamingPlaceholder: IChatMessage = { role: 'assistant', content: 'Waiting for response...' };
         setMessages(prev => [...prev, streamingPlaceholder]);
@@ -75,6 +75,15 @@ const GyosuAIChat = () => {
         setUserInput(''); // Clear the input field after submission
     };
 
+    const handleKeyPress = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+        // Check if Enter is pressed without the Shift key
+        if (event.key === 'Enter' && !event.shiftKey) {
+            event.preventDefault(); // Prevent the default action (new line)
+            handleChatSubmit(event as unknown as React.FormEvent<HTMLFormElement>); // Submit the form
+        }
+        // Otherwise, allow the default behavior (Shift + Enter for a new line)
+    };
+    
     return (
         <>
             <div className="h-60vh overflow-y-scroll p-2 border border-gray-300">
@@ -90,8 +99,8 @@ const GyosuAIChat = () => {
                                 {message.content}
                             </ReactMarkdown>
 
-                        ) : 
-                        <p>{message.content}</p>
+                        ) :
+                            <p>{message.content}</p>
                         }
                     </div>
                 ))}
@@ -100,13 +109,14 @@ const GyosuAIChat = () => {
             {isLoading && <p>Loading...</p>}
             {error && <p>Error: {error}</p>}
             <form onSubmit={handleChatSubmit} className="flex mt-2">
-                <input
-                    type="text"
+                <textarea
                     name="input"
                     placeholder="Type your message..."
                     value={userInput}
                     onChange={handleInputChange}
+                    onKeyDown={handleKeyPress} // Handle the key press event
                     className="flex-grow p-2 mr-2 rounded border border-gray-300"
+                    rows={3}
                 />
                 <button type="submit" className="px-4 py-2 rounded bg-blue-500 text-white">
                     Send
