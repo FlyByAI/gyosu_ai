@@ -90,7 +90,7 @@ const GyosuAIChat = () => {
                 {messages.map((message, index) => (
                     <div key={index} className={`p-2 my-1 border border-gray-200 rounded max-w-80% ${message.role === 'user' ? 'ml-auto bg-blue-100' : 'mr-auto bg-gray-100'}`}>
                         <strong>{message.role == "bot" ? "gyosu bot" : message.role}</strong>
-                        {message.role === 'bot' ? (
+                        {message.role === 'assistant' ? (
                             <ReactMarkdown
                                 className="text-md z-10 p-1 m-1 border-2 border-transparent border-dashed"
                                 remarkPlugins={[remarkGfm, remarkMath]}
