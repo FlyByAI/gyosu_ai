@@ -1,6 +1,6 @@
 import { useClerk } from '@clerk/clerk-react';
 import humps from 'humps';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 
 const useStreamedResponse = (endpoint: string, headers: any) => {
     const [data, setData] = useState<string | null>(null);
@@ -9,6 +9,7 @@ const useStreamedResponse = (endpoint: string, headers: any) => {
     const { session } = useClerk();
 
     const startStreaming = useCallback(async (bodyContent: any) => {
+        setData("");
         const abortController = new AbortController();
         const token = session ? await session.getToken() : 'none';
 
@@ -28,8 +29,6 @@ const useStreamedResponse = (endpoint: string, headers: any) => {
 
                 const reader = response?.body?.getReader();
                 const decoder = new TextDecoder('utf-8');
-
-                setData("");
 
                 reader?.read().then(function processText({ done, value }): Promise<void> {
                     if (done) {
