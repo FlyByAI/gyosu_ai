@@ -43,41 +43,35 @@ const GyosuAIChat = () => {
     }, [messages]);
 
     useEffect(() => {
-        // Use a local variable to work with the most recent buffer
         let updatedBuffer = jsonBuffer + streamedData;
-    
+
         try {
             let endOfJson = updatedBuffer.indexOf('}\n');
             while (endOfJson !== -1) {
-                const jsonString = updatedBuffer.substring(0, endOfJson + 1).trim(); // Include the closing brace
-                updatedBuffer = updatedBuffer.substring(endOfJson + 2); // Remove processed JSON
-    
-                // sometimes null a few times before first response with data
-                const data = JSON.parse(jsonString.replace("null", ""));
+                const jsonString = updatedBuffer.substring(0, endOfJson + 1).trim();
+                updatedBuffer = updatedBuffer.substring(endOfJson + 2);
 
-                if(jsonString == ""){
-                    break
-                }
-    
+                const data = JSON.parse(jsonString.replace("null", ""));
                 if (data.session_id) {
-                    console.log("session id set:", data.session_id)
                     setSessionIdState(data.session_id);
                 } else if (data.message) {
-                    setMessages(prev => [...prev, { role: 'assistant', content: data.message }]);
-                } else {
-                    console.log("no cases matched: ", data);
+                    setMessages(prev => {
+                        // Replace the placeholder if the index matches
+                        if (typeof streamingIndex === 'number' && prev[streamingIndex]) {
+                            const newMessages = [...prev];
+                            newMessages[streamingIndex] = { role: 'assistant', content: data.message };
+                            return newMessages;
+                        }
+                        return [...prev, { role: 'assistant', content: data.message }];
+                    });
                 }
-    
-                // Look for the next JSON object
                 endOfJson = updatedBuffer.indexOf('}\n');
             }
         } catch (error) {
             console.error('Error parsing JSON:', error);
         }
-    
-        // Update the buffer state
         setJsonBuffer(updatedBuffer);
-    }, [streamedData]);
+    }, [streamedData, streamingIndex]);
     
 
     const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -87,14 +81,13 @@ const GyosuAIChat = () => {
     const handleChatSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const newMessage: IChatMessage = { role: 'user', content: userInput };
-        setMessages(prev => [...prev, newMessage]); // Add new user message to the chat
+        setMessages(prev => [...prev, newMessage]);
 
-        // Add a placeholder for the streaming response
+        const newStreamingIndex = messages.length + 1; // Index of the next message
+        setStreamingIndex(newStreamingIndex);
+
         const streamingPlaceholder: IChatMessage = { role: 'assistant', content: 'Waiting for response...' };
         setMessages(prev => [...prev, streamingPlaceholder]);
-        // Set the index for the new streaming message
-        const newStreamingIndex = messages.length + 1; // +1 because we're adding two messages
-        setStreamingIndex(newStreamingIndex);
 
         // Prepare payload with current and new messages
         const payload = {
