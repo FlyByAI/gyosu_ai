@@ -25,6 +25,10 @@ const GyosuAIChat = () => {
     const { session, openSignIn } = useClerk();
     const endOfMessagesRef = useRef(null);
 
+    const [sessionIdState, setSessionIdState] = useState(sessionId || '');  // State to store the session ID
+    const [jsonBuffer, setJsonBuffer] = useState(''); // Buffer to accumulate incoming JSON data
+
+
     // Streaming hook setup
     const { data: streamedData, isLoading, error, startStreaming } = useStreamedResponse(streamedResponseEndpoint, {});
 
@@ -39,11 +43,42 @@ const GyosuAIChat = () => {
     }, [messages]);
 
     useEffect(() => {
-        if (streamedData && typeof streamingIndex === 'number') {
-            // Update the streaming message with the new content
-            setMessages(prev => prev.map((msg, idx) => idx === streamingIndex ? { ...msg, content: streamedData } : msg));
+        // Use a local variable to work with the most recent buffer
+        let updatedBuffer = jsonBuffer + streamedData;
+    
+        try {
+            let endOfJson = updatedBuffer.indexOf('}\n');
+            while (endOfJson !== -1) {
+                const jsonString = updatedBuffer.substring(0, endOfJson + 1).trim(); // Include the closing brace
+                updatedBuffer = updatedBuffer.substring(endOfJson + 2); // Remove processed JSON
+    
+                // sometimes null a few times before first response with data
+                const data = JSON.parse(jsonString.replace("null", ""));
+
+                if(jsonString == ""){
+                    break
+                }
+    
+                if (data.session_id) {
+                    console.log("session id set:", data.session_id)
+                    setSessionIdState(data.session_id);
+                } else if (data.message) {
+                    setMessages(prev => [...prev, { role: 'assistant', content: data.message }]);
+                } else {
+                    console.log("no cases matched: ", data);
+                }
+    
+                // Look for the next JSON object
+                endOfJson = updatedBuffer.indexOf('}\n');
+            }
+        } catch (error) {
+            console.error('Error parsing JSON:', error);
         }
-    }, [streamedData, streamingIndex]);
+    
+        // Update the buffer state
+        setJsonBuffer(updatedBuffer);
+    }, [streamedData]);
+    
 
     const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         setUserInput(event.target.value); // Update the text in the textarea
@@ -68,7 +103,7 @@ const GyosuAIChat = () => {
                 content: userInput,
             },
             messages: messages.concat(newMessage),
-            sessionId: sessionId,
+            sessionId: sessionIdState,
         };
         startStreaming(payload);  // Start streaming with the payload
 
