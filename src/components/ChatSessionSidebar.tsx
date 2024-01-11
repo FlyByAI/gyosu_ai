@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import useGetChatSessions, { ChatSession } from '../hooks/tools/math/useGetChatSessions';
 import useEnvironment from '../hooks/useEnvironment';
@@ -51,11 +51,25 @@ const ChatSessionSidebar: React.FC = () => {
 
     const { chatSessions, isLoading, error } = useGetChatSessions(chatSessionsEndpoint);
 
+
     if (isLoading) return <p className="text-center text-white">Loading...</p>;
     if (error) return <p className="text-red-500">Error loading chat sessions</p>;
 
     const categorizedChats = categorizeChatsByDate(chatSessions || []);
 
+    const getMarqueeClass = (text: string) => {
+        if (text.length >= 15) {
+            return 'hover:animate-marqueeShort';
+        } else if (text.length >= 30) {
+            return 'hover:animate-marqueeMedium';
+        } else if (text.length >= 45) {
+            return 'hover:animate-marqueeLong';
+        }
+        return 'hover:animate-none';
+
+    };
+
+    
     const renderChatsInSection = (chats: ChatSession[], sectionLabel: keyof SectionLabels) => {
         if (chats.length === 0) return null;
         return (
@@ -63,17 +77,23 @@ const ChatSessionSidebar: React.FC = () => {
                 <h3 className="text-gray-400 mb-2">{sectionLabel}</h3>
                 {chats.map(chat => (
                     <li key={chat.sessionId} className="mb-2">
-                        <Link to={`/chat/${chat.sessionId}`} className="text-white hover:text-blue-300">
-                            {chat.chatTitle}
-                        </Link>
+                        <div className="overflow-hidden">
+                            <Link to={`/chat/${chat.sessionId}`} className="block text-white hover:text-blue-300 whitespace-nowrap overflow-hidden overflow-ellipsis hover:text-left">
+                                <div className={`${getMarqueeClass(chat.chatTitle)}`}>
+                                    {chat.chatTitle}
+                                </div>
+                            </Link>
+                        </div>
                     </li>
                 ))}
             </>
         );
     };
 
+    
+
     return (
-        <div className="chat-sidebar p-4 bg-zinc-900 border border-gray-300 h-full text-white">
+        <div className="chat-sidebar p-4 bg-transparent border border-gray-300 h-full text-white">
             <ul>
                 {renderChatsInSection(categorizedChats.today, "Today")}
                 {renderChatsInSection(categorizedChats.yesterday, "Yesterday")}

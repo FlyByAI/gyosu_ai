@@ -4,11 +4,10 @@ import useEnvironment from '../hooks/useEnvironment';
 import { useClerk } from '@clerk/clerk-react';
 import useStreamedResponse from '../hooks/tools/math/useStreamedResponse';
 import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
-import CreateDocsFromMarkdownComponent from '../components/CreateDocxFromMarkdownComponent';
 import ChatSessionSidebar from '../components/ChatSessionSidebar';
+import toast, { useToaster } from 'react-hot-toast/headless';
 
 export interface IChatMessage {
     role: string;
@@ -79,8 +78,16 @@ const GyosuAIChat = () => {
         setUserInput(event.target.value); 
     };
 
+    useEffect(() => {
+        if (error) {
+            toast(error, { id: 'error-toast' }); // Show toast notification on error
+        }
+    }, [error]);
+
     const handleChatSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        if (isLoading) return; 
+        
         const newMessage: IChatMessage = { role: 'user', content: userInput };
         setMessages(prev => [...prev, newMessage]);
 
@@ -157,14 +164,18 @@ const GyosuAIChat = () => {
                     <form onSubmit={handleChatSubmit} className="flex mt-2">
                         <textarea
                             name="input"
-                            placeholder="Type your message..."
+                            placeholder={isLoading ? "Loading..." : "Type your message..."}
                             value={userInput}
                             onChange={handleInputChange}
                             onKeyDown={handleKeyPress}
                             className="flex-grow p-2 mx-2 rounded border border-gray-300"
                             rows={3}
                         />
-                        <button type="submit" className="px-4 py-2 mr-2 rounded bg-blue-500 text-white">
+                        <button 
+                            type="submit" 
+                            className="px-4 py-2 mr-2 rounded bg-blue-500 text-white disabled:bg-gray-300"
+                            disabled={isLoading}
+                        >
                             Send
                         </button>
                     </form>

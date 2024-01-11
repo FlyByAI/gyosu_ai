@@ -21,6 +21,9 @@ export default {
       },
       animation: {
         scroll: "scroll 10s linear infinite",
+        marqueeShort: 'scrollTextShort 3s linear infinite',
+        marqueeMedium: 'scrollTextMedium 3s linear infinite',
+        marqueeLong: 'scrollTextLong 3s linear infinite',
       },
     },
   },
