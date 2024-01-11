@@ -25,7 +25,7 @@ const GyosuAIChat = () => {
 
     const { sessionId = '' } = useParams();
     const { session, openSignIn } = useClerk();
-    const endOfMessagesRef = useRef(null);
+    const endOfMessagesRef = useRef<HTMLDivElement>(null);
 
     const [sessionIdState, setSessionIdState] = useState(sessionId || '');  
     const [jsonBuffer, setJsonBuffer] = useState(''); 
