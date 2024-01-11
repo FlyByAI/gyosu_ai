@@ -1,5 +1,4 @@
 import { useLocation } from "react-router-dom";
-import DocumentToolbarNav from "./DocumentToolbarNav";
 import RegularNavbar from "./RegularNav";
 import FixedNavbar from "./FixedNavbar";
 

@@ -8,6 +8,7 @@ import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 import CreateDocsFromMarkdownComponent from '../components/CreateDocxFromMarkdownComponent';
+import ChatSessionSidebar from '../components/ChatSessionSidebar';
 
 export interface IChatMessage {
     role: string;
@@ -17,19 +18,19 @@ export interface IChatMessage {
 const GyosuAIChat = () => {
     const [messages, setMessages] = useState<IChatMessage[]>([]);
     const [userInput, setUserInput] = useState('');
-    const [streamingIndex, setStreamingIndex] = useState<number | null>(null); // Track the index of the streaming message
+    const [streamingIndex, setStreamingIndex] = useState<number | null>(null); 
     const { apiUrl } = useEnvironment();
-    const streamedResponseEndpoint = `${apiUrl}/math_app/chat/`; // Update with actual endpoint
+    const streamedResponseEndpoint = `${apiUrl}/math_app/chat/`; 
+    const {user} = useClerk();
+    const username = user?.firstName ? user.firstName : "User";
 
     const { sessionId = '' } = useParams();
     const { session, openSignIn } = useClerk();
     const endOfMessagesRef = useRef(null);
 
-    const [sessionIdState, setSessionIdState] = useState(sessionId || '');  // State to store the session ID
-    const [jsonBuffer, setJsonBuffer] = useState(''); // Buffer to accumulate incoming JSON data
+    const [sessionIdState, setSessionIdState] = useState(sessionId || '');  
+    const [jsonBuffer, setJsonBuffer] = useState(''); 
 
-
-    // Streaming hook setup
     const { data: streamedData, isLoading, error, startStreaming } = useStreamedResponse(streamedResponseEndpoint, {});
 
     useEffect(() => {
@@ -56,7 +57,7 @@ const GyosuAIChat = () => {
                     setSessionIdState(data.session_id);
                 } else if (data.message) {
                     setMessages(prev => {
-                        // Replace the placeholder if the index matches
+                        
                         if (typeof streamingIndex === 'number' && prev[streamingIndex]) {
                             const newMessages = [...prev];
                             newMessages[streamingIndex] = { role: 'assistant', content: data.message };
@@ -72,10 +73,10 @@ const GyosuAIChat = () => {
         }
         setJsonBuffer(updatedBuffer);
     }, [streamedData, streamingIndex]);
-    
+
 
     const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-        setUserInput(event.target.value); // Update the text in the textarea
+        setUserInput(event.target.value); 
     };
 
     const handleChatSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -83,13 +84,13 @@ const GyosuAIChat = () => {
         const newMessage: IChatMessage = { role: 'user', content: userInput };
         setMessages(prev => [...prev, newMessage]);
 
-        const newStreamingIndex = messages.length + 1; // Index of the next message
+        const newStreamingIndex = messages.length + 1; 
         setStreamingIndex(newStreamingIndex);
 
         const streamingPlaceholder: IChatMessage = { role: 'assistant', content: 'Waiting for response...' };
         setMessages(prev => [...prev, streamingPlaceholder]);
 
-        // Prepare payload with current and new messages
+        
         const payload = {
             newMessage: {
                 role: 'user',
@@ -98,70 +99,79 @@ const GyosuAIChat = () => {
             messages: messages.concat(newMessage),
             sessionId: sessionIdState,
         };
-        startStreaming(payload);  // Start streaming with the payload
+        startStreaming(payload);  
 
-        setUserInput(''); // Clear the input field after submission
+        setUserInput(''); 
     };
 
     const handleKeyPress = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
-        // Check if Enter is pressed without the Shift key
+        
         if (event.key === 'Enter' && !event.shiftKey) {
-            event.preventDefault(); // Prevent the default action (new line)
-            handleChatSubmit(event as unknown as React.FormEvent<HTMLFormElement>); // Submit the form
+            event.preventDefault(); 
+            handleChatSubmit(event as unknown as React.FormEvent<HTMLFormElement>); 
         }
-        // Otherwise, allow the default behavior (Shift + Enter for a new line)
+        
     };
 
     return (
         <>
-            <div className="h-60vh overflow-y-scroll p-2 border border-gray-300">
-                {messages.map((message, index) => (
-                    <div key={index} className={`p-2 my-1 border border-gray-200 rounded max-w-80% ${message.role === 'user' ? 'ml-auto bg-blue-100' : 'mr-auto bg-gray-100'}`}>
-                        <strong>{message.role}</strong>
-                        {message.role === 'assistant' ? (
-                            message.content.split(/\n\s*\n/).map((chunk, idx) => (
-                                <React.Fragment key={idx}>
-                                    <ReactMarkdown
-                                        className="text-md z-10 p-1 m-1 border-2 border-transparent border-dashed"
-                                        remarkPlugins={[remarkMath]}
-                                        rehypePlugins={[
-                                            [rehypeKatex, {
-                                                // Define custom delimiters for inline and block math
-                                                delimiters: [
-                                                    { left: "\\(", right: "\\)", display: false },
-                                                    { left: "\\[", right: "\\]", display: true },
-                                                ],
-                                            }],
-                                        ]}
-                                    >
-                                        {chunk.trim()}
-                                    </ReactMarkdown>
-                                    {idx < message.content.split(/\n\s*\n/).length - 1 && <br />}
-                                </React.Fragment>
-                            ))
-                        ) :
-                            <p>{message.content}</p>
-                        }
+            <div className="flex flex-row">
+                <div className="w-1/12">
+                    <ChatSessionSidebar />
+                </div>
+                <div className="flex-grow">
+                    <div className="h-60vh overflow-y-scroll p-2 border border-gray-300 mx-2">
+                        {messages.map((message, index) => (
+                            <div key={index} className={`p-2 my-1 border border-gray-200 rounded max-w-80% ${message.role === 'user' ? 'ml-auto bg-blue-100' : 'mr-auto bg-gray-100'}`}>
+                                <strong>{message.role == "user" ? username : message.role}</strong>
+                                {message.role === 'assistant' ? (
+                                    message.content.split(/\n\s*\n/).map((chunk, idx) => (
+                                        <React.Fragment key={idx}>
+                                            <ReactMarkdown
+                                                className="text-md z-10 p-1 m-1 border-2 border-transparent border-dashed"
+                                                remarkPlugins={[remarkMath]}
+                                                rehypePlugins={[
+                                                    [rehypeKatex, {
+                                                        
+                                                        delimiters: [
+                                                            { left: "\\(", right: "\\)", display: false },
+                                                            { left: "\\[", right: "\\]", display: true },
+                                                        ],
+                                                    }],
+                                                ]}
+                                            >
+                                                {chunk.trim()}
+                                            </ReactMarkdown>
+                                            {idx < message.content.split(/\n\s*\n/).length - 1 && <br />}
+                                        </React.Fragment>
+                                    ))
+                                ) :
+                                    <p>{message.content}</p>
+                                }
+                            </div>
+                        ))}
+                        <div ref={endOfMessagesRef} />
                     </div>
-                ))}
-                <div ref={endOfMessagesRef} />
+                    {isLoading && <p>Loading...</p>}
+                    {error && <p>Error: {error}</p>}
+                    <form onSubmit={handleChatSubmit} className="flex mt-2">
+                        <textarea
+                            name="input"
+                            placeholder="Type your message..."
+                            value={userInput}
+                            onChange={handleInputChange}
+                            onKeyDown={handleKeyPress}
+                            className="flex-grow p-2 mx-2 rounded border border-gray-300"
+                            rows={3}
+                        />
+                        <button type="submit" className="px-4 py-2 mr-2 rounded bg-blue-500 text-white">
+                            Send
+                        </button>
+                    </form>
+                </div>
             </div>
-            {isLoading && <p>Loading...</p>}
-            {error && <p>Error: {error}</p>}
-            <form onSubmit={handleChatSubmit} className="flex mt-2">
-                <textarea
-                    name="input"
-                    placeholder="Type your message..."
-                    value={userInput}
-                    onChange={handleInputChange}
-                    onKeyDown={handleKeyPress}
-                    className="flex-grow p-2 mr-2 rounded border border-gray-300"
-                    rows={3}
-                />
-                <button type="submit" className="px-4 py-2 rounded bg-blue-500 text-white">
-                    Send
-                </button>
-            </form>
+
+
         </>
     );
 

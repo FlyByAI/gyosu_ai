@@ -1,10 +1,9 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { SignedIn, SignedOut, UserButton, SignInButton } from '@clerk/clerk-react';
 import { useDarkMode } from '../../contexts/useDarkMode';
 import LanguageDropdown from '../LanguageDropdown';
 import { getGyosuClerkTheme } from '../../theme/customClerkTheme';
-import Hamburger from 'hamburger-react'
 import HamburgerWrapper from '../HamburgerWrapper';
 import ManageSubscriptionButton from '../ManageSubscriptionButton';
 
