@@ -6,6 +6,8 @@ export default {
     extend: {
       height: {
         "60vh": "60vh",
+        "75vh": "75vh",
+        "80vh": "80vh",
       },
       fontFamily: {
         sans: [

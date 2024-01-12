@@ -1,6 +1,7 @@
-import { useQuery } from '@tanstack/react-query';
 import { useClerk } from '@clerk/clerk-react';
+import { useQuery } from '@tanstack/react-query';
 import humps from 'humps';
+import { IChatMessage } from '../../../pages/GyosuAIChat';
 
 export interface ChatSession {
     sessionId: string;
@@ -8,7 +9,7 @@ export interface ChatSession {
     createdAt: string;
     updatedAt: string;
     chatTitle: string;
-    messageHistory: any[]; 
+    messageHistory: IChatMessage[]; 
 }
 
 

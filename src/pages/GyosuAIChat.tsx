@@ -1,13 +1,14 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useParams } from 'react-router-dom';
-import useEnvironment from '../hooks/useEnvironment';
 import { useClerk } from '@clerk/clerk-react';
-import useStreamedResponse from '../hooks/tools/math/useStreamedResponse';
+import React, { useEffect, useRef, useState } from 'react';
+import toast from 'react-hot-toast/headless';
 import ReactMarkdown from 'react-markdown';
-import remarkMath from 'remark-math';
+import { useLocation, useParams } from 'react-router-dom';
 import rehypeKatex from 'rehype-katex';
+import remarkMath from 'remark-math';
 import ChatSessionSidebar from '../components/ChatSessionSidebar';
-import toast, { useToaster } from 'react-hot-toast/headless';
+import useGetChatSessions from '../hooks/tools/math/useGetChatSessions';
+import useStreamedResponse from '../hooks/tools/math/useStreamedResponse';
+import useEnvironment from '../hooks/useEnvironment';
 
 export interface IChatMessage {
     role: string;
@@ -17,20 +18,43 @@ export interface IChatMessage {
 const GyosuAIChat = () => {
     const [messages, setMessages] = useState<IChatMessage[]>([]);
     const [userInput, setUserInput] = useState('');
-    const [streamingIndex, setStreamingIndex] = useState<number | null>(null); 
+    const [streamingIndex, setStreamingIndex] = useState<number | null>(null);
     const { apiUrl } = useEnvironment();
-    const streamedResponseEndpoint = `${apiUrl}/math_app/chat/`; 
-    const {user} = useClerk();
+    const streamedResponseEndpoint = `${apiUrl}/math_app/chat/`;
+    const { user } = useClerk();
     const username = user?.firstName ? user.firstName : "User";
 
     const { sessionId = '' } = useParams();
     const { session, openSignIn } = useClerk();
     const endOfMessagesRef = useRef<HTMLDivElement>(null);
 
-    const [sessionIdState, setSessionIdState] = useState(sessionId || '');  
-    const [jsonBuffer, setJsonBuffer] = useState(''); 
+    const [sessionIdState, setSessionIdState] = useState(sessionId || '');
+    const [jsonBuffer, setJsonBuffer] = useState('');
+
+    const { state } = useLocation();
 
     const { data: streamedData, isLoading, error, startStreaming } = useStreamedResponse(streamedResponseEndpoint, {});
+
+    const { chatSessions } = useGetChatSessions(`${apiUrl}/math_app/chat/list/`);
+
+    useEffect(() => {
+
+        if (sessionId && chatSessions) {
+            chatSessions.forEach((chatSession) => {
+                if (chatSession.sessionId === sessionId) {
+                    setMessages(chatSession.messageHistory);
+                }
+            })
+        }
+    }, [chatSessions, sessionId]);
+
+
+    useEffect(() => {
+        if (state?.text) {
+            setUserInput(state.text);
+        }
+
+    }, [state]);
 
     useEffect(() => {
         if (!session) {
@@ -56,7 +80,7 @@ const GyosuAIChat = () => {
                     setSessionIdState(data.session_id);
                 } else if (data.message) {
                     setMessages(prev => {
-                        
+
                         if (typeof streamingIndex === 'number' && prev[streamingIndex]) {
                             const newMessages = [...prev];
                             newMessages[streamingIndex] = { role: 'assistant', content: data.message };
@@ -75,7 +99,7 @@ const GyosuAIChat = () => {
 
 
     const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-        setUserInput(event.target.value); 
+        setUserInput(event.target.value);
     };
 
     useEffect(() => {
@@ -86,18 +110,18 @@ const GyosuAIChat = () => {
 
     const handleChatSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        if (isLoading) return; 
-        
+        if (isLoading) return;
+
         const newMessage: IChatMessage = { role: 'user', content: userInput };
         setMessages(prev => [...prev, newMessage]);
 
-        const newStreamingIndex = messages.length + 1; 
+        const newStreamingIndex = messages.length + 1;
         setStreamingIndex(newStreamingIndex);
 
         const streamingPlaceholder: IChatMessage = { role: 'assistant', content: 'Waiting for response...' };
         setMessages(prev => [...prev, streamingPlaceholder]);
 
-        
+
         const payload = {
             newMessage: {
                 role: 'user',
@@ -106,24 +130,24 @@ const GyosuAIChat = () => {
             messages: messages.concat(newMessage),
             sessionId: sessionIdState,
         };
-        startStreaming(payload);  
+        startStreaming(payload);
 
-        setUserInput(''); 
+        setUserInput('');
     };
 
     const handleKeyPress = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
-        
+
         if (event.key === 'Enter' && !event.shiftKey) {
-            event.preventDefault(); 
-            handleChatSubmit(event as unknown as React.FormEvent<HTMLFormElement>); 
+            event.preventDefault();
+            handleChatSubmit(event as unknown as React.FormEvent<HTMLFormElement>);
         }
-        
+
     };
 
     return (
         <>
             <div className="flex flex-row">
-                <div className="w-1/12">
+                <div className="w-1/12 h-75vh">
                     <ChatSessionSidebar />
                 </div>
                 <div className="flex-grow">
@@ -139,7 +163,7 @@ const GyosuAIChat = () => {
                                                 remarkPlugins={[remarkMath]}
                                                 rehypePlugins={[
                                                     [rehypeKatex, {
-                                                        
+
                                                         delimiters: [
                                                             { left: "\\(", right: "\\)", display: false },
                                                             { left: "\\[", right: "\\]", display: true },
@@ -171,8 +195,8 @@ const GyosuAIChat = () => {
                             className="flex-grow p-2 mx-2 rounded border border-gray-300"
                             rows={3}
                         />
-                        <button 
-                            type="submit" 
+                        <button
+                            type="submit"
                             className="px-4 py-2 mr-2 rounded bg-blue-500 text-white disabled:bg-gray-300"
                             disabled={isLoading}
                         >

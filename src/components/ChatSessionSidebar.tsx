@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import useGetChatSessions, { ChatSession } from '../hooks/tools/math/useGetChatSessions';
 import useEnvironment from '../hooks/useEnvironment';
@@ -78,7 +78,7 @@ const ChatSessionSidebar: React.FC = () => {
                 {chats.map(chat => (
                     <li key={chat.sessionId} className="mb-2">
                         <div className="overflow-hidden">
-                            <Link to={`/chat/${chat.sessionId}`} className="block text-white hover:text-blue-300 whitespace-nowrap overflow-hidden overflow-ellipsis hover:text-left">
+                            <Link to={`/math-app/chat/${chat.sessionId}`} className="block text-white hover:text-blue-300 whitespace-nowrap overflow-hidden overflow-ellipsis hover:text-left">
                                 <div className={`${getMarqueeClass(chat.chatTitle)}`}>
                                     {chat.chatTitle}
                                 </div>
@@ -93,7 +93,7 @@ const ChatSessionSidebar: React.FC = () => {
     
 
     return (
-        <div className="chat-sidebar p-4 bg-transparent border border-gray-300 h-full text-white">
+        <div className="chat-sidebar p-4 bg-transparent border border-gray-300 h-full text-white overflow-y-auto">
             <ul>
                 {renderChatsInSection(categorizedChats.today, "Today")}
                 {renderChatsInSection(categorizedChats.yesterday, "Yesterday")}

@@ -2,42 +2,42 @@
 
 
 
-import './index.css'
+import './index.css';
 
 import {
-    useNavigate,
-    Routes,
     Route,
+    Routes,
     useLocation,
+    useNavigate,
 } from "react-router-dom";
-import Contact from './pages/Contact.tsx';
 import Navbar from './components/navbars/Navbar.tsx';
+import Contact from './pages/Contact.tsx';
 //Clerk
 import {
+    ClerkProvider,
     SignIn,
     SignUp,
-    ClerkProvider,
 } from "@clerk/clerk-react";
-import { getGyosuClerkTheme } from './theme/customClerkTheme.ts';
-import PrivacyPolicy from './pages/PrivacyPolicy.tsx';
-import Terms from './pages/Terms.tsx';
-import Footer from './components/Footer.tsx';
+import { Helmet } from "react-helmet-async";
+import ContentMultipleStreamedExample from './components/ContentMultipleStreamedExample.tsx';
+import ContentPlaygroundStreamed from './components/ContentPlaygroundStreamed.tsx';
 import ContentWrapper from './components/ContentWrapper.tsx';
+import Footer from './components/Footer.tsx';
+import Pricing from './components/Pricing.tsx';
+import { notSecretConstants } from './constants/notSecretConstants.tsx';
+import { getSchemaMarkup } from './helpers/getSchemaMarkup.ts';
+import useEnvironment from './hooks/useEnvironment.tsx';
 import Attributions from './pages/Attributions.tsx';
-import ProblemBank from './pages/ProblemBank.tsx';
+import Documents from './pages/Documents.tsx';
+import FAQPage from './pages/FAQPage.tsx';
+import GyosuAIChat from './pages/GyosuAIChat.tsx';
 import LandingPage from './pages/Landing.tsx';
 import MathGenerate from './pages/MathGenerate.tsx';
-import Pricing from './components/Pricing.tsx';
-import Documents from './pages/Documents.tsx';
 import MyProblemBanks from './pages/MathProblemBanks.tsx';
-import { notSecretConstants } from './constants/notSecretConstants.tsx';
-import useEnvironment from './hooks/useEnvironment.tsx';
-import FAQPage from './pages/FAQPage.tsx';
-import { Helmet } from "react-helmet-async";
-import { getSchemaMarkup } from './helpers/getSchemaMarkup.ts';
-import ContentPlaygroundStreamed from './components/ContentPlaygroundStreamed.tsx';
-import ContentMultipleStreamedExample from './components/ContentMultipleStreamedExample.tsx';
-import GyosuAIChat from './pages/GyosuAIChat.tsx';
+import PrivacyPolicy from './pages/PrivacyPolicy.tsx';
+import ProblemBank from './pages/ProblemBank.tsx';
+import Terms from './pages/Terms.tsx';
+import { getGyosuClerkTheme } from './theme/customClerkTheme.ts';
 
 
 export default function ClerkProviderWithRoutes() {
@@ -121,7 +121,17 @@ export default function ClerkProviderWithRoutes() {
                     }
                 />
                 <Route
-                    path="/math-app/chat"
+                    path="/math-app/chat/:sessionId"
+                    element={
+                        <>
+                            <Navbar />
+                            <GyosuAIChat />
+                            <Footer />
+                        </>
+                    }
+                />
+                 <Route
+                    path="/math-app/chat/"
                     element={
                         <>
                             <Navbar />
