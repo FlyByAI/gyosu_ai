@@ -1,10 +1,10 @@
+import { SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/clerk-react';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { SignedIn, SignedOut, UserButton, SignInButton } from '@clerk/clerk-react';
 import { useDarkMode } from '../../contexts/useDarkMode';
-import LanguageDropdown from '../LanguageDropdown';
 import { getGyosuClerkTheme } from '../../theme/customClerkTheme';
 import HamburgerWrapper from '../HamburgerWrapper';
+import LanguageDropdown from '../LanguageDropdown';
 import ManageSubscriptionButton from '../ManageSubscriptionButton';
 
 const RegularNavbar: React.FC = () => {
@@ -44,9 +44,9 @@ const RegularNavbar: React.FC = () => {
                 <Link to="/math-app/chat" className="text-lg text-white hover:underline dark:text-gray-200 lg:justify-self-end block sm:hidden">
                     Chat
                 </Link>
-                <Link to="/math-app/playground" className="text-lg text-white hover:underline dark:text-gray-200 lg:justify-self-end block sm:hidden">
+                {/* <Link to="/math-app/playground" className="text-lg text-white hover:underline dark:text-gray-200 lg:justify-self-end block sm:hidden">
                     Playground
-                </Link>
+                </Link> */}
                 <Link to="/math-app" className="text-lg text-white hover:underline dark:text-gray-200 lg:justify-self-end block sm:hidden">
                     Problem Search
                 </Link>
@@ -69,9 +69,9 @@ const RegularNavbar: React.FC = () => {
                         <Link to="/math-app/chat" className="text-lg text-white mx-3 hover:underline dark:text-gray-200 font-mono font-bold">
                             Chat
                         </Link>
-                        <Link to="/math-app/playground" className="text-lg text-white mx-3 hover:underline dark:text-gray-200 font-mono font-bold">
+                        {/* <Link to="/math-app/playground" className="text-lg text-white mx-3 hover:underline dark:text-gray-200 font-mono font-bold">
                             Playground
-                        </Link>
+                        </Link> */}
                         <Link to="/math-app" className="text-lg text-white mx-3 hover:underline dark:text-gray-200 font-mono font-bold">
                             Problem Search
                         </Link>
