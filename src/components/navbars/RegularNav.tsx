@@ -18,7 +18,7 @@ const RegularNavbar: React.FC = () => {
                 <Link to="/" className="text-3xl font-semibold text-white justify-self-center lg:justify-self-start font-mono">Gyosu.ai</Link>
                 <div className="flex items-center justify-self-center sm:block">
                     <SignedIn>
-                        {darkMode ? <UserButton afterSignOutUrl="/" appearance={getGyosuClerkTheme()} /> : <UserButton afterSignOutUrl="http://localhost:5173/" />}
+                        {darkMode ? <UserButton afterSignOutUrl="/" appearance={getGyosuClerkTheme()} /> : <UserButton afterSignOutUrl="/" />}
                         <HamburgerWrapper>
                             <LanguageDropdown />
                             <ManageSubscriptionButton />
@@ -86,7 +86,7 @@ const RegularNavbar: React.FC = () => {
                         </Link>
                     </nav>
                     <SignedIn>
-                        {darkMode ? <UserButton afterSignOutUrl="/" appearance={getGyosuClerkTheme()} /> : <UserButton afterSignOutUrl="http://localhost:5173/" />}
+                        {darkMode ? <UserButton afterSignOutUrl="/" appearance={getGyosuClerkTheme()} /> : <UserButton afterSignOutUrl="/" />}
                         <HamburgerWrapper>
                             <LanguageDropdown />
                             <ManageSubscriptionButton />

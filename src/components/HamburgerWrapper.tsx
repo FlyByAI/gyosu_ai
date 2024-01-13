@@ -1,5 +1,5 @@
-import React, { useState, ReactNode, useEffect } from 'react';
 import Hamburger from 'hamburger-react';
+import React, { ReactNode, useEffect, useState } from 'react';
 
 interface HamburgerWrapperProps {
     children: ReactNode;

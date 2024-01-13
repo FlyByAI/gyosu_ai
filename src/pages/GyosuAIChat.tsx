@@ -38,13 +38,16 @@ const GyosuAIChat = () => {
     const { chatSessions } = useGetChatSessions(`${apiUrl}/math_app/chat/list/`);
 
     useEffect(() => {
-
         if (sessionId && chatSessions) {
             chatSessions.forEach((chatSession) => {
                 if (chatSession.sessionId === sessionId) {
                     setMessages(chatSession.messageHistory);
                 }
             })
+        }
+        if (!sessionId) {
+            setSessionIdState(sessionId)
+            setMessages([])
         }
     }, [chatSessions, sessionId]);
 
@@ -147,10 +150,10 @@ const GyosuAIChat = () => {
     return (
         <>
             <div className="flex flex-row">
-                <div className="w-1/12 h-75vh">
+                <div className="w-1/12 h-75vh hidden md:block">
                     <ChatSessionSidebar />
                 </div>
-                <div className="flex-grow">
+                <div className="flex-grow mx-auto">
                     <div className="h-60vh overflow-y-scroll p-2 border border-gray-300 mx-2">
                         {messages.map((message, index) => (
                             <div key={index} className={`p-2 my-1 border border-gray-200 rounded max-w-80% ${message.role === 'user' ? 'ml-auto bg-blue-100' : 'mr-auto bg-gray-100'}`}>

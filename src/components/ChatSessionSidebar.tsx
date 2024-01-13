@@ -93,7 +93,7 @@ const ChatSessionSidebar: React.FC = () => {
     
 
     return (
-        <div className="chat-sidebar p-4 bg-transparent border border-gray-300 h-full text-white overflow-y-auto">
+        <div className="chat-sidebar p-4 bg-gray-800 md:bg-transparent border border-gray-300 h-full text-white overflow-y-auto">
             <ul>
                 {renderChatsInSection(categorizedChats.today, "Today")}
                 {renderChatsInSection(categorizedChats.yesterday, "Yesterday")}
