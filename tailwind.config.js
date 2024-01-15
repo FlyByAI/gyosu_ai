@@ -5,6 +5,7 @@ export default {
   theme: {
     extend: {
       height: {
+        "15vh": "15vh",
         "60vh": "60vh",
         "75vh": "75vh",
         "80vh": "80vh",

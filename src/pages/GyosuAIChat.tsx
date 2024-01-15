@@ -3,8 +3,10 @@ import React, { useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast/headless';
 import ReactMarkdown from 'react-markdown';
 import { useLocation, useParams } from 'react-router-dom';
+import { GridLoader } from 'react-spinners'; // Import the spinner you prefer
 import rehypeKatex from 'rehype-katex';
 import remarkMath from 'remark-math';
+import ChatActions from '../components/ChatActions';
 import ChatSessionSidebar from '../components/ChatSessionSidebar';
 import useGetChatSessions from '../hooks/tools/math/useGetChatSessions';
 import useStreamedResponse from '../hooks/tools/math/useStreamedResponse';
@@ -17,6 +19,7 @@ export interface IChatMessage {
 
 const GyosuAIChat = () => {
     const [messages, setMessages] = useState<IChatMessage[]>([]);
+    const [actions, setActions] = useState("");
     const [userInput, setUserInput] = useState('');
     const [streamingIndex, setStreamingIndex] = useState<number | null>(null);
     const { apiUrl } = useEnvironment();
@@ -80,6 +83,10 @@ const GyosuAIChat = () => {
 
                 const data = JSON.parse(jsonString.replace("null", ""));
                 console.log(data)
+                if (data.actions && !data.message) {
+                    setActions(data.actions);
+                    console.log('setting actions')
+                }
                 if (data.session_id) {
                     setSessionIdState(data.session_id);
                 }
@@ -89,6 +96,7 @@ const GyosuAIChat = () => {
                         if (typeof streamingIndex === 'number' && prev[streamingIndex]) {
                             const newMessages = [...prev];
                             newMessages[streamingIndex] = { role: 'assistant', content: data.message };
+                            setActions("")
                             return newMessages;
                         }
                         return [...prev, { role: 'assistant', content: data.message }];
@@ -162,7 +170,10 @@ const GyosuAIChat = () => {
                                 <strong>{message.role == "user" ? username : message.role}</strong>
                                 {message.role === 'assistant' ? (
                                     message.content.split(/\n\s*\n/).map((chunk, idx) => (
-                                        <React.Fragment key={idx}>
+                                        <div key={idx} className="flex flex-row items-center">
+                                            <div>
+                                            {message.content === "Waiting for response..." && <GridLoader size={3} margin={4} color="#4A90E2" className='mr-2' />}
+                                            </div>
                                             <ReactMarkdown
                                                 className="text-md z-10 p-1 m-1 border-2 border-transparent border-dashed"
                                                 remarkPlugins={[remarkMath]}
@@ -179,13 +190,17 @@ const GyosuAIChat = () => {
                                                 {chunk.trim()}
                                             </ReactMarkdown>
                                             {idx < message.content.split(/\n\s*\n/).length - 1 && <br />}
-                                        </React.Fragment>
+
+                                        </div>
                                     ))
                                 ) :
-                                    <p>{message.content}</p>
+                                    <>
+                                        <p>{message.content}</p>
+                                    </>
                                 }
                             </div>
                         ))}
+                        <ChatActions actions={actions} />
                         <div ref={endOfMessagesRef} />
                     </div>
                     {isLoading && <p>Loading...</p>}
