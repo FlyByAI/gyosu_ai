@@ -79,9 +79,11 @@ const GyosuAIChat = () => {
                 updatedBuffer = updatedBuffer.substring(endOfJson + 2);
 
                 const data = JSON.parse(jsonString.replace("null", ""));
+                console.log(data)
                 if (data.session_id) {
                     setSessionIdState(data.session_id);
-                } else if (data.message) {
+                }
+                else if (data.message) {
                     setMessages(prev => {
 
                         if (typeof streamingIndex === 'number' && prev[streamingIndex]) {
