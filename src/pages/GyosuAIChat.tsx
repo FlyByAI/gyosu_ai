@@ -2,7 +2,7 @@ import { useClerk } from '@clerk/clerk-react';
 import React, { useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast/headless';
 import ReactMarkdown from 'react-markdown';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { GridLoader } from 'react-spinners'; // Import the spinner you prefer
 import rehypeKatex from 'rehype-katex';
 import remarkMath from 'remark-math';
@@ -26,12 +26,12 @@ const GyosuAIChat = () => {
     const streamedResponseEndpoint = `${apiUrl}/math_app/chat/`;
     const { user } = useClerk();
     const username = user?.firstName ? user.firstName : "User";
+    const navigate = useNavigate();
 
     const { sessionId = '' } = useParams();
     const { session, openSignIn } = useClerk();
     const endOfMessagesRef = useRef<HTMLDivElement>(null);
 
-    const [sessionIdState, setSessionIdState] = useState(sessionId || '');
     const [jsonBuffer, setJsonBuffer] = useState('');
 
     const { state } = useLocation();
@@ -49,7 +49,6 @@ const GyosuAIChat = () => {
             })
         }
         if (!sessionId) {
-            setSessionIdState(sessionId)
             setMessages([])
         }
     }, [chatSessions, sessionId]);
@@ -88,7 +87,7 @@ const GyosuAIChat = () => {
                     console.log('setting actions')
                 }
                 if (data.session_id) {
-                    setSessionIdState(data.session_id);
+                    navigate(`/math-app/chat/${data.session_id}`, { replace: true, state: { ...state, sessionId: data.session_id } });
                 }
                 else if (data.message) {
                     setMessages(prev => {
@@ -141,7 +140,7 @@ const GyosuAIChat = () => {
                 content: userInput,
             },
             messages: messages.concat(newMessage),
-            sessionId: sessionIdState,
+            sessionId: sessionId,
         };
         startStreaming(payload);
 
