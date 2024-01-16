@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import useGetChatSessions, { ChatSession } from '../hooks/tools/math/useGetChatSessions';
+import useChatSessions, { ChatSession } from '../hooks/tools/math/useChatSessions';
 import useEnvironment from '../hooks/useEnvironment';
+import EditIcon from '../svg/Edit';
+import TrashIcon from '../svg/TrashIcon';
+import OverflowMenuPortal from './OverflowMenuPortal';
 
 type SectionLabels = {
     [key in "Today" | "Yesterday" | "Previous 7 Days" | "Previous 30 Days" | "Previous 90 Days" | "Older"]: string;
@@ -47,9 +50,36 @@ const categorizeChatsByDate = (chats: ChatSession[]) => {
 
 const ChatSessionSidebar: React.FC = () => {
     const { apiUrl } = useEnvironment();
-    const chatSessionsEndpoint = `${apiUrl}/math_app/chat/list/`;
+    const chatSessionsEndpoint = `${apiUrl}/math_app/chat/`;
 
-    const { chatSessions, isLoading, error } = useGetChatSessions(chatSessionsEndpoint);
+    const portalRootRef = useRef<HTMLDivElement>(null); // Create a ref for the portal root
+
+    const { chatSessions, isLoading, error, deleteChatSession, renameChatSession } = useChatSessions(chatSessionsEndpoint);
+    const [openOverflowMenuId, setOpenOverflowMenuId] = useState<string | null>(null);
+    const [editingSessionId, setEditingSessionId] = useState<string | null>(null);
+    const [editingTitle, setEditingTitle] = useState('');
+
+    const handleEditClick = (sessionId: string, currentTitle: string) => {
+        setEditingSessionId(sessionId);
+        setEditingTitle(currentTitle);
+    };
+
+    const handleRenameSubmit = (sessionId: string) => {
+        if (editingTitle.trim()) {
+            renameChatSession({ sessionId, chatTitle: editingTitle.trim() });
+        }
+        setEditingSessionId(null);
+    };
+
+    const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setEditingTitle(event.target.value);
+    };
+
+
+    const handleDeleteClick = (sessionId: string) => {
+        deleteChatSession(sessionId)
+
+    };
 
 
     if (isLoading) return <p className="text-center text-white">Loading...</p>;
@@ -69,20 +99,63 @@ const ChatSessionSidebar: React.FC = () => {
 
     };
 
-    
+
+
+
     const renderChatsInSection = (chats: ChatSession[], sectionLabel: keyof SectionLabels) => {
         if (chats.length === 0) return null;
         return (
             <>
                 <h3 className="text-gray-400 mb-2">{sectionLabel}</h3>
                 {chats.map(chat => (
-                    <li key={chat.sessionId} className="mb-2">
+                    <li key={chat.sessionId} className="mb-2 flex justify-between items-center">
                         <div className="overflow-hidden">
-                            <Link to={`/math-app/chat/${chat.sessionId}`} className="block text-white hover:text-blue-300 whitespace-nowrap overflow-hidden overflow-ellipsis hover:text-left">
-                                <div className={`${getMarqueeClass(chat.chatTitle)}`}>
-                                    {chat.chatTitle}
-                                </div>
-                            </Link>
+                            {editingSessionId === chat.sessionId ? (
+                                <input
+                                    type="text"
+                                    value={editingTitle}
+                                    onChange={handleTitleChange}
+                                    onBlur={() => handleRenameSubmit(chat.sessionId)}
+                                    onKeyPress={(e) => {
+                                        if (e.key === 'Enter') {
+                                            handleRenameSubmit(chat.sessionId);
+                                        }
+                                    }}
+                                    className="block w-full text-white bg-transparent border-b border-white focus:outline-none"
+                                    autoFocus
+                                />
+                            ) : (
+                                <Link to={`/math-app/chat/${chat.sessionId}`} className="block text-white hover:text-blue-300 whitespace-nowrap overflow-hidden overflow-ellipsis hover:text-left">
+                                    <div className={`${getMarqueeClass(chat.chatTitle)}`}>
+                                        {chat.chatTitle}
+                                    </div>
+                                </Link>
+                            )}
+                        </div>
+                        <div>
+                            <OverflowMenuPortal
+                                portalRoot={portalRootRef}
+                                type='iconRow'
+                                variant="bottom"
+                                isOpen={openOverflowMenuId === chat.sessionId}
+                                setIsOpen={(isOpen) => setOpenOverflowMenuId(isOpen ? chat.sessionId : null)}
+                            >
+                                <button onClick={() => handleEditClick(chat.sessionId, chat.chatTitle)}
+                                    className="text-green-700 bg-gray-100 rounded-t flex flex-row p-2"
+                                    data-tooltip-id={`edit-${chat.sessionId}`}
+                                >
+                                    <EditIcon />
+                                    <div>
+                                        Rename
+                                    </div>
+                                </button>
+                                <button className='text-red-500 bg-gray-100 rounded-b flex flex-row p-2'
+                                    data-tooltip-id={`delete-${chat.sessionId}`}
+                                    onClick={() => handleDeleteClick(chat.sessionId)}>
+                                    <TrashIcon />
+                                    Delete
+                                </button>
+                            </OverflowMenuPortal>
                         </div>
                     </li>
                 ))}
@@ -90,10 +163,10 @@ const ChatSessionSidebar: React.FC = () => {
         );
     };
 
-    
+
 
     return (
-        <div className="chat-sidebar p-4 bg-gray-800 md:bg-transparent border border-gray-300 h-full text-white overflow-y-auto">
+        <div className="chat-sidebar p-4 bg-gray-800 md:bg-transparent border border-gray-300 h-full text-white overflow-y-auto" ref={portalRootRef}>
             <ul>
                 {renderChatsInSection(categorizedChats.today, "Today")}
                 {renderChatsInSection(categorizedChats.yesterday, "Yesterday")}
