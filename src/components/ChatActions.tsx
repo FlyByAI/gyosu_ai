@@ -8,7 +8,7 @@ const ChatActions = ({ actions }: {actions: string}) => {
             <div>
                 <GridLoader color="#4A90E2" size={4} margin={4} speedMultiplier={.75} className='mr-2'/> 
             </div>
-            <div className="chat-action-text">Action: {actions}</div>
+            <div className="chat-action-text">{actions}</div>
         </div>
     );
 };
