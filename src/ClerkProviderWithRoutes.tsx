@@ -31,6 +31,7 @@ import Attributions from './pages/Attributions.tsx';
 import Documents from './pages/Documents.tsx';
 import FAQPage from './pages/FAQPage.tsx';
 import GyosuAIChat from './pages/GyosuAIChat.tsx';
+import GyosuAIChatShare from './pages/GyosuAIChatShare.tsx';
 import LandingPage from './pages/Landing.tsx';
 import MathGenerate from './pages/MathGenerate.tsx';
 import MyProblemBanks from './pages/MathProblemBanks.tsx';
@@ -126,6 +127,16 @@ export default function ClerkProviderWithRoutes() {
                         <>
                             <Navbar />
                             <GyosuAIChat />
+                            <Footer />
+                        </>
+                    }
+                />
+                <Route
+                    path="/math-app/chat/share/:token"
+                    element={
+                        <>
+                            <Navbar />
+                            <GyosuAIChatShare />
                             <Footer />
                         </>
                     }

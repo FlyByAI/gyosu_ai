@@ -2,6 +2,9 @@ import { useClerk } from '@clerk/clerk-react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import humps from 'humps';
 import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
+import ShareLinkModalContent from '../../../components/ShareModalContent';
+import { useModal } from '../../../contexts/useModal';
 import { IChatMessage } from '../../../pages/GyosuAIChat';
 
 export interface ChatSession {
@@ -31,6 +34,11 @@ const fetchChatSessions = async (endpoint: string, token: string | null) => {
 };
 
 const useChatSessions = (endpoint: string) => {
+
+    const navigate = useNavigate()
+
+    const { openModal } = useModal();
+
     const { session } = useClerk();
     const queryClient = useQueryClient();
 
@@ -41,7 +49,81 @@ const useChatSessions = (endpoint: string) => {
         enabled: !!session,
     });
 
-    // const shareChatSessionMutation = useMutation(/* ... */);
+    const shareChatSessionMutation = useMutation(
+        async (sessionId: string) => {
+            const token = session ? await session.getToken() : 'none';
+            const response = await fetch(`${endpoint}share/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': token ? `Bearer ${token}` : '',
+                },
+                body: JSON.stringify(humps.decamelizeKeys({ sessionId })),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(`HTTP error! status: ${response.status}, details: ${errorData}`);
+            }
+
+            const responseData = await response.json();
+            return humps.camelizeKeys(responseData);
+        },
+        {
+            // Optionally, you can define what happens on success, error, etc.
+            onSuccess: (data) => {
+                console.log(data)
+                console.log('Share link created:', data.shareUrl);
+                toast(`Share link created!`);
+                openModal('appModal', <ShareLinkModalContent link={data.shareUrl} />);
+            },
+            onError: (error) => {
+                console.error('Error creating share link:', error);
+            },
+        }
+    );
+
+    const acceptShareChatSessionMutation = useMutation(
+        async (token: string) => {
+            const sessionToken = session ? await session.getToken() : 'none';
+
+            console.log("got token", sessionToken)
+            const response = await fetch(`${endpoint}share/${token}/`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': sessionToken ? `Bearer ${sessionToken}` : '',
+                },
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(`HTTP error! status: ${response.status}, details: ${errorData}`);
+            }
+
+            const responseData = await response.json();
+            return humps.camelizeKeys(responseData);
+        },
+        {
+            onSuccess: (data) => {
+                if (data.sessionId) {
+                    navigate(`/math-app/chat/${data.sessionId}`)
+                    toast('Chat session created.')
+                    console.log('Chat session accepted:', data);
+                }
+                else {
+                    navigate(`/math-app/chat/`)
+                    toast('SessionId was not found in the response data, but session was created.')
+                    console.log('SessionId was not found in the response data, but session was created? data:', data);
+
+                }
+            },
+            onError: (error) => {
+                toast('Chat session share failed.')
+                navigate(`/math-app/chat/`)
+                console.error('Error accepting chat session:', error);
+            },
+        }
+    );
 
     const renameChatSessionMutation = useMutation<any, Error, { sessionId: string, chatTitle: string }>(
         async ({ sessionId, chatTitle }) => {
@@ -53,7 +135,7 @@ const useChatSessions = (endpoint: string) => {
                     'Content-Type': 'application/json',
                     'Authorization': token ? `Bearer ${token}` : '',
                 },
-                body: JSON.stringify(body),
+                body: JSON.stringify(humps.decamelizeKeys(body)),
             });
 
             if (!response.ok) {
@@ -98,7 +180,7 @@ const useChatSessions = (endpoint: string) => {
                 queryClient.invalidateQueries(['chatSessions']);
                 toast(`Error: ${error}`, { id: 'error-toast' }); // Show toast notification on error
             },
-        }
+        },
     );
 
     return {
@@ -106,7 +188,8 @@ const useChatSessions = (endpoint: string) => {
         isLoading: query.isLoading,
         error: query.error,
         chatSessions: query.data,
-        // shareChatSession: shareChatSessionMutation.mutate,
+        acceptShareChatSession: acceptShareChatSessionMutation.mutate,
+        shareChatSession: shareChatSessionMutation.mutate,
         renameChatSession: renameChatSessionMutation.mutate,
         deleteChatSession: deleteChatSessionMutation.mutate,
     };

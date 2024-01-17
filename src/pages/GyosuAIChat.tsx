@@ -8,7 +8,7 @@ import rehypeKatex from 'rehype-katex';
 import remarkMath from 'remark-math';
 import ChatActions from '../components/ChatActions';
 import ChatSessionSidebar from '../components/ChatSessionSidebar';
-import useGetChatSessions from '../hooks/tools/math/useChatSessions';
+import useChatSessions from '../hooks/tools/math/useChatSessions';
 import useStreamedResponse from '../hooks/tools/math/useStreamedResponse';
 import useEnvironment from '../hooks/useEnvironment';
 
@@ -38,7 +38,7 @@ const GyosuAIChat = () => {
 
     const { data: streamedData, isLoading, error, startStreaming } = useStreamedResponse(streamedResponseEndpoint, {});
 
-    const { chatSessions } = useGetChatSessions(`${apiUrl}/math_app/chat/list/`);
+    const { chatSessions } = useChatSessions(`${apiUrl}/math_app/chat/`);
 
     useEffect(() => {
         if (sessionId && chatSessions) {

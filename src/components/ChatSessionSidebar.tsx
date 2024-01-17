@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import useChatSessions, { ChatSession } from '../hooks/tools/math/useChatSessions';
 import useEnvironment from '../hooks/useEnvironment';
 import EditIcon from '../svg/Edit';
+import ShareIcon from '../svg/Share';
 import TrashIcon from '../svg/TrashIcon';
 import OverflowMenuPortal from './OverflowMenuPortal';
 
@@ -54,7 +55,7 @@ const ChatSessionSidebar: React.FC = () => {
 
     const portalRootRef = useRef<HTMLDivElement>(null); // Create a ref for the portal root
 
-    const { chatSessions, isLoading, error, deleteChatSession, renameChatSession } = useChatSessions(chatSessionsEndpoint);
+    const { chatSessions, isLoading, error, deleteChatSession, renameChatSession, shareChatSession} = useChatSessions(chatSessionsEndpoint);
     const [openOverflowMenuId, setOpenOverflowMenuId] = useState<string | null>(null);
     const [editingSessionId, setEditingSessionId] = useState<string | null>(null);
     const [editingTitle, setEditingTitle] = useState('');
@@ -62,6 +63,10 @@ const ChatSessionSidebar: React.FC = () => {
     const handleEditClick = (sessionId: string, currentTitle: string) => {
         setEditingSessionId(sessionId);
         setEditingTitle(currentTitle);
+    };
+
+    const handleShareClick = (sessionId: string) => {
+        shareChatSession(sessionId)
     };
 
     const handleRenameSubmit = (sessionId: string) => {
@@ -147,6 +152,15 @@ const ChatSessionSidebar: React.FC = () => {
                                     <EditIcon />
                                     <div>
                                         Rename
+                                    </div>
+                                </button>
+                                <button onClick={() => handleShareClick(chat.sessionId)}
+                                    className="text-green-700 bg-gray-100 flex flex-row p-2"
+                                    data-tooltip-id={`edit-${chat.sessionId}`}
+                                >
+                                    <ShareIcon />
+                                    <div>
+                                        Share
                                     </div>
                                 </button>
                                 <button className='text-red-500 bg-gray-100 rounded-b flex flex-row p-2'

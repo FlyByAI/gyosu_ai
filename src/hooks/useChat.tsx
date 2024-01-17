@@ -1,7 +1,7 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useClerk } from '@clerk/clerk-react';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
-import { useClerk } from '@clerk/clerk-react';  
-import humps from 'humps';  
+import humps from 'humps';
 import { IChatMessage } from '../pages/GyosuAIChat';
 
 const useChat = (endpoint: string, sessionId?: string) => {
@@ -23,7 +23,7 @@ const useChat = (endpoint: string, sessionId?: string) => {
         });
         return humps.camelizeKeys(response.data);  
     }, {
-        enabled: !!sessionId 
+        enabled: !!session && !!sessionId
     });
 
    
