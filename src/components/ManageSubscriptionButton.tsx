@@ -20,7 +20,7 @@ const ManageSubscriptionButton: React.FC = () => {
     const { subscriptionInfo, isLoading } = useFetchSubscriptionInfo(`${apiUrl}/user_data/get_subscription_info/`);
 
     return (
-        !subscriptionInfo?.has_valid_subscription ?
+        subscriptionInfo?.has_valid_subscription ?
             <div
                 onClick={redirectToPortal}
                 className="rounded h-auto w-32 flex items-center justify-center cursor-pointer transition-colors hover:bg-gray-800"

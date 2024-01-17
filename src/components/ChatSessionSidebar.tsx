@@ -186,7 +186,7 @@ const ChatSessionSidebar: React.FC = () => {
 
 
     return (
-        <div className="chat-sidebar p-4 bg-gray-800 md:bg-transparent border border-gray-300 h-90vh md:h-75vh text-white flex flex-col"
+        <div className="chat-sidebar p-4 bg-gray-800 md:bg-transparent border border-gray-300 h-85vh md:h-75vh text-white flex flex-col"
             ref={portalRootRef}
             >
             <div className="flex-grow overflow-y-auto">
@@ -211,10 +211,10 @@ const ChatSessionSidebar: React.FC = () => {
                         {<UserButton afterSignOutUrl="/" appearance={getGyosuClerkTheme()} />}
                     </SignedIn>
                 </div>
-                <div className='text-xs mt-2 md:hidden'>
+                <div className='text-xs mt-2 md:hidden block'>
                     <LanguageDropdown />
                 </div>
-                <div className='text-xs mt-2 md:hidden' >
+                <div className='text-xs mt-2 md:hidden block' >
                     <ManageSubscriptionButton />
                 </div>
             </div>

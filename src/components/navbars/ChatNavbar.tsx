@@ -39,8 +39,9 @@ const ChatNavbar: React.FC = () => {
                 {/* desktop */}
                 <div className="hidden md:flex justify-between items-center py-2">
                     {/* New Chat Button with Margin */}
-                    <button onClick={navigateToNewChat} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-2">
-                        New Chat
+                    <button onClick={navigateToNewChat} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-2 flex-row flex">
+                        <div className='mr-4'>New Chat</div>
+                        <NewChatIcon/>
                     </button>
 
                     {/* Centered Title */}
