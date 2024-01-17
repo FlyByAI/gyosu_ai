@@ -204,8 +204,6 @@ const GyosuAIChat = () => {
                         <ChatActions actions={actions} />
                         <div ref={endOfMessagesRef} />
                     </div>
-                    {isLoading && <p>Loading...</p>}
-                    {error && <p>Error: {error}</p>}
                     <div className='h-1vh'></div>
                     <form onSubmit={handleChatSubmit} className="flex h-14vh">
                         <textarea
@@ -225,6 +223,7 @@ const GyosuAIChat = () => {
                             Send
                         </button>
                     </form>
+                    {error && <p>Error: {error}</p>}
                 </div>
             </div>
 
