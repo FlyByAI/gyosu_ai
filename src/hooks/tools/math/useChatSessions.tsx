@@ -183,6 +183,28 @@ const useChatSessions = (endpoint: string) => {
         },
     );
 
+    const deleteAllChatSessionsMutation = useMutation(
+        async () => {
+            const token = session ? await session.getToken() : 'none';
+            await fetch(`${endpoint}delete_all/`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': token ? `Bearer ${token}` : '',
+                },
+            });
+        },
+        {
+            onSuccess: () => {
+                queryClient.invalidateQueries(['chatSessions']);
+                toast("All chat sessions deleted successfully.", { id: 'success-toast' });
+            },
+            onError: (error) => {
+                toast(`Error deleting all chat sessions: ${error}`, { id: 'error-toast' });
+            },
+        }
+    );
+
     return {
         getChatSessions: query.refetch,
         isLoading: query.isLoading,
@@ -192,6 +214,8 @@ const useChatSessions = (endpoint: string) => {
         shareChatSession: shareChatSessionMutation.mutate,
         renameChatSession: renameChatSessionMutation.mutate,
         deleteChatSession: deleteChatSessionMutation.mutate,
+        deleteAllChatSessions: deleteAllChatSessionsMutation.mutate,
+
     };
 };
 

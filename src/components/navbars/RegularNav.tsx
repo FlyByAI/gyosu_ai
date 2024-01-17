@@ -3,6 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useDarkMode } from '../../contexts/useDarkMode';
 import { getGyosuClerkTheme } from '../../theme/customClerkTheme';
+import DeleteAllChatsButton from '../DeleteAllChatsButton';
 import HamburgerWrapper from '../HamburgerWrapper';
 import LanguageDropdown from '../LanguageDropdown';
 import ManageSubscriptionButton from '../ManageSubscriptionButton';
@@ -22,6 +23,7 @@ const RegularNavbar: React.FC = () => {
                         <HamburgerWrapper>
                             <LanguageDropdown />
                             <ManageSubscriptionButton />
+                            <DeleteAllChatsButton />
                         </HamburgerWrapper>
                     </SignedIn>
                     <SignedOut>

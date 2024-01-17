@@ -7,6 +7,7 @@ import EditIcon from '../svg/Edit';
 import ShareIcon from '../svg/Share';
 import TrashIcon from '../svg/TrashIcon';
 import { getGyosuClerkTheme } from '../theme/customClerkTheme';
+import DeleteAllChatsButton from './DeleteAllChatsButton';
 import LanguageDropdown from './LanguageDropdown';
 import ManageSubscriptionButton from './ManageSubscriptionButton';
 import OverflowMenuPortal from './OverflowMenuPortal';
@@ -216,6 +217,9 @@ const ChatSessionSidebar: React.FC = () => {
                 </div>
                 <div className='text-xs mt-2 md:hidden block' >
                     <ManageSubscriptionButton />
+                </div>
+                <div className='text-xs mt-2 md:hidden block' >
+                    <DeleteAllChatsButton />
                 </div>
             </div>
         </div>

@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import NewChatIcon from '../../svg/NewChatIcon';
 import ChatSessionSidebar from '../ChatSessionSidebar';
+import DeleteAllChatsButton from '../DeleteAllChatsButton';
 import HamburgerWrapper from '../HamburgerWrapper';
 import HamburgerWrapperX from '../HamburgerWrapperX';
 import LanguageDropdown from '../LanguageDropdown';
@@ -40,7 +41,7 @@ const ChatNavbar: React.FC = () => {
                 <div className="hidden md:flex justify-between items-center py-2">
                     {/* New Chat Button with Margin */}
                     <button onClick={navigateToNewChat} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-2 flex-row flex">
-                        <div className='mr-4'>New Chat</div>
+                        <div className='mr-4 '>New Chat</div>
                         <NewChatIcon/>
                     </button>
 
@@ -54,6 +55,7 @@ const ChatNavbar: React.FC = () => {
                         <HamburgerWrapper>
                             <LanguageDropdown />
                             <ManageSubscriptionButton />
+                            <DeleteAllChatsButton/>
                         </HamburgerWrapper>
                     </div> {/* Adjust width to match the New Chat button width */}
                 </div>
