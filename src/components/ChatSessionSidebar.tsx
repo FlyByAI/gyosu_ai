@@ -186,7 +186,9 @@ const ChatSessionSidebar: React.FC = () => {
 
 
     return (
-        <div className="chat-sidebar p-4 bg-gray-800 md:bg-transparent border border-gray-300 h-full text-white flex flex-col">
+        <div className="chat-sidebar p-4 bg-gray-800 md:bg-transparent border border-gray-300 h-full text-white flex flex-col"
+            ref={portalRootRef}
+            >
             <div className="flex-grow overflow-y-auto">
                 <ul className='overflow-y-auto'>
                     {renderChatsInSection(categorizedChats.today, "Today")}
