@@ -26,8 +26,6 @@ const OverflowMenu: React.FC<OverflowMenuProps> = ({
         {
             top: "0px",
             left: "0px",
-            position: 'absolute',
-            "z-index": 50, // Adjust as needed
         }
     )
     
@@ -69,8 +67,6 @@ const OverflowMenu: React.FC<OverflowMenuProps> = ({
         const styles = {
             top: "0px",
             left: "0px",
-            position: 'absolute',
-            "z-index": 50,
         };
 
         if (isOpen && buttonRef.current && portalRoot.current) {
@@ -81,6 +77,8 @@ const OverflowMenu: React.FC<OverflowMenuProps> = ({
 
         setMenuStyles(styles)
     }, [isOpen, portalRoot]);
+
+    const flickerFix = menuStyles.top === "0px"
 
     return (
         <div className="relative">
@@ -97,9 +95,9 @@ const OverflowMenu: React.FC<OverflowMenuProps> = ({
 
             {isOpen && portalRoot.current && ReactDOM.createPortal(
                 <div
-                    style={menuStyles}
+                    style={{...menuStyles}}
                     ref={menuRef}
-                    className="p-2 text-black bg-gray-900 rounded-lg absolute z-50"
+                    className={`p-2 text-black bg-gray-900 rounded-lg absolute z-50 ${flickerFix && "hidden"}`}
                 >
                     {renderMenuContent()}
                 </div>,
