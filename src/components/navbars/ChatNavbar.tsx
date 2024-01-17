@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import NewChatIcon from '../../svg/NewChatIcon';
 import ChatSessionSidebar from '../ChatSessionSidebar';
 import HamburgerWrapper from '../HamburgerWrapper';
 import HamburgerWrapperX from '../HamburgerWrapperX';
@@ -23,13 +24,15 @@ const ChatNavbar: React.FC = () => {
                     <HamburgerWrapperX>
                         <ChatSessionSidebar />
                     </HamburgerWrapperX>
-
                     {/* Title linking to root */}
                     <Link to="/" className="text-xl font-semibold text-white font-mono">Gyosu.ai</Link>
 
                     {/* New Chat Button */}
-                    <button onClick={navigateToNewChat} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                        New Chat
+                    <button onClick={navigateToNewChat} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex flex-row">
+                        <div className='mr-2'>
+                            New
+                        </div>
+                        <NewChatIcon />
                     </button>
                 </div>
 

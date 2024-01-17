@@ -186,11 +186,11 @@ const ChatSessionSidebar: React.FC = () => {
 
 
     return (
-        <div className="chat-sidebar p-4 bg-gray-800 md:bg-transparent border border-gray-300 h-full text-white flex flex-col"
+        <div className="chat-sidebar p-4 bg-gray-800 md:bg-transparent border border-gray-300 h-90vh text-white flex flex-col"
             ref={portalRootRef}
             >
             <div className="flex-grow overflow-y-auto">
-                <ul className='overflow-y-auto'>
+                <ul>
                     {renderChatsInSection(categorizedChats.today, "Today")}
                     {renderChatsInSection(categorizedChats.yesterday, "Yesterday")}
                     {renderChatsInSection(categorizedChats.previous7Days, "Previous 7 Days")}
@@ -200,7 +200,7 @@ const ChatSessionSidebar: React.FC = () => {
                 </ul>
             </div>
             <hr className='p-1' />
-            <div className="user-profile flex-shrink-0 mt-2">
+            <div className="user-profile">
                 <div className='flex flex-row justify-between'>
                     <SignedIn>
                         <div className="user-name text-white mt-2 text-xs mr-2">
@@ -211,10 +211,10 @@ const ChatSessionSidebar: React.FC = () => {
                         {<UserButton afterSignOutUrl="/" appearance={getGyosuClerkTheme()} />}
                     </SignedIn>
                 </div>
-                <div className='text-xs mt-2'>
+                <div className='text-xs mt-2 md:hidden'>
                     <LanguageDropdown />
                 </div>
-                <div className='text-xs mt-2'>
+                <div className='text-xs mt-2 md:hidden' >
                     <ManageSubscriptionButton />
                 </div>
             </div>

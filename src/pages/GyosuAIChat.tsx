@@ -68,7 +68,9 @@ const GyosuAIChat = () => {
     }, [session, openSignIn]);
 
     useEffect(() => {
-        endOfMessagesRef.current?.scrollIntoView({ behavior: "smooth" });
+        if (endOfMessagesRef.current) {
+            endOfMessagesRef.current.scrollIntoView({ behavior: "smooth" });
+        }
     }, [messages]);
 
     useEffect(() => {
