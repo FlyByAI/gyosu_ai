@@ -1,7 +1,10 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import ChatSessionSidebar from '../ChatSessionSidebar';
+import HamburgerWrapper from '../HamburgerWrapper';
 import HamburgerWrapperX from '../HamburgerWrapperX';
+import LanguageDropdown from '../LanguageDropdown';
+import ManageSubscriptionButton from '../ManageSubscriptionButton';
 
 const ChatNavbar: React.FC = () => {
     const navigate = useNavigate();
@@ -43,7 +46,12 @@ const ChatNavbar: React.FC = () => {
                     </div>
 
                     {/* Placeholder div to balance flex space */}
-                    <div className="w-[68px]"></div> {/* Adjust width to match the New Chat button width */}
+                    <div className="w-[68px]">
+                        <HamburgerWrapper>
+                            <LanguageDropdown />
+                            <ManageSubscriptionButton />
+                        </HamburgerWrapper>
+                    </div> {/* Adjust width to match the New Chat button width */}
                 </div>
 
             </header>

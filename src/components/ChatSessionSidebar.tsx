@@ -1,3 +1,4 @@
+import { SignedIn, UserButton, useClerk } from '@clerk/clerk-react';
 import React, { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import useChatSessions, { ChatSession } from '../hooks/tools/math/useChatSessions';
@@ -5,6 +6,9 @@ import useEnvironment from '../hooks/useEnvironment';
 import EditIcon from '../svg/Edit';
 import ShareIcon from '../svg/Share';
 import TrashIcon from '../svg/TrashIcon';
+import { getGyosuClerkTheme } from '../theme/customClerkTheme';
+import LanguageDropdown from './LanguageDropdown';
+import ManageSubscriptionButton from './ManageSubscriptionButton';
 import OverflowMenuPortal from './OverflowMenuPortal';
 
 type SectionLabels = {
@@ -53,9 +57,11 @@ const ChatSessionSidebar: React.FC = () => {
     const { apiUrl } = useEnvironment();
     const chatSessionsEndpoint = `${apiUrl}/math_app/chat/`;
 
+    const { user } = useClerk();
+
     const portalRootRef = useRef<HTMLDivElement>(null); // Create a ref for the portal root
 
-    const { chatSessions, isLoading, error, deleteChatSession, renameChatSession, shareChatSession} = useChatSessions(chatSessionsEndpoint);
+    const { chatSessions, isLoading, error, deleteChatSession, renameChatSession, shareChatSession } = useChatSessions(chatSessionsEndpoint);
     const [openOverflowMenuId, setOpenOverflowMenuId] = useState<string | null>(null);
     const [editingSessionId, setEditingSessionId] = useState<string | null>(null);
     const [editingTitle, setEditingTitle] = useState('');
@@ -180,16 +186,38 @@ const ChatSessionSidebar: React.FC = () => {
 
 
     return (
-        <div className="chat-sidebar p-4 bg-gray-800 md:bg-transparent border border-gray-300 h-full text-white overflow-y-auto" ref={portalRootRef}>
-            <ul>
-                {renderChatsInSection(categorizedChats.today, "Today")}
-                {renderChatsInSection(categorizedChats.yesterday, "Yesterday")}
-                {renderChatsInSection(categorizedChats.previous7Days, "Previous 7 Days")}
-                {renderChatsInSection(categorizedChats.previous30Days, "Previous 30 Days")}
-                {renderChatsInSection(categorizedChats.previous90Days, "Previous 90 Days")}
-                {renderChatsInSection(categorizedChats.older, "Older")}
-            </ul>
+        <div className="chat-sidebar p-4 bg-gray-800 md:bg-transparent border border-gray-300 h-full text-white flex flex-col">
+            <div className="flex-grow overflow-y-auto">
+                <ul className='overflow-y-auto'>
+                    {renderChatsInSection(categorizedChats.today, "Today")}
+                    {renderChatsInSection(categorizedChats.yesterday, "Yesterday")}
+                    {renderChatsInSection(categorizedChats.previous7Days, "Previous 7 Days")}
+                    {renderChatsInSection(categorizedChats.previous30Days, "Previous 30 Days")}
+                    {renderChatsInSection(categorizedChats.previous90Days, "Previous 90 Days")}
+                    {renderChatsInSection(categorizedChats.older, "Older")}
+                </ul>
+            </div>
+            <hr className='p-1' />
+            <div className="user-profile flex-shrink-0 mt-2">
+                <div className='flex flex-row justify-between'>
+                    <SignedIn>
+                        <div className="user-name text-white mt-2 text-xs mr-2">
+                            {user?.fullName || 'User Name'}
+                        </div>
+                    </SignedIn>
+                    <SignedIn>
+                        {<UserButton afterSignOutUrl="/" appearance={getGyosuClerkTheme()} />}
+                    </SignedIn>
+                </div>
+                <div className='text-xs mt-2'>
+                    <LanguageDropdown />
+                </div>
+                <div className='text-xs mt-2'>
+                    <ManageSubscriptionButton />
+                </div>
+            </div>
         </div>
+
     );
 };
 

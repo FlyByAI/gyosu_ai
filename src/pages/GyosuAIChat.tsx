@@ -159,7 +159,7 @@ const GyosuAIChat = () => {
     return (
         <>
             <div className="flex flex-row">
-                <div className="w-1/12 h-75vh hidden md:block">
+                <div className="w-1/6 h-75vh hidden md:block">
                     <ChatSessionSidebar />
                 </div>
                 <div className="flex-grow mx-auto">
@@ -204,7 +204,8 @@ const GyosuAIChat = () => {
                     </div>
                     {isLoading && <p>Loading...</p>}
                     {error && <p>Error: {error}</p>}
-                    <form onSubmit={handleChatSubmit} className="flex mt-2">
+                    <div className='h-1vh'></div>
+                    <form onSubmit={handleChatSubmit} className="flex h-14vh">
                         <textarea
                             name="input"
                             placeholder={isLoading ? "Loading..." : "Type your message..."}

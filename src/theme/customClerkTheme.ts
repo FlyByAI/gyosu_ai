@@ -23,6 +23,12 @@ export const getGyosuClerkTheme = () => {
                     boxShadow: '7px 7px 0px #000',
                     border: '3px solid #fff',
                 },
+            },
+            avatarBox: {
+                innerWidth: "10px",
+                outerWidth: "10px",
+                innerHeight: "10px",
+                outerHeight: "10px",
             }
         })
 }
