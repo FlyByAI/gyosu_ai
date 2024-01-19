@@ -1,12 +1,12 @@
+import { useClerk } from '@clerk/clerk-react';
 import React, { useEffect, useRef, useState } from 'react';
 import 'tailwindcss/tailwind.css';
-import { useClerk, useUser } from '@clerk/clerk-react';
-import { Chunk, GenerateFormData, ProblemData, TextbookProblemData } from '../interfaces';
 import ProblemBankShelf from '../components/document/ProblemBankShelf';
 import ChunkManager from '../components/math/ChunkManager';
+import CompetitonMathGenerateForm from '../components/math/CompetitonMathGenerateForm';
 import TextbookGenerateForm from '../components/math/TextbookGenerateForm';
 import { useScreenSize } from '../contexts/ScreenSizeContext';
-import CompetitonMathGenerateForm from '../components/math/CompetitonMathGenerateForm';
+import { Chunk, GenerateFormData } from '../interfaces';
 
 
 const MathGenerate: React.FC = () => {
@@ -50,7 +50,6 @@ const MathGenerate: React.FC = () => {
             <div className="w-5/6 mt-4 overflow-x-hidden" style={{ marginRight: isDesktop ? '16.6667%' : "0" }}>
                 <div className="flex justify-start items-center flex-col">
                     <div className="w-full md:w-2/3 mx-4 md:mx-0 bg-gray-700 rounded-lg p-4 my-4 shadow-lg flex flex-col">
-                        {/* <h1 className="text-2xl font-bold text-center mb-4 text-white">Problem Search</h1> */}
 
                         <div className="text-left text-white mb-4">
                             <span className="font-bold items-left ml-4 italic">Step 1: Select Problem Source</span>
@@ -82,9 +81,9 @@ const MathGenerate: React.FC = () => {
 
                     </div>
 
-                    <div ref={myRef} className="w-full md:w-3/4 mx-4 md:mx-0 rounded-lg p-4 my-4 shadow-lg items-center flex flex-col">
+                    {generateFormData && <div ref={myRef} className="w-full md:w-3/4 mx-4 md:mx-0 rounded-lg p-4 my-4 shadow-lg items-center flex flex-col">
                         <div className='w-full md:w-5/6'>
-                            {generateFormData &&
+                            {
                                 chunkArray.length > 0 &&
                                 <ChunkManager
                                     setChunkArray={setChunkArray}
@@ -92,6 +91,8 @@ const MathGenerate: React.FC = () => {
                                 />}
                         </div>
                     </div>
+
+                    }
                 </div>
             </div>
         </div>

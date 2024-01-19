@@ -1,9 +1,9 @@
+import { SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/clerk-react';
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { SignedIn, SignedOut, UserButton, SignInButton } from '@clerk/clerk-react';
+import { Link } from 'react-router-dom';
 import { useDarkMode } from '../../contexts/useDarkMode';
-import LanguageDropdown from '../LanguageDropdown';
 import { getGyosuClerkTheme } from '../../theme/customClerkTheme';
+import DeleteAllChatsButton from '../DeleteAllChatsButton';
 import HamburgerWrapper from '../HamburgerWrapper';
 import ManageSubscriptionButton from '../ManageSubscriptionButton';
 
@@ -18,10 +18,11 @@ const FixedNavbar: React.FC = () => {
         <Link to="/" className="text-3xl font-semibold text-white justify-self-center lg:justify-self-start font-mono">Gyosu.ai</Link>
         <div className="flex items-center justify-self-center sm:block">
           <SignedIn>
-            {darkMode ? <UserButton afterSignOutUrl="/" appearance={getGyosuClerkTheme()} /> : <UserButton afterSignOutUrl="http://localhost:5173/" />}
+            {darkMode ? <UserButton afterSignOutUrl="/" appearance={getGyosuClerkTheme()} /> : <UserButton afterSignOutUrl="/" />}
             <HamburgerWrapper>
-              <LanguageDropdown />
+              {/* <LanguageDropdown /> */}
               <ManageSubscriptionButton />
+              <DeleteAllChatsButton/>
             </HamburgerWrapper>
           </SignedIn>
           <SignedOut>
@@ -30,6 +31,12 @@ const FixedNavbar: React.FC = () => {
         </div>
       </div>
       <nav className="grid grid-cols-2 gap-2 lg:flex lg:space-x-3 pt-4">
+        <Link to="/math-app/chat" className="text-lg text-white hover:underline dark:text-gray-200 lg:justify-self-end block sm:hidden">
+          Chat
+        </Link>
+        {/* <Link to="/math-app/playground" className="text-lg text-white hover:underline dark:text-gray-200 lg:justify-self-end block sm:hidden">
+          Playground
+        </Link> */}
         <Link to="/math-app" className="text-lg text-white hover:underline dark:text-gray-200 lg:justify-self-end block sm:hidden">
           Problem Search
         </Link>
@@ -49,6 +56,12 @@ const FixedNavbar: React.FC = () => {
         <Link to="/" className="text-3xl font-semibold text-white font-mono">Gyosu.ai</Link>
         <div className="flex items-center">
           <nav>
+            <Link to="/math-app/chat" className="text-lg text-white mx-3 hover:underline dark:text-gray-200 font-mono font-bold">
+              Chat
+            </Link>
+            {/* <Link to="/math-app/playground" className="text-lg text-white mx-3 hover:underline dark:text-gray-200 font-mono font-bold">
+              Playground
+            </Link> */}
             <Link to="/math-app" className="text-lg text-white mx-3 hover:underline dark:text-gray-200 font-mono font-bold">
               Problem Search
             </Link>
@@ -63,9 +76,9 @@ const FixedNavbar: React.FC = () => {
             </Link>
           </nav>
           <SignedIn>
-            {darkMode ? <UserButton afterSignOutUrl="/" appearance={getGyosuClerkTheme()} /> : <UserButton afterSignOutUrl="http://localhost:5173/" />}
+            {darkMode ? <UserButton afterSignOutUrl="/" appearance={getGyosuClerkTheme()} /> : <UserButton afterSignOutUrl="/" />}
             <HamburgerWrapper>
-              <LanguageDropdown />
+              {/* <LanguageDropdown /> */}
               <ManageSubscriptionButton />
             </HamburgerWrapper>
           </SignedIn>

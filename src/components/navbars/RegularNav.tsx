@@ -1,10 +1,9 @@
+import { SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/clerk-react';
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { SignedIn, SignedOut, UserButton, SignInButton } from '@clerk/clerk-react';
+import { Link } from 'react-router-dom';
 import { useDarkMode } from '../../contexts/useDarkMode';
-import LanguageDropdown from '../LanguageDropdown';
 import { getGyosuClerkTheme } from '../../theme/customClerkTheme';
-import Hamburger from 'hamburger-react'
+import DeleteAllChatsButton from '../DeleteAllChatsButton';
 import HamburgerWrapper from '../HamburgerWrapper';
 import ManageSubscriptionButton from '../ManageSubscriptionButton';
 
@@ -13,24 +12,42 @@ const RegularNavbar: React.FC = () => {
     const { darkMode } = useDarkMode();
 
     return (
-        <header className="px-6 pb-4 bg-blue-900 text-white dark:bg-gray-900 dark:text-gray-200">
+        <header className="px-6 pb-4 sm:pt-0 pt-4 bg-blue-900 text-white dark:bg-gray-900 dark:text-gray-200">
             {/* mobile */}
             <div className="flex flex-row container mx-auto grid-cols-2 lg:grid-cols-2 items-center justify-between gap-4 sm:hidden">
                 <Link to="/" className="text-3xl font-semibold text-white justify-self-center lg:justify-self-start font-mono">Gyosu.ai</Link>
                 <div className="flex items-center justify-self-center sm:block">
                     <SignedIn>
-                        {darkMode ? <UserButton afterSignOutUrl="/" appearance={getGyosuClerkTheme()} /> : <UserButton afterSignOutUrl="http://localhost:5173/" />}
+                        {darkMode ? <UserButton afterSignOutUrl="/" appearance={getGyosuClerkTheme()} /> : <UserButton afterSignOutUrl="/" />}
                         <HamburgerWrapper>
-                            <LanguageDropdown />
+                            {/* <LanguageDropdown /> */}
                             <ManageSubscriptionButton />
+                            <DeleteAllChatsButton />
                         </HamburgerWrapper>
                     </SignedIn>
                     <SignedOut>
-                        <SignInButton mode="modal" />
+                        <div
+                            className="flex justify-center items-center bg-orange-500 hover:bg-orange-600 rounded-md p-2 cursor-pointer"
+                            onClick={(e) => {
+                                // Programmatically click the inner button
+                                const button = e.currentTarget.querySelector('button');
+                                if (button) {
+                                    button.click();
+                                }
+                            }}
+                        >
+                            <SignInButton mode="modal" />
+                        </div>
                     </SignedOut>
                 </div>
             </div>
             <nav className="grid grid-cols-2 gap-2 lg:flex lg:space-x-3 pt-4">
+                <Link to="/math-app/chat" className="text-lg text-white hover:underline dark:text-gray-200 lg:justify-self-end block sm:hidden">
+                    Chat
+                </Link>
+                {/* <Link to="/math-app/playground" className="text-lg text-white hover:underline dark:text-gray-200 lg:justify-self-end block sm:hidden">
+                    Playground
+                </Link> */}
                 <Link to="/math-app" className="text-lg text-white hover:underline dark:text-gray-200 lg:justify-self-end block sm:hidden">
                     Problem Search
                 </Link>
@@ -46,10 +63,16 @@ const RegularNavbar: React.FC = () => {
             </nav>
 
             {/* desktop */}
-            <div className="flex justify-between items-center hidden sm:flex">
+            <div className="justify-between items-center hidden sm:flex">
                 <Link to="/" className="text-3xl font-semibold text-white font-mono">Gyosu.ai</Link>
                 <div className="flex items-center">
-                    <nav>
+                    <nav className="flex">
+                        <Link to="/math-app/chat" className="text-lg text-white mx-3 hover:underline dark:text-gray-200 font-mono font-bold">
+                            Chat
+                        </Link>
+                        {/* <Link to="/math-app/playground" className="text-lg text-white mx-3 hover:underline dark:text-gray-200 font-mono font-bold">
+                            Playground
+                        </Link> */}
                         <Link to="/math-app" className="text-lg text-white mx-3 hover:underline dark:text-gray-200 font-mono font-bold">
                             Problem Search
                         </Link>
@@ -64,9 +87,9 @@ const RegularNavbar: React.FC = () => {
                         </Link>
                     </nav>
                     <SignedIn>
-                        {darkMode ? <UserButton afterSignOutUrl="/" appearance={getGyosuClerkTheme()} /> : <UserButton afterSignOutUrl="http://localhost:5173/" />}
+                        {darkMode ? <UserButton afterSignOutUrl="/" appearance={getGyosuClerkTheme()} /> : <UserButton afterSignOutUrl="/" />}
                         <HamburgerWrapper>
-                            <LanguageDropdown />
+                            {/* <LanguageDropdown /> */}
                             <ManageSubscriptionButton />
                         </HamburgerWrapper>
                     </SignedIn>

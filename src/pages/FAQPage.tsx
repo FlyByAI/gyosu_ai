@@ -8,6 +8,35 @@ const faqs = [
         answer: 'Gyosu is a collection of tools for teachers to empower them to create personalized learning experiences for their students. We have one prototype available, the "generate math worksheets" tool. We\'ve launched early as we want to develop in public, so think of the bugs as those surprise insects in your backyard – always there to keep gardening interesting. But we\'re improving every day, with your feedback as our guide!'
     },
     {
+        question: 'How do I create and use a problem bank?',
+        answer: (
+            <>
+                <p className="text-base mb-4">Creating and using a problem bank involves the following steps:</p>
+
+                <div className="text-lg font-semibold mb-2">Step 1: Go to Problem Search</div>
+                <p className="text-base mb-4">Navigate to the <Link className="text-blue-300 underline" to='/math-app'>problem search</Link> section to find the problems you want to include in your problem bank.</p>
+
+                <div className="text-lg font-semibold mb-2">Step 2: Search for Problems</div>
+                <p className="text-base mb-4">Use the available filters and search functionalities to find specific problems that align with your objectives.</p>
+
+                <div className="text-lg font-semibold mb-2">Step 3: Add Problems to Your Bank</div>
+                <p className="text-base mb-4">
+                    After finding relevant problems, you can add them to your problem bank:
+                    <ul className="list-disc list-inside pl-5">
+                        <li>On desktop: Drag the problems into the problem bank section.</li>
+                        <li>On mobile: Click the '+' icon next to a problem, then select a problem bank to add them to.</li>
+                    </ul>
+                </p>
+
+                <div className="text-lg font-semibold mb-2">Step 4: Visit the Playground</div>
+                <p className="text-base mb-4">Once your problem bank is ready, go to the <Link className="text-blue-300 underline" to='/math-app/playground'>playground</Link> where you can use the problems to create a document.</p>
+
+                <div className="text-lg font-semibold mb-2">Step 5: Create a Document</div>
+                <p className="text-base mb-4">In the playground, plug in your problem bank, make necessary adjustments, and finalize the document creation process by following the on-screen instructions.</p>
+            </>
+        )
+    },
+    {
         question: 'How do I create a worksheet?',
         answer: (
             <>
@@ -27,14 +56,6 @@ const faqs = [
             </>
         )
     },
-    // {
-    //     question: 'What is the "generate math worksheets" tool, and why would I use it?',
-    //     answer: 'Crafting individual math worksheets manually is like tilling a field with a fork or planting a garden with a teaspoon – it\'s doable, but you might want to invest in a plow, a shovel, or better yet, our tool! The generate math worksheets tool simplifies this process, by providing core math problems and then enabling customization through AI. Tailored content is essential for effective learning, and our goal is to make it easier for you to achieve this customization.'
-    // },
-    // {
-    //     question: 'What kind of customization options are currently supported through the “Chat with AI” feature?',
-    //     answer: 'While we have big dreams for endless customization, here\'s the reality check of what currently works well:\n- Make the problem more engaging.\n- Change the topic to video games, animals, social media, etc.\n- Adjust the difficulty.\n- Change the numbers.\n- Translate to another language.\nThink of it as your very own customizable math playground (without the swings).'
-    // },
     {
         question: 'How can I search for problems?',
         answer: (
@@ -64,26 +85,10 @@ const faqs = [
             </>
         )
     },
-    // {
-    //     question: 'How do I edit a problem?',
-    //     answer: 'Each problem comes with an edit button, chat to AI chat box, thumbs up/down button, fix formatting button, and a reroll button. It’s like having a toolbox for each problem.'
-    // },
-    // {
-    //     question: 'Can I create a problem from scratch?',
-    //     answer: 'Yes, you can chat with the AI to create new problems or modify existing ones.'
-    // },
     {
         question: 'How do I delete a problem?',
         answer: 'Click the trash icon on the problem you wish to delete.'
     },
-    // {
-    //     question: 'Can I save my work and continue later?',
-    //     answer: 'Absolutely. Save your work with the top right button, and it\'ll be waiting like that stack of papers you\'ve been meaning to grade.'
-    // },
-    // {
-    //     question: 'How do I export my worksheet?',
-    //     answer: 'You can export your worksheet to a PDF by clicking the print button.'
-    // },
     {
         question: 'Is there any support available if I run into issues?',
         answer: (

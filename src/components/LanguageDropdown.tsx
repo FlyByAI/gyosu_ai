@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { languageNames, flagOptions } from "../helpers/language";
-import { useLanguage } from "../contexts/useLanguage";
 import 'flag-icon-css/css/flag-icons.min.css';
+import { useState } from "react";
+import { useLanguage } from "../contexts/useLanguage";
+import { languageNames } from "../helpers/language";
 
 interface LanguageDropdownProps {
     className?: string;
@@ -17,7 +17,7 @@ const LanguageDropdown = ({ className }: LanguageDropdownProps) => {
     };
 
     return (
-        <div className={className + " p-2 hidden sm:flex hover:bg-gray-800"}>
+        <div className={className + " hover:bg-gray-800"}>
             <div className="cursor-pointer" onClick={() => setShowOptions(!showOptions)}>
                 Change Language
             </div>

@@ -1,56 +1,58 @@
-import { useState, useEffect } from 'react';
+import { useClerk } from '@clerk/clerk-react';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
-import { IChatData, Message } from '../interfaces';
+import humps from 'humps';
+import { IChatMessage } from '../pages/GyosuAIChat';
 
+const useChat = (endpoint: string, sessionId?: string) => {
+    const queryClient = useQueryClient();
+    const { session } = useClerk(); 
 
-
-const useChat = (endpoint: string, sessionId: string) => {
-
-
-    const [chatData, setChatData] = useState<IChatData>();
-
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState(null);
-
-    const sendMessage = async (message: Message) => {
-        setIsLoading(true);
-        try {
-            let response;
-            if (chatData) {
-                response = await axios.post(`${endpoint}/${sessionId}/`, { message });
-            }
-            setChatData(response?.data);
-        } catch (err: any) {
-            setError(err.message);
-        } finally {
-            setIsLoading(false);
-        }
+    const getBearerToken = async () => {
+        return session ? `Bearer ${await session.getToken()}` : 'none';
     };
 
-    useEffect(() => {
-        const fetchChat = async (sessionId: string) => {
-            setIsLoading(true);
-            try {
-                const response = await axios.get(`${endpoint}/${sessionId}/`);
-                setChatData(response.data);
-            } catch (err: any) {
-                if (err.response && err.response.status !== 404) {
-                    setError(err.message);
-                }
-            } finally {
-                setIsLoading(false);
-            }
+   
+    const { data: chatData, isLoading, isError, error } = useQuery(['chat', sessionId], async () => {
+        if (!sessionId) return;
+        const bearerToken = await getBearerToken();
+        const response = await axios.get(`${endpoint}/${sessionId}/`, {
+            headers: {
+                'Authorization': bearerToken,
+            },
+        });
+        return humps.camelizeKeys(response.data);  
+    }, {
+        enabled: !!session && !!sessionId
+    });
+
+   
+    const sendMessageMutation = useMutation(async ({ newMessage, allMessages }: { newMessage: IChatMessage, allMessages: IChatMessage[] }) => {
+        const bearerToken = await getBearerToken();
+        const payload = {
+            newMessage,
+            conversation: allMessages,
         };
-
-        if (sessionId) {
-            fetchChat(sessionId);
+        const url = sessionId ? `${endpoint}/${sessionId}/` : endpoint;
+        const response = await axios.post(url, humps.decamelizeKeys(payload), { 
+            headers: {
+                'Authorization': bearerToken,
+            },
+        });
+        return humps.camelizeKeys(response.data); 
+    }, {
+        onSuccess: (data) => {
+           
+            queryClient.setQueryData(['chat', sessionId], data);
         }
-        else {
-            console.log("no session id")
-        }
-    }, [sessionId, endpoint]);
+    });
 
-    return { chatData, isLoading, error, sendMessage };
+   
+    const sendMessage = (newMessage: IChatMessage, allMessages: IChatMessage[]) => {
+        sendMessageMutation.mutate({ newMessage, allMessages });
+    };
+
+    return { chatData, isLoading, isError, error, sendMessage };
 };
 
 export default useChat;

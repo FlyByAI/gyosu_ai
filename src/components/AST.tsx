@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import 'katex/dist/katex.min.css';
 import KaTeX from 'katex';
-import { CHUNK_DRAG_TYPE, CHUNK_TYPE, Chunk, Document, INSTRUCTION_DRAG_TYPE, INSTRUCTION_TYPE, Instruction, PROBLEM_DRAG_TYPE, PROBLEM_TYPE, Problem } from '../interfaces';
+import { CHUNK_DRAG_TYPE, CHUNK_TYPE, Chunk, Document, INSTRUCTION_DRAG_TYPE, INSTRUCTION_TYPE, Instruction, PROBLEM_DRAG_TYPE, PROBLEM_TYPE, Problem, Subproblem, Subproblems } from '../interfaces';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
@@ -344,6 +344,8 @@ const InstructionComponent: React.FC<InstructionProps> = ({ chunkIndex, parentCh
                                         className="text-xs md:text-lg z-10 p-1 m-1 border-2 border-transparent border-dashed hover:border-2 group-hover:border-2 group-hover:border-dashed"
                                     />
                                 );
+                            case 'subproblems':
+                                return <SubproblemsComponent subproblems={item} />;
                             default:
                                 return null;
                         }
@@ -468,6 +470,8 @@ const ProblemComponent: React.FC<ProblemProps> = ({ chunkIndex, parentChunk, par
                                         className="text-xs md:text-lg z-10 p-1 m-1 border-2 border-transparent border-dashed hover:border-2 group-hover:border-2 group-hover:border-dashed"
                                     />
                                 );
+                            case 'subproblems':
+                                return <SubproblemsComponent subproblems={item} />;
                             default:
                                 return null;
                         }
@@ -479,4 +483,64 @@ const ProblemComponent: React.FC<ProblemProps> = ({ chunkIndex, parentChunk, par
     );
 };
 
-export default ProblemComponent;
+interface SubproblemsProps {
+    subproblems: Subproblems;
+}
+
+const SubproblemsComponent: React.FC<SubproblemsProps> = ({ subproblems }) => {
+    return (
+        <div className="flex flex-col">
+            {subproblems.content.map((subproblem, index) => (
+                <SubproblemComponent key={index} subproblem={subproblem} />
+            ))}
+        </div>
+    );
+};
+
+interface SubproblemProps {
+    subproblem: Subproblem
+}
+
+const SubproblemComponent: React.FC<{ subproblem: Subproblem }> = ({ subproblem }: SubproblemProps) => {
+    return (
+        <div className="flex flex-col items-center text-xs md:text-lg z-10 p-1 m-1 border-2 border-transparent border-dashed hover:border-2 group-hover:border-2 group-hover:border-dashed">
+            <div className="mb-2 font-bold">{subproblem.label}</div>
+            {subproblem.content.map((item, index) => (
+                <span key={index}>
+                    {(() => {
+                        switch (item.type) {
+                            case 'text':
+                                return <div className="text-xs md:text-lg z-10 p-1 m-1 border-2 border-transparent border-dashed hover:border-blue-500">{item.value}</div>;
+                            case 'math':
+                                return (
+                                    <ReactMarkdown
+                                        className="text-xs md:text-lg z-10 p-1 m-1 border-2 border-transparent border-dashed hover:border-yellow-500"
+                                        remarkPlugins={[remarkGfm, remarkMath]}
+                                        rehypePlugins={[rehypeKatex]}
+                                    >
+                                        {`${item.value}`}
+                                    </ReactMarkdown>
+                                );
+                            case 'table':
+                                return (
+                                    <ReactMarkdown
+                                        className="text-xs md:text-lg z-10 p-1 m-1 border-2 border-transparent border-dashed hover:border-purple-500"
+                                        remarkPlugins={[remarkGfm, remarkMath]}
+                                        rehypePlugins={[rehypeKatex]}
+                                    >
+                                        {String.raw`${item.value}`}
+                                    </ReactMarkdown>
+                                );
+                            case 'image':
+                                return <img src={item.value} alt="Description" className="text-xs md:text-lg z-10 p-1 m-1 border-2 border-transparent border-dashed hover:border-green-500" />;
+                            default:
+                                return null;
+                        }
+                    })()}
+                </span>
+            ))}
+        </div>
+    );
+};
+
+export default SubproblemComponent;

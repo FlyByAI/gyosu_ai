@@ -15,7 +15,6 @@ const Pricing = () => {
             <section id="pricing">
                 <div className='flex flex-col md:flex-row justify-between'>
 
-                    {/* Card Container */}
                     <div className="tier w-full md:w-1/3 p-6 rounded-md shadow-lg bg-gray-800 border border-gray-700 my-4 md:mx-4">
                         <h2 className='text-2xl font-semibold mb-1 text-center'>Free</h2>
                         <p className='my-4 text-left'>For educators with minimal document creation needs.</p>
@@ -28,7 +27,6 @@ const Pricing = () => {
                         <br></br>
                         <div className='mb-2' />
                         <hr></hr>
-                        {/* Features List */}
                         <p className='my-4 text-left'>Plan includes:</p>
                         <ul className='list-decimal-none list-inside text-left space-y-4 mt-4 flex flex-col'>
                             <li className="flex flex-row"><CheckmarkIcon />Full access to problem database</li>
@@ -38,7 +36,6 @@ const Pricing = () => {
                         </ul>
                     </div>
 
-                    {/* Educator Tier Card */}
                     <div className="tier w-full md:w-1/3 p-6 rounded-md shadow-lg bg-gray-800 border border-gray-700 my-4 md:mx-4">
                         <h2 className='text-2xl font-semibold mb-1 text-center'>Educator</h2>
                         <p className='my-4 text-left'>For teachers with normal class needs.</p>
@@ -55,7 +52,6 @@ const Pricing = () => {
                         </ul>
                     </div>
 
-                    {/* Premium Tier Card */}
                     <div className="tier w-full md:w-1/3 p-6 rounded-md shadow-lg bg-gray-800 border border-gray-700 my-4 md:mx-4">
                         <h2 className='text-2xl font-semibold mb-1 text-center'>School</h2>
                         <p className='my-4 text-left'>For Schools with advanced educational needs.</p>

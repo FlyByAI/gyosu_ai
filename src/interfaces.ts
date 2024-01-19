@@ -1,3 +1,4 @@
+import { IChatMessage } from "./pages/GyosuAIChat";
 
 export interface GenerateFormData {
     data: TextbookProblemData | CompetitionData;
@@ -83,15 +84,9 @@ export interface ISubscriptionDataSnake {
     consent_ip: string;
 }
 
-export interface Message {
-    text: string;
-    plotlyData?: any;
-    images?: string[]; // assuming images are URLs to the images
-}
-
 export type IChatData = {
     sessionId: string;
-    messages: Message[];
+    messages: IChatMessage[];
 };
 
 export interface IRestaurant {
@@ -158,16 +153,26 @@ export interface Chunk {
 
 export interface Instruction {
     type: typeof INSTRUCTION_TYPE;
-    content: (Text | Math | Table | Image)[];
+    content: (Text | Math | Table | Image | Subproblems)[];
     instructionId?: number;
 }
 
 export interface Problem {
     type: typeof PROBLEM_TYPE;
-    content: (Text | Math | Table | Image)[];
+    content: (Text | Math | Table | Image | Subproblems)[];
     problemId?: number;
 }
 
+export interface Subproblems {
+    type: "subproblems";
+    content: (Subproblem)[];
+}
+
+export interface Subproblem {
+    type: "subproblem";
+    label: string;
+    content: (Text | Math | Table | Image)[];
+}
 export interface Text {
     type: "text";
     value: string;

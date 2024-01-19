@@ -1,12 +1,34 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import ArrowRightMore from '../svg/ArrowRightMore';
-import MathProblem from '../components/math/MathProblem';
-import { Chunk, ProblemData } from '../interfaces';
-import AIChatSmallWrapper from '../components/math/AIChatSmallWrapper';
+import { useClerk } from '@clerk/clerk-react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import LoopingText from '../components/LoopingText';
+import ArrowRightMore from '../svg/ArrowRightMore';
+import DocxSVG from '../svg/DocxSVG';
+import PdfSVG from '../svg/PdfSVG';
 
 const LandingPage: React.FC = () => {
+
+    const [inputText, setInputText] = useState('');
+    const { session, openSignIn } = useClerk();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const savedMessage = localStorage.getItem('userMessage');
+        if (session && savedMessage) {
+            navigate('/math-app/chat', { state: { text: savedMessage } });
+            localStorage.removeItem('userMessage');
+        }
+    }, [session, navigate]);
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!session) {
+            localStorage.setItem('userMessage', inputText);
+            openSignIn();
+        } else {
+            navigate('/math-app/chat', { state: { text: inputText } });
+        }
+    };
 
     return (
         <div>
@@ -16,12 +38,27 @@ const LandingPage: React.FC = () => {
                     <p className="font-bold mt-4 flex-col"><div className='mb-4'>Create math </div><LoopingText variant='typed' textArray={['worksheets', 'problems', 'quizzes', 'exams']} /></p>
                     <p className="font-bold mt-4">with AI</p>
                     <p className="mt-4 text-lg">Generative AI, for math teachers.</p>
-                    <Link className="text-sm" to="/math-app">
-                        <button className="bg-gradient-to-r from-blue-700 to-green-600 hover:from-blue-500 hover:to-green-500 text-white rounded-3xl flex items-center my-6 p-1 pl-4">
-                            Create a worksheet
-                            <ArrowRightMore className="p-2 text-lg" />
+                    <form onSubmit={handleSubmit} className="flex flex-col overflow-hidden shadow-lg my-4 p-2">
+                        <textarea
+                            value={inputText}
+                            onChange={(e) => setInputText(e.target.value)}
+                            placeholder="What do you want to teach today?"
+                            className="resize-none md:w-1/2 w-full bg-gray-100 text-black text-lg rounded leading-tight p-2 flex-1 border-green-300 border-2 focus:outline-none focus:border-2 focus:border-blue-300"
+                            style={{
+                                boxShadow: '0 0 5px rgba(81, 203, 238, 0.5)',
+                            }}
+                        />
+                        <button
+                            type="submit"
+                            className="md:w-1/3 w-2/3 text-white text-lg leading-tight bg-gradient-to-r from-blue-700 to-green-600 hover:from-blue-500 hover:to-green-500 rounded-full mt-2 px-4 py-2 flex items-center justify-center overflow-hidden flex-wrap"
+                            style={{
+                                boxShadow: '0 0 5px rgba(81, 203, 238, 0.5)',
+                            }}
+                        >
+                            Chat
+                            <ArrowRightMore className="ml-2" />
                         </button>
-                    </Link>
+                    </form>
                 </div>
             </section>
             <section className="h-full bg-gray-100 justify-center py-8 text-gray-700 flex flex-col items-center">
@@ -33,20 +70,28 @@ const LandingPage: React.FC = () => {
                 </div>
 
                 <div className='flex flex-col md:flex-row space-x-0 space-y-16 md:space-x-16 md:space-y-0 w-3/4 h-full'>
-                    <div className="w-full xl:w-1/3 text-gray-800 max-w-lg p-4 bg-orange-100 flex flex-col items-center rounded-3xl">
-                        <img className="w-1/4 sm:w-1/3 h-auto m-6" src="/svg/time.svg" alt="Time Illustration" />
+                    <div className="w-full xl:w-1/4 text-gray-800 max-w-lg p-4 bg-orange-100 flex flex-col items-center rounded-3xl">
+                        <img className="w-1/4 sm:w-1/4 h-auto m-6" src="/svg/time.svg" alt="Time Illustration" />
                         <div className="text-center text-2xl font-bold mb-4">Save Time</div>
                         <div className='text-left text-lg'>Spend more time with your students, spend less time finding problems & creating content.</div>
                     </div>
-                    <div className="w-full xl:w-1/3 text-gray-800 max-w-lg p-4 bg-blue-100 flex flex-col items-center rounded-3xl">
-                        <img className="w-1/4 sm:w-1/3 h-auto m-6" src="/svg/pencilwrench.svg" alt="Customization Illustration" />
+                    <div className="w-full xl:w-1/4 text-gray-800 max-w-lg p-4 bg-blue-100 flex flex-col items-center rounded-3xl">
+                        <img className="w-1/4 sm:w-1/4 h-auto m-6" src="/svg/pencilwrench.svg" alt="Customization Illustration" />
                         <div className="text-center text-2xl font-bold mb-4">Customize</div>
                         <div className='text-left text-lg'>Every year, class, and student is unique. Create customized content just for them.</div>
                     </div>
-                    <div className="w-full xl:w-1/3 text-gray-800 max-w-lg p-4 bg-pink-100 flex flex-col items-center rounded-3xl">
-                        <img className="w-1/4 sm:w-1/3 h-auto m-6" src="/svg/ai.svg" alt="AI Illustration" />
+                    <div className="w-full xl:w-1/4 text-gray-800 max-w-lg p-4 bg-pink-100 flex flex-col items-center rounded-3xl">
+                        <img className="w-1/4 sm:w-1/4 h-auto m-6" src="/svg/ai.svg" alt="AI Illustration" />
                         <div className="text-center text-2xl font-bold mb-4">AI</div>
-                        <div className="text-left text-lg">AI generated math problems that you can trust.</div>
+                        <div className="text-left text-lg">Chat with our AI to create math content, update it, and download it for class.</div>
+                    </div>
+                    <div className="w-full xl:w-1/4 text-gray-800 max-w-lg p-4 bg-green-100 flex flex-col items-center rounded-3xl">
+                        <div className='flex m-4'>
+                            <PdfSVG height="auto" width="auto" color="#cc1510" className='bg-white py-1 rounded-md mb-2 mr-4' />
+                            <DocxSVG height="auto" width="auto" color="#0167b3" className='bg-white py-1 rounded-md mb-2' />
+                        </div>
+                        <div className="text-center text-2xl font-bold mb-4">Download</div>
+                        <div className="text-left text-lg">Export your session quiz or worksheet in a format you can edit and print.</div>
                     </div>
                 </div>
             </section>
@@ -82,12 +127,27 @@ const LandingPage: React.FC = () => {
                     <h1 className="font-bold" ><LoopingText variant='typed' textArray={['Innovative', 'Impactful', 'Customized']} /></h1><h1>Education</h1>
                     <h1 className="font-bold"></h1>
                     <p className="mt-4 text-lg">starts with you.</p>
-                    <Link className="text-sm" to="/math-app">
-                        <button className="bg-gradient-to-r from-blue-700 to-green-600 hover:from-blue-500 hover:to-green-500 text-white rounded-3xl flex items-center my-6 p-1 pl-4">
-                            Start Creating
-                            <ArrowRightMore className="p-2 text-lg" />
+                    <form onSubmit={handleSubmit} className="flex flex-col overflow-hidden my-4 p-2">
+                        <textarea
+                            value={inputText}
+                            onChange={(e) => setInputText(e.target.value)}
+                            placeholder="What do you want to teach today?"
+                            className="resize-none md:w-1/2 w-full bg-gray-100 text-gray-100 text-lg rounded leading-tight p-2 flex-1 border-green-700 border"
+                            style={{
+                                boxShadow: '0 0 5px rgba(81, 203, 238, 0.5)',
+                            }}
+                        />
+                        <button
+                            type="submit"
+                            className="md:w-1/3 w-2/3 text-white text-lg leading-tight bg-gradient-to-r from-blue-700 to-green-600 hover:from-blue-500 hover:to-green-500 rounded-full mt-2 px-4 py-2 flex items-center justify-center overflow-hidden flex-wrap"
+                            style={{
+                                boxShadow: '0 0 5px rgba(81, 203, 238, 0.5)',
+                            }}
+                        >
+                            Chat
+                            <ArrowRightMore className="ml-2" />
                         </button>
-                    </Link>
+                    </form>
                 </div>
                 <img className="w-1/3 h-auto" src="/svg/teacher2.svg" alt="Teacher illustration with stack of books" />
             </section>

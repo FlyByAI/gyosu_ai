@@ -1,5 +1,5 @@
 .dark {
-  background-color: #13203b;
+  background-color: #1d2b4a;
 }
 
 .glow {
@@ -88,4 +88,19 @@ table tr:nth-child(odd) td {
 .scroll-out {
   transform: translateY(-100%);
   opacity: 0;
+}
+
+@keyframes scrollTextShort {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-200%); }
+}
+
+@keyframes scrollTextMedium {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-300%); }
+}
+
+@keyframes scrollTextLong {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-400%); }
 }
