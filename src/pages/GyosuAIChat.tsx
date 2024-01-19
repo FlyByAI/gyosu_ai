@@ -3,7 +3,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast/headless';
 import ReactMarkdown from 'react-markdown';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { GridLoader } from 'react-spinners'; // Import the spinner you prefer
 import rehypeKatex from 'rehype-katex';
 import remarkMath from 'remark-math';
 import ChatActions from '../components/ChatActions';
@@ -159,7 +158,7 @@ const GyosuAIChat = () => {
     };
 
     const getRole = (messageRole: string) => {
-        switch(messageRole) {
+        switch (messageRole) {
             case 'user':
                 return username;
             case 'assistant':
@@ -179,32 +178,28 @@ const GyosuAIChat = () => {
                     <div className="h-60vh overflow-y-scroll p-2 border border-gray-300 mx-2 text-gray-100">
                         {messages.map((message, index) => (
                             <div key={index} className={`p-2 my-1 border border-transparent rounded max-w-80% ${message.role === 'user' ? 'ml-auto bg-transparent' : 'mr-auto bg-transparent'}`}>
-                                <strong>{message.role == "user" ? username : getRole(message.role)}</strong>
+                                <strong>{message.role === "user" ? username : getRole(message.role)}</strong>
                                 {message.role === 'assistant' ? (
-                                    message.content.split(/\n\s*\n/).map((chunk, idx) => (
-                                        <div key={idx} className="flex flex-row items-center">
-                                            <div>
-                                            {message.content === "Waiting for response..." && <GridLoader size={3} margin={4} color="#4A90E2" className='mr-2' />}
+                                    message.content === "Waiting for response..." && actions.length > 0 ? null : // If true, render nothing
+                                        message.content.split(/\n\s*\n/).map((chunk, idx) => (
+                                            <div key={idx} className="flex flex-row items-center">
+                                                <ReactMarkdown
+                                                    className="text-md z-10 p-1 m-1 border-2 border-transparent border-dashed"
+                                                    remarkPlugins={[remarkMath]}
+                                                    rehypePlugins={[
+                                                        [rehypeKatex, {
+                                                            delimiters: [
+                                                                { left: "\\(", right: "\\)", display: false },
+                                                                { left: "\\[", right: "\\]", display: true },
+                                                            ],
+                                                        }],
+                                                    ]}
+                                                >
+                                                    {chunk.trim()}
+                                                </ReactMarkdown>
+                                                {idx < message.content.split(/\n\s*\n/).length - 1 && <br />}
                                             </div>
-                                            <ReactMarkdown
-                                                className="text-md z-10 p-1 m-1 border-2 border-transparent border-dashed"
-                                                remarkPlugins={[remarkMath]}
-                                                rehypePlugins={[
-                                                    [rehypeKatex, {
-
-                                                        delimiters: [
-                                                            { left: "\\(", right: "\\)", display: false },
-                                                            { left: "\\[", right: "\\]", display: true },
-                                                        ],
-                                                    }],
-                                                ]}
-                                            >
-                                                {chunk.trim()}
-                                            </ReactMarkdown>
-                                            {idx < message.content.split(/\n\s*\n/).length - 1 && <br />}
-
-                                        </div>
-                                    ))
+                                        ))
                                 ) :
                                     <>
                                         <p>{message.content}</p>
@@ -214,6 +209,7 @@ const GyosuAIChat = () => {
                         ))}
                         <ChatActions actions={actions} />
                         <div ref={endOfMessagesRef} />
+
                     </div>
                     <div className='h-1vh'></div>
                     <form onSubmit={handleChatSubmit} className="flex h-14vh">
@@ -236,7 +232,7 @@ const GyosuAIChat = () => {
                     </form>
                     {error && <p>Error: {error}</p>}
                 </div>
-            </div>
+            </div >
 
 
         </>
