@@ -5,7 +5,6 @@ import ChatSessionSidebar from '../ChatSessionSidebar';
 import DeleteAllChatsButton from '../DeleteAllChatsButton';
 import HamburgerWrapper from '../HamburgerWrapper';
 import HamburgerWrapperX from '../HamburgerWrapperX';
-import LanguageDropdown from '../LanguageDropdown';
 import ManageSubscriptionButton from '../ManageSubscriptionButton';
 
 const ChatNavbar: React.FC = () => {
@@ -53,7 +52,7 @@ const ChatNavbar: React.FC = () => {
                     {/* Placeholder div to balance flex space */}
                     <div className="w-[68px]">
                         <HamburgerWrapper>
-                            <LanguageDropdown />
+                            {/* <LanguageDropdown /> */}
                             <ManageSubscriptionButton />
                             <DeleteAllChatsButton/>
                         </HamburgerWrapper>

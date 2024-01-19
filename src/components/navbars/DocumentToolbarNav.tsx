@@ -1,17 +1,14 @@
+import { SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/clerk-react';
 import React from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { SignedIn, SignedOut, UserButton, SignInButton } from '@clerk/clerk-react';
 import { useDarkMode } from '../../contexts/useDarkMode';
-import LanguageDropdown from '../LanguageDropdown';
-import { getGyosuClerkTheme } from '../../theme/customClerkTheme';
 import useGetDocument from '../../hooks/tools/math/useGetDocument';
-import ChevronLeft from '../../svg/ChevronLeft';
 import useSubmitDocument from '../../hooks/tools/math/useSubmitDocument';
-import TrashIcon from '../../svg/TrashIcon';
+import useEnvironment from '../../hooks/useEnvironment';
+import ChevronLeft from '../../svg/ChevronLeft';
+import { getGyosuClerkTheme } from '../../theme/customClerkTheme';
 import HamburgerWrapper from '../HamburgerWrapper';
 import ManageSubscriptionButton from '../ManageSubscriptionButton';
-import { Tooltip as ReactTooltip } from "react-tooltip";
-import useEnvironment from '../../hooks/useEnvironment';
 
 const DocumentToolbarNav: React.FC = () => {
     const { darkMode } = useDarkMode();
@@ -66,7 +63,7 @@ const DocumentToolbarNav: React.FC = () => {
                         <SignedIn>
                             {darkMode ? <UserButton afterSignOutUrl="/" appearance={getGyosuClerkTheme()} /> : <UserButton afterSignOutUrl="http://localhost:5173/" />}
                             <HamburgerWrapper>
-                                <LanguageDropdown />
+                                {/* <LanguageDropdown /> */}
                                 <ManageSubscriptionButton />
                             </HamburgerWrapper>
                         </SignedIn>

@@ -5,7 +5,6 @@ import { useDarkMode } from '../../contexts/useDarkMode';
 import { getGyosuClerkTheme } from '../../theme/customClerkTheme';
 import DeleteAllChatsButton from '../DeleteAllChatsButton';
 import HamburgerWrapper from '../HamburgerWrapper';
-import LanguageDropdown from '../LanguageDropdown';
 import ManageSubscriptionButton from '../ManageSubscriptionButton';
 
 const FixedNavbar: React.FC = () => {
@@ -21,7 +20,7 @@ const FixedNavbar: React.FC = () => {
           <SignedIn>
             {darkMode ? <UserButton afterSignOutUrl="/" appearance={getGyosuClerkTheme()} /> : <UserButton afterSignOutUrl="/" />}
             <HamburgerWrapper>
-              <LanguageDropdown />
+              {/* <LanguageDropdown /> */}
               <ManageSubscriptionButton />
               <DeleteAllChatsButton/>
             </HamburgerWrapper>
@@ -79,7 +78,7 @@ const FixedNavbar: React.FC = () => {
           <SignedIn>
             {darkMode ? <UserButton afterSignOutUrl="/" appearance={getGyosuClerkTheme()} /> : <UserButton afterSignOutUrl="/" />}
             <HamburgerWrapper>
-              <LanguageDropdown />
+              {/* <LanguageDropdown /> */}
               <ManageSubscriptionButton />
             </HamburgerWrapper>
           </SignedIn>
