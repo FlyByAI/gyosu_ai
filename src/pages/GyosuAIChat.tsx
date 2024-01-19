@@ -158,6 +158,17 @@ const GyosuAIChat = () => {
 
     };
 
+    const getRole = (messageRole: string) => {
+        switch(messageRole) {
+            case 'user':
+                return username;
+            case 'assistant':
+                return 'Gyosu';
+            default:
+                return messageRole;
+        }
+    }
+
     return (
         <>
             <div className="flex flex-row">
@@ -165,10 +176,10 @@ const GyosuAIChat = () => {
                     <ChatSessionSidebar />
                 </div>
                 <div className="flex-grow mx-auto">
-                    <div className="h-60vh overflow-y-scroll p-2 border border-gray-300 mx-2">
+                    <div className="h-60vh overflow-y-scroll p-2 border border-gray-300 mx-2 text-gray-100">
                         {messages.map((message, index) => (
-                            <div key={index} className={`p-2 my-1 border border-gray-200 rounded max-w-80% ${message.role === 'user' ? 'ml-auto bg-blue-100' : 'mr-auto bg-gray-100'}`}>
-                                <strong>{message.role == "user" ? username : message.role}</strong>
+                            <div key={index} className={`p-2 my-1 border border-transparent rounded max-w-80% ${message.role === 'user' ? 'ml-auto bg-transparent' : 'mr-auto bg-transparent'}`}>
+                                <strong>{message.role == "user" ? username : getRole(message.role)}</strong>
                                 {message.role === 'assistant' ? (
                                     message.content.split(/\n\s*\n/).map((chunk, idx) => (
                                         <div key={idx} className="flex flex-row items-center">

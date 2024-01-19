@@ -1,12 +1,12 @@
+import { useClerk } from '@clerk/clerk-react';
 import React, { useEffect, useRef, useState } from 'react';
 import 'tailwindcss/tailwind.css';
-import { useClerk, useUser } from '@clerk/clerk-react';
-import { Chunk, GenerateFormData, ProblemData, TextbookProblemData } from '../interfaces';
 import ProblemBankShelf from '../components/document/ProblemBankShelf';
 import ChunkManager from '../components/math/ChunkManager';
+import CompetitonMathGenerateForm from '../components/math/CompetitonMathGenerateForm';
 import TextbookGenerateForm from '../components/math/TextbookGenerateForm';
 import { useScreenSize } from '../contexts/ScreenSizeContext';
-import CompetitonMathGenerateForm from '../components/math/CompetitonMathGenerateForm';
+import { Chunk, GenerateFormData } from '../interfaces';
 
 
 const MathGenerate: React.FC = () => {
@@ -81,9 +81,9 @@ const MathGenerate: React.FC = () => {
 
                     </div>
 
-                    <div ref={myRef} className="w-full md:w-3/4 mx-4 md:mx-0 rounded-lg p-4 my-4 shadow-lg items-center flex flex-col">
+                    {generateFormData && <div ref={myRef} className="w-full md:w-3/4 mx-4 md:mx-0 rounded-lg p-4 my-4 shadow-lg items-center flex flex-col">
                         <div className='w-full md:w-5/6'>
-                            {generateFormData &&
+                            {
                                 chunkArray.length > 0 &&
                                 <ChunkManager
                                     setChunkArray={setChunkArray}
@@ -91,6 +91,8 @@ const MathGenerate: React.FC = () => {
                                 />}
                         </div>
                     </div>
+
+                    }
                 </div>
             </div>
         </div>
