@@ -148,7 +148,6 @@ const ChatSessionSidebar: React.FC = () => {
                             <OverflowMenuPortal
                                 portalRoot={portalRootRef}
                                 type='iconRow'
-                                variant="bottom"
                                 isOpen={openOverflowMenuId === chat.sessionId}
                                 setIsOpen={(isOpen) => setOpenOverflowMenuId(isOpen ? chat.sessionId : null)}
                             >

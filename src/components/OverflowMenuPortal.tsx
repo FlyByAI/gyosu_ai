@@ -4,7 +4,6 @@ import DotsVerticalIcon from '../svg/DotsVerticalIcon';
 
 type OverflowMenuProps = {
     children: React.ReactNode;
-    variant?: 'top' | 'bottom';
     type?: 'iconRow' | 'default';
     isOpen: boolean;
     setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -13,7 +12,6 @@ type OverflowMenuProps = {
 
 const OverflowMenu: React.FC<OverflowMenuProps> = ({
     children,
-    variant,
     type = 'default',
     isOpen,
     setIsOpen,
