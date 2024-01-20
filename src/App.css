@@ -12,6 +12,11 @@
   color: #47c5ff !important;
 }
 
+body, .main-container {
+  max-height: 100vh;
+  overflow-y: hidden; 
+}
+
 table {
   width: 100%;
   border-collapse: collapse;

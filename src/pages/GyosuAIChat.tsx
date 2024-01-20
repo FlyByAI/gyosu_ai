@@ -89,12 +89,6 @@ const GyosuAIChat = () => {
     }, [session, openSignIn]);
 
     useEffect(() => {
-        if (endOfMessagesRef.current) {
-            endOfMessagesRef.current.scrollIntoView({ behavior: "smooth" });
-        }
-    }, [messages]);
-
-    useEffect(() => {
         if(!isLoading) {
             setActions("")
         }
@@ -195,6 +189,15 @@ const GyosuAIChat = () => {
         }
     }
 
+    useEffect(() => {
+        // Check if the endOfMessagesRef current property is not null
+        if (endOfMessagesRef.current) {
+            // Scroll the element into view
+            const scrollHeight = endOfMessagesRef.current.scrollHeight;
+            endOfMessagesRef.current.scrollTop = scrollHeight;
+        }
+    }, [messages]);
+
     return (
         <>
             <div className="flex flex-row">
@@ -202,7 +205,8 @@ const GyosuAIChat = () => {
                     <ChatSessionSidebar />
                 </div>
                 <div className="flex-grow mx-auto">
-                    <div className="h-70vh overflow-y-scroll p-2 border border-gray-300 mx-2 text-gray-100">
+                    <div className="h-70vh overflow-y-auto p-2 border border-gray-300 mx-2 text-gray-100 scroll-smooth"
+                    ref={endOfMessagesRef}>
                         {messages.map((message, index) => (
                             <div key={index} className={`p-2 my-1 border border-transparent rounded max-w-80% ${message.role === 'user' ? 'ml-auto bg-transparent' : 'mr-auto bg-transparent'}`}>
                                 <strong>{message.role === "user" ? username : getRole(message.role)}</strong>
@@ -235,8 +239,6 @@ const GyosuAIChat = () => {
                             </div>
                         ))}
                         <ChatActions actions={actions} />
-                        <div ref={endOfMessagesRef} />
-
                     </div>
                     <div className='h-1vh'></div>
                     <form onSubmit={handleChatSubmit} className="flex h-14vh">
