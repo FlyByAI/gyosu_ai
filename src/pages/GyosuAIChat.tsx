@@ -52,13 +52,35 @@ const GyosuAIChat = () => {
         }
     }, [chatSessions, sessionId]);
 
+    const handleSubmitWithText = (text: string) => {
+        if (isLoading) return;
+
+        const newMessage: IChatMessage = { role: 'user', content: text };
+        setMessages(prev => [...prev, newMessage]);
+
+        const newStreamingIndex = messages.length + 1;
+        setStreamingIndex(newStreamingIndex);
+
+        const streamingPlaceholder: IChatMessage = { role: 'assistant', content: 'Waiting for response...' };
+        setMessages(prev => [...prev, streamingPlaceholder]);
+
+        const payload = {
+            newMessage: {
+                role: 'user',
+                content: text,
+            },
+            messages: messages.concat(newMessage),
+            sessionId: sessionId,
+        };
+        startStreaming(payload);
+    };
 
     useEffect(() => {
-        // only want this on ititial render :)
-        if (state?.text) {
-            setUserInput(state.text);
+        if (state?.text && messages.length === 0) {
+            handleSubmitWithText(state.text);
         }
-    }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [messages]); // eslint-disable-line react-hooks/exhaustive-deps
+
 
     useEffect(() => {
         if (!session) {
@@ -71,6 +93,12 @@ const GyosuAIChat = () => {
             endOfMessagesRef.current.scrollIntoView({ behavior: "smooth" });
         }
     }, [messages]);
+
+    useEffect(() => {
+        if(!isLoading) {
+            setActions("")
+        }
+    }, [isLoading, messages, actions]);
 
     useEffect(() => {
         let updatedBuffer = jsonBuffer + streamedData;
@@ -96,7 +124,6 @@ const GyosuAIChat = () => {
                         if (typeof streamingIndex === 'number' && prev[streamingIndex]) {
                             const newMessages = [...prev];
                             newMessages[streamingIndex] = { role: 'assistant', content: data.message };
-                            setActions("")
                             return newMessages;
                         }
                         return [...prev, { role: 'assistant', content: data.message }];
