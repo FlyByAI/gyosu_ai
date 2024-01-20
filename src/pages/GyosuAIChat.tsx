@@ -3,13 +3,16 @@ import React, { useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast/headless';
 import ReactMarkdown from 'react-markdown';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { Tooltip as ReactTooltip } from "react-tooltip";
 import rehypeKatex from 'rehype-katex';
 import remarkMath from 'remark-math';
 import ChatActions from '../components/ChatActions';
 import ChatSessionSidebar from '../components/ChatSessionSidebar';
+import { useScreenSize } from '../contexts/ScreenSizeContext';
 import useChatSessions from '../hooks/tools/math/useChatSessions';
 import useStreamedResponse from '../hooks/tools/math/useStreamedResponse';
 import useEnvironment from '../hooks/useEnvironment';
+import ShareIcon from '../svg/Share';
 
 export interface IChatMessage {
     role: string;
@@ -22,7 +25,7 @@ const GyosuAIChat = () => {
     const [userInput, setUserInput] = useState('');
     const [streamingIndex, setStreamingIndex] = useState<number | null>(null);
     const { apiUrl } = useEnvironment();
-    const streamedResponseEndpoint = `${apiUrl}/math_app/chat/`;
+    const chatEndpoint = `${apiUrl}/math_app/chat/`;
     const { user } = useClerk();
     const username = user?.firstName ? user.firstName : "User";
     const navigate = useNavigate();
@@ -35,9 +38,15 @@ const GyosuAIChat = () => {
 
     const { state } = useLocation();
 
-    const { data: streamedData, isLoading, error, startStreaming } = useStreamedResponse(streamedResponseEndpoint, {});
+    const { data: streamedData, isLoading, error, startStreaming } = useStreamedResponse(chatEndpoint, {});
 
-    const { chatSessions } = useChatSessions(`${apiUrl}/math_app/chat/`);
+    const { chatSessions, shareChatSession } = useChatSessions(chatEndpoint);
+
+    const { isDesktop } = useScreenSize();
+
+    const handleShareClick = (sessionId: string) => {
+        shareChatSession(sessionId)
+    };
 
     useEffect(() => {
         if (sessionId && chatSessions) {
@@ -89,7 +98,7 @@ const GyosuAIChat = () => {
     }, [session, openSignIn]);
 
     useEffect(() => {
-        if(!isLoading) {
+        if (!isLoading) {
             setActions("")
         }
     }, [isLoading, messages, actions]);
@@ -198,15 +207,40 @@ const GyosuAIChat = () => {
         }
     }, [messages]);
 
+    useEffect(() => {
+        // Add the class to the body when the component mounts
+        document.body.classList.add('main-container');
+
+        // Remove the class when the component unmounts
+        return () => {
+            document.body.classList.remove('main-container');
+        };
+    }, []);
+
+
     return (
-        <>
+        <div className='main-container'>
             <div className="flex flex-row">
                 <div className="w-1/6 hidden md:block">
                     <ChatSessionSidebar />
                 </div>
-                <div className="flex-grow mx-auto">
+                <div className="flex-grow mx-auto relative">
                     <div className="h-70vh overflow-y-auto p-2 border border-gray-300 mx-2 text-gray-100 scroll-smooth"
-                    ref={endOfMessagesRef}>
+                        ref={endOfMessagesRef}>
+                        <div className='absolute top-0 right-4 p-4'> {/* Absolute positioning with Tailwind */}
+                            <button onClick={() => handleShareClick(sessionId)}
+                                className="bg-gray-900 rounded flex flex-row p-2"
+                                data-tooltip-id={`shareChatSession`}
+                            >
+                                <ShareIcon width="32" height='32'/>
+                                {isDesktop && <ReactTooltip
+                                    id='shareChatSession'
+                                    place="left"
+                                    variant="light"
+                                    content={"Share this chat session with a friend!"}
+                                />}
+                            </button>
+                        </div>
                         {messages.map((message, index) => (
                             <div key={index} className={`p-2 my-1 border border-transparent rounded max-w-80% ${message.role === 'user' ? 'ml-auto bg-transparent' : 'mr-auto bg-transparent'}`}>
                                 <strong>{message.role === "user" ? username : getRole(message.role)}</strong>
@@ -264,7 +298,7 @@ const GyosuAIChat = () => {
             </div >
 
 
-        </>
+        </div>
     );
 
 };

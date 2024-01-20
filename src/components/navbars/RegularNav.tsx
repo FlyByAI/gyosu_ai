@@ -42,8 +42,11 @@ const RegularNavbar: React.FC = () => {
                 </div>
             </div>
             <nav className="grid grid-cols-2 gap-2 lg:flex lg:space-x-3 pt-4">
-                <Link to="/math-app/chat" className="text-lg text-white hover:underline dark:text-gray-200 lg:justify-self-end block sm:hidden">
+                <Link to="/math-app/chat" className="relative text-lg text-white hover:underline dark:text-gray-200 lg:justify-self-end block sm:hidden">
                     Chat
+                    <span className="absolute bottom-2 left-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 transform translate-x-1/2 -translate-y-1/2 bg-orange-700 rounded-full">
+                        New!
+                    </span>
                 </Link>
                 {/* <Link to="/math-app/playground" className="text-lg text-white hover:underline dark:text-gray-200 lg:justify-self-end block sm:hidden">
                     Playground
@@ -67,8 +70,11 @@ const RegularNavbar: React.FC = () => {
                 <Link to="/" className="text-3xl font-semibold text-white font-mono">Gyosu.ai</Link>
                 <div className="flex items-center">
                     <nav className="flex">
-                        <Link to="/math-app/chat" className="text-lg text-white mx-3 hover:underline dark:text-gray-200 font-mono font-bold">
+                        <Link to="/math-app/chat" className="relative text-lg text-white mx-3 hover:underline dark:text-gray-200 font-mono font-bold">
                             Chat
+                            <span className="absolute bottom-3 right-12 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 transform translate-x-1/2 -translate-y-1/2 bg-orange-700 rounded-full">
+                                New!
+                            </span>
                         </Link>
                         {/* <Link to="/math-app/playground" className="text-lg text-white mx-3 hover:underline dark:text-gray-200 font-mono font-bold">
                             Playground
