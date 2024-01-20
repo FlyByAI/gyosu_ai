@@ -116,12 +116,13 @@ const GyosuAIChat = () => {
                 console.log(data)
                 if (data.actions && !data.message) {
                     setActions(data.actions);
-                    console.log('setting actions')
+                    console.log('setting actions', data.actions)
                 }
                 if (data.session_id) {
                     navigate(`/math-app/chat/${data.session_id}`, { replace: true, state: { ...state, sessionId: data.session_id } });
                 }
                 if (data.message) {
+                    console.log('setting message')
                     setMessages(prev => {
 
                         if (typeof streamingIndex === 'number' && prev[streamingIndex]) {
@@ -131,6 +132,9 @@ const GyosuAIChat = () => {
                         }
                         return [...prev, { role: 'assistant', content: data.message }];
                     });
+                }
+                if(data){
+                    console.log('data received', data)
                 }
                 endOfJson = updatedBuffer.indexOf('}\n');
             }

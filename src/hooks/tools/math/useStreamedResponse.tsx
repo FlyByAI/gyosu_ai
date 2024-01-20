@@ -15,13 +15,6 @@ const useStreamedResponse = (endpoint: string, headers: any) => {
 
         const fetchData = async () => {
             try {
-
-                if (!session) {
-                    // If no session, retry after a short delay
-                    setTimeout(fetchData, 1000);
-                    return;
-                }
-
                 setLoading(true);
                 const response = await fetch(endpoint, {
                     method: 'POST',
