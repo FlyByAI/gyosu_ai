@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { useSidebarContext } from '../../contexts/useSidebarContext';
-import { Chunk, Document, EmptyDocument } from '../../interfaces';
-import useCreateDocx, { DocxAction } from '../../hooks/tools/math/useCreateDocs';
-import { Tooltip as ReactTooltip } from "react-tooltip";
-import { Link, useParams } from 'react-router-dom';
-import useEnvironment from '../../hooks/useEnvironment';
 import toast from 'react-hot-toast/headless';
-import Feedback from '../Feedback';
+import { Link, useParams } from 'react-router-dom';
+import { Tooltip as ReactTooltip } from "react-tooltip";
 import { useScreenSize } from '../../contexts/ScreenSizeContext';
+import { useSidebarContext } from '../../contexts/useSidebarContext';
+import useCreateDocx, { DocxAction } from '../../hooks/tools/math/useCreateDocs';
+import useEnvironment from '../../hooks/useEnvironment';
+import { Chunk, Document, EmptyDocument } from '../../interfaces';
 import DocxSVG from '../../svg/DocxSVG';
 import PdfSVG from '../../svg/PdfSVG';
+import Feedback from '../Feedback';
 
 interface CreateDocsFormProps {
     document: Document | EmptyDocument;
@@ -114,7 +114,10 @@ const CreateDocxForm: React.FC<CreateDocsFormProps> = ({ document }) => {
                 </button>
                 {!isLoading && error && (
                     <div className="mt-4 text-red-500">
-                        {`Error: ${error.message}`}
+                        {error.message == "An unexpected error occurred." ?
+                            <p className='mt-2'>This operation is taking a while. No worries, check back in a minute or two here: <Link className="text-blue-400 font-bold" to="/math-app/documents">My Documents</Link></p>
+                            : `Error: ${error.message}`
+                        }
                     </div>
                 )}
                 {isDesktop && <ReactTooltip

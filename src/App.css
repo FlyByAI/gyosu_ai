@@ -6,6 +6,12 @@
   box-shadow: 0 0 0px rgb(0, 255, 85), 0 0 10px rgb(159, 236, 255);
   /* box-shadow: 0 0 0px rgb(159, 236, 255), 0 0 10px rgb(0, 255, 85); */
 }
+
+/* styles for overriding ReactMarkdown component */
+.markdown a {
+  color: #47c5ff !important;
+}
+
 table {
   width: 100%;
   border-collapse: collapse;
@@ -39,7 +45,7 @@ table tr:nth-child(even) td {
 }
 
 table tr:nth-child(odd) td {
-  background-color:  #4679bc;
+  background-color: #4679bc;
   color: #f9f9f9;
   font-weight: bold;
 }
@@ -91,16 +97,28 @@ table tr:nth-child(odd) td {
 }
 
 @keyframes scrollTextShort {
-  0% { transform: translateX(0%); }
-  100% { transform: translateX(-200%); }
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-200%);
+  }
 }
 
 @keyframes scrollTextMedium {
-  0% { transform: translateX(0%); }
-  100% { transform: translateX(-300%); }
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-300%);
+  }
 }
 
 @keyframes scrollTextLong {
-  0% { transform: translateX(0%); }
-  100% { transform: translateX(-400%); }
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-400%);
+  }
 }

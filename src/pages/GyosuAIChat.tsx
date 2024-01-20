@@ -54,11 +54,11 @@ const GyosuAIChat = () => {
 
 
     useEffect(() => {
+        // only want this on ititial render :)
         if (state?.text) {
             setUserInput(state.text);
         }
-
-    }, [state]);
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
         if (!session) {
@@ -90,7 +90,7 @@ const GyosuAIChat = () => {
                 if (data.session_id) {
                     navigate(`/math-app/chat/${data.session_id}`, { replace: true, state: { ...state, sessionId: data.session_id } });
                 }
-                else if (data.message) {
+                if (data.message) {
                     setMessages(prev => {
 
                         if (typeof streamingIndex === 'number' && prev[streamingIndex]) {
@@ -184,7 +184,7 @@ const GyosuAIChat = () => {
                                         message.content.split(/\n\s*\n/).map((chunk, idx) => (
                                             <div key={idx} className="flex flex-row items-center">
                                                 <ReactMarkdown
-                                                    className="text-md z-10 p-1 m-1 border-2 border-transparent border-dashed"
+                                                    className="text-md z-10 p-1 m-1 border-2 border-transparent border-dashed markdown"
                                                     remarkPlugins={[remarkMath]}
                                                     rehypePlugins={[
                                                         [rehypeKatex, {
