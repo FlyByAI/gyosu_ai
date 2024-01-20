@@ -171,11 +171,11 @@ const GyosuAIChat = () => {
     return (
         <>
             <div className="flex flex-row">
-                <div className="w-1/6 h-75vh hidden md:block">
+                <div className="w-1/6 hidden md:block">
                     <ChatSessionSidebar />
                 </div>
                 <div className="flex-grow mx-auto">
-                    <div className="h-60vh overflow-y-scroll p-2 border border-gray-300 mx-2 text-gray-100">
+                    <div className="h-70vh overflow-y-scroll p-2 border border-gray-300 mx-2 text-gray-100">
                         {messages.map((message, index) => (
                             <div key={index} className={`p-2 my-1 border border-transparent rounded max-w-80% ${message.role === 'user' ? 'ml-auto bg-transparent' : 'mr-auto bg-transparent'}`}>
                                 <strong>{message.role === "user" ? username : getRole(message.role)}</strong>

@@ -13,40 +13,6 @@ const useStreamedResponse = (endpoint: string, headers: any) => {
         const abortController = new AbortController();
         const token = session ? await session.getToken() : 'none';
 
-        // const fetchData = async () => {
-        //     try {
-        //         setLoading(true);
-        //         const response = await fetch(endpoint, {
-        //             method: 'POST',
-        //             headers: {
-        //                 'Content-Type': 'application/json',
-        //                 'Authorization': token ? `Bearer ${token}` : '',
-        //                 ...headers
-        //             },
-        //             body: JSON.stringify(humps.decamelizeKeys(bodyContent)),
-        //             signal: abortController.signal,
-        //         });
-
-        //         const reader = response?.body?.getReader();
-        //         const decoder = new TextDecoder('utf-8');
-
-        //         reader?.read().then(function processText({ done, value }): Promise<void> {
-        //             if (done) {
-        //                 setLoading(false);
-        //                 return Promise.resolve();
-        //             }
-
-        //             setData((prevData) => prevData + decoder.decode(value));
-        //             return reader.read().then(processText);
-        //         });
-
-        //     } catch (error: any) {
-        //         setError(error.message);
-        //         setLoading(false);
-        //     }
-        // };
-
-
         const fetchData = async () => {
             try {
                 setLoading(true);
