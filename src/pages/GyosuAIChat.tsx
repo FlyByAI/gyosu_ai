@@ -3,13 +3,16 @@ import React, { useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast/headless';
 import ReactMarkdown from 'react-markdown';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { Tooltip as ReactTooltip } from "react-tooltip";
 import rehypeKatex from 'rehype-katex';
 import remarkMath from 'remark-math';
 import ChatActions from '../components/ChatActions';
 import ChatSessionSidebar from '../components/ChatSessionSidebar';
+import { useScreenSize } from '../contexts/ScreenSizeContext';
 import useChatSessions from '../hooks/tools/math/useChatSessions';
 import useStreamedResponse from '../hooks/tools/math/useStreamedResponse';
 import useEnvironment from '../hooks/useEnvironment';
+import ShareIcon from '../svg/Share';
 
 export interface IChatMessage {
     role: string;
@@ -22,7 +25,7 @@ const GyosuAIChat = () => {
     const [userInput, setUserInput] = useState('');
     const [streamingIndex, setStreamingIndex] = useState<number | null>(null);
     const { apiUrl } = useEnvironment();
-    const streamedResponseEndpoint = `${apiUrl}/math_app/chat/`;
+    const chatEndpoint = `${apiUrl}/math_app/chat/`;
     const { user } = useClerk();
     const username = user?.firstName ? user.firstName : "User";
     const navigate = useNavigate();
@@ -35,9 +38,15 @@ const GyosuAIChat = () => {
 
     const { state } = useLocation();
 
-    const { data: streamedData, isLoading, error, startStreaming } = useStreamedResponse(streamedResponseEndpoint, {});
+    const { data: streamedData, isLoading, error, startStreaming } = useStreamedResponse(chatEndpoint, {});
 
-    const { chatSessions } = useChatSessions(`${apiUrl}/math_app/chat/`);
+    const { chatSessions, shareChatSession } = useChatSessions(chatEndpoint);
+
+    const { isDesktop } = useScreenSize();
+
+    const handleShareClick = (sessionId: string) => {
+        shareChatSession(sessionId)
+    };
 
     useEffect(() => {
         if (sessionId && chatSessions) {
@@ -52,13 +61,35 @@ const GyosuAIChat = () => {
         }
     }, [chatSessions, sessionId]);
 
+    const handleSubmitWithText = (text: string) => {
+        if (isLoading) return;
+
+        const newMessage: IChatMessage = { role: 'user', content: text };
+        setMessages(prev => [...prev, newMessage]);
+
+        const newStreamingIndex = messages.length + 1;
+        setStreamingIndex(newStreamingIndex);
+
+        const streamingPlaceholder: IChatMessage = { role: 'assistant', content: 'Waiting for response...' };
+        setMessages(prev => [...prev, streamingPlaceholder]);
+
+        const payload = {
+            newMessage: {
+                role: 'user',
+                content: text,
+            },
+            messages: messages.concat(newMessage),
+            sessionId: sessionId,
+        };
+        startStreaming(payload);
+    };
 
     useEffect(() => {
-        if (state?.text) {
-            setUserInput(state.text);
+        if (state?.text && messages.length === 0) {
+            handleSubmitWithText(state.text);
         }
+    }, [messages]); // eslint-disable-line react-hooks/exhaustive-deps
 
-    }, [state]);
 
     useEffect(() => {
         if (!session) {
@@ -67,10 +98,10 @@ const GyosuAIChat = () => {
     }, [session, openSignIn]);
 
     useEffect(() => {
-        if (endOfMessagesRef.current) {
-            endOfMessagesRef.current.scrollIntoView({ behavior: "smooth" });
+        if (!isLoading) {
+            setActions("")
         }
-    }, [messages]);
+    }, [isLoading, messages, actions]);
 
     useEffect(() => {
         let updatedBuffer = jsonBuffer + streamedData;
@@ -90,13 +121,12 @@ const GyosuAIChat = () => {
                 if (data.session_id) {
                     navigate(`/math-app/chat/${data.session_id}`, { replace: true, state: { ...state, sessionId: data.session_id } });
                 }
-                else if (data.message) {
+                if (data.message) {
                     setMessages(prev => {
 
                         if (typeof streamingIndex === 'number' && prev[streamingIndex]) {
                             const newMessages = [...prev];
                             newMessages[streamingIndex] = { role: 'assistant', content: data.message };
-                            setActions("")
                             return newMessages;
                         }
                         return [...prev, { role: 'assistant', content: data.message }];
@@ -168,14 +198,49 @@ const GyosuAIChat = () => {
         }
     }
 
+    useEffect(() => {
+        // Check if the endOfMessagesRef current property is not null
+        if (endOfMessagesRef.current) {
+            // Scroll the element into view
+            const scrollHeight = endOfMessagesRef.current.scrollHeight;
+            endOfMessagesRef.current.scrollTop = scrollHeight;
+        }
+    }, [messages]);
+
+    useEffect(() => {
+        // Add the class to the body when the component mounts
+        document.body.classList.add('main-container');
+
+        // Remove the class when the component unmounts
+        return () => {
+            document.body.classList.remove('main-container');
+        };
+    }, []);
+
+
     return (
-        <>
+        <div className='main-container'>
             <div className="flex flex-row">
-                <div className="w-1/6 h-75vh hidden md:block">
+                <div className="w-1/6 hidden md:block">
                     <ChatSessionSidebar />
                 </div>
-                <div className="flex-grow mx-auto">
-                    <div className="h-60vh overflow-y-scroll p-2 border border-gray-300 mx-2 text-gray-100">
+                <div className="flex-grow mx-auto relative">
+                    <div className="h-70vh overflow-y-auto p-2 border border-gray-300 mx-2 text-gray-100 scroll-smooth"
+                        ref={endOfMessagesRef}>
+                        <div className='absolute top-0 right-4 p-4'> {/* Absolute positioning with Tailwind */}
+                            <button onClick={() => handleShareClick(sessionId)}
+                                className="bg-gray-900 rounded flex flex-row p-2"
+                                data-tooltip-id={`shareChatSession`}
+                            >
+                                <ShareIcon width="32" height='32'/>
+                                {isDesktop && <ReactTooltip
+                                    id='shareChatSession'
+                                    place="left"
+                                    variant="light"
+                                    content={"Share this chat session with a friend!"}
+                                />}
+                            </button>
+                        </div>
                         {messages.map((message, index) => (
                             <div key={index} className={`p-2 my-1 border border-transparent rounded max-w-80% ${message.role === 'user' ? 'ml-auto bg-transparent' : 'mr-auto bg-transparent'}`}>
                                 <strong>{message.role === "user" ? username : getRole(message.role)}</strong>
@@ -184,7 +249,7 @@ const GyosuAIChat = () => {
                                         message.content.split(/\n\s*\n/).map((chunk, idx) => (
                                             <div key={idx} className="flex flex-row items-center">
                                                 <ReactMarkdown
-                                                    className="text-md z-10 p-1 m-1 border-2 border-transparent border-dashed"
+                                                    className="text-md z-10 p-1 m-1 border-2 border-transparent border-dashed markdown"
                                                     remarkPlugins={[remarkMath]}
                                                     rehypePlugins={[
                                                         [rehypeKatex, {
@@ -208,8 +273,6 @@ const GyosuAIChat = () => {
                             </div>
                         ))}
                         <ChatActions actions={actions} />
-                        <div ref={endOfMessagesRef} />
-
                     </div>
                     <div className='h-1vh'></div>
                     <form onSubmit={handleChatSubmit} className="flex h-14vh">
@@ -235,7 +298,7 @@ const GyosuAIChat = () => {
             </div >
 
 
-        </>
+        </div>
     );
 
 };

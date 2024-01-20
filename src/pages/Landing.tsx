@@ -30,6 +30,17 @@ const LandingPage: React.FC = () => {
         }
     };
 
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+        if (e.key === 'Enter') {
+            if (!session) {
+                localStorage.setItem('userMessage', inputText);
+                openSignIn();
+            } else {
+                navigate('/math-app/chat', { state: { text: inputText } });
+            }
+        }
+    };
+
     return (
         <div>
             <section className="h-full flex flex-col md:flex-row items-center" style={{ backgroundImage: `url('/svg/dark-bg.svg')`, backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundColor: '#0b1536' }}>
@@ -41,6 +52,7 @@ const LandingPage: React.FC = () => {
                     <form onSubmit={handleSubmit} className="flex flex-col overflow-hidden shadow-lg my-4 p-2">
                         <textarea
                             value={inputText}
+                            onKeyDown={handleKeyDown}
                             onChange={(e) => setInputText(e.target.value)}
                             placeholder="What do you want to teach today?"
                             className="resize-none md:w-1/2 w-full bg-gray-100 text-black text-lg rounded leading-tight p-2 flex-1 border-green-300 border-2 focus:outline-none focus:border-2 focus:border-blue-300"

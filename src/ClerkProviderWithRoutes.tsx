@@ -127,7 +127,7 @@ export default function ClerkProviderWithRoutes() {
                         <>
                             <Navbar />
                             <GyosuAIChat />
-                            <Footer />
+                            {/* <Footer /> */}
                         </>
                     }
                 />
@@ -147,7 +147,7 @@ export default function ClerkProviderWithRoutes() {
                         <>
                             <Navbar />
                             <GyosuAIChat />
-                            <Footer />
+                            {/* <Footer /> */}
                         </>
                     }
                 />
