@@ -8,6 +8,7 @@ import rehypeKatex from 'rehype-katex';
 import remarkMath from 'remark-math';
 import ChatActions from '../components/ChatActions';
 import ChatSessionSidebar from '../components/ChatSessionSidebar';
+import MessageSuggestions from '../components/MessageSuggestions';
 import { useScreenSize } from '../contexts/ScreenSizeContext';
 import useChatSessions from '../hooks/tools/math/useChatSessions';
 import useStreamedResponse from '../hooks/tools/math/useStreamedResponse';
@@ -47,6 +48,11 @@ const GyosuAIChat = () => {
     const handleShareClick = (sessionId: string) => {
         shareChatSession(sessionId)
     };
+
+    const handleSuggestionClick = (suggestionText: string) => {
+        handleSubmitWithText(suggestionText);
+    };
+
 
     useEffect(() => {
         if (sessionId && chatSessions) {
@@ -133,7 +139,7 @@ const GyosuAIChat = () => {
                         return [...prev, { role: 'assistant', content: data.message }];
                     });
                 }
-                if(data){
+                if (data) {
                     console.log('data received', data)
                 }
                 endOfJson = updatedBuffer.indexOf('}\n');
@@ -209,7 +215,7 @@ const GyosuAIChat = () => {
             const scrollHeight = endOfMessagesRef.current.scrollHeight;
             endOfMessagesRef.current.scrollTop = scrollHeight;
         }
-    }, [messages]);
+    }, [messages, actions]);
 
     useEffect(() => {
         // Add the class to the body when the component mounts
@@ -229,14 +235,15 @@ const GyosuAIChat = () => {
                     <ChatSessionSidebar />
                 </div>
                 <div className="flex-grow mx-auto relative">
-                    <div className="h-70vh overflow-y-auto p-2 border border-gray-300 mx-2 text-gray-100 scroll-smooth"
+                    <div className={`${messages.length === 0 && "flex flex-col"} h-70vh overflow-y-auto p-2 border border-gray-300 mx-2 text-gray-100 scroll-smooth`}
                         ref={endOfMessagesRef}>
+
                         <div className='absolute top-0 right-4 p-4'> {/* Absolute positioning with Tailwind */}
                             <button onClick={() => handleShareClick(sessionId)}
                                 className="bg-gray-900 rounded flex flex-row p-2"
                                 data-tooltip-id={`shareChatSession`}
                             >
-                                <ShareIcon width="32" height='32'/>
+                                <ShareIcon width="32" height='32' />
                                 {isDesktop && <ReactTooltip
                                     id='shareChatSession'
                                     place="left"
@@ -245,6 +252,7 @@ const GyosuAIChat = () => {
                                 />}
                             </button>
                         </div>
+
                         {messages.map((message, index) => (
                             <div key={index} className={`p-2 my-1 border border-transparent rounded max-w-80% ${message.role === 'user' ? 'ml-auto bg-transparent' : 'mr-auto bg-transparent'}`}>
                                 <strong>{message.role === "user" ? username : getRole(message.role)}</strong>
@@ -276,6 +284,13 @@ const GyosuAIChat = () => {
                                 }
                             </div>
                         ))}
+                        {user && !isLoading && messages.length === 0 && (
+                            <div className="mt-auto pb-4">
+                                <MessageSuggestions
+                                    onClick={handleSuggestionClick}
+                                />
+                            </div>
+                        )}
                         <ChatActions actions={actions} />
                     </div>
                     <div className='h-1vh'></div>
