@@ -1,11 +1,73 @@
 import React from 'react';
-import Accordion from '../components/Accordion';
 import { Link } from 'react-router-dom';
+import Accordion from '../components/Accordion';
 
 const faqs = [
     {
         question: 'What is Gyosu?',
-        answer: 'Gyosu is a collection of tools for teachers to empower them to create personalized learning experiences for their students. We have one prototype available, the "generate math worksheets" tool. We\'ve launched early as we want to develop in public, so think of the bugs as those surprise insects in your backyard – always there to keep gardening interesting. But we\'re improving every day, with your feedback as our guide!'
+        answer: (
+            <div>
+                <p>Gyosu aims to be a collection of tools for teachers to empower them to create personalized learning experiences for their students. It is built on a foundation of high quality educational materials, ensuring that the contents it creates is high quality as well.</p>
+                <br></br>
+                <p> We currently have two main features - GyosuChat, an educational content creation assistant, and the problem banks, both of which make it easier for teachers to create customized content for their students.</p>
+            </div>
+        )
+    },
+    {
+        question: 'What is GyosuChat?',
+        answer: (
+            <div>
+                <p> GysouChat is an assistant that has been custom built for teachers, to help guide you through the process of creating educational materials for your students.</p>
+                <p> The goal of GyosuChat is to make it as easy as possible for a teacher to utilize trusted materials, while building content that is customized for their classrooms.</p>
+                <p> GyosuChat is currently in beta, and we are working hard to improve it every day. If you have any feedback, please email us at <a href="mailto:support@gyosu.ai" className="text-blue-300 underline">support@gyosu.ai</a></p>
+            </div>
+        )
+    },
+    {
+        question: 'How do I use GyosuChat?',
+        answer: (
+            <>
+                <p> Use GyosuChat just like you would with ChatGPT - by chatting to it! Here are some ideas of messages you could send to help get you started: </p>
+                    <br></br>
+                    <ul className="list-disc pl-5">
+                        <li> I am teaching "topic", can you help me create a lesson plan / worksheet / quiz / exam?</li>
+                        <li> Please create a PDF quiz with 3 questions on the order of operations </li>
+                        <li> Please create a study guide for my students on Pre-Algebra, chapter 3, section 4. </li>
+                        <li> I'd like to create a fun worksheet on functions & function notation </li>
+                        <li> I'd like to create an "Escape Room" game using concepts from the quadratic formula </li>
+                    </ul>
+                <br></br>
+                <p> Gyosu chat will then ask you a series of questions to help ensure the content it creates is customized to you. Here are some options on how you could customize your content: </p>
+                    <br></br>
+                    <ul className="list-disc pl-5">
+                        <li> Please make this content easy / medium / difficult </li>
+                        <li> Please make this content more fun and engaging, using the peronality of (insert famous person/character here) </li>
+                    </ul>
+            </>
+        )
+    },
+    {
+        question: 'What books does GyosuChat have available?',
+        answer: (
+            <>
+                <p>Currently, GyosuChat is focused towards Math teachers.</p>
+                <p>We have the following books available, which were open-sourced and provided through <a href="https://openstax.org/subjects/math">OpenStax</a>: </p>
+                    <br></br>
+                    <ul className="list-disc pl-5">
+                        <li>College Algebra 2e</li>
+                        <li>Calculus Volume 2</li>
+                        <li>Pre-Algebra 2e</li>
+                        <li>Algebra and Trigonometry 2e</li>
+                        <li>Calculus Volume 1</li>
+                        <li>Calculus Volume 3</li>
+                        <li>Intermediate Algebra 2e</li>
+                        <li>Precalculus 2e</li>
+                        <li>Elementary Algebra 2e</li>
+                    </ul>
+                <br></br>
+                <p>In the future, we plan to expand our library out to other topics. </p>
+            </>
+        )
     },
     {
         question: 'How do I create and use a problem bank?',
@@ -37,7 +99,7 @@ const faqs = [
         )
     },
     {
-        question: 'How do I create a worksheet?',
+        question: 'How do I create a worksheet from a problem bank?',
         answer: (
             <>
                 <p className="text-base mb-4">Creating a worksheet involves four main steps:</p>
@@ -57,7 +119,7 @@ const faqs = [
         )
     },
     {
-        question: 'How can I search for problems?',
+        question: 'How can I search for problems for my problem bank?',
         answer: (
             <>
                 <p className="text-base mb-4">Searching for problems is now more streamlined. Follow these steps:</p>
@@ -86,14 +148,14 @@ const faqs = [
         )
     },
     {
-        question: 'How do I delete a problem?',
+        question: 'How do I delete a problem from a problem bank?',
         answer: 'Click the trash icon on the problem you wish to delete.'
     },
     {
         question: 'Is there any support available if I run into issues?',
         answer: (
             <>
-                Lost in the labyrinth of logarithms? Our support team has the compass of clarity. Email <a href="mailto:support@gyosu.ai" className="text-blue-300 underline">support@gyosu.ai</a>, and we'll help you find your way!
+                Lost in the labyrinth of logarithms? Email <a href="mailto:support@gyosu.ai" className="text-blue-300 underline">support@gyosu.ai</a>, and we'll help you find your way!
             </>
         )
     }
