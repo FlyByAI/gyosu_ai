@@ -77,7 +77,7 @@ const useStreamedResponse = (endpoint: string, headers: any) => {
         
         const timeoutId = setTimeout(() => {
             fetchData();
-        }, 1000);
+        }, 100);
 
         return () => {
             clearTimeout(timeoutId);

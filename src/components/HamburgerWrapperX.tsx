@@ -37,11 +37,11 @@ const HamburgerWrapperX = ({ children }: { children: React.ReactNode }) => {
             {/* Hamburger Menu */}
             <Hamburger toggled={isOpen} toggle={setOpen} />
             {/* Mini Nav */}
-            <div className={`fixed left-0 top-0 z-100 w-auto h-auto transition-transform duration-300 transform ${isOpen ? 'translate-x-0' : '-translate-x-full'} md:hidden`}>
+            <div className={`backdrop-blur-sm fixed left-0 top-0 z-100 w-auto h-auto transition-transform duration-300 transform ${isOpen ? 'translate-x-0' : '-translate-x-full'} md:hidden`}>
                 <div className='flex flex-row'>
                     {isOpen && children}
                     <div>
-                        <button className='m-2 p-2 bg-blue-500' onClick={closeButtonClick}>
+                        <button className='m-2 p-2 bg-blue-500 border rounded' onClick={closeButtonClick}>
                             <XIcon />
                         </button>
                     </div>

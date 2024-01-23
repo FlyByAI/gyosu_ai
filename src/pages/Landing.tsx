@@ -43,8 +43,8 @@ const LandingPage: React.FC = () => {
 
     return (
         <div>
-            <section className="h-full flex flex-col md:flex-row items-center" style={{ backgroundImage: `url('/svg/dark-bg.svg')`, backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundColor: '#0b1536' }}>
-                <img className="w-3/4 md:w-1/3 h-auto mx-auto md:mx-0" src="/svg/teacher1.svg" alt="Teacher illustration with open book" />
+            <section className="h-full flex flex-col md:flex-row items-center" style={{ backgroundImage: `url('/png/dark-bg.png')`, backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundColor: '#0b1536' }}>
+                <img className="w-3/4 md:w-1/3 md:mx-0" src="/png/teacher1.png" alt="Teacher illustration with open book" />
                 <div className="ml-0 md:ml-20 w-full md:w-2/3 text-center md:text-left text-3xl md:text-5xl text-gray-300 p-4">
                     <p className="font-bold mt-4 flex-col"><div className='mb-4'>Create math </div><LoopingText variant='typed' textArray={['worksheets', 'problems', 'quizzes', 'exams']} /></p>
                     <p className="font-bold mt-4">with AI</p>
@@ -54,7 +54,7 @@ const LandingPage: React.FC = () => {
                             value={inputText}
                             onKeyDown={handleKeyDown}
                             onChange={(e) => setInputText(e.target.value)}
-                            placeholder="What do you want to teach today?"
+                            placeholder="Can you create a lesson plan for me?"
                             className="resize-none md:w-1/2 w-full bg-gray-100 text-black text-lg rounded leading-tight p-2 flex-1 border-green-300 border-2 focus:outline-none focus:border-2 focus:border-blue-300"
                             style={{
                                 boxShadow: '0 0 5px rgba(81, 203, 238, 0.5)',
@@ -73,7 +73,7 @@ const LandingPage: React.FC = () => {
                     </form>
                 </div>
             </section>
-            <section className="h-full bg-gray-100 justify-center py-8 text-gray-700 flex flex-col items-center">
+            <section className="h-full bg-gray-100 justify-center py-8 text-gray-700 flex flex-col items-center"  style={{ backgroundImage: `url('/png/tech-bg.png')`, backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundColor: '#0b1536' }}>
                 <h1 className='font-bold w-full text-center text-3xl md:text-5xl mb-4'>
                     Teacher burnout is a major problem.
                 </h1>
@@ -83,17 +83,17 @@ const LandingPage: React.FC = () => {
 
                 <div className='flex flex-col md:flex-row space-x-0 space-y-16 md:space-x-16 md:space-y-0 w-3/4 h-full'>
                     <div className="w-full xl:w-1/4 text-gray-800 max-w-lg p-4 bg-orange-100 flex flex-col items-center rounded-3xl">
-                        <img className="w-1/4 sm:w-1/4 h-auto m-6" src="/svg/time.svg" alt="Time Illustration" />
+                        <img className="w-1/4 sm:w-1/4 h-auto m-6" src="/png/time.png" alt="Time Illustration" />
                         <div className="text-center text-2xl font-bold mb-4">Save Time</div>
                         <div className='text-left text-lg'>Spend more time with your students, spend less time finding problems & creating content.</div>
                     </div>
                     <div className="w-full xl:w-1/4 text-gray-800 max-w-lg p-4 bg-blue-100 flex flex-col items-center rounded-3xl">
-                        <img className="w-1/4 sm:w-1/4 h-auto m-6" src="/svg/pencilwrench.svg" alt="Customization Illustration" />
+                        <img className="w-1/4 sm:w-1/4 h-auto m-6" src="/png/pencilwrench.png" alt="Customization Illustration" />
                         <div className="text-center text-2xl font-bold mb-4">Customize</div>
                         <div className='text-left text-lg'>Every year, class, and student is unique. Create customized content just for them.</div>
                     </div>
                     <div className="w-full xl:w-1/4 text-gray-800 max-w-lg p-4 bg-pink-100 flex flex-col items-center rounded-3xl">
-                        <img className="w-1/4 sm:w-1/4 h-auto m-6" src="/svg/ai.svg" alt="AI Illustration" />
+                        <img className="w-1/4 sm:w-1/4 h-auto m-6" src="/png/ai.png" alt="AI Illustration" />
                         <div className="text-center text-2xl font-bold mb-4">AI</div>
                         <div className="text-left text-lg">Chat with our AI to create math content, update it, and download it for class.</div>
                     </div>
@@ -134,8 +134,8 @@ const LandingPage: React.FC = () => {
                 </div>
             </section>
 
-            <section className="p-10 h-full flex items-center" style={{ backgroundImage: `url('/svg/tech-bg.svg')`, backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundColor: '#0b1536' }}>
-                <div className="w-2/3 text-3xl text-gray-800">
+            <section className="p-10 h-full flex items-center" style={{ backgroundImage: `url('/png/dark-bg.png')`, backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundColor: '#0b1536' }}>
+                <div className="w-3/4 text-3xl text-gray-100">
                     <h1 className="font-bold" ><LoopingText variant='typed' textArray={['Innovative', 'Impactful', 'Customized']} /></h1><h1>Education</h1>
                     <h1 className="font-bold"></h1>
                     <p className="mt-4 text-lg">starts with you.</p>
@@ -143,7 +143,7 @@ const LandingPage: React.FC = () => {
                         <textarea
                             value={inputText}
                             onChange={(e) => setInputText(e.target.value)}
-                            placeholder="What do you want to teach today?"
+                            placeholder="Can you help me write a quiz?"
                             className="resize-none md:w-1/2 w-full bg-gray-100 text-gray-100 text-lg rounded leading-tight p-2 flex-1 border-green-700 border"
                             style={{
                                 boxShadow: '0 0 5px rgba(81, 203, 238, 0.5)',
@@ -161,7 +161,7 @@ const LandingPage: React.FC = () => {
                         </button>
                     </form>
                 </div>
-                <img className="w-1/3 h-auto" src="/svg/teacher2.svg" alt="Teacher illustration with stack of books" />
+                <img className="w-1/4 h-auto" src="/png/teacher2.png" alt="Teacher illustration with stack of books" />
             </section>
         </div >
     );
