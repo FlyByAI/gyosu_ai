@@ -37,7 +37,7 @@ const Pricing = () => {
                         {/* <p className='my-4 text-left'>Plan includes:</p> */}
                         <ul className='list-decimal-none list-inside text-left space-y-4 mt-4 flex flex-col'>
                             <li className="flex flex-row"><CheckmarkIcon /> GyosuChat Assistant</li>
-                            <li className="flex flex-row"><CheckmarkIcon /> 25 message limit every 3 hours </li>
+                            <li className="flex flex-row"><CheckmarkIcon /> 200 message limit per day. </li>
                             <li className="flex flex-row"><CheckmarkIcon />Full access to problem database</li>
                             <li className="flex flex-row"><CheckmarkIcon />Early Access to additional features</li>
                         </ul>
