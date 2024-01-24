@@ -41,7 +41,7 @@ const ChatNavbar: React.FC = () => {
                     {/* New Chat Button with Margin */}
                     <button onClick={navigateToNewChat} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-2 flex-row flex">
                         <div className='mr-4 '>New Chat</div>
-                        <NewChatIcon/>
+                        <NewChatIcon />
                     </button>
 
                     {/* Centered Title */}
@@ -52,9 +52,23 @@ const ChatNavbar: React.FC = () => {
                     {/* Placeholder div to balance flex space */}
                     <div className="w-[68px]">
                         <HamburgerWrapper>
-                            {/* <LanguageDropdown /> */}
-                            <ManageSubscriptionButton />
-                            <DeleteAllChatsButton/>
+                            <div className='flex flex-col space-y-2'>
+                                {/* <LanguageDropdown /> */}
+                                <ManageSubscriptionButton />
+                                <Link to="/math-app" className="text-lg text-white mx-3 hover:underline dark:text-gray-200 font-mono font-bold">
+                                    Problem Search
+                                </Link>
+                                <Link to="/math-app/documents" className="text-lg text-white mx-3 hover:underline dark:text-gray-200 font-mono font-bold">
+                                    My Documents
+                                </Link>
+                                <Link to="/faq" className="text-lg text-white mx-3 hover:underline dark:text-gray-200 font-mono font-bold">
+                                    How To
+                                </Link>
+                                <Link to="/subscribe" className="text-lg text-white mx-3 mt-2 hover:underline dark:text-gray-200 font-mono font-bold">
+                                    Pricing
+                                </Link>
+                                <DeleteAllChatsButton />
+                            </div>
                         </HamburgerWrapper>
                     </div> {/* Adjust width to match the New Chat button width */}
                 </div>

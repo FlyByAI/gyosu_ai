@@ -86,6 +86,7 @@ const FixedNavbar: React.FC = () => {
             <HamburgerWrapper>
               {/* <LanguageDropdown /> */}
               <ManageSubscriptionButton />
+              <DeleteAllChatsButton />
             </HamburgerWrapper>
           </SignedIn>
           <SignedOut>
