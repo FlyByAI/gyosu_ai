@@ -24,7 +24,7 @@ const HamburgerWrapper: React.FC<HamburgerWrapperProps> = ({ children }) => {
             <Hamburger toggled={isOpen} toggle={setOpen} />
 
             {/* Children */}
-            <div className={`flex fixed top-16 border right-0 z-100 w-auto h-auto transition-transform duration-300 transform ${isOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0`}>
+            <div className={`flex fixed top-16 border right-0 z-100 w-auto h-auto transition-transform duration-300 transform ${isOpen ? 'translate-x-0 lg:translate-x-0' : '-translate-x-full'}`}>
                 {isOpen &&
                     <div className='bg-gray-900 w-auto h-auto justify-end p-4 space-y-4'>
                         {children}
