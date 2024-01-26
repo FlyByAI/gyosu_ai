@@ -5,14 +5,14 @@ import toast from 'react-hot-toast';
 
 export interface ChatUsageData {
     uniqueChatters: number;
-    chatSessionsPerChatter: string; // Assuming this is a string representation of the type
+    chatSessionsPerChatter: { username: string; numChats: number }[];
     singleChatUserCount: number;
-    averageMessagesPerUser: string; // JSON string, might need parsing in the front-end
-    averageMessagesPerUserPerDay: string; // JSON string, might need parsing in the front-end
-    activeUsersOverDays: number[]; // Assuming this is an array of numbers
-    activeUsersOverWeeks: number[]; // Assuming this is an array of numbers
-    activeUsersOverMonths: number[]; // Assuming this is an array of numbers
-    mostActiveUsers: string[]; // Assuming this is an array of strings
+    averageMessagesPerUser: number; 
+    averageMessagesPerUserPerDay: number; 
+    activeUsersOverDays: number;
+    activeUsersOverWeeks: number;
+    activeUsersOverMonths: number;
+    mostActiveUsers: { username: string; chatSessionCount: number }[];
 }
 
 const fetchChatUsageData = async (endpoint: string, token: string | null) => {
@@ -28,6 +28,7 @@ const fetchChatUsageData = async (endpoint: string, token: string | null) => {
     }
 
     const responseData = await response.json();
+    console.log("fetched chat usage data:", responseData);
     return humps.camelizeKeys(responseData) as ChatUsageData;
 };
 

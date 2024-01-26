@@ -27,20 +27,30 @@ const UsagePage: React.FC = () => {
             {usageData && (
                 <div>
                     <p className="p-2">Unique Chatters: {usageData.uniqueChatters?.toString()}</p>
-                    <p className="p-2">Chat Sessions Per Chatter: {usageData.chatSessionsPerChatter}</p>
-                    <p className="p-2">Single Chat User Count: {usageData.singleChatUserCount}</p>
-                    <p className="p-2">Average Messages Per User: {usageData.averageMessagesPerUser && Object.keys(usageData.averageMessagesPerUser)}</p>
-                    <p className="p-2">Average Messages Per User Per Day:
-                        {Object.entries(usageData.averageMessagesPerUserPerDay || {}).map(([key, value]) => (
-                            <div key={key}>
-                                {key}: {value}
-                            </div>
+                    <p className="p-2">
+                        Chat Sessions Per Chatter: 
+                        {usageData.chatSessionsPerChatter && usageData.chatSessionsPerChatter.map((user, index) => (
+                            <span key={index}>
+                                {user.username} has {user.numChats} chats{index < usageData.chatSessionsPerChatter.length - 1 ? ', ' : ''}
+                            </span>
                         ))}
                     </p>
-                    <p className="p-2">Active Users Over Days: {usageData.activeUsersOverDays?.toString()}</p>
-                    <p className="p-2">Active Users Over Weeks: {usageData.activeUsersOverWeeks?.toString()}</p>
-                    <p className="p-2">Active Users Over Months: {usageData.activeUsersOverMonths?.toString()}</p>
-                    <p className="p-2">Most Active Users: {usageData.mostActiveUsers.map((user) => user.userUsername)}</p>
+
+                    <p className="p-2">Single Chat User Count: {usageData.singleChatUserCount}</p>
+                    <p className="p-2">Average Messages Per User: {usageData.averageMessagesPerUser}</p>
+                    <p className="p-2">Average Messages Per User Per Day:{usageData.averageMessagesPerUserPerDay}</p>
+                    <p className="p-2">Active Users Over Days: {usageData.activeUsersOverDays}</p>
+                    <p className="p-2">Active Users Over Weeks: {usageData.activeUsersOverWeeks}</p>
+                    <p className="p-2">Active Users Over Months: {usageData.activeUsersOverMonths}</p>
+                    <p className="p-2">
+                        Most Active Users: 
+                        {usageData.mostActiveUsers && usageData.mostActiveUsers.map((user, index) => (
+                            <span key={index}>
+                                {user.username} Sessions: {user.chatSessionCount} {index < usageData.mostActiveUsers.length - 1 ? ', ' : ''}
+                            </span>
+                        ))}
+                    </p>
+
                 </div>
             )}
         </div>
