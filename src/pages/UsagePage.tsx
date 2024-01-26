@@ -26,21 +26,21 @@ const UsagePage: React.FC = () => {
             <h1 className='text-2xl'>Chat Usage Data:</h1>
             {usageData && (
                 <div>
-                    <p>Unique Chatters: {usageData.uniqueChatters?.toString()}</p>
-                    <p>Chat Sessions Per Chatter: {usageData.chatSessionsPerChatter}</p>
-                    <p>Single Chat User Count: {usageData.singleChatUserCount}</p>
-                    <p>Average Messages Per User: {usageData.averageMessagesPerUser && Object.keys(usageData.averageMessagesPerUser)}</p>
-                    <p>Average Messages Per User Per Day:
+                    <p className="p-2">Unique Chatters: {usageData.uniqueChatters?.toString()}</p>
+                    <p className="p-2">Chat Sessions Per Chatter: {usageData.chatSessionsPerChatter}</p>
+                    <p className="p-2">Single Chat User Count: {usageData.singleChatUserCount}</p>
+                    <p className="p-2">Average Messages Per User: {usageData.averageMessagesPerUser && Object.keys(usageData.averageMessagesPerUser)}</p>
+                    <p className="p-2">Average Messages Per User Per Day:
                         {Object.entries(usageData.averageMessagesPerUserPerDay || {}).map(([key, value]) => (
                             <div key={key}>
                                 {key}: {value}
                             </div>
                         ))}
                     </p>
-                    <p>Active Users Over Days: {usageData.activeUsersOverDays?.toString()}</p>
-                    <p>Active Users Over Weeks: {usageData.activeUsersOverWeeks?.toString()}</p>
-                    <p>Active Users Over Months: {usageData.activeUsersOverMonths?.toString()}</p>
-                    <p>Most Active Users: {usageData.mostActiveUsers.map((user) => user.userUsername)}</p>
+                    <p className="p-2">Active Users Over Days: {usageData.activeUsersOverDays?.toString()}</p>
+                    <p className="p-2">Active Users Over Weeks: {usageData.activeUsersOverWeeks?.toString()}</p>
+                    <p className="p-2">Active Users Over Months: {usageData.activeUsersOverMonths?.toString()}</p>
+                    <p className="p-2">Most Active Users: {usageData.mostActiveUsers.map((user) => user.userUsername)}</p>
                 </div>
             )}
         </div>
