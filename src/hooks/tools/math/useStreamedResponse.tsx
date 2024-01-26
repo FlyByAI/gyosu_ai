@@ -1,6 +1,7 @@
 import { useClerk } from '@clerk/clerk-react';
 import humps from 'humps';
 import { useCallback, useState } from 'react';
+import toast from 'react-hot-toast';
 
 const useStreamedResponse = (endpoint: string, headers: any) => {
     const [data, setData] = useState<string | null>(null);
@@ -26,6 +27,16 @@ const useStreamedResponse = (endpoint: string, headers: any) => {
                     body: JSON.stringify(humps.decamelizeKeys(bodyContent)),
                     signal: abortController.signal,
                 });
+
+                if (!response.ok) {
+                    const responseData = await response.json();
+                    if (responseData.rate_limited) {
+                        toast('You are out of uses and need to upgrade your subscription.');
+                        setError('You are out of uses and need to upgrade your subscription.');
+                        setLoading(false);
+                        return;
+                    }
+                }
         
                 const reader = response?.body?.getReader();
                 const decoder = new TextDecoder('utf-8');
