@@ -5,14 +5,14 @@ import toast from 'react-hot-toast';
 
 export interface ChatUsageData {
     uniqueChatters: number;
-    chatSessionsPerChatter: number;
+    chatSessionsPerChatter: string; // Assuming this is a string representation of the type
     singleChatUserCount: number;
-    averageMessagesPerUser: number;
-    averageMessagesPerUserPerDay: number;
-    activeUsersOverDays: number[];
-    activeUsersOverWeeks: number[];
-    activeUsersOverMonths: number[];
-    mostActiveUsers: string[];
+    averageMessagesPerUser: string; // JSON string, might need parsing in the front-end
+    averageMessagesPerUserPerDay: string; // JSON string, might need parsing in the front-end
+    activeUsersOverDays: number[]; // Assuming this is an array of numbers
+    activeUsersOverWeeks: number[]; // Assuming this is an array of numbers
+    activeUsersOverMonths: number[]; // Assuming this is an array of numbers
+    mostActiveUsers: string[]; // Assuming this is an array of strings
 }
 
 const fetchChatUsageData = async (endpoint: string, token: string | null) => {

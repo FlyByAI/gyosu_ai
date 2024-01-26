@@ -1,18 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import useUsageData from '../hooks/usageStats/useUsageData';
+import useUsageData, { ChatUsageData } from '../hooks/usageStats/useUsageData';
 import useEnvironment from '../hooks/useEnvironment';
-
-export interface ChatUsageData {
-    uniqueChatters: number;
-    chatSessionsPerChatter: number;
-    singleChatUserCount: number;
-    averageMessagesPerUser: number;
-    averageMessagesPerUserPerDay: number;
-    activeUsersOverDays: number[];
-    activeUsersOverWeeks: number[];
-    activeUsersOverMonths: number[];
-    mostActiveUsers: string[];
-}
 
 const UsagePage: React.FC = () => {
     const { apiUrl } = useEnvironment();
@@ -34,13 +22,25 @@ const UsagePage: React.FC = () => {
     if (error) return <div>Error: {error.message}</div>;
 
     return (
-        <div>
-            <h1>Chat Usage Data</h1>
+        <div className='text-white'>
+            <h1 className='text-2xl'>Chat Usage Data:</h1>
             {usageData && (
                 <div>
-                    {/* Render your chat usage data here */}
-                    <p>Unique Chatters: {usageData.uniqueChatters}</p>
-                    {/* Add more fields as needed */}
+                    <p>Unique Chatters: {usageData.uniqueChatters?.toString()}</p>
+                    <p>Chat Sessions Per Chatter: {usageData.chatSessionsPerChatter}</p>
+                    <p>Single Chat User Count: {usageData.singleChatUserCount}</p>
+                    <p>Average Messages Per User: {usageData.averageMessagesPerUser && Object.keys(usageData.averageMessagesPerUser)}</p>
+                    <p>Average Messages Per User Per Day:
+                        {Object.entries(usageData.averageMessagesPerUserPerDay || {}).map(([key, value]) => (
+                            <div key={key}>
+                                {key}: {value}
+                            </div>
+                        ))}
+                    </p>
+                    <p>Active Users Over Days: {usageData.activeUsersOverDays?.toString()}</p>
+                    <p>Active Users Over Weeks: {usageData.activeUsersOverWeeks?.toString()}</p>
+                    <p>Active Users Over Months: {usageData.activeUsersOverMonths?.toString()}</p>
+                    <p>Most Active Users: {usageData.mostActiveUsers.map((user) => user.userUsername)}</p>
                 </div>
             )}
         </div>
