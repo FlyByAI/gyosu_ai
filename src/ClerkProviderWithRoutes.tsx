@@ -38,6 +38,7 @@ import MyProblemBanks from './pages/MathProblemBanks.tsx';
 import PrivacyPolicy from './pages/PrivacyPolicy.tsx';
 import ProblemBank from './pages/ProblemBank.tsx';
 import Terms from './pages/Terms.tsx';
+import UsagePage from './pages/UsagePage.tsx';
 import { getGyosuClerkTheme } from './theme/customClerkTheme.ts';
 
 
@@ -180,6 +181,18 @@ export default function ClerkProviderWithRoutes() {
                             <Navbar />
                             <ContentWrapper>
                                 <FAQPage />
+                                <Footer />
+                            </ContentWrapper>
+                        </>
+                    }
+                />
+                <Route
+                    path="/usage"
+                    element={
+                        <>
+                            <Navbar />
+                            <ContentWrapper>
+                                <UsagePage />
                                 <Footer />
                             </ContentWrapper>
                         </>
