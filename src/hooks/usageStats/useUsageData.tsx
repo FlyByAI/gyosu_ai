@@ -4,11 +4,11 @@ import humps from 'humps';
 import toast from 'react-hot-toast';
 
 export interface ChatUsageData {
-    uniqueChatters: number;
-    chatSessionsPerChatter: { username: string; numChats: number }[];
+    uniqueChatters: string[];
+    chatSessionsPerChatter: { [username: string]: number };
     singleChatUserCount: number;
-    averageMessagesPerUser: number; 
-    averageMessagesPerUserPerDay: number; 
+    averageMessagesPerUser: { [username: string]: number };
+    averageMessagesPerUserPerDay: { [day: string]: number }; 
     activeUsersOverDays: number;
     activeUsersOverWeeks: number;
     activeUsersOverMonths: number;
