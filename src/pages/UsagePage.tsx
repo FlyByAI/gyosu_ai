@@ -73,12 +73,13 @@ const UsagePage: React.FC = () => {
                         <p className="p-2">
                             Most Active Users:
                             {usageData.mostActiveUsers.map((user, index) => (
-                                <span key={index}>
-                                    {user.username} Sessions: {user.chatSessionCount}{index < usageData.mostActiveUsers.length - 1 ? ', ' : ''}
-                                </span>
+                                <li key={index}>
+                                    {user.username} Chat sessions: {user.chatSessionCount}{index < usageData.mostActiveUsers.length - 1 ? ', ' : ''}
+                                </li>
                             ))}
                         </p>
                     )}
+
                 </div>
             )}
 
