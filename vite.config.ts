@@ -1,10 +1,9 @@
-import react from '@vitejs/plugin-react';
-import { defineConfig } from 'vite';
-import history from 'vite-plugin-history-api-fallback';
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-    resolve: {
+  resolve: {
     alias: {
       process: "process/browser",
       stream: "stream-browserify",
@@ -15,8 +14,7 @@ export default defineConfig({
   define: {
     'process.env': process.env
   },
-plugins: [
+  plugins: [
     react(),
-    history(),
   ]
 })
