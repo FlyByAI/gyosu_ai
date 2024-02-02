@@ -28,10 +28,6 @@ const HamburgerWrapperX = ({ children }: { children: React.ReactNode }) => {
         };
     }, []);
 
-    const navigateToNewChat = () => {
-        navigate('/math-app/chat');
-    };
-
     return (
         <div className="relative">
             {/* Hamburger Menu */}
