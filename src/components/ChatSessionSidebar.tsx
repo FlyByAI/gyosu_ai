@@ -187,7 +187,7 @@ const ChatSessionSidebar: React.FC = () => {
     return (
         <div className="chat-sidebar h-75vh md:h-85vh p-4 max-w-xs md:max-w-none bg-gray-800 md:bg-transparent border border-gray-300 text-white flex flex-col"
             ref={portalRootRef}
-            >
+        >
             <div className="flex-grow overflow-y-auto">
                 <ul>
                     {renderChatsInSection(categorizedChats.today, "Today")}
@@ -200,14 +200,12 @@ const ChatSessionSidebar: React.FC = () => {
             </div>
             <hr className='p-1' />
             <div className="user-profile">
-                <div className='flex flex-row justify-between'>
-                    <SignedIn>
-                        <div className="user-name text-white mt-2 text-xs mr-2">
-                            {user?.fullName || 'User Name'}
-                        </div>
-                    </SignedIn>
+                <div className='flex flex-row justify-center items-center'>
                     <SignedIn>
                         {<UserButton afterSignOutUrl="/" appearance={getGyosuClerkTheme()} />}
+                        <div className="user-name text-white text-xs ml-2">
+                            {user?.fullName || 'User Name'}
+                        </div>
                     </SignedIn>
                 </div>
                 {/* <div className='text-xs mt-2 md:hidden block'>

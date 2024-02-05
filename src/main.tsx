@@ -1,16 +1,16 @@
-import "./init"
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
+import "./init"
 
 import {
   BrowserRouter,
-} from "react-router-dom";
+} from "react-router-dom"
 
 
 
-import ClerkProviderWithRoutes from './ClerkProviderWithRoutes.tsx';
+import ClerkProviderWithRoutes from './ClerkProviderWithRoutes.tsx'
 
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
