@@ -1,9 +1,8 @@
 # Stage 0 - Build Frontend Assets
-FROM node:16-alpine as build
+FROM node:18-alpine as build
 
 WORKDIR /app
 COPY package*.json ./
-# Install git before running yarn install
 RUN apk add --no-cache git
 RUN yarn install
 COPY . .
