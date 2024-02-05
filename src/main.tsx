@@ -10,14 +10,14 @@ import {
 
 
 
-import ClerkProviderWithRoutes from './ClerkProviderWithRoutes.tsx'
+import GyosuRoutes from './GyosuRoutes.tsx'
 
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <BrowserRouter>
       <App>
-        <ClerkProviderWithRoutes />
+        <GyosuRoutes />
       </App>
     </BrowserRouter>
   </React.StrictMode>,
