@@ -1,5 +1,5 @@
 import { useClerk } from '@clerk/clerk-react';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import toast from 'react-hot-toast/headless';
 import { Tooltip as ReactTooltip } from "react-tooltip";
 import { useScreenSize } from '../../contexts/ScreenSizeContext';
@@ -7,6 +7,7 @@ import { useModal } from '../../contexts/useModal';
 import useGetDocuments from '../../hooks/tools/math/useGetDocuments';
 import useSubmitDocument from '../../hooks/tools/math/useSubmitDocument';
 import useEnvironment from '../../hooks/useEnvironment';
+import { useRequireSignIn } from '../../hooks/useRequireSignIn';
 import { Chunk, Document } from '../../interfaces';
 import DocumentPreview from './DocumentPreview';
 
@@ -22,13 +23,8 @@ const AddChunkForm: React.FC<AddChunkFormProps> = ({ chunk, preview }) => {
 
     const { closeModal } = useModal();
 
-    useEffect(() => {
-        console.log(session, "session")
-        if (session === null) {
-            console.log("session is null")
-            openSignIn()
-        }
-    }, [session, openSignIn])
+      useRequireSignIn();
+
 
     const { apiUrl } = useEnvironment();
     const endpoint = `${apiUrl}/math_app/school_document/list/`;

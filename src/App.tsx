@@ -38,6 +38,7 @@ function App({ children }: AppProps) {
   return (
     <div className=''>
       <ClerkProvider
+        navigate={(to) => navigate(to)}
         publishableKey={clerkKey}
         allowedRedirectOrigins={["https://gyosu.ai", "https://www.gyosu.ai", /^https:\/\/(?:.*\.)?gyosu\.ai$/]}
         appearance={getGyosuClerkTheme()}

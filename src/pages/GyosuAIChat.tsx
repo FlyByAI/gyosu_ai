@@ -13,6 +13,7 @@ import { useScreenSize } from '../contexts/ScreenSizeContext';
 import useChatSessions from '../hooks/tools/math/useChatSessions';
 import useStreamedResponse from '../hooks/tools/math/useStreamedResponse';
 import useEnvironment from '../hooks/useEnvironment';
+import { useRequireSignIn } from '../hooks/useRequireSignIn';
 import ShareIcon from '../svg/Share';
 
 export interface IChatMessage {
@@ -97,13 +98,8 @@ const GyosuAIChat = () => {
     }, [messages]); // eslint-disable-line react-hooks/exhaustive-deps
 
 
-    useEffect(() => {
-        console.log(session, "session")
-        if (session === null) {
-            console.log("session is null")
-            openSignIn()
-        }
-    }, [session, openSignIn])
+      useRequireSignIn();
+
 
     useEffect(() => {
         if (!isLoading) {

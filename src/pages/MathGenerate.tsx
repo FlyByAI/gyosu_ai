@@ -6,6 +6,7 @@ import ChunkManager from '../components/math/ChunkManager';
 import CompetitonMathGenerateForm from '../components/math/CompetitonMathGenerateForm';
 import TextbookGenerateForm from '../components/math/TextbookGenerateForm';
 import { useScreenSize } from '../contexts/ScreenSizeContext';
+import { useRequireSignIn } from '../hooks/useRequireSignIn';
 import { Chunk, GenerateFormData } from '../interfaces';
 
 
@@ -24,13 +25,8 @@ const MathGenerate: React.FC = () => {
         setChunkArray(chunkArray);
     };
 
-    useEffect(() => {
-        console.log(session, "session")
-        if (session === null) {
-            console.log("session is null")
-            openSignIn()
-        }
-    }, [session, openSignIn])
+      useRequireSignIn();
+
 
     const { isDesktop } = useScreenSize();
 
