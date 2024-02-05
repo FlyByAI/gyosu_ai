@@ -1,16 +1,18 @@
-import React, { useState, useEffect, FormEvent, ChangeEvent } from 'react';
-import useEnvironment from '../hooks/useEnvironment';
-import useGetDocuments from '../hooks/tools/math/useGetDocuments';
-import formOptionsJSON from '../json/dropdown_data.json';
 import { useClerk } from '@clerk/clerk-react';
+import { ChangeEvent, useEffect, useState } from 'react';
+import useGetDocuments from '../hooks/tools/math/useGetDocuments';
 import { PlaygroundFormData } from '../hooks/tools/math/useSubmitPlayground';
+import useEnvironment from '../hooks/useEnvironment';
 import StreamedResponseMultikeyComponent from './StreamResponseMultiKeyComponent';
 
 const ContentMultipleStreamedExample = () => {
 
     const { session, openSignIn } = useClerk();
+    
     useEffect(() => {
-        if (!session) {
+        console.log(session, "session")
+        if (session === null) {
+            console.log("session is null")
             openSignIn()
         }
     }, [session, openSignIn])
