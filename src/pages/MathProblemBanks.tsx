@@ -1,11 +1,11 @@
 
-import React, { useEffect } from 'react';
-import ProblemBankShelf from '../components/document/ProblemBankShelf';
-import Accordion from '../components/Accordion';
-import GridContainer3x3 from '../components/grids/GridContainer3x3';
-import DocumentPreview from '../components/forms/DocumentPreview';
-import useGetDocuments from '../hooks/tools/math/useGetDocuments';
 import { useClerk } from '@clerk/clerk-react';
+import React, { useEffect } from 'react';
+import Accordion from '../components/Accordion';
+import ProblemBankShelf from '../components/document/ProblemBankShelf';
+import DocumentPreview from '../components/forms/DocumentPreview';
+import GridContainer3x3 from '../components/grids/GridContainer3x3';
+import useGetDocuments from '../hooks/tools/math/useGetDocuments';
 import useEnvironment from '../hooks/useEnvironment';
 
 const MyProblemBanks: React.FC = () => {
@@ -13,7 +13,9 @@ const MyProblemBanks: React.FC = () => {
     const { session, openSignIn } = useClerk();
 
     useEffect(() => {
-        if (!session) {
+        console.log(session, "session")
+        if (session === null) {
+            console.log("session is null")
             openSignIn()
         }
     }, [session, openSignIn])

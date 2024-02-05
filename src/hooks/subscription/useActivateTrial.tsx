@@ -3,6 +3,7 @@ import { useState } from 'react';
 
 const useActivateTrial = (endpoint: string) => {
     const { session } = useClerk();
+
     const [isLoading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
     const [trialActivated, setTrialActivated] = useState<boolean | null>(null);

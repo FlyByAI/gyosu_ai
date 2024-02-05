@@ -1,5 +1,5 @@
 import { useClerk, useUser } from '@clerk/clerk-react';
-import React from 'react';
+import React, { useEffect } from 'react';
 import Accordion from '../components/Accordion';
 import useCreateAnswerKey from '../hooks/tools/math/useCreateAnswerKey';
 import useGetDocumentDownload from '../hooks/tools/math/useGetDocumentDownload';
@@ -30,6 +30,23 @@ interface AnswerKeyResponse {
 const Documents: React.FC = () => {
 
     const { session, openSignIn } = useClerk();
+
+    useEffect(() => {
+        console.log(session, "session")
+        if (session === null) {
+            console.log("session is null")
+            openSignIn()
+        }
+    }, [session, openSignIn])
+
+
+    useEffect(() => {
+        console.log(session, "session")
+        if (session === null) {
+            console.log("session is null")
+            openSignIn()
+        }
+    }, [session, openSignIn])
 
     const { apiUrl } = useEnvironment();
     const { documentDownloads, isLoading, error } = useGetDocumentDownloads(`${apiUrl}/math_app/cloud_storage_document/list/`)

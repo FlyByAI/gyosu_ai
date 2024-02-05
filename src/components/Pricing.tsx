@@ -1,10 +1,7 @@
-import { useClerk } from '@clerk/clerk-react';
 import CheckmarkIcon from '../svg/CheckmarkIcon';
 import { SubscribePaidButton } from './SubscribeButton';
 
 const Pricing = () => {
-
-    const { session } = useClerk();
 
     return (
         <div className='text-white text-l'>

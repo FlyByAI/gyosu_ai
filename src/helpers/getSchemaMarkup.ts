@@ -2,6 +2,8 @@
 import { Location } from 'react-router-dom';
 
 export const getSchemaMarkup = (location: Location) => {
+    // todo, this needs to be updated
+
     switch (location.pathname) {
         case "/":
             return `

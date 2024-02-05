@@ -25,7 +25,9 @@ const MathGenerate: React.FC = () => {
     };
 
     useEffect(() => {
-        if (!session) {
+        console.log(session, "session")
+        if (session === null) {
+            console.log("session is null")
             openSignIn()
         }
     }, [session, openSignIn])
