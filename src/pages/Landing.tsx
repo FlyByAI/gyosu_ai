@@ -44,9 +44,9 @@ const LandingPage: React.FC = () => {
     return (
         <div>
             <section className="h-full flex flex-col md:flex-row items-center" style={{ backgroundImage: `url('/png/dark-bg.png')`, backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundColor: '#0b1536' }}>
-                <img className="w-3/4 md:w-1/3 md:mx-0" src="/png/teacher1.png" alt="Teacher illustration with open book" />
+                <img className="w-1/2 pt-4 md:pt-0 md:w-1/3 md:mx-0" src="/png/teacher1.png" alt="Teacher illustration with open book" />
                 <div className="ml-0 md:ml-20 w-full md:w-2/3 text-center md:text-left text-3xl md:text-5xl text-gray-300 p-4">
-                    <p className="font-bold mt-4 flex-col"><div className='mb-4'>Create math </div><LoopingText variant='typed' textArray={['worksheets', 'problems', 'quizzes', 'exams']} /></p>
+                    <p className="font-bold my-4 flex-col">Create math </p><LoopingText variant='typed' textArray={['worksheets', 'problems', 'quizzes', 'exams']} />
                     <p className="font-bold mt-4">with AI</p>
                     <p className="mt-4 text-lg">Generative AI, for math teachers.</p>
                     <form onSubmit={handleSubmit} className="flex flex-col overflow-hidden shadow-lg my-4 p-2">
@@ -73,7 +73,7 @@ const LandingPage: React.FC = () => {
                     </form>
                 </div>
             </section>
-            <section className="h-full bg-gray-100 justify-center py-8 text-gray-700 flex flex-col items-center"  style={{ backgroundImage: `url('/png/tech-bg.png')`, backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundColor: '#0b1536' }}>
+            <section className="h-full bg-gray-100 justify-center py-8 text-gray-700 flex flex-col items-center" style={{ backgroundImage: `url('/png/tech-bg.png')`, backgroundPosition: 'center', backgroundRepeat: 'repeat', backgroundSize: 'cover', backgroundColor: '#0b1536' }}>
                 <h1 className='font-bold w-full text-center text-3xl md:text-5xl mb-4'>
                     Teacher burnout is a major problem.
                 </h1>
@@ -98,9 +98,9 @@ const LandingPage: React.FC = () => {
                         <div className="text-left text-lg">Chat with our AI to create math content, update it, and download it for class.</div>
                     </div>
                     <div className="w-full xl:w-1/4 text-gray-800 max-w-lg p-4 bg-green-100 flex flex-col items-center rounded-3xl">
-                        <div className='flex m-4'>
-                            <PdfSVG height="auto" width="auto" color="#cc1510" className='bg-white py-1 rounded-md mb-2 mr-4' />
-                            <DocxSVG height="auto" width="auto" color="#0167b3" className='bg-white py-1 rounded-md mb-2' />
+                        <div className='flex m-4 w-1/2'>
+                            <PdfSVG height="100%" color="#cc1510" className='bg-white py-1 rounded-md mb-2 mr-4' />
+                            <DocxSVG height="100%" color="#0167b3" className='bg-white py-1 rounded-md mb-2' />
                         </div>
                         <div className="text-center text-2xl font-bold mb-4">Download</div>
                         <div className="text-left text-lg">Export your session quiz or worksheet in a format you can edit and print.</div>
