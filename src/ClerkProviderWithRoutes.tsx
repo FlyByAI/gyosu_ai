@@ -53,6 +53,7 @@ export default function ClerkProviderWithRoutes() {
     return (
         <ClerkProvider
             publishableKey={clerkKey}
+            allowedRedirectOrigins={["https://gyosu.ai", "https://www.gyosu.ai"]}
             appearance={getGyosuClerkTheme()}
         >
             <Helmet>
