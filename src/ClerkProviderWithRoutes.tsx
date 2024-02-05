@@ -14,9 +14,8 @@ import Navbar from './components/navbars/Navbar.tsx';
 import Contact from './pages/Contact.tsx';
 //Clerk
 import {
-    ClerkProvider,
     SignIn,
-    SignUp,
+    SignUp
 } from "@clerk/clerk-react";
 import { Helmet } from "react-helmet-async";
 import ContentMultipleStreamedExample from './components/ContentMultipleStreamedExample.tsx';
@@ -38,7 +37,6 @@ import MyProblemBanks from './pages/MathProblemBanks.tsx';
 import PrivacyPolicy from './pages/PrivacyPolicy.tsx';
 import ProblemBank from './pages/ProblemBank.tsx';
 import Terms from './pages/Terms.tsx';
-import { getGyosuClerkTheme } from './theme/customClerkTheme.ts';
 
 
 export default function ClerkProviderWithRoutes() {
@@ -51,11 +49,7 @@ export default function ClerkProviderWithRoutes() {
     const location = useLocation();
 
     return (
-        <ClerkProvider
-            publishableKey={clerkKey}
-            allowedRedirectOrigins={["https://gyosu.ai", "https://www.gyosu.ai"]}
-            appearance={getGyosuClerkTheme()}
-        >
+        <>
             <Helmet>
                 <script type="application/ld+json">
                     {getSchemaMarkup(location)}
@@ -141,7 +135,7 @@ export default function ClerkProviderWithRoutes() {
                         </>
                     }
                 />
-                 <Route
+                <Route
                     path="/math-app/chat/"
                     element={
                         <>
@@ -262,6 +256,6 @@ export default function ClerkProviderWithRoutes() {
                 />
 
             </Routes>
-        </ClerkProvider>
+        </>
     );
 }

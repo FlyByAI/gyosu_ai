@@ -229,7 +229,7 @@ const GyosuAIChat = () => {
 
 
     return (
-        <div className='main-container'>
+        <div className='main-container flex-col flex'>
             <div className="flex flex-row">
                 <div className="w-1/6 hidden md:block">
                     <ChatSessionSidebar />
@@ -316,7 +316,7 @@ const GyosuAIChat = () => {
                 </div>
             </div >
 
-
+        <div className='md:block text-white text-sm self-center text-center'>Note: This feature is in beta, if you are having issues please email us at <a href="mailto:support@gyosu.ai" className="text-blue-300 underline">support@gyosu.ai</a></div>
         </div>
     );
 
