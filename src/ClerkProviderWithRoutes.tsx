@@ -53,7 +53,6 @@ export default function ClerkProviderWithRoutes() {
     return (
         <ClerkProvider
             publishableKey={clerkKey}
-            navigate={(to) => navigate(to)}
             appearance={getGyosuClerkTheme()}
         >
             <Helmet>
