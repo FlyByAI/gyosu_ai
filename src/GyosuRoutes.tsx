@@ -7,8 +7,7 @@ import './index.css';
 import {
     Route,
     Routes,
-    useLocation,
-    useNavigate,
+    useLocation
 } from "react-router-dom";
 import Navbar from './components/navbars/Navbar.tsx';
 import Contact from './pages/Contact.tsx';
@@ -23,9 +22,7 @@ import ContentPlaygroundStreamed from './components/ContentPlaygroundStreamed.ts
 import ContentWrapper from './components/ContentWrapper.tsx';
 import Footer from './components/Footer.tsx';
 import Pricing from './components/Pricing.tsx';
-import { notSecretConstants } from './constants/notSecretConstants.tsx';
 import { getSchemaMarkup } from './helpers/getSchemaMarkup.ts';
-import useEnvironment from './hooks/useEnvironment.tsx';
 import Attributions from './pages/Attributions.tsx';
 import Documents from './pages/Documents.tsx';
 import FAQPage from './pages/FAQPage.tsx';
@@ -39,12 +36,7 @@ import ProblemBank from './pages/ProblemBank.tsx';
 import Terms from './pages/Terms.tsx';
 
 
-export default function ClerkProviderWithRoutes() {
-    const navigate = useNavigate();
-
-    const { env } = useEnvironment();
-
-    const clerkKey = env == "production" ? notSecretConstants.clerk.PUBLISHABLE_KEY : notSecretConstants.clerk.PUBLISHABLE_DEV_KEY
+export default function GyosuRoutes() {
 
     const location = useLocation();
 
@@ -55,6 +47,18 @@ export default function ClerkProviderWithRoutes() {
                     {getSchemaMarkup(location)}
                 </script>
             </Helmet>
+            <Routes>
+                <Route
+                    path="/"
+                    element={
+                        <>
+                            <Navbar />
+                            <LandingPage />
+                            <Footer />
+                        </>
+                    }
+                />
+            </Routes>
             <Routes>
                 <Route
                     path="/"
