@@ -98,10 +98,12 @@ const GyosuAIChat = () => {
 
 
     useEffect(() => {
-        if (!session) {
-            openSignIn();
+        console.log(session, "session")
+        if (session === null) {
+            console.log("session is null")
+            openSignIn()
         }
-    }, [session, openSignIn]);
+    }, [session, openSignIn])
 
     useEffect(() => {
         if (!isLoading) {

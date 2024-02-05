@@ -1,12 +1,12 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import 'tailwindcss/tailwind.css';
-import SubmitButton from '../forms/SubmitButton';
-import Dropdown from '../forms/Dropdown';
 import { useClerk, useUser } from '@clerk/clerk-react';
-import formOptionsJSON from '../../json/dropdown_data.json';
-import { GenerateFormData, ProblemData, TextbookProblemData } from '../../interfaces';
-import useEnvironment from '../../hooks/useEnvironment';
+import React, { useEffect, useState } from 'react';
+import 'tailwindcss/tailwind.css';
 import useSubmitMathForm from '../../hooks/tools/math/useSubmitMathForm';
+import useEnvironment from '../../hooks/useEnvironment';
+import { GenerateFormData, TextbookProblemData } from '../../interfaces';
+import formOptionsJSON from '../../json/dropdown_data.json';
+import Dropdown from '../forms/Dropdown';
+import SubmitButton from '../forms/SubmitButton';
 
 type TextbookGenerateFormProps = {
     onSubmit: (data: any) => void;
@@ -110,7 +110,9 @@ const TextbookGenerateForm: React.FC<TextbookGenerateFormProps> = ({ onSubmit, s
 
 
     useEffect(() => {
-        if (!session) {
+        console.log(session, "session")
+        if (session === null) {
+            console.log("session is null")
             openSignIn()
         }
     }, [session, openSignIn])

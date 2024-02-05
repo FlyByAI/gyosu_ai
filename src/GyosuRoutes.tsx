@@ -58,18 +58,6 @@ export default function GyosuRoutes() {
                         </>
                     }
                 />
-            </Routes>
-            <Routes>
-                <Route
-                    path="/"
-                    element={
-                        <>
-                            <Navbar />
-                            <LandingPage />
-                            <Footer />
-                        </>
-                    }
-                />
                 <Route
                     path="/math-app"
                     element={
