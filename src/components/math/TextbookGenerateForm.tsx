@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import 'tailwindcss/tailwind.css';
 import useSubmitMathForm from '../../hooks/tools/math/useSubmitMathForm';
 import useEnvironment from '../../hooks/useEnvironment';
+import { useRequireSignIn } from '../../hooks/useRequireSignIn';
 import { GenerateFormData, TextbookProblemData } from '../../interfaces';
 import formOptionsJSON from '../../json/dropdown_data.json';
 import Dropdown from '../forms/Dropdown';
@@ -109,13 +110,8 @@ const TextbookGenerateForm: React.FC<TextbookGenerateFormProps> = ({ onSubmit, s
     };
 
 
-    useEffect(() => {
-        console.log(session, "session")
-        if (session === null) {
-            console.log("session is null")
-            openSignIn()
-        }
-    }, [session, openSignIn])
+    useRequireSignIn();
+
 
     const handleMathSubmit = async () => {
         if (session) {
@@ -130,7 +126,9 @@ const TextbookGenerateForm: React.FC<TextbookGenerateFormProps> = ({ onSubmit, s
             await submitMathForm({ data: formData });
         }
         else {
-            openSignIn()
+            openSignIn({
+                afterSignInUrl: window.location.href
+              });
         }
     };
 

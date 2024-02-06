@@ -1,12 +1,12 @@
+import { useClerk, useUser } from '@clerk/clerk-react';
 import React, { useEffect, useState } from 'react';
 import 'tailwindcss/tailwind.css';
-import Dropdown from '../forms/Dropdown';
-import { Chunk, CompetitionData, GenerateFormData, ProblemData } from '../../interfaces';
-import SubmitButton from '../forms/SubmitButton';
-import formOptionsJSON from '../../json/competition_math_data.json';  // Adjust this import
 import useSubmitMathForm from '../../hooks/tools/math/useSubmitMathForm';
 import useEnvironment from '../../hooks/useEnvironment';
-import { useClerk, useUser } from '@clerk/clerk-react';
+import { Chunk, CompetitionData, GenerateFormData } from '../../interfaces';
+import formOptionsJSON from '../../json/competition_math_data.json'; // Adjust this import
+import Dropdown from '../forms/Dropdown';
+import SubmitButton from '../forms/SubmitButton';
 
 type CompetitionMathGenerateFormProps = {
     onSubmit: (data: any) => void;
@@ -70,7 +70,9 @@ const CompetitionMathGenerateForm: React.FC<CompetitionMathGenerateFormProps> = 
             await submitMathForm({ data: formData });
         }
         else {
-            openSignIn()
+            openSignIn({
+                afterSignInUrl: window.location.href
+              });
         }
     };
 

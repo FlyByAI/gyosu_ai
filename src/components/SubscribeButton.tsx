@@ -11,7 +11,9 @@ const SubscribeFreeButton = ({ className }: { className: string }) => {
     const { openSignIn } = useClerk();
 
     const handleCheckout = () => {
-        openSignIn()
+        openSignIn({
+            afterSignInUrl: window.location.href
+          });
     }
 
     const { session } = useClerk();
@@ -45,7 +47,9 @@ const SubscribePremiumButton = ({ className }: { className: string }) => {
         if (session) {
             initiateCheckout({ coupon }); // Pass coupon to initiateCheckout
         } else {
-            openSignIn();
+            openSignIn({
+                afterSignInUrl: window.location.href
+              });
         }
     };
 
@@ -85,7 +89,9 @@ const SubscribeLiteButton = ({ className }: { className: string }) => {
         if (session) {
             initiateCheckout({ coupon }); // Pass coupon to initiateCheckout
         } else {
-            openSignIn();
+            openSignIn({
+                afterSignInUrl: window.location.href
+              });
         }
     };
 
@@ -124,7 +130,9 @@ const SubscribePaidButton = ({ className }: { className: string }) => {
         if (session) {
             initiateCheckout({ coupon }); // Pass coupon to initiateCheckout
         } else {
-            openSignIn();
+            openSignIn({
+                afterSignInUrl: window.location.href
+              });
         }
     };
 

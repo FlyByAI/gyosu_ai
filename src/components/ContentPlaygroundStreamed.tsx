@@ -1,22 +1,13 @@
-import { useClerk } from '@clerk/clerk-react';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import useGetDocuments from '../hooks/tools/math/useGetDocuments';
 import { PlaygroundFormData } from '../hooks/tools/math/useSubmitPlayground';
 import useEnvironment from '../hooks/useEnvironment';
+import { useRequireSignIn } from '../hooks/useRequireSignIn';
 import StreamedResponseComponent from './StreamResponseComponent';
 
 const ContentPlayGroundStreamed = () => {
 
-    const { session, openSignIn } = useClerk();
-    
-    useEffect(() => {
-        console.log(session, "session")
-        if (session === null) {
-            console.log("session is null")
-            openSignIn()
-        }
-    }, [session, openSignIn])
-
+    useRequireSignIn();
 
     const [formData, setFormData] = useState({
         textbook: '',

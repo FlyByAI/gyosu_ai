@@ -24,7 +24,9 @@ const LandingPage: React.FC = () => {
         e.preventDefault();
         if (!session) {
             localStorage.setItem('userMessage', inputText);
-            openSignIn();
+            openSignIn({
+                afterSignInUrl: window.location.href
+              });
         } else {
             navigate('/math-app/chat', { state: { text: inputText } });
         }
@@ -34,7 +36,9 @@ const LandingPage: React.FC = () => {
         if (e.key === 'Enter') {
             if (!session) {
                 localStorage.setItem('userMessage', inputText);
-                openSignIn();
+                openSignIn({
+                    afterSignInUrl: window.location.href
+                  });
             } else {
                 navigate('/math-app/chat', { state: { text: inputText } });
             }
