@@ -61,7 +61,7 @@ const DocumentToolbarNav: React.FC = () => {
                     <div className="w-1/2 flex justify-end items-center">
 
                         <SignedIn>
-                            {darkMode ? <UserButton afterSignOutUrl="/" appearance={getGyosuClerkTheme()} /> : <UserButton afterSignOutUrl="http://localhost:5173/" />}
+                            {darkMode ? <UserButton afterSignOutUrl={window.location.href} appearance={getGyosuClerkTheme()} /> : <UserButton afterSignOutUrl="http://localhost:5173/" />}
                             <HamburgerWrapper>
                                 {/* <LanguageDropdown /> */}
                                 <ManageSubscriptionButton />
@@ -78,7 +78,7 @@ const DocumentToolbarNav: React.FC = () => {
                                     }
                                 }}
                             >
-                                <SignInButton mode="modal" />
+                                <SignInButton mode="modal" afterSignInUrl={window.location.href} />
                             </div>
                         </SignedOut>
                     </div>

@@ -202,7 +202,7 @@ const ChatSessionSidebar: React.FC = () => {
             <div className="user-profile">
                 <div className='flex flex-row justify-center items-center'>
                     <SignedIn>
-                        {<UserButton afterSignOutUrl="/" appearance={getGyosuClerkTheme()} />}
+                        {<UserButton afterSignOutUrl={window.location.href} appearance={getGyosuClerkTheme()} />}
                         <div className="user-name text-white text-xs ml-2">
                             {user?.fullName || 'User Name'}
                         </div>
