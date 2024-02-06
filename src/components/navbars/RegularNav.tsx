@@ -22,7 +22,7 @@ const RegularNavbar: React.FC = () => {
                 <Link to="/" className="text-3xl font-semibold text-white justify-self-center lg:justify-self-start font-mono">Gyosu.ai</Link>
                 <div className="flex items-center justify-self-center sm:block">
                     <SignedIn>
-                        {darkMode ? <UserButton afterSignOutUrl="/" appearance={getGyosuClerkTheme()} /> : <UserButton afterSignOutUrl="/" />}
+                        {darkMode ? <UserButton afterSignOutUrl={window.location.href} appearance={getGyosuClerkTheme()} /> : <UserButton afterSignOutUrl={window.location.href} />}
                         <HamburgerWrapper>
                             <nav className='flex flex-col space-y-2'>
                                 {/* <LanguageDropdown /> */}
@@ -60,7 +60,7 @@ const RegularNavbar: React.FC = () => {
                                 }
                             }}
                         >
-                            <SignInButton mode="modal" />
+                            <SignInButton mode="modal" afterSignInUrl={window.location.href} />
                         </div>
                     </SignedOut>
                 </div>
@@ -115,7 +115,7 @@ const RegularNavbar: React.FC = () => {
                         </Link>
                     </nav>
                     <SignedIn>
-                        {darkMode ? <UserButton afterSignOutUrl="/" appearance={getGyosuClerkTheme()} /> : <UserButton afterSignOutUrl="/" />}
+                        {darkMode ? <UserButton afterSignOutUrl={window.location.href} appearance={getGyosuClerkTheme()} /> : <UserButton afterSignOutUrl={window.location.href} />}
                         {subscriptionInfo?.has_valid_subscription &&
                             <HamburgerWrapper>
                                 {/* <LanguageDropdown /> */}
@@ -135,7 +135,7 @@ const RegularNavbar: React.FC = () => {
                                 }
                             }}
                         >
-                            <SignInButton mode="modal" />
+                            <SignInButton mode="modal" afterSignInUrl={window.location.href} />
                         </div>
                     </SignedOut>
                 </div>
