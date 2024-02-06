@@ -9,7 +9,9 @@
     "build": "tsc && vite build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "test": "jest"
+    "test": "jest",
+    "prepare": "husky || true"
+
   },
   "husky": { 
     "hooks": {
