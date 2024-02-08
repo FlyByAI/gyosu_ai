@@ -71,7 +71,7 @@ const GyosuAIChat = () => {
         if (isLoading) return;
 
         const newMessage: IChatMessage = { role: 'user', content: text };
-        setMessages(prev => [...prev, newMessage]);
+        setMessages(prevMessages => [...prevMessages, newMessage, { role: 'assistant', content: 'Waiting for response...' }]);
 
         const newStreamingIndex = messages.length + 1;
         setStreamingIndex(newStreamingIndex);
@@ -110,36 +110,35 @@ const GyosuAIChat = () => {
         let updatedBuffer = jsonBuffer + streamedData;
 
         try {
-            let endOfJson = updatedBuffer.indexOf('}\n');
+            let endOfJson = updatedBuffer.indexOf('\n');
             while (endOfJson !== -1) {
-                const jsonString = updatedBuffer.substring(0, endOfJson + 1).trim();
-                updatedBuffer = updatedBuffer.substring(endOfJson + 2);
+                const jsonString = updatedBuffer.substring(0, endOfJson).trim(); // Adjust to exclude '\n'
+                updatedBuffer = updatedBuffer.substring(endOfJson + 1); // Move past the newline character
 
-                const data = JSON.parse(jsonString.replace("null", ""));
-                console.log(data)
+                const data = JSON.parse(jsonString);
+                console.log("data", data);
                 if (data.actions && !data.message) {
                     setActions(data.actions);
-                    console.log('setting actions', data.actions)
+                    console.log('setting actions', data.actions);
                 }
                 if (data.session_id) {
                     navigate(`/math-app/chat/${data.session_id}`, { replace: true, state: { ...state, sessionId: data.session_id } });
                 }
-                if (data.message) {
-                    console.log('setting message')
-                    setMessages(prev => {
+                if (data.token && typeof streamingIndex === 'number') {
 
-                        if (typeof streamingIndex === 'number' && prev[streamingIndex]) {
-                            const newMessages = [...prev];
-                            newMessages[streamingIndex] = { role: 'assistant', content: data.message };
-                            return newMessages;
-                        }
-                        return [...prev, { role: 'assistant', content: data.message }];
-                    });
+                    setMessages(prev => prev.map((message, index) =>
+                        index === streamingIndex ? { ...message, content: message.content.replace("Waiting for response...", "") + data.token } : message
+                    ));
                 }
-                if (data) {
-                    console.log('data received', data)
+                if (data.message && typeof streamingIndex === 'number') {
+                    console.log('setting complete message');
+                    // Update the message at streamingIndex with the complete message content
+                    setMessages(prev => prev.map((message, index) =>
+                        index === streamingIndex ? { ...message, content: data.message } : message
+                    ));
                 }
-                endOfJson = updatedBuffer.indexOf('}\n');
+
+                endOfJson = updatedBuffer.indexOf('\n');
             }
         } catch (error) {
             console.error('Error parsing JSON:', error);
@@ -313,7 +312,7 @@ const GyosuAIChat = () => {
                 </div>
             </div >
 
-        <div className='md:block text-white text-sm self-center text-center'>Note: This feature is in beta, if you are having issues please email us at <a href="mailto:support@gyosu.ai" className="text-blue-300 underline">support@gyosu.ai</a></div>
+            <div className='md:block text-white text-sm self-center text-center'>Note: This feature is in beta, if you are having issues please email us at <a href="mailto:support@gyosu.ai" className="text-blue-300 underline">support@gyosu.ai</a></div>
         </div>
     );
 
