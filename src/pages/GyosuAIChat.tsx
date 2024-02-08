@@ -71,7 +71,7 @@ const GyosuAIChat = () => {
         if (isLoading) return;
 
         const newMessage: IChatMessage = { role: 'user', content: text };
-        setMessages(prev => [...prev, newMessage]);
+        setMessages(prevMessages => [...prevMessages, newMessage, { role: 'assistant', content: 'Waiting for response...' }]);
 
         const newStreamingIndex = messages.length + 1;
         setStreamingIndex(newStreamingIndex);
@@ -126,9 +126,8 @@ const GyosuAIChat = () => {
                 }
                 if (data.token && typeof streamingIndex === 'number') {
 
-                    // Ensure tokens are appended only after a start signal
                     setMessages(prev => prev.map((message, index) =>
-                        index === streamingIndex ? { ...message, content: message.content + data.token } : message
+                        index === streamingIndex ? { ...message, content: message.content.replace("Waiting for response...", "") + data.token } : message
                     ));
                 }
                 if (data.message && typeof streamingIndex === 'number') {
@@ -137,7 +136,6 @@ const GyosuAIChat = () => {
                     setMessages(prev => prev.map((message, index) =>
                         index === streamingIndex ? { ...message, content: data.message } : message
                     ));
-                    setStreamingIndex(null); // Reset streamingIndex as the message sequence is complete
                 }
 
                 endOfJson = updatedBuffer.indexOf('\n');
@@ -146,7 +144,7 @@ const GyosuAIChat = () => {
             console.error('Error parsing JSON:', error);
         }
         setJsonBuffer(updatedBuffer);
-    }, [streamedData, streamingIndex, jsonBuffer]);
+    }, [streamedData, streamingIndex]);
 
 
     const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
