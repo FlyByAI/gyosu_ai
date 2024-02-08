@@ -38,7 +38,7 @@ const useStreamedResponse = (endpoint: string, headers: any) => {
 
                     // Directly concatenate the decoded value to the data state
                     const newText = decoder.decode(value, { stream: true });
-                    setData((prevData) => newText);
+                    setData(() => newText);
 
                     // Continue reading
                     return reader.read().then(processText);
