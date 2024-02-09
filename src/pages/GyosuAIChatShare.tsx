@@ -23,9 +23,6 @@ const GyosuAIChatShare = () => {
         if (token && session){
             acceptShareChatSession(token)
         }
-        if(session == null){
-            acceptShareChatSession("session_null")
-        }
     }, [acceptShareChatSession, session, token])
 
     return (
