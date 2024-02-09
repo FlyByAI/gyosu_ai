@@ -8,8 +8,6 @@ import { useRequireSignIn } from '../hooks/useRequireSignIn';
 
 
 const GyosuAIChatShare = () => {
-
-    //TODO: Fix this so that if a user is shared a chat session while not logged in, they can log in, and it will make the shared chat session once they have a session.
     //note: there is a redirect in acceptShareChatSession 
 
     const { apiUrl } = useEnvironment();
