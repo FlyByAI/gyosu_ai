@@ -114,7 +114,6 @@ const useChatSessions = (endpoint: string) => {
                     navigate(`/math-app/chat/`)
                     toast('SessionId was not found in the response data, but session was created.')
                     console.log('SessionId was not found in the response data, but session was created? data:', data);
-
                 }
             },
             onError: (error) => {
