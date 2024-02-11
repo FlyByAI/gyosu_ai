@@ -1,8 +1,8 @@
-import { useQuery } from '@tanstack/react-query';
 import { useClerk } from '@clerk/clerk-react';
+import { useQuery } from '@tanstack/react-query';
 import humps from 'humps';
+import { useRef } from 'react';
 import { Document } from '../../../interfaces';
-import { useEffect, useRef } from 'react';
 
 const fetchDocuments = async (endpoint: string, token: string | null) => {
     const response = await fetch(`${endpoint}`, {
@@ -31,15 +31,7 @@ const useGetDocuments = (endpoint: string) => {
         enabled: !!session,
     });
 
-    useEffect(() => {
-        if (session && session !== lastSessionRef.current) {
-            query.refetch();
-        }
-        lastSessionRef.current = session;
-    }, [session, query]);
-
     return {
-        getDocuments: query.refetch,
         isLoading: query.isLoading,
         error: query.error,
         documents: query.data,

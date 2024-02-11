@@ -1,5 +1,5 @@
 import { useClerk } from '@clerk/clerk-react';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import humps from 'humps';
 import toast from 'react-hot-toast';
 
@@ -28,16 +28,15 @@ const fetchChatUsageData = async (endpoint: string, token: string | null) => {
     }
 
     const responseData = await response.json();
-    console.log("fetched chat usage data:", responseData);
+console.log("fetched chat usage data:", responseData);
     return humps.camelizeKeys(responseData) as ChatUsageData;
 };
 
 const useUsageData = (endpoint: string) => {
     const { session } = useClerk();
-    const queryClient = useQueryClient(); // will    be used later
 
     const query = useQuery<ChatUsageData, Error>(['chatUsageData'], async () => {
-        const token = session ? await session.getToken() : 'none';
+            const token = session ? await session.getToken() : 'none';
         return fetchChatUsageData(`${endpoint}chat_stats/`, token);
     }, {
         enabled: !!session,
@@ -47,7 +46,6 @@ const useUsageData = (endpoint: string) => {
     });
 
     return {
-        getChatUsageData: query.refetch,
         isLoading: query.isLoading,
         error: query.error,
         chatUsageData: query.data,

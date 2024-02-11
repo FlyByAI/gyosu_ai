@@ -205,7 +205,6 @@ const useChatSessions = (endpoint: string) => {
     );
 
     return {
-        getChatSessions: query.refetch,
         isLoading: query.isLoading,
         error: query.error,
         chatSessions: query.data,
