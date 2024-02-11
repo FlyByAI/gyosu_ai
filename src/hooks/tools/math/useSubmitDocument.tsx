@@ -1,11 +1,11 @@
-import { useQueryClient, useMutation } from '@tanstack/react-query';
 import { useClerk } from '@clerk/clerk-react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import humps from 'humps';
-import { Document } from '../../../interfaces';
-import { MathFormData } from './useSubmitMathForm';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useLanguage } from '../../../contexts/useLanguage';
 import { languageNames } from '../../../helpers/language';
+import { Document } from '../../../interfaces';
+import { MathFormData } from './useSubmitMathForm';
 
 interface DocumentData {
     document: Document;

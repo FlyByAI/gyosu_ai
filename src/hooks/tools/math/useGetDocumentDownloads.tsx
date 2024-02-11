@@ -1,7 +1,6 @@
-import { useQuery } from '@tanstack/react-query';
 import { useClerk } from '@clerk/clerk-react';
+import { useQuery } from '@tanstack/react-query';
 import humps from 'humps';
-import { useEffect } from 'react';
 import { DocumentDownload } from '../../../pages/Documents';
 
 const fetchDocumentDownloads = async (endpoint: string, token: string | null) => {
@@ -30,15 +29,7 @@ const useGetDocumentDownloads = (endpoint: string) => {
         enabled: !!session,
     });
 
-    useEffect(() => {
-        if (session) {
-            query.refetch();
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [session]);
-
     return {
-        getDocumentDownloads: query.refetch,
         isLoading: query.isLoading,
         error: query.error,
         documentDownloads: query.data,

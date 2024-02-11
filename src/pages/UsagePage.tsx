@@ -5,12 +5,8 @@ import useEnvironment from '../hooks/useEnvironment';
 const UsagePage: React.FC = () => {
     const { apiUrl } = useEnvironment();
     const chatEndpoint = `${apiUrl}/usage/`;
-    const { getChatUsageData, isLoading, error, chatUsageData } = useUsageData(chatEndpoint);
+    const { isLoading, error, chatUsageData } = useUsageData(chatEndpoint);
     const [usageData, setUsageData] = useState<ChatUsageData | null>(null);
-
-    useEffect(() => {
-        getChatUsageData();
-    }, [getChatUsageData]);
 
     useEffect(() => {
         if (chatUsageData) {
