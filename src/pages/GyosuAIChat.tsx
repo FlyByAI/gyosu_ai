@@ -41,7 +41,7 @@ const GyosuAIChat = () => {
 
     const { data: streamedData, isLoading, error, startStreaming } = useStreamedResponse(chatEndpoint, {});
 
-    const { chatSessions, shareChatSession, isLoading: isLoadingChatHistory } = useChatSessions(chatEndpoint);
+    const { chatSessions, shareChatSession } = useChatSessions(chatEndpoint);
 
     const { isDesktop } = useScreenSize();
 
@@ -211,7 +211,7 @@ const GyosuAIChat = () => {
                     <ChatSessionSidebar />
                 </div>
                 <div className="flex-grow mx-auto relative">
-                    <div className={`${messages.length === 0 && "flex flex-col"} h-70vh overflow-y-auto p-2 border border-gray-300 md:ml-2 text-gray-100 scroll-smooth`}
+                    <div className={`${messages.length === 0 && "flex flex-col"} h-70vh overflow-y-auto p-2 border border-gray-300 mx-2 text-gray-100 scroll-smooth`}
                         ref={endOfMessagesRef}>
 
                         <div className='absolute top-0 right-4 p-4'> {/* Absolute positioning with Tailwind */}
@@ -293,13 +293,13 @@ const GyosuAIChat = () => {
                             value={userInput}
                             onChange={handleInputChange}
                             onKeyDown={handleKeyPress}
-                            className="flex-grow p-2 mr-2 md:mx-2 rounded border border-gray-300"
+                            className="flex-grow p-2 mx-2 rounded border border-gray-300"
                             rows={3}
                         />
                         <button
                             type="submit"
-                            className="px-4 py-2 rounded bg-blue-500 text-white disabled:bg-gray-300"
-                            disabled={isLoadingChatHistory || isLoading}
+                            className="px-4 py-2 mr-2 rounded bg-blue-500 text-white disabled:bg-gray-300"
+                            disabled={isLoading}
                         >
                             Send
                         </button>
