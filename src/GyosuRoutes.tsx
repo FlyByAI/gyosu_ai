@@ -34,6 +34,7 @@ import MyProblemBanks from './pages/MathProblemBanks.tsx';
 import PrivacyPolicy from './pages/PrivacyPolicy.tsx';
 import ProblemBank from './pages/ProblemBank.tsx';
 import Terms from './pages/Terms.tsx';
+import UsagePage from './pages/UsagePage.tsx';
 
 
 export default function GyosuRoutes() {
@@ -166,6 +167,18 @@ export default function GyosuRoutes() {
                             <Navbar />
                             <ContentWrapper>
                                 <FAQPage />
+                                <Footer />
+                            </ContentWrapper>
+                        </>
+                    }
+                />
+                <Route
+                    path="/usage"
+                    element={
+                        <>
+                            <Navbar />
+                            <ContentWrapper>
+                                <UsagePage />
                                 <Footer />
                             </ContentWrapper>
                         </>
