@@ -7,16 +7,14 @@ import './index.css';
 import {
     Route,
     Routes,
-    useLocation,
-    useNavigate,
+    useLocation
 } from "react-router-dom";
 import Navbar from './components/navbars/Navbar.tsx';
 import Contact from './pages/Contact.tsx';
 //Clerk
 import {
-    ClerkProvider,
     SignIn,
-    SignUp,
+    SignUp
 } from "@clerk/clerk-react";
 import { Helmet } from "react-helmet-async";
 import ContentMultipleStreamedExample from './components/ContentMultipleStreamedExample.tsx';
@@ -24,9 +22,7 @@ import ContentPlaygroundStreamed from './components/ContentPlaygroundStreamed.ts
 import ContentWrapper from './components/ContentWrapper.tsx';
 import Footer from './components/Footer.tsx';
 import Pricing from './components/Pricing.tsx';
-import { notSecretConstants } from './constants/notSecretConstants.tsx';
 import { getSchemaMarkup } from './helpers/getSchemaMarkup.ts';
-import useEnvironment from './hooks/useEnvironment.tsx';
 import Attributions from './pages/Attributions.tsx';
 import Documents from './pages/Documents.tsx';
 import FAQPage from './pages/FAQPage.tsx';
@@ -39,24 +35,14 @@ import PrivacyPolicy from './pages/PrivacyPolicy.tsx';
 import ProblemBank from './pages/ProblemBank.tsx';
 import Terms from './pages/Terms.tsx';
 import UsagePage from './pages/UsagePage.tsx';
-import { getGyosuClerkTheme } from './theme/customClerkTheme.ts';
 
 
-export default function ClerkProviderWithRoutes() {
-    const navigate = useNavigate();
-
-    const { env } = useEnvironment();
-
-    const clerkKey = env == "production" ? notSecretConstants.clerk.PUBLISHABLE_KEY : notSecretConstants.clerk.PUBLISHABLE_DEV_KEY
+export default function GyosuRoutes() {
 
     const location = useLocation();
 
     return (
-        <ClerkProvider
-            publishableKey={clerkKey}
-            navigate={(to) => navigate(to)}
-            appearance={getGyosuClerkTheme()}
-        >
+        <>
             <Helmet>
                 <script type="application/ld+json">
                     {getSchemaMarkup(location)}
@@ -142,7 +128,7 @@ export default function ClerkProviderWithRoutes() {
                         </>
                     }
                 />
-                 <Route
+                <Route
                     path="/math-app/chat/"
                     element={
                         <>
@@ -275,6 +261,6 @@ export default function ClerkProviderWithRoutes() {
                 />
 
             </Routes>
-        </ClerkProvider>
+        </>
     );
 }

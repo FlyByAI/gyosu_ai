@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
-import { Document, Chunk } from '../../interfaces';
+import toast from 'react-hot-toast/headless';
+import { Tooltip as ReactTooltip } from "react-tooltip";
+import { useScreenSize } from '../../contexts/ScreenSizeContext';
+import { useModal } from '../../contexts/useModal';
 import useGetDocuments from '../../hooks/tools/math/useGetDocuments';
 import useSubmitDocument from '../../hooks/tools/math/useSubmitDocument';
 import useEnvironment from '../../hooks/useEnvironment';
-import { useClerk } from '@clerk/clerk-react';
+import { useRequireSignIn } from '../../hooks/useRequireSignIn';
+import { Chunk, Document } from '../../interfaces';
 import DocumentPreview from './DocumentPreview';
-import { useModal } from '../../contexts/useModal';
-import toast, { useToaster } from 'react-hot-toast/headless';
-import PlusIcon from '../../svg/PlusIcon';
-import { Tooltip as ReactTooltip } from "react-tooltip";
-import { useScreenSize } from '../../contexts/ScreenSizeContext';
 
 interface AddChunkFormProps {
     chunk: Chunk;
@@ -17,17 +16,11 @@ interface AddChunkFormProps {
 }
 
 const AddChunkForm: React.FC<AddChunkFormProps> = ({ chunk, preview }) => {
-    const { session, openSignIn } = useClerk();
-
     const [selectedBank, setSelectedBank] = useState<number | null>(null);
 
     const { closeModal } = useModal();
 
-    React.useEffect(() => {
-        if (!session) {
-            openSignIn();
-        }
-    }, [session, openSignIn]);
+    useRequireSignIn();
 
     const { apiUrl } = useEnvironment();
     const endpoint = `${apiUrl}/math_app/school_document/list/`;

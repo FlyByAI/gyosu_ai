@@ -1,10 +1,7 @@
-import { useClerk } from '@clerk/clerk-react';
 import CheckmarkIcon from '../svg/CheckmarkIcon';
-import { SubscribeLiteButton } from './SubscribeButton';
+import { SubscribePaidButton } from './SubscribeButton';
 
 const Pricing = () => {
-
-    const { session } = useClerk();
 
     return (
         <div className='text-white text-l'>
@@ -42,7 +39,7 @@ const Pricing = () => {
                             <li className="flex flex-row"><CheckmarkIcon />Early Access to additional features</li>
                         </ul>
                         <br></br>
-                        <SubscribeLiteButton className="btn w-1/3 text-white font-bold min-w-fit rounded-md border border-blue-500 shadow-sm p-4 bg-gradient-to-r from-blue-600 to-green-500 hover:from-blue-700 hover:to-green-600 cursor-pointer" />
+                        <SubscribePaidButton className="btn w-1/3 text-white font-bold min-w-fit rounded-md border border-blue-500 shadow-sm p-4 bg-gradient-to-r from-blue-600 to-green-500 hover:from-blue-700 hover:to-green-600 cursor-pointer" />
                     </div>
 
                     <div className="tier w-full md:w-1/3 p-6 rounded-md shadow-lg bg-gray-800 border border-gray-700 my-4 md:mx-4">

@@ -13,6 +13,7 @@ import { useScreenSize } from '../contexts/ScreenSizeContext';
 import useChatSessions from '../hooks/tools/math/useChatSessions';
 import useStreamedResponse from '../hooks/tools/math/useStreamedResponse';
 import useEnvironment from '../hooks/useEnvironment';
+import { useRequireSignIn } from '../hooks/useRequireSignIn';
 import ShareIcon from '../svg/Share';
 
 export interface IChatMessage {
@@ -22,9 +23,9 @@ export interface IChatMessage {
 
 const GyosuAIChat = () => {
     const [messages, setMessages] = useState<IChatMessage[]>([]);
+    const [tokens, setTokens] = useState('');
     const [actions, setActions] = useState("");
     const [userInput, setUserInput] = useState('');
-    const [streamingIndex, setStreamingIndex] = useState<number | null>(null);
     const { apiUrl } = useEnvironment();
     const chatEndpoint = `${apiUrl}/math_app/chat/`;
     const { user } = useClerk();
@@ -32,7 +33,6 @@ const GyosuAIChat = () => {
     const navigate = useNavigate();
 
     const { sessionId = '' } = useParams();
-    const { session, openSignIn } = useClerk();
     const endOfMessagesRef = useRef<HTMLDivElement>(null);
 
     const [jsonBuffer, setJsonBuffer] = useState('');
@@ -71,22 +71,16 @@ const GyosuAIChat = () => {
         if (isLoading) return;
 
         const newMessage: IChatMessage = { role: 'user', content: text };
-        setMessages(prev => [...prev, newMessage]);
 
-        const newStreamingIndex = messages.length + 1;
-        setStreamingIndex(newStreamingIndex);
-
-        const streamingPlaceholder: IChatMessage = { role: 'assistant', content: 'Waiting for response...' };
-        setMessages(prev => [...prev, streamingPlaceholder]);
 
         const payload = {
-            newMessage: {
-                role: 'user',
-                content: text,
-            },
+            newMessage: newMessage,
             messages: messages.concat(newMessage),
             sessionId: sessionId,
         };
+
+        setMessages(prevMessages => [...prevMessages, newMessage]);
+
         startStreaming(payload);
     };
 
@@ -97,11 +91,8 @@ const GyosuAIChat = () => {
     }, [messages]); // eslint-disable-line react-hooks/exhaustive-deps
 
 
-    useEffect(() => {
-        if (!session) {
-            openSignIn();
-        }
-    }, [session, openSignIn]);
+    useRequireSignIn();
+
 
     useEffect(() => {
         if (!isLoading) {
@@ -113,42 +104,36 @@ const GyosuAIChat = () => {
         let updatedBuffer = jsonBuffer + streamedData;
 
         try {
-            let endOfJson = updatedBuffer.indexOf('}\n');
+            let endOfJson = updatedBuffer.indexOf('\n');
             while (endOfJson !== -1) {
-                const jsonString = updatedBuffer.substring(0, endOfJson + 1).trim();
-                updatedBuffer = updatedBuffer.substring(endOfJson + 2);
+                const jsonString = updatedBuffer.substring(0, endOfJson).trim();
+                updatedBuffer = updatedBuffer.substring(endOfJson + 1);
 
-                const data = JSON.parse(jsonString.replace("null", ""));
-                console.log(data)
+                const data = JSON.parse(jsonString);
                 if (data.actions && !data.message) {
                     setActions(data.actions);
-                    console.log('setting actions', data.actions)
+                    console.log('setting action');
                 }
                 if (data.session_id) {
                     navigate(`/math-app/chat/${data.session_id}`, { replace: true, state: { ...state, sessionId: data.session_id } });
+                    console.log('setting session_id');
+                }
+                if (data.token) {
+                    setTokens(prevTokens => prevTokens + data.token);
                 }
                 if (data.message) {
-                    console.log('setting message')
-                    setMessages(prev => {
+                    if(data.message !== messages[messages.length - 1]?.content)
+                        setMessages(messages => [...messages, {role: "assistant", content: data.message}]);
+                    setTokens('');
+                }
 
-                        if (typeof streamingIndex === 'number' && prev[streamingIndex]) {
-                            const newMessages = [...prev];
-                            newMessages[streamingIndex] = { role: 'assistant', content: data.message };
-                            return newMessages;
-                        }
-                        return [...prev, { role: 'assistant', content: data.message }];
-                    });
-                }
-                if (data) {
-                    console.log('data received', data)
-                }
-                endOfJson = updatedBuffer.indexOf('}\n');
+                endOfJson = updatedBuffer.indexOf('\n');
             }
         } catch (error) {
             console.error('Error parsing JSON:', error);
         }
         setJsonBuffer(updatedBuffer);
-    }, [streamedData, streamingIndex]);
+    }, [streamedData]);
 
 
     const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -168,18 +153,9 @@ const GyosuAIChat = () => {
         const newMessage: IChatMessage = { role: 'user', content: userInput };
         setMessages(prev => [...prev, newMessage]);
 
-        const newStreamingIndex = messages.length + 1;
-        setStreamingIndex(newStreamingIndex);
-
-        const streamingPlaceholder: IChatMessage = { role: 'assistant', content: 'Waiting for response...' };
-        setMessages(prev => [...prev, streamingPlaceholder]);
-
 
         const payload = {
-            newMessage: {
-                role: 'user',
-                content: userInput,
-            },
+            newMessage: newMessage,
             messages: messages.concat(newMessage),
             sessionId: sessionId,
         };
@@ -229,8 +205,8 @@ const GyosuAIChat = () => {
 
 
     return (
-        <div className='main-container'>
-            <div className="flex flex-row md:m-2">
+        <div className='main-container flex-col flex'>
+            <div className="flex flex-row">
                 <div className="w-1/6 hidden md:block">
                     <ChatSessionSidebar />
                 </div>
@@ -264,12 +240,7 @@ const GyosuAIChat = () => {
                                                     className="text-md z-10 p-1 m-1 border-2 border-transparent border-dashed markdown"
                                                     remarkPlugins={[remarkMath]}
                                                     rehypePlugins={[
-                                                        [rehypeKatex, {
-                                                            delimiters: [
-                                                                { left: "\\(", right: "\\)", display: false },
-                                                                { left: "\\[", right: "\\]", display: true },
-                                                            ],
-                                                        }],
+                                                        [rehypeKatex],
                                                     ]}
                                                 >
                                                     {chunk.trim()}
@@ -284,6 +255,22 @@ const GyosuAIChat = () => {
                                 }
                             </div>
                         ))}
+                        {tokens && (
+                            <div className={`p-2 my-1 border border-transparent rounded max-w-80% mr-auto bg-transparent`}>
+                                <strong>Gyosu</strong>
+                                <div className="flex flex-row items-center">
+                                    <ReactMarkdown
+                                        className="text-md z-10 p-1 m-1 border-2 border-transparent border-dashed markdown"
+                                        remarkPlugins={[remarkMath]}
+                                        rehypePlugins={[
+                                            [rehypeKatex],
+                                        ]}
+                                    >
+                                        {tokens}
+                                    </ReactMarkdown>
+                                </div>
+                            </div>
+                        )}
                         {user && !isLoading && messages.length === 0 && (
                             <div className="mt-auto pb-4">
                                 <MessageSuggestions
@@ -292,6 +279,11 @@ const GyosuAIChat = () => {
                             </div>
                         )}
                         <ChatActions actions={actions} />
+                        {
+                            isLoading && !tokens && !actions && <div>
+                                <p className="">Waiting for response...</p>
+                            </div>
+                        }
                     </div>
                     <div className='h-1vh'></div>
                     <form onSubmit={handleChatSubmit} className="flex h-14vh">
@@ -316,7 +308,7 @@ const GyosuAIChat = () => {
                 </div>
             </div >
 
-
+            <div className='md:block text-white text-sm self-center text-center'>Note: This feature is in beta, if you are having issues please email us at <a href="mailto:support@gyosu.ai" className="text-blue-300 underline">support@gyosu.ai</a></div>
         </div>
     );
 

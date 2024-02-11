@@ -1,20 +1,13 @@
-import React, { useState, useEffect, FormEvent, ChangeEvent } from 'react';
-import useEnvironment from '../hooks/useEnvironment';
+import { ChangeEvent, useState } from 'react';
 import useGetDocuments from '../hooks/tools/math/useGetDocuments';
-import formOptionsJSON from '../json/dropdown_data.json';
-import { useClerk } from '@clerk/clerk-react';
 import { PlaygroundFormData } from '../hooks/tools/math/useSubmitPlayground';
+import useEnvironment from '../hooks/useEnvironment';
+import { useRequireSignIn } from '../hooks/useRequireSignIn';
 import StreamedResponseMultikeyComponent from './StreamResponseMultiKeyComponent';
 
 const ContentMultipleStreamedExample = () => {
 
-    const { session, openSignIn } = useClerk();
-    useEffect(() => {
-        if (!session) {
-            openSignIn()
-        }
-    }, [session, openSignIn])
-
+    useRequireSignIn();
 
     const [formData, setFormData] = useState({
         textbook: '',

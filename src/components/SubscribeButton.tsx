@@ -1,10 +1,9 @@
 import React, { FormEvent } from 'react';
 
-import useInitiateCheckout from '../hooks/subscription/useInitiateCheckout';
-import { Link } from 'react-router-dom';
-import useEnvironment from '../hooks/useEnvironment';
 import { useClerk } from '@clerk/clerk-react';
-import { use } from 'i18next';
+import { Link } from 'react-router-dom';
+import useInitiateCheckout from '../hooks/subscription/useInitiateCheckout';
+import useEnvironment from '../hooks/useEnvironment';
 
 
 const SubscribeFreeButton = ({ className }: { className: string }) => {
@@ -12,7 +11,9 @@ const SubscribeFreeButton = ({ className }: { className: string }) => {
     const { openSignIn } = useClerk();
 
     const handleCheckout = () => {
-        openSignIn()
+        openSignIn({
+            afterSignInUrl: window.location.href
+          });
     }
 
     const { session } = useClerk();
@@ -46,7 +47,9 @@ const SubscribePremiumButton = ({ className }: { className: string }) => {
         if (session) {
             initiateCheckout({ coupon }); // Pass coupon to initiateCheckout
         } else {
-            openSignIn();
+            openSignIn({
+                afterSignInUrl: window.location.href
+              });
         }
     };
 
@@ -86,7 +89,50 @@ const SubscribeLiteButton = ({ className }: { className: string }) => {
         if (session) {
             initiateCheckout({ coupon }); // Pass coupon to initiateCheckout
         } else {
-            openSignIn();
+            openSignIn({
+                afterSignInUrl: window.location.href
+              });
+        }
+    };
+
+    return (
+        <form onSubmit={handleCheckout}>
+            <button
+                type="submit"
+                className={`${className} relative group w-32`}
+            >
+                <p className="">Subscribe</p>
+            </button>
+            <div className="flex flex-col items-center bg-gray-800">
+                <input
+                    type="text"
+                    name="coupon"
+                    placeholder="Enter coupon"
+                    className="mt-4 p-2 rounded bg-gray-700 w-64"
+                />
+            </div>
+        </form>
+
+    );
+};
+
+const SubscribePaidButton = ({ className }: { className: string }) => {
+    const { session, openSignIn } = useClerk();
+
+    const { apiUrl } = useEnvironment();
+    const { initiateCheckout } = useInitiateCheckout(`${apiUrl}/stripe/create-checkout-session/paid/`)
+
+    const handleCheckout = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const formData = new FormData(e.currentTarget);
+        const coupon = formData.get("coupon") as string; // Retrieve coupon
+
+        if (session) {
+            initiateCheckout({ coupon }); // Pass coupon to initiateCheckout
+        } else {
+            openSignIn({
+                afterSignInUrl: window.location.href
+              });
         }
     };
 
@@ -125,4 +171,5 @@ const RedirectToSubscribePageButton: React.FC = () => {
     );
 };
 
-export { RedirectToSubscribePageButton, SubscribeLiteButton, SubscribePremiumButton, SubscribeFreeButton }
+export { RedirectToSubscribePageButton, SubscribeFreeButton, SubscribeLiteButton, SubscribePaidButton, SubscribePremiumButton };
+

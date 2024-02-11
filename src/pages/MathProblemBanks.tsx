@@ -1,22 +1,16 @@
 
-import React, { useEffect } from 'react';
-import ProblemBankShelf from '../components/document/ProblemBankShelf';
+import React from 'react';
 import Accordion from '../components/Accordion';
-import GridContainer3x3 from '../components/grids/GridContainer3x3';
+import ProblemBankShelf from '../components/document/ProblemBankShelf';
 import DocumentPreview from '../components/forms/DocumentPreview';
+import GridContainer3x3 from '../components/grids/GridContainer3x3';
 import useGetDocuments from '../hooks/tools/math/useGetDocuments';
-import { useClerk } from '@clerk/clerk-react';
 import useEnvironment from '../hooks/useEnvironment';
+import { useRequireSignIn } from '../hooks/useRequireSignIn';
 
 const MyProblemBanks: React.FC = () => {
 
-    const { session, openSignIn } = useClerk();
-
-    useEffect(() => {
-        if (!session) {
-            openSignIn()
-        }
-    }, [session, openSignIn])
+    useRequireSignIn();
 
     const { apiUrl } = useEnvironment();
     const endpoint = `${apiUrl}/math_app/school_document/list/`;

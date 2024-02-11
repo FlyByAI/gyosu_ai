@@ -1,4 +1,3 @@
-import { useClerk } from '@clerk/clerk-react';
 import React, { useEffect, useRef, useState } from 'react';
 import 'tailwindcss/tailwind.css';
 import ProblemBankShelf from '../components/document/ProblemBankShelf';
@@ -6,12 +5,11 @@ import ChunkManager from '../components/math/ChunkManager';
 import CompetitonMathGenerateForm from '../components/math/CompetitonMathGenerateForm';
 import TextbookGenerateForm from '../components/math/TextbookGenerateForm';
 import { useScreenSize } from '../contexts/ScreenSizeContext';
+import { useRequireSignIn } from '../hooks/useRequireSignIn';
 import { Chunk, GenerateFormData } from '../interfaces';
 
 
 const MathGenerate: React.FC = () => {
-
-    const { session, openSignIn } = useClerk();
 
     const [chunkArray, setChunkArray] = useState<Chunk[]>([]);
 
@@ -24,11 +22,8 @@ const MathGenerate: React.FC = () => {
         setChunkArray(chunkArray);
     };
 
-    useEffect(() => {
-        if (!session) {
-            openSignIn()
-        }
-    }, [session, openSignIn])
+    useRequireSignIn();
+
 
     const { isDesktop } = useScreenSize();
 
