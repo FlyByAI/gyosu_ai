@@ -3,7 +3,9 @@ interface MessageSuggestionProps {
 }
 
 const MessageSuggestion: React.FC<MessageSuggestionProps> = ({ onClick }) => {
-    const suggestions = ["Can you create me a quiz on Polynomials from Elementary Algebra, Chapter 6.1?", "I'm new to using GyosuChat, can you help guide me through the process?"];
+
+    const suggestions = ["I'm new to using GyosuChat. What subjects do you have? What are your capabilities?", "Please create a homework for learning inverse functions for calc 1. Please provide an example with steps to help the students recall about what we did in class so they can complete the problems successfully at home. Add key terms at the top like 'one to one' that are helpful for understanding the work.", "Please create a lesson plan for me to teach about the unit circle?", "Can you create me a quiz on Polynomials from Elementary Algebra?"];
+
 
     const isTwoSuggestions = suggestions.length === 2;
     const buttonClass = isTwoSuggestions

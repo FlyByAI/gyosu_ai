@@ -8,7 +8,7 @@ const DeleteAllChatsButton = () => {
     const { deleteAllChatSessions } = useChatSessions(chatSessionsEndpoint);
 
     const handleDeleteAllClick = () => {
-        if (window.confirm("Are you sure you want to delete all chat sessions? This action cannot be undone.")) {
+        if (window.confirm("Are you sure you want to delete all chat sessions? This will completely remove all chat sessions for your user from our application. This action cannot be undone.")) {
             deleteAllChatSessions();
         }
     };
