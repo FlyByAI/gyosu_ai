@@ -132,12 +132,12 @@ const LandingPage: React.FC = () => {
                 <div className="flex flex-wrap justify-center w-full h-1/2 space-x-10">
                     <img
                         className="object-contain w-1/3 h-full max-h-1/2 border-2 border-gray-900"
-                        src="/images/landing_page_worksheet_demo1.jpg"
+                        src="/images/landing_page_worksheet_demo1.png"
                         alt="Math Worksheet - Understanding Functions and Relations"
                     />
                     <img
                         className="object-contain w-1/3 h-full max-h-1/2 border-2 border-gray-900"
-                        src="/images/landing_page_worksheet_demo2.jpg"
+                        src="/images/landing_page_worksheet_demo2.png"
                         alt="Math Worksheet - Understanding Functions and Relations"
                     />
                 </div>
