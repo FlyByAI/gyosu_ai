@@ -24,7 +24,11 @@ export interface IChatMessage {
 const GyosuAIChat = () => {
     const [messages, setMessages] = useState<IChatMessage[]>([]);
     const [tokens, setTokens] = useState('');
+
     const [actions, setActions] = useState("");
+    const [timeElapsed, setTimeElapsed] = useState(0);
+    const actionTimerRef = useRef(null);
+
     const [userInput, setUserInput] = useState('');
     const { apiUrl } = useEnvironment();
     const chatEndpoint = `${apiUrl}/math_app/chat/`;
@@ -97,8 +101,37 @@ const GyosuAIChat = () => {
     useEffect(() => {
         if (!isLoading) {
             setActions("")
+            setTimeElapsed(0);
         }
     }, [isLoading, messages, actions]);
+
+    useEffect(() => {
+        if (actions) {
+            // Reset time elapsed and start timer when actions change
+            setTimeElapsed(0);
+            if (actionTimerRef.current) {
+                clearInterval(actionTimerRef.current); // Clear existing timer if any
+            }
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            actionTimerRef.current = setInterval(() => {
+                setTimeElapsed((prevTimeElapsed) => prevTimeElapsed + 1);
+            }, 1000);
+        } else {
+            // Clear timer and reset time elapsed when actions are unset
+            if (actionTimerRef.current) {
+                clearInterval(actionTimerRef.current);
+            }
+            setTimeElapsed(0);
+        }
+
+        // Cleanup on component unmount or actions change
+        return () => {
+            if (actionTimerRef.current) {
+                clearInterval(actionTimerRef.current);
+            }
+        };
+    }, [actions]);
 
     useEffect(() => {
         let updatedBuffer = jsonBuffer + streamedData;
@@ -122,8 +155,8 @@ const GyosuAIChat = () => {
                     setTokens(prevTokens => prevTokens + data.token);
                 }
                 if (data.message) {
-                    if(data.message !== messages[messages.length - 1]?.content)
-                        setMessages(messages => [...messages, {role: "assistant", content: data.message}]);
+                    if (data.message !== messages[messages.length - 1]?.content)
+                        setMessages(messages => [...messages, { role: "assistant", content: data.message }]);
                     setTokens('');
                 }
 
@@ -191,7 +224,7 @@ const GyosuAIChat = () => {
             const scrollHeight = endOfMessagesRef.current.scrollHeight;
             endOfMessagesRef.current.scrollTop = scrollHeight;
         }
-    }, [messages, actions]);
+    }, [messages, actions, tokens]);
 
     useEffect(() => {
         // Add the class to the body when the component mounts
@@ -278,6 +311,11 @@ const GyosuAIChat = () => {
                                 />
                             </div>
                         )}
+                        {actions && (
+                            <div className="text-center text-sm p-1">
+                                Time elapsed on current action: {timeElapsed} seconds
+                            </div>
+                        )}
                         <ChatActions actions={actions} />
                         {
                             isLoading && !tokens && !actions && <div>
@@ -286,10 +324,11 @@ const GyosuAIChat = () => {
                         }
                     </div>
                     <div className='h-1vh'></div>
+
                     <form onSubmit={handleChatSubmit} className="flex h-14vh">
                         <textarea
                             name="input"
-                            placeholder={isLoading ? "Loading..." : "Type your message..."}
+                            placeholder={isLoading ? "Loading..." : "Ask for what you need here..."}
                             value={userInput}
                             onChange={handleInputChange}
                             onKeyDown={handleKeyPress}

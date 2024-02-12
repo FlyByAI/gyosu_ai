@@ -26,7 +26,7 @@ const LandingPage: React.FC = () => {
             localStorage.setItem('userMessage', inputText);
             openSignIn({
                 afterSignInUrl: window.location.href
-              });
+            });
         } else {
             navigate('/math-app/chat', { state: { text: inputText } });
         }
@@ -38,7 +38,7 @@ const LandingPage: React.FC = () => {
                 localStorage.setItem('userMessage', inputText);
                 openSignIn({
                     afterSignInUrl: window.location.href
-                  });
+                });
             } else {
                 navigate('/math-app/chat', { state: { text: inputText } });
             }
@@ -50,7 +50,7 @@ const LandingPage: React.FC = () => {
             <section className="h-full flex flex-col md:flex-row items-center" style={{ backgroundImage: `url('/png/dark-bg.png')`, backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundColor: '#0b1536' }}>
                 <img className="w-1/2 pt-4 md:pt-0 md:w-1/3 md:mx-0" src="/png/teacher1.png" alt="Teacher illustration with open book" />
                 <div className="ml-0 md:ml-20 w-full md:w-2/3 text-center md:text-left text-3xl md:text-5xl text-gray-300 p-4">
-                    <p className="font-bold my-4 flex-col">Create math </p><LoopingText variant='typed' textArray={['worksheets', 'problems', 'quizzes', 'exams']} />
+                    <p className="font-bold my-4 flex-col">Create math </p><LoopingText variant='typed' textArray={['worksheets', 'lesson plans', 'quizzes', 'exams', "answer keys", "flashcards", "class activities"]} />
                     <p className="font-bold mt-4">with AI</p>
                     <p className="mt-4 text-lg">Generative AI, for math teachers.</p>
                     <form onSubmit={handleSubmit} className="flex flex-col overflow-hidden shadow-lg my-4 p-2">
@@ -58,7 +58,7 @@ const LandingPage: React.FC = () => {
                             value={inputText}
                             onKeyDown={handleKeyDown}
                             onChange={(e) => setInputText(e.target.value)}
-                            placeholder="Can you create a lesson plan for me?"
+                            placeholder="Can you create a lesson plan for me to teach the unit circle?"
                             className="resize-none md:w-1/2 w-full bg-gray-100 text-black text-lg rounded leading-tight p-2 flex-1 border-green-300 border-2 focus:outline-none focus:border-2 focus:border-blue-300"
                             style={{
                                 boxShadow: '0 0 5px rgba(81, 203, 238, 0.5)',
@@ -114,7 +114,7 @@ const LandingPage: React.FC = () => {
             <section className="py-10 h-full bg-pink-100 justify-center text-gray-700 flex flex-col md:flex-row items-center">
                 <div className='w-full md:w-1/2 text-2xl md:text-5xl flex flex-col items-center md:ms-4'>
                     <h1 className="font-bold mb-4">22,000+ Problems</h1>
-                    <p className="text-center text-lg">High quality problems sourced from math textbooks.</p>
+                    <p className="text-center text-lg">High quality problems sourced directly from math textbooks you can trust.</p>
                 </div>
                 <div className='w-full md:w-1/2 flex flex-col py-4'>
                     <div className='w-3/4 mx-auto flex flex-row mb-4 bg-gray-900 p-2'>
@@ -124,17 +124,22 @@ const LandingPage: React.FC = () => {
                     </div>
                 </div>
             </section>
-            <section className="py-10 h-full bg-blue-100 justify-center text-gray-700 flex flex-col md:flex-row items-center">
-                <div className="w-full md:w-1/2 flex flex-col py-4 h-96 items-center justify-center">
+            <section className="flex flex-col items-center text-gray-700 bg-blue-100 py-10">
+                <div className="text-center mb-4">
+                    <h1 className="font-bold text-2xl md:text-5xl mb-4">Customized Classroom Materials</h1>
+                    <p className="text-lg md:text-xl">Created by you in seconds.</p>
+                </div>
+                <div className="flex flex-wrap justify-center w-full h-1/2 space-x-10">
                     <img
-                        className="object-contain h-full max-h-96 border-2 me-8 border-gray-900"
-                        src="/images/landing_page_worksheet_demo.png"
+                        className="object-contain w-1/3 h-full max-h-1/2 border-2 border-gray-900"
+                        src="/images/landing_page_worksheet_demo1.jpg"
                         alt="Math Worksheet - Understanding Functions and Relations"
                     />
-                </div>
-                <div className='w-full mx-auto md:w-1/2 text-2xl md:text-5xl flex flex-col items-center md:me-4'>
-                    <h1 className="text-center font-bold mb-4 mx-auto">Customized Classroom Materials</h1>
-                    <p className="text-center mx-auto text-lg">Created by you in seconds.</p>
+                    <img
+                        className="object-contain w-1/3 h-full max-h-1/2 border-2 border-gray-900"
+                        src="/images/landing_page_worksheet_demo2.jpg"
+                        alt="Math Worksheet - Understanding Functions and Relations"
+                    />
                 </div>
             </section>
 
@@ -147,7 +152,7 @@ const LandingPage: React.FC = () => {
                         <textarea
                             value={inputText}
                             onChange={(e) => setInputText(e.target.value)}
-                            placeholder="Can you help me write a quiz?"
+                            placeholder="Can you help me write a quiz for grade 5 students on fraction multiplication?"
                             className="resize-none md:w-1/2 w-full bg-gray-100 text-gray-100 text-lg rounded leading-tight p-2 flex-1 border-green-700 border"
                             style={{
                                 boxShadow: '0 0 5px rgba(81, 203, 238, 0.5)',
