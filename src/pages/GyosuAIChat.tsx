@@ -218,13 +218,24 @@ const GyosuAIChat = () => {
     }
 
     useEffect(() => {
+        if (endOfMessagesRef.current) {
+            const scrollHeight = endOfMessagesRef.current.scrollHeight;
+            // Using smooth scroll behavior
+            endOfMessagesRef.current.scrollTo({
+                top: scrollHeight,
+                behavior: 'smooth'
+            });
+        }
+    }, [actions, tokens]);
+
+    useEffect(() => {
         // Check if the endOfMessagesRef current property is not null
         if (endOfMessagesRef.current) {
             // Scroll the element into view
             const scrollHeight = endOfMessagesRef.current.scrollHeight;
             endOfMessagesRef.current.scrollTop = scrollHeight;
         }
-    }, [messages, actions, tokens]);
+    }, [messages, isLoading]);
 
     useEffect(() => {
         // Add the class to the body when the component mounts
