@@ -11,7 +11,7 @@ const ChatNavbar: React.FC = () => {
     const navigate = useNavigate();
 
     const navigateToNewChat = () => {
-        navigate('/math-app/chat');
+        navigate('/math-app/chat/', { replace: true, state: { sessionId: undefined }});
     };
 
     return (

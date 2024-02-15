@@ -33,20 +33,52 @@ const fetchChatSessions = async (endpoint: string, token: string | null) => {
     return humps.camelizeKeys(responseData) as ChatSession[];
 };
 
-const useChatSessions = (endpoint: string) => {
+const fetchChatSession = async (endpoint: string, sessionId: string, token: string | null) => {
+    const response = await fetch(`${endpoint}${sessionId}/`, {
+        method: 'GET',
+        headers: {
+            'Authorization': token ? `Bearer ${token}` : '',
+        },
+    });
+    console.log(
+        "fetched", sessionId ,"?"
+    )
+
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const responseData = await response.json();
+    return humps.camelizeKeys(responseData) as ChatSession;
+};
+
+const useChatSessions = (endpoint: string, sessionId?: string) => {
+
+    const { session } = useClerk();
+    
+    const tokenPromise = session ? session.getToken() : Promise.resolve('none');
 
     const navigate = useNavigate()
 
     const { openModal } = useModal();
 
-    const { session } = useClerk();
     const queryClient = useQueryClient();
 
-    const query = useQuery<ChatSession[], Error>(['chatSessions'], async () => {
-        const token = session ? await session.getToken() : 'none';
+    const chatSessionsQuery = useQuery<ChatSession[], Error>(['chatSessions'], async () => {
+        const token = await tokenPromise;
         return fetchChatSessions(`${endpoint}list/`, token);
     }, {
         enabled: !!session,
+    });
+
+    const chatSessionQuery = useQuery<ChatSession, Error>(['chatSession', sessionId], async () => {
+        if (!sessionId) {
+            throw new Error("sessionId is required to fetch a specific chat session.");
+        }
+        const token = await tokenPromise;
+        return fetchChatSession(`${endpoint}`, sessionId, token);
+    }, {
+        enabled: !!session && !!sessionId,
     });
 
     const shareChatSessionMutation = useMutation(
@@ -205,9 +237,12 @@ const useChatSessions = (endpoint: string) => {
     );
 
     return {
-        isLoading: query.isLoading,
-        error: query.error,
-        chatSessions: query.data,
+        isLoadingSession: chatSessionQuery.isLoading,
+        isLoading: chatSessionsQuery.isLoading,
+        sessionError: chatSessionQuery.error,
+        error: chatSessionsQuery.error,
+        chatSessions: chatSessionsQuery.data,
+        chatSession: chatSessionQuery.data,
         acceptShareChatSession: acceptShareChatSessionMutation.mutate,
         shareChatSession: shareChatSessionMutation.mutate,
         renameChatSession: renameChatSessionMutation.mutate,
