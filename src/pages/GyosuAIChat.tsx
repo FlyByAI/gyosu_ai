@@ -36,7 +36,7 @@ const GyosuAIChat = () => {
     const username = user?.firstName ? user.firstName : "User";
     const navigate = useNavigate();
 
-    const { sessionId = '' } = useParams();
+    const { sessionId } = useParams();
     const endOfMessagesRef = useRef<HTMLDivElement>(null);
 
     const [jsonBuffer, setJsonBuffer] = useState('');
@@ -45,7 +45,7 @@ const GyosuAIChat = () => {
 
     const { data: streamedData, isLoading, error, startStreaming } = useStreamedResponse(chatEndpoint, {});
 
-    const { chatSessions, shareChatSession } = useChatSessions(chatEndpoint);
+    const { chatSessions, shareChatSession, isLoading: isLoadingChatSessions, error: errorChatSessions, isLoadingSession, sessionError } = useChatSessions(chatEndpoint, sessionId);
 
     const { isDesktop } = useScreenSize();
 
@@ -61,16 +61,21 @@ const GyosuAIChat = () => {
     useEffect(() => {
         if (sessionId && chatSessions) {
             chatSessions.forEach((chatSession) => {
-                if (chatSession.sessionId === sessionId) {
-                    setMessages(chatSession.messageHistory);
+            if (chatSession.sessionId === sessionId) {
+                setMessages(chatSession.messageHistory);
                 }
             })
         }
         if (!sessionId) {
             setMessages([])
         }
-    }, [chatSessions, sessionId]);
-
+        if(sessionError) {
+            toast(sessionError.message, { id: 'error-toast' });
+            navigate(`/math-app/chat/`, { replace: true, state: { ...state, sessionId: undefined } });
+            setMessages([])
+        }
+    }, [chatSessions, navigate, sessionError, sessionId, state]);
+        
     const handleSubmitWithText = (text: string) => {
         if (isLoading) return;
 
@@ -258,8 +263,9 @@ const GyosuAIChat = () => {
                     <div className={`${messages.length === 0 && "flex flex-col"} h-70vh overflow-y-auto p-2 border border-gray-300 mx-2 text-gray-100 scroll-smooth`}
                         ref={endOfMessagesRef}>
 
-                        <div className='absolute top-0 right-4 p-4'> {/* Absolute positioning with Tailwind */}
-                            <button onClick={() => handleShareClick(sessionId)}
+                        {sessionId && <div className='absolute top-0 right-4 p-4'>
+                            <button onClick={() => handleShareClick(sessionId || "")}
+                                disabled={!sessionId}
                                 className="bg-gray-900 rounded flex flex-row p-2"
                                 data-tooltip-id={`shareChatSession`}
                             >
@@ -271,7 +277,7 @@ const GyosuAIChat = () => {
                                     content={"Share this chat session with a friend!"}
                                 />}
                             </button>
-                        </div>
+                        </div>}
 
                         {messages.map((message, index) => (
                             <div key={index} className={`p-2 my-1 border border-transparent rounded max-w-80% ${message.role === 'user' ? 'ml-auto bg-transparent' : 'mr-auto bg-transparent'}`}>
