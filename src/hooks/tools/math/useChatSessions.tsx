@@ -17,7 +17,9 @@ export interface ChatSession {
 }
 
 
-const fetchChatSessions = async (endpoint: string, token: string | null) => {
+const fetchChatSessions = async (endpoint: string, tokenPromise:Promise<string | null>) => {
+    const token = await tokenPromise;
+
     const response = await fetch(endpoint, {
         method: 'GET',
         headers: {
@@ -33,7 +35,9 @@ const fetchChatSessions = async (endpoint: string, token: string | null) => {
     return humps.camelizeKeys(responseData) as ChatSession[];
 };
 
-const fetchChatSession = async (endpoint: string, sessionId: string, token: string | null) => {
+const fetchChatSession = async (endpoint: string, sessionId: string, tokenPromise:Promise<string | null>) => {
+    
+    const token = await tokenPromise;
     const response = await fetch(`${endpoint}${sessionId}/`, {
         method: 'GET',
         headers: {
@@ -66,7 +70,7 @@ const useChatSessions = (endpoint: string, sessionId?: string) => {
 
     const chatSessionsQuery = useQuery<ChatSession[], Error>(['chatSessions'], async () => {
         const token = await tokenPromise;
-        return fetchChatSessions(`${endpoint}list/`, token);
+        return fetchChatSessions(`${endpoint}list/`, tokenPromise);
     }, {
         enabled: !!session,
     });

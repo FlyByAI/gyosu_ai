@@ -45,7 +45,7 @@ const GyosuAIChat = () => {
 
     const { data: streamedData, isLoading, error, startStreaming } = useStreamedResponse(chatEndpoint, {});
 
-    const { chatSessions, shareChatSession, isLoading: isLoadingChatSessions, error: errorChatSessions, isLoadingSession, sessionError } = useChatSessions(chatEndpoint, sessionId);
+    const { chatSessions, shareChatSession, isLoading: isLoadingChatSessions, error: errorChatSessions, isLoadingSession, sessionError, chatSession } = useChatSessions(chatEndpoint, sessionId);
 
     const { isDesktop } = useScreenSize();
 
@@ -59,17 +59,10 @@ const GyosuAIChat = () => {
 
 
     useEffect(() => {
-        if (sessionId && chatSessions) {
-            chatSessions.forEach((chatSession) => {
-                if (chatSession.sessionId === sessionId) {
-                    if (messages.length <= chatSession.messageHistory.length) {
-                        setMessages(chatSession.messageHistory);
-                    }
-                    else{
-                        console.log("tried to update with less messages!")
-                    }
-                }
-            })
+        if (sessionId && chatSession && messages.length <= chatSession.messageHistory.length) {
+            if (chatSession.sessionId === sessionId) {
+                setMessages(chatSession.messageHistory);
+            }
         }
         if (!sessionId) {
             setMessages([])
@@ -79,7 +72,7 @@ const GyosuAIChat = () => {
             navigate(`/math-app/chat/`, { replace: true, state: { ...state, sessionId: undefined } });
             setMessages([])
         }
-    }, [chatSessions, navigate, sessionError, sessionId, state]);
+    }, [chatSession, messages, navigate, sessionError, sessionId, state]);
 
     const handleSubmitWithText = (text: string) => {
         if (isLoading) return;
@@ -228,27 +221,17 @@ const GyosuAIChat = () => {
         }
     }
 
-    const previousScrollHeight = useRef(0);
 
     useEffect(() => {
-        const element = endOfMessagesRef.current;
-        if (element) {
-            // Determine if we're at the bottom of the container
-            const isAtBottom = element.scrollHeight - element.scrollTop === element.clientHeight;
-            const currentScrollHeight = element.scrollHeight;
-
-            // Scroll if new content has been added and we were previously at the bottom
-            if (currentScrollHeight !== previousScrollHeight.current && isAtBottom) {
-                element.scrollTo({
-                    top: element.scrollHeight,
-                    behavior: 'smooth',
-                });
-            }
-
-            // Update the previous scroll height for the next execution
-            previousScrollHeight.current = currentScrollHeight;
+        if (endOfMessagesRef.current) {
+            const scrollHeight = endOfMessagesRef.current.scrollHeight;
+            // Using smooth scroll behavior
+            endOfMessagesRef.current.scrollTo({
+                top: scrollHeight,
+                behavior: 'smooth'
+            });
         }
-    }, [actions, tokens]); // Dependencies that trigger re-evaluation
+    }, [actions, tokens]);
 
 
     useEffect(() => {
