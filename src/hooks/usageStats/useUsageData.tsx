@@ -28,7 +28,6 @@ const fetchChatUsageData = async (endpoint: string, token: string | null) => {
     }
 
     const responseData = await response.json();
-console.log("fetched chat usage data:", responseData);
     return humps.camelizeKeys(responseData) as ChatUsageData;
 };
 
