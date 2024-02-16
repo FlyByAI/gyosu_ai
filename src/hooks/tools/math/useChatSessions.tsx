@@ -79,6 +79,9 @@ const useChatSessions = (endpoint: string, sessionId?: string) => {
         return fetchChatSession(`${endpoint}`, sessionId, token);
     }, {
         enabled: !!session && !!sessionId,
+        onError: (error) => {
+            console.error(`Sorry, we did not find that session. ${sessionId}`, error);
+        },
     });
 
     const shareChatSessionMutation = useMutation(
