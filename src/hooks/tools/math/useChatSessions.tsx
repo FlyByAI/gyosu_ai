@@ -69,7 +69,6 @@ const useChatSessions = (endpoint: string, sessionId?: string) => {
     const queryClient = useQueryClient();
 
     const chatSessionsQuery = useQuery<ChatSession[], Error>(['chatSessions'], async () => {
-        const token = await tokenPromise;
         return fetchChatSessions(`${endpoint}list/`, tokenPromise);
     }, {
         enabled: !!session,
@@ -79,8 +78,7 @@ const useChatSessions = (endpoint: string, sessionId?: string) => {
         if (!sessionId) {
             throw new Error("sessionId is required to fetch a specific chat session.");
         }
-        const token = await tokenPromise;
-        return fetchChatSession(`${endpoint}`, sessionId, token);
+        return fetchChatSession(`${endpoint}`, sessionId, tokenPromise);
     }, {
         enabled: !!session && !!sessionId,
         onError: (error) => {
