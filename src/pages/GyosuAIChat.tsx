@@ -72,7 +72,7 @@ const GyosuAIChat = () => {
             navigate(`/math-app/chat/`, { replace: true, state: { ...state, sessionId: undefined } });
             setMessages([])
         }
-    }, [chatSession, messages, navigate, sessionError, sessionId, state]);
+    }, [chatSession, navigate, sessionError, sessionId, state]);
 
     const handleSubmitWithText = (text: string) => {
         if (isLoading) return;
