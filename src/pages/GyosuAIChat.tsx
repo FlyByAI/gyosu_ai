@@ -45,7 +45,7 @@ const GyosuAIChat = () => {
 
     const { data: streamedData, isLoading, error, startStreaming } = useStreamedResponse(chatEndpoint, {});
 
-    const { chatSessions, shareChatSession, isLoading: isLoadingChatSessions, error: errorChatSessions, isLoadingSession, sessionError } = useChatSessions(chatEndpoint, sessionId);
+    const { chatSessions, shareChatSession, isLoading: isLoadingChatSessions, error: errorChatSessions, isLoadingSession, sessionError, chatSession } = useChatSessions(chatEndpoint, sessionId);
 
     const { isDesktop } = useScreenSize();
 
@@ -59,23 +59,21 @@ const GyosuAIChat = () => {
 
 
     useEffect(() => {
-        if (sessionId && chatSessions) {
-            chatSessions.forEach((chatSession) => {
+        if (sessionId && chatSession && messages.length <= chatSession.messageHistory.length) {
             if (chatSession.sessionId === sessionId) {
                 setMessages(chatSession.messageHistory);
-                }
-            })
+            }
         }
         if (!sessionId) {
             setMessages([])
         }
-        if(sessionError) {
+        if (sessionError) {
             toast(sessionError.message, { id: 'error-toast' });
             navigate(`/math-app/chat/`, { replace: true, state: { ...state, sessionId: undefined } });
             setMessages([])
         }
-    }, [chatSessions, navigate, sessionError, sessionId, state]);
-        
+    }, [chatSession, messages, navigate, sessionError, sessionId, state]);
+
     const handleSubmitWithText = (text: string) => {
         if (isLoading) return;
 
@@ -189,7 +187,8 @@ const GyosuAIChat = () => {
         if (isLoading) return;
 
         const newMessage: IChatMessage = { role: 'user', content: userInput };
-        setMessages(prev => [...prev, newMessage]);
+        setMessages(messages => [...messages, newMessage]);
+        console.log("setting 3:", [...messages, newMessage], [...messages, newMessage].length)
 
 
         const payload = {
@@ -222,6 +221,7 @@ const GyosuAIChat = () => {
         }
     }
 
+
     useEffect(() => {
         if (endOfMessagesRef.current) {
             const scrollHeight = endOfMessagesRef.current.scrollHeight;
@@ -232,6 +232,7 @@ const GyosuAIChat = () => {
             });
         }
     }, [actions, tokens]);
+
 
     useEffect(() => {
         // Check if the endOfMessagesRef current property is not null
