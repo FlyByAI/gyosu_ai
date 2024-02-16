@@ -17,9 +17,7 @@ export interface ChatSession {
 }
 
 
-const fetchChatSessions = async (endpoint: string, tokenPromise:Promise<string | null>) => {
-    const token = await tokenPromise;
-
+const fetchChatSessions = async (endpoint: string, token: string | null) => {
     const response = await fetch(endpoint, {
         method: 'GET',
         headers: {
@@ -35,18 +33,13 @@ const fetchChatSessions = async (endpoint: string, tokenPromise:Promise<string |
     return humps.camelizeKeys(responseData) as ChatSession[];
 };
 
-const fetchChatSession = async (endpoint: string, sessionId: string, tokenPromise:Promise<string | null>) => {
-    
-    const token = await tokenPromise;
+const fetchChatSession = async (endpoint: string, sessionId: string, token: string | null) => {
     const response = await fetch(`${endpoint}${sessionId}/`, {
         method: 'GET',
         headers: {
             'Authorization': token ? `Bearer ${token}` : '',
         },
     });
-    console.log(
-        "fetched", sessionId ,"?"
-    )
 
     if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -59,8 +52,6 @@ const fetchChatSession = async (endpoint: string, sessionId: string, tokenPromis
 const useChatSessions = (endpoint: string, sessionId?: string) => {
 
     const { session } = useClerk();
-    
-    const tokenPromise = session ? session.getToken() : Promise.resolve('none');
 
     const navigate = useNavigate()
 
@@ -69,7 +60,8 @@ const useChatSessions = (endpoint: string, sessionId?: string) => {
     const queryClient = useQueryClient();
 
     const chatSessionsQuery = useQuery<ChatSession[], Error>(['chatSessions'], async () => {
-        return fetchChatSessions(`${endpoint}list/`, tokenPromise);
+        const token = session ? await session.getToken() : 'none';
+        return fetchChatSessions(`${endpoint}list/`, token);
     }, {
         enabled: !!session,
     });
@@ -78,7 +70,8 @@ const useChatSessions = (endpoint: string, sessionId?: string) => {
         if (!sessionId) {
             throw new Error("sessionId is required to fetch a specific chat session.");
         }
-        return fetchChatSession(`${endpoint}`, sessionId, tokenPromise);
+        const token = session ? await session.getToken() : 'none';
+        return fetchChatSession(`${endpoint}`, sessionId, token);
     }, {
         enabled: !!session && !!sessionId,
         onError: (error) => {
