@@ -79,7 +79,7 @@ const GyosuAIChat = () => {
             sessionId: sessionId,
         };
 
-        startStreaming(payload, sessionId);
+        startStreaming(payload);
     };
 
     useRequireSignIn();
@@ -151,7 +151,7 @@ const GyosuAIChat = () => {
                     if (chatSession && sessionId) {
                         const updatedSession = {...chatSession, messageHistory: chatSession.messageHistory.concat({ role: 'assistant', content: data.message })}
                         queryClient.setQueryData(['chatSession', sessionId], updatedSession);
-                        console.log('udpated session messages');
+                        console.log('udpated session messages   ');
                     }
                 }
                 endOfJson = updatedBuffer.indexOf('\n');
@@ -185,7 +185,7 @@ const GyosuAIChat = () => {
             sessionId: sessionId,
         };
 
-        startStreaming(payload, sessionId);
+        startStreaming(payload);
 
         setUserInput('');
     };
