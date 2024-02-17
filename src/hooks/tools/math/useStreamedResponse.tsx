@@ -1,15 +1,27 @@
 import { useClerk } from '@clerk/clerk-react';
+import { useQueryClient } from '@tanstack/react-query';
 import humps from 'humps';
 import { useCallback, useState } from 'react';
+import { IChatMessage } from '../../../pages/GyosuAIChat';
+
+
+interface StartStreamingPayload {
+    newMessage: IChatMessage;
+    messages: IChatMessage[];
+    sessionId?: string;
+}
+
 
 const useStreamedResponse = (endpoint: string, headers: any) => {
-    const [data, setData] = useState<string>(""); // Initialize as an empty string for concatenation
+    const [data, setData] = useState<string>("");
     const [isLoading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
     const { session } = useClerk();
+    const queryClient = useQueryClient();
 
-    const startStreaming = useCallback(async (bodyContent: any) => {
-        setData(""); // Reset data at the start
+    const startStreaming = useCallback(async (bodyContent: StartStreamingPayload, sessionId?: string) => {
+        setData("");
+        console.log("sessionid?:", sessionId)
         const abortController = new AbortController();
         const token = session ? await session.getToken() : 'none';
 
@@ -36,7 +48,6 @@ const useStreamedResponse = (endpoint: string, headers: any) => {
                         return Promise.resolve();
                     }
 
-                    // Directly concatenate the decoded value to the data state
                     const newText = decoder.decode(value, { stream: true });
                     setData(() => newText);
 
@@ -58,7 +69,7 @@ const useStreamedResponse = (endpoint: string, headers: any) => {
             clearTimeout(timeoutId);
             abortController.abort();
         };
-    }, [endpoint, headers, session]);
+    }, [endpoint, headers, session, queryClient]);
 
     return { data, isLoading, error, startStreaming };
 };
