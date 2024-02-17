@@ -1,4 +1,5 @@
 import { useClerk } from '@clerk/clerk-react';
+import { useQueryClient } from '@tanstack/react-query';
 import React, { useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast/headless';
 import ReactMarkdown from 'react-markdown';
@@ -10,7 +11,7 @@ import ChatActions from '../components/ChatActions';
 import ChatSessionSidebar from '../components/ChatSessionSidebar';
 import MessageSuggestions from '../components/MessageSuggestions';
 import { useScreenSize } from '../contexts/ScreenSizeContext';
-import useChatSessions from '../hooks/tools/math/useChatSessions';
+import useChatSessions, { ChatSession } from '../hooks/tools/math/useChatSessions';
 import useStreamedResponse from '../hooks/tools/math/useStreamedResponse';
 import useEnvironment from '../hooks/useEnvironment';
 import { useRequireSignIn } from '../hooks/useRequireSignIn';
@@ -22,7 +23,6 @@ export interface IChatMessage {
 }
 
 const GyosuAIChat = () => {
-    const [messages, setMessages] = useState<IChatMessage[]>([]);
     const [tokens, setTokens] = useState('');
 
     const [actions, setActions] = useState("");
@@ -49,6 +49,7 @@ const GyosuAIChat = () => {
 
     const { isDesktop } = useScreenSize();
 
+
     const handleShareClick = (sessionId: string) => {
         shareChatSession(sessionId)
     };
@@ -57,20 +58,13 @@ const GyosuAIChat = () => {
         handleSubmitWithText(suggestionText);
     };
 
+    
+    const queryClient = useQueryClient();
 
     useEffect(() => {
-        if (sessionId && chatSession && messages.length <= chatSession.messageHistory.length) {
-            if (chatSession.sessionId === sessionId) {
-                setMessages(chatSession.messageHistory);
-            }
-        }
-        if (!sessionId) {
-            setMessages([])
-        }
         if (sessionError) {
             toast(sessionError.message, { id: 'error-toast' });
             navigate(`/math-app/chat/`, { replace: true, state: { ...state, sessionId: undefined } });
-            setMessages([])
         }
     }, [chatSession, navigate, sessionError, sessionId, state]);
 
@@ -79,34 +73,23 @@ const GyosuAIChat = () => {
 
         const newMessage: IChatMessage = { role: 'user', content: text };
 
-
         const payload = {
             newMessage: newMessage,
-            messages: messages.concat(newMessage),
+            messages: chatSession?.messageHistory.concat(newMessage) || [newMessage],
             sessionId: sessionId,
         };
 
-        setMessages(prevMessages => [...prevMessages, newMessage]);
-
-        startStreaming(payload);
+        startStreaming(payload, sessionId);
     };
 
-    useEffect(() => {
-        if (state?.text && messages.length === 0) {
-            handleSubmitWithText(state.text);
-        }
-    }, [messages]); // eslint-disable-line react-hooks/exhaustive-deps
-
-
     useRequireSignIn();
-
 
     useEffect(() => {
         if (!isLoading) {
             setActions("")
             setTimeElapsed(0);
         }
-    }, [isLoading, messages, actions]);
+    }, [isLoading, actions]);
 
     useEffect(() => {
         if (actions) {
@@ -152,24 +135,32 @@ const GyosuAIChat = () => {
                 }
                 if (data.session_id) {
                     navigate(`/math-app/chat/${data.session_id}`, { replace: true, state: { ...state, sessionId: data.session_id } });
-                    console.log('setting session_id');
+                    const chatSession = queryClient.getQueryData<ChatSession>(['chatSession', sessionId]); // Adjust the key as needed
+                    if (chatSession && sessionId) {
+                        const updatedSession = {...chatSession, sessionId: data.session_id}
+                        queryClient.setQueryData(['chatSession', sessionId], updatedSession);
+                        console.log('udpated session id:', data.session_id);
+                    }
                 }
                 if (data.token) {
                     setTokens(prevTokens => prevTokens + data.token);
                 }
                 if (data.message) {
-                    if (data.message !== messages[messages.length - 1]?.content)
-                        setMessages(messages => [...messages, { role: "assistant", content: data.message }]);
                     setTokens('');
+                    const chatSession = queryClient.getQueryData<ChatSession>(['chatSession', sessionId]); // Adjust the key as needed
+                    if (chatSession && sessionId) {
+                        const updatedSession = {...chatSession, messageHistory: chatSession.messageHistory.concat({ role: 'assistant', content: data.message })}
+                        queryClient.setQueryData(['chatSession', sessionId], updatedSession);
+                        console.log('udpated session messages');
+                    }
                 }
-
                 endOfJson = updatedBuffer.indexOf('\n');
             }
         } catch (error) {
             console.error('Error parsing JSON:', error);
         }
         setJsonBuffer(updatedBuffer);
-    }, [streamedData]);
+``    }, [streamedData]);
 
 
     const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -187,16 +178,14 @@ const GyosuAIChat = () => {
         if (isLoading) return;
 
         const newMessage: IChatMessage = { role: 'user', content: userInput };
-        setMessages(messages => [...messages, newMessage]);
-        console.log("setting 3:", [...messages, newMessage], [...messages, newMessage].length)
-
 
         const payload = {
             newMessage: newMessage,
-            messages: messages.concat(newMessage),
+            messages: chatSession?.messageHistory.concat(newMessage) || [newMessage],
             sessionId: sessionId,
         };
-        startStreaming(payload);
+
+        startStreaming(payload, sessionId);
 
         setUserInput('');
     };
@@ -241,7 +230,7 @@ const GyosuAIChat = () => {
             const scrollHeight = endOfMessagesRef.current.scrollHeight;
             endOfMessagesRef.current.scrollTop = scrollHeight;
         }
-    }, [messages, isLoading]);
+    }, [isLoading]);
 
     useEffect(() => {
         // Add the class to the body when the component mounts
@@ -261,7 +250,7 @@ const GyosuAIChat = () => {
                     <ChatSessionSidebar />
                 </div>
                 <div className="flex-grow mx-auto relative">
-                    <div className={`${messages.length === 0 && "flex flex-col"} h-70vh overflow-y-auto p-2 border border-gray-300 mx-2 text-gray-100 scroll-smooth`}
+                    <div className={`${chatSession?.messageHistory.length === 0 && "flex flex-col"} h-70vh overflow-y-auto p-2 border border-gray-300 mx-2 text-gray-100 scroll-smooth`}
                         ref={endOfMessagesRef}>
 
                         {sessionId && <div className='absolute top-0 right-4 p-4'>
@@ -280,7 +269,7 @@ const GyosuAIChat = () => {
                             </button>
                         </div>}
 
-                        {messages.map((message, index) => (
+                        {chatSession?.messageHistory.map((message, index) => (
                             <div key={index} className={`p-2 my-1 border border-transparent rounded max-w-80% ${message.role === 'user' ? 'ml-auto bg-transparent' : 'mr-auto bg-transparent'}`}>
                                 <strong>{message.role === "user" ? username : getRole(message.role)}</strong>
                                 {message.role === 'assistant' ? (
@@ -322,7 +311,7 @@ const GyosuAIChat = () => {
                                 </div>
                             </div>
                         )}
-                        {user && !isLoading && messages.length === 0 && (
+                        {user && !isLoading && chatSession?.messageHistory.length === 0 && (
                             <div className="mt-auto pb-4">
                                 <MessageSuggestions
                                     onClick={handleSuggestionClick}
