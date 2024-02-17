@@ -11,7 +11,7 @@ import ChatActions from '../components/ChatActions';
 import ChatSessionSidebar from '../components/ChatSessionSidebar';
 import MessageSuggestions from '../components/MessageSuggestions';
 import { useScreenSize } from '../contexts/ScreenSizeContext';
-import useChatSessions from '../hooks/tools/math/useChatSessions';
+import useChatSessions, { ChatSession } from '../hooks/tools/math/useChatSessions';
 import useStreamedResponse from '../hooks/tools/math/useStreamedResponse';
 import useEnvironment from '../hooks/useEnvironment';
 import { useRequireSignIn } from '../hooks/useRequireSignIn';
@@ -135,15 +135,25 @@ const GyosuAIChat = () => {
                 }
                 if (data.session_id) {
                     navigate(`/math-app/chat/${data.session_id}`, { replace: true, state: { ...state, sessionId: data.session_id } });
-                    console.log('setting session_id');
+                    const chatSession = queryClient.getQueryData<ChatSession>(['chatSession', sessionId]); // Adjust the key as needed
+                    if (chatSession && sessionId) {
+                        const updatedSession = {...chatSession, sessionId: data.session_id}
+                        queryClient.setQueryData(['chatSession', sessionId], updatedSession);
+                        console.log('udpated session id:', data.session_id);
+                    }
                 }
                 if (data.token) {
                     setTokens(prevTokens => prevTokens + data.token);
                 }
                 if (data.message) {
                     setTokens('');
+                    const chatSession = queryClient.getQueryData<ChatSession>(['chatSession', sessionId]); // Adjust the key as needed
+                    if (chatSession && sessionId) {
+                        const updatedSession = {...chatSession, messageHistory: chatSession.messageHistory.concat({ role: 'assistant', content: data.message })}
+                        queryClient.setQueryData(['chatSession', sessionId], updatedSession);
+                        console.log('udpated session messages');
+                    }
                 }
-
                 endOfJson = updatedBuffer.indexOf('\n');
             }
         } catch (error) {
