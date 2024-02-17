@@ -3,6 +3,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import humps from 'humps';
 import { useCallback, useState } from 'react';
 import { IChatMessage } from '../../../pages/GyosuAIChat';
+import { ChatSession } from "./useChatSessions";
 
 
 interface StartStreamingPayload {
@@ -19,11 +20,18 @@ const useStreamedResponse = (endpoint: string, headers: any) => {
     const { session } = useClerk();
     const queryClient = useQueryClient();
 
-    const startStreaming = useCallback(async (bodyContent: StartStreamingPayload, sessionId?: string) => {
+    const startStreaming = useCallback(async (bodyContent: StartStreamingPayload) => {
         setData("");
-        console.log("sessionid?:", sessionId)
         const abortController = new AbortController();
         const token = session ? await session.getToken() : 'none';
+
+        const previousChatSession = queryClient.getQueryData<ChatSession>(['chatSession', bodyContent.sessionId]);
+        if (previousChatSession && bodyContent.messages) {
+            queryClient.setQueryData<ChatSession>(['chatSession', bodyContent.sessionId], {
+                ...previousChatSession,
+                messageHistory: [...previousChatSession.messageHistory, bodyContent.newMessage],
+            });
+        }
 
         const fetchData = async () => {
             try {
