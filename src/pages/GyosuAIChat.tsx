@@ -241,7 +241,7 @@ const GyosuAIChat = () => {
             document.body.classList.remove('main-container');
         };
     }, []);
-
+    
 
     return (
         <div className='main-container flex-col flex'>
@@ -311,7 +311,7 @@ const GyosuAIChat = () => {
                                 </div>
                             </div>
                         )}
-                        {user && !isLoading && chatSession?.messageHistory.length === 0 && (
+                        {user && !isLoading && (chatSession?.messageHistory.length === 0 || !chatSession?.messageHistory) && (
                             <div className="mt-auto pb-4">
                                 <MessageSuggestions
                                     onClick={handleSuggestionClick}
