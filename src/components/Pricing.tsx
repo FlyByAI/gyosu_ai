@@ -22,7 +22,6 @@ const Pricing = () => {
                             <li className="flex flex-row"><div className="w-6 h-6 flex items-center justify-center"><CheckmarkIcon /></div><div className="ml-2"> GyosuChat Assistant</div></li>
                             <li className="flex flex-row"><div className="w-6 h-6 flex items-center justify-center"><CheckmarkIcon /></div><div className="ml-2"> 5 message limit per day</div></li>
                             <li className="flex flex-row"><div className="w-6 h-6 flex items-center justify-center"><CheckmarkIcon /></div><div className="ml-2"> Full access to problem database</div></li>
-                            <li className="flex flex-row"><div className="w-6 h-6 flex items-center justify-center"><CheckmarkIcon /></div><div className="ml-2"> Limited access to additional features</div></li>
                         </ul>
                     </div>
 
@@ -36,7 +35,6 @@ const Pricing = () => {
                             <li className="flex flex-row"><div className="w-6 h-6 flex items-center justify-center"><CheckmarkIcon /></div><div className="ml-2"> GyosuChat Assistant</div></li>
                             <li className="flex flex-row"><div className="w-6 h-6 flex items-center justify-center"><CheckmarkIcon /></div><div className="ml-2"> 100 message limit per day </div></li>
                             <li className="flex flex-row"><div className="w-6 h-6 flex items-center justify-center"><CheckmarkIcon /></div><div className="ml-2">Full access to problem database</div></li>
-                            <li className="flex flex-row"><div className="w-6 h-6 flex items-center justify-center"><CheckmarkIcon /></div><div className="ml-2">Early Access to additional features</div></li>
                             <li className="flex flex-row"><div className="w-6 h-6 flex items-center justify-center"><CheckmarkIcon /></div><div className="ml-2">Save Documents to profile - Coming Soon!</div></li>
                             <li className="flex flex-row"><div className="w-6 h-6 flex items-center justify-center"><CheckmarkIcon /></div><div className="ml-2">Community Document Library - Coming Soon!</div></li>
                             <li className="flex flex-row"><div className="w-6 h-6 flex items-center justify-center"><CheckmarkIcon /></div><div className="ml-2">Custom Document Templates - Coming Soon!</div></li>
