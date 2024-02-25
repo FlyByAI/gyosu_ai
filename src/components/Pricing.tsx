@@ -19,10 +19,10 @@ const Pricing = () => {
                         <hr></hr>
                         {/* <p className='my-4 text-left'>Plan includes:</p> */}
                         <ul className='list-decimal-none list-inside text-left space-y-4 mt-4 flex flex-col'>
-                            <li className="flex flex-row"><CheckmarkIcon /> GyosuChat Assistant</li>
-                            <li className="flex flex-row"><CheckmarkIcon /> 25 message limit per day</li>
-                            <li className="flex flex-row"><CheckmarkIcon /> Full access to problem database</li>
-                            <li className="flex flex-row"><CheckmarkIcon /> Limited access to additional features</li>
+                            <li className="flex flex-row"><div className="w-6 h-6 flex items-center justify-center"><CheckmarkIcon /></div><div className="ml-2"> GyosuChat Assistant</div></li>
+                            <li className="flex flex-row"><div className="w-6 h-6 flex items-center justify-center"><CheckmarkIcon /></div><div className="ml-2"> 5 message limit per day</div></li>
+                            <li className="flex flex-row"><div className="w-6 h-6 flex items-center justify-center"><CheckmarkIcon /></div><div className="ml-2"> Full access to problem database</div></li>
+                            <li className="flex flex-row"><div className="w-6 h-6 flex items-center justify-center"><CheckmarkIcon /></div><div className="ml-2"> Limited access to additional features</div></li>
                         </ul>
                     </div>
 
@@ -33,10 +33,13 @@ const Pricing = () => {
                         <hr></hr>
                         {/* <p className='my-4 text-left'>Plan includes:</p> */}
                         <ul className='list-decimal-none list-inside text-left space-y-4 mt-4 flex flex-col'>
-                            <li className="flex flex-row"><CheckmarkIcon /> GyosuChat Assistant</li>
-                            <li className="flex flex-row"><CheckmarkIcon /> 200 message limit per day </li>
-                            <li className="flex flex-row"><CheckmarkIcon />Full access to problem database</li>
-                            <li className="flex flex-row"><CheckmarkIcon />Early Access to additional features</li>
+                            <li className="flex flex-row"><div className="w-6 h-6 flex items-center justify-center"><CheckmarkIcon /></div><div className="ml-2"> GyosuChat Assistant</div></li>
+                            <li className="flex flex-row"><div className="w-6 h-6 flex items-center justify-center"><CheckmarkIcon /></div><div className="ml-2"> 100 message limit per day </div></li>
+                            <li className="flex flex-row"><div className="w-6 h-6 flex items-center justify-center"><CheckmarkIcon /></div><div className="ml-2">Full access to problem database</div></li>
+                            <li className="flex flex-row"><div className="w-6 h-6 flex items-center justify-center"><CheckmarkIcon /></div><div className="ml-2">Early Access to additional features</div></li>
+                            <li className="flex flex-row"><div className="w-6 h-6 flex items-center justify-center"><CheckmarkIcon /></div><div className="ml-2">Save Documents to profile - Coming Soon!</div></li>
+                            <li className="flex flex-row"><div className="w-6 h-6 flex items-center justify-center"><CheckmarkIcon /></div><div className="ml-2">Community Document Library - Coming Soon!</div></li>
+                            <li className="flex flex-row"><div className="w-6 h-6 flex items-center justify-center"><CheckmarkIcon /></div><div className="ml-2">Custom Document Templates - Coming Soon!</div></li>
                         </ul>
                         <br></br>
                         <SubscribePaidButton className="btn w-1/3 text-white font-bold min-w-fit rounded-md border border-blue-500 shadow-sm p-4 bg-gradient-to-r from-blue-600 to-green-500 hover:from-blue-700 hover:to-green-600 cursor-pointer" />
@@ -49,10 +52,10 @@ const Pricing = () => {
                         <hr></hr>
                         {/* <p className='my-4 text-left'>Plan includes:</p> */}
                         <ul className='list-decimal-none list-inside text-left space-y-4 mt-4 flex flex-col'>
-                            <li className="flex flex-row"><CheckmarkIcon />Customized GyosuChat - Fine Tuned for your school.</li>
-                            <li className="flex flex-row"><CheckmarkIcon />Customized Curriculum - Just for your students.</li>
-                            <li className="flex flex-row"><CheckmarkIcon />Discounted licenses for all teachers.</li>
-                            <li className="flex flex-row"><CheckmarkIcon />Prioritized Support.</li>
+                            <li className="flex flex-row"><div className="w-6 h-6 flex items-center justify-center"><CheckmarkIcon /></div><div className="ml-2">Customized GyosuChat - Fine Tuned for your school.</div></li>
+                            <li className="flex flex-row"><div className="w-6 h-6 flex items-center justify-center"><CheckmarkIcon /></div><div className="ml-2">Customized Curriculum - Just for your students.</div></li>
+                            <li className="flex flex-row"><div className="w-6 h-6 flex items-center justify-center"><CheckmarkIcon /></div><div className="ml-2">Discounted licenses for all teachers.</div></li>
+                            <li className="flex flex-row"><div className="w-6 h-6 flex items-center justify-center"><CheckmarkIcon /></div><div className="ml-2 w-full mr-auto">Prioritized Support.</div></li>
                         </ul>
                         <br></br>
                         <br></br>
