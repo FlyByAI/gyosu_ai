@@ -15,6 +15,7 @@ import useChatSessions, { ChatSession } from '../hooks/tools/math/useChatSession
 import useStreamedResponse from '../hooks/tools/math/useStreamedResponse';
 import useEnvironment from '../hooks/useEnvironment';
 import { useRequireSignIn } from '../hooks/useRequireSignIn';
+import OutlineIcon from '../svg/Outline';
 import ShareIcon from '../svg/Share';
 
 export interface IChatMessage {
@@ -45,7 +46,7 @@ const GyosuAIChat = () => {
 
     const { data: streamedData, isLoading, error, startStreaming } = useStreamedResponse(chatEndpoint, {});
 
-    const { chatSessions, shareChatSession, isLoading: isLoadingChatSessions, error: errorChatSessions, isLoadingSession, sessionError, chatSession } = useChatSessions(chatEndpoint, sessionId);
+    const { chatSessions, shareChatSession, isLoading: isLoadingChatSessions, error: errorChatSessions, isLoadingSession, sessionError, chatSession, chatSessionArtifacts } = useChatSessions(chatEndpoint, sessionId);
 
     const { isDesktop } = useScreenSize();
 
@@ -54,11 +55,15 @@ const GyosuAIChat = () => {
         shareChatSession(sessionId)
     };
 
+    const handleOutlineClick = (sessionId: string) => {
+        navigate(`/math-app/chat/artifacts/${sessionId}`)
+    };
+
     const handleSuggestionClick = (suggestionText: string) => {
         handleSubmitWithText(suggestionText);
     };
 
-    
+
     const queryClient = useQueryClient();
 
     useEffect(() => {
@@ -137,7 +142,7 @@ const GyosuAIChat = () => {
                     navigate(`/math-app/chat/${data.session_id}`, { replace: true, state: { ...state, sessionId: data.session_id } });
                     const chatSession = queryClient.getQueryData<ChatSession>(['chatSession', sessionId]); // Adjust the key as needed
                     if (chatSession && sessionId) {
-                        const updatedSession = {...chatSession, sessionId: data.session_id}
+                        const updatedSession = { ...chatSession, sessionId: data.session_id }
                         queryClient.setQueryData(['chatSession', sessionId], updatedSession);
                         console.log('udpated session id:', data.session_id);
                     }
@@ -149,7 +154,7 @@ const GyosuAIChat = () => {
                     setTokens('');
                     const chatSession = queryClient.getQueryData<ChatSession>(['chatSession', sessionId]); // Adjust the key as needed
                     if (chatSession && sessionId) {
-                        const updatedSession = {...chatSession, messageHistory: chatSession.messageHistory.concat({ role: 'assistant', content: data.message })}
+                        const updatedSession = { ...chatSession, messageHistory: chatSession.messageHistory.concat({ role: 'assistant', content: data.message }) }
                         queryClient.setQueryData(['chatSession', sessionId], updatedSession);
                         console.log('udpated session messages   ');
                     }
@@ -160,7 +165,8 @@ const GyosuAIChat = () => {
             console.error('Error parsing JSON:', error);
         }
         setJsonBuffer(updatedBuffer);
-``    }, [streamedData]);
+        ``
+    }, [streamedData]);
 
 
     const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -230,7 +236,15 @@ const GyosuAIChat = () => {
             const scrollHeight = endOfMessagesRef.current.scrollHeight;
             endOfMessagesRef.current.scrollTop = scrollHeight;
         }
+        
     }, [isLoading]);
+
+    useEffect(() => {
+        if(tokens == '' && !isLoading && sessionId){
+            console.log("fetching artifacts for session: ", sessionId)
+            queryClient.invalidateQueries(['chatSessionArtifacts', sessionId]);
+        }
+    }, [tokens, queryClient, sessionId, isLoading]);
 
     useEffect(() => {
         // Add the class to the body when the component mounts
@@ -241,7 +255,7 @@ const GyosuAIChat = () => {
             document.body.classList.remove('main-container');
         };
     }, []);
-    
+
 
     return (
         <div className='main-container flex-col flex'>
@@ -253,20 +267,37 @@ const GyosuAIChat = () => {
                     <div className={`${chatSession?.messageHistory.length === 0 && "flex flex-col"} h-70vh overflow-y-auto p-2 border border-gray-300 mx-2 text-gray-100 scroll-smooth`}
                         ref={endOfMessagesRef}>
 
-                        {sessionId && <div className='absolute top-0 right-4 p-4'>
-                            <button onClick={() => handleShareClick(sessionId || "")}
-                                disabled={!sessionId}
-                                className="bg-gray-900 rounded flex flex-row p-2"
-                                data-tooltip-id={`shareChatSession`}
-                            >
-                                <ShareIcon width="32" height='32' />
-                                {isDesktop && <ReactTooltip
-                                    id='shareChatSession'
-                                    place="left"
-                                    variant="light"
-                                    content={"Share this chat session with a friend!"}
-                                />}
-                            </button>
+                        {sessionId && <div className='absolute top-0 right-4 p-4 z-50'>
+                            <div className='flex flex-col space-y-2'>
+                                <button onClick={() => handleShareClick(sessionId || "")}
+                                    disabled={!sessionId}
+                                    className="bg-gray-900 rounded flex flex-row p-2"
+                                    data-tooltip-id={`shareChatSession`}
+                                >
+                                    <ShareIcon width="32" height='32' />
+                                    {isDesktop && <ReactTooltip
+                                        id='shareChatSession'
+                                        place="left"
+                                        variant="light"
+                                        content={"Share this chat session with a friend!"}
+                                    />}
+                                </button>
+                                {chatSessionArtifacts && <div>
+                                    <button onClick={() => handleOutlineClick(sessionId || "")}
+                                        disabled={!sessionId}
+                                        className="bg-gray-900 rounded flex flex-row p-2"
+                                        data-tooltip-id={`chatArtifactsButton`}
+                                    >
+                                        <OutlineIcon width="32" height='32' />
+                                        {isDesktop && <ReactTooltip
+                                            id='chatArtifactsButton'
+                                            place="left"
+                                            variant="light"
+                                            content={"View the artifacts you've created for this session!"}
+                                        />}
+                                    </button>
+                                </div>}
+                            </div>
                         </div>}
 
                         {chatSession?.messageHistory.map((message, index) => (
