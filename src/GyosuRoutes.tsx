@@ -24,6 +24,7 @@ import Footer from './components/Footer.tsx';
 import Pricing from './components/Pricing.tsx';
 import { getSchemaMarkup } from './helpers/getSchemaMarkup.ts';
 import Attributions from './pages/Attributions.tsx';
+import ChatArtifacts from './pages/ChatArtifacts.tsx';
 import Documents from './pages/Documents.tsx';
 import FAQPage from './pages/FAQPage.tsx';
 import GyosuAIChat from './pages/GyosuAIChat.tsx';
@@ -114,6 +115,15 @@ export default function GyosuRoutes() {
                         <>
                             <Navbar />
                             <GyosuAIChat />
+                            {/* <Footer /> */}
+                        </>
+                    }
+                />
+                <Route
+                    path="/math-app/chat/artifacts/:sessionId"
+                    element={
+                        <>
+                            <ChatArtifacts />
                             {/* <Footer /> */}
                         </>
                     }

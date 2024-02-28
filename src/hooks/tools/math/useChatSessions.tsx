@@ -16,6 +16,12 @@ export interface ChatSession {
     messageHistory: IChatMessage[];
 }
 
+export interface ChatArtifacts {
+    sessionId: string;
+    outline: string;
+}
+
+
 
 const fetchChatSessions = async (endpoint: string, token: string | null) => {
     const response = await fetch(endpoint, {
@@ -49,6 +55,22 @@ const fetchChatSession = async (endpoint: string, sessionId: string, token: stri
     return humps.camelizeKeys(responseData) as ChatSession;
 };
 
+const fetchArtifacts = async (endpoint: string, sessionId: string, token: string | null) => {
+    const response = await fetch(`${endpoint}artifacts/${sessionId}/`, {
+        method: 'GET',
+        headers: {
+            'Authorization': token ? `Bearer ${token}` : '',
+        },
+    });
+
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const responseData = await response.json();
+    return humps.camelizeKeys(responseData) as ChatArtifacts;
+};
+
 const useChatSessions = (endpoint: string, sessionId?: string) => {
 
     const { session } = useClerk();
@@ -72,6 +94,19 @@ const useChatSessions = (endpoint: string, sessionId?: string) => {
         }
         const token = session ? await session.getToken() : 'none';
         return fetchChatSession(`${endpoint}`, sessionId, token);
+    }, {
+        enabled: !!session && !!sessionId,
+        onError: (error) => {
+            console.error(`Sorry, we did not find that session. ${sessionId}`, error);
+        },
+    });
+
+    const chatSessionArtifactsQuery = useQuery<ChatArtifacts, Error>(['chatSessionArtifacts', sessionId], async () => {
+        if (!sessionId) {
+            throw new Error("sessionId is required to fetch a specific chat session.");
+        }
+        const token = session ? await session.getToken() : 'none';
+        return fetchArtifacts(`${endpoint}`, sessionId, token);
     }, {
         enabled: !!session && !!sessionId,
         onError: (error) => {
@@ -236,11 +271,14 @@ const useChatSessions = (endpoint: string, sessionId?: string) => {
 
     return {
         isLoadingSession: chatSessionQuery.isLoading,
+        isLoadingArtifacts: chatSessionArtifactsQuery.isLoading,
         isLoading: chatSessionsQuery.isLoading,
         sessionError: chatSessionQuery.error,
+        sessionArtifactsError: chatSessionQuery.error,
         error: chatSessionsQuery.error,
         chatSessions: chatSessionsQuery.data,
         chatSession: chatSessionQuery.data,
+        chatSessionArtifacts: chatSessionArtifactsQuery.data,
         acceptShareChatSession: acceptShareChatSessionMutation.mutate,
         shareChatSession: shareChatSessionMutation.mutate,
         renameChatSession: renameChatSessionMutation.mutate,
