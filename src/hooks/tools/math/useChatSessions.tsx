@@ -5,6 +5,7 @@ import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import ShareLinkModalContent from '../../../components/ShareModalContent';
 import { useModal } from '../../../contexts/useModal';
+import { SelectedSectionObject } from '../../../pages/ChatArtifacts';
 import { IChatMessage } from '../../../pages/GyosuAIChat';
 
 export interface ChatSession {
@@ -19,6 +20,7 @@ export interface ChatSession {
 export interface ChatArtifacts {
     sessionId: string;
     outline: string;
+    selectedSections: SelectedSectionObject[];
 }
 
 
