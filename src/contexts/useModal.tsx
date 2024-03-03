@@ -15,6 +15,12 @@ export const ModalProvider = ({ children }: { children: React.ReactNode }) => {
 
 
     useEffect(() => {
+        const handleDocumentKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        };
+
         document.addEventListener('keydown', handleDocumentKeyDown);
     
         return () => {
@@ -22,11 +28,6 @@ export const ModalProvider = ({ children }: { children: React.ReactNode }) => {
         };
     }, []);
 
-    const handleDocumentKeyDown = (e: KeyboardEvent) => {
-        if (e.key === 'Escape') {
-            closeModal();
-        }
-    };
 
     const openModal = (id: string, content: React.ReactNode) => {
         setCurrentModal(id);
