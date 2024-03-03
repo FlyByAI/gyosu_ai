@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import './App.css';
 import AppModal from './components/AppModal';
 import Notifications from './components/Notifications';
+import SubscribeModal from './components/SubscribeModal';
 import { notSecretConstants } from './constants/notSecretConstants';
 import { DragProvider } from './contexts/DragContext';
 import { ScreenSizeProvider } from './contexts/ScreenSizeContext';
@@ -47,6 +48,7 @@ function App({ children }: AppProps) {
           <DarkModeProvider>
             <ModalProvider>
               <AppModal modalId={'appModal'} />
+              <SubscribeModal modalId={'subscribe'} />
               <SidebarProvider>
                 <LanguageProvider>
                   <ScreenSizeProvider>

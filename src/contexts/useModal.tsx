@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
 interface ModalContextProps {
     currentModal: string | null;
@@ -12,6 +12,21 @@ const ModalContext = createContext<ModalContextProps | null>(null);
 export const ModalProvider = ({ children }: { children: React.ReactNode }) => {
     const [currentModal, setCurrentModal] = useState<string | null>(null);
     const [modalContent, setModalContent] = useState<React.ReactNode>(null);
+
+
+    useEffect(() => {
+        document.addEventListener('keydown', handleDocumentKeyDown);
+    
+        return () => {
+            document.removeEventListener('keydown', handleDocumentKeyDown);
+        };
+    }, []);
+
+    const handleDocumentKeyDown = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') {
+            closeModal();
+        }
+    };
 
     const openModal = (id: string, content: React.ReactNode) => {
         setCurrentModal(id);
@@ -30,7 +45,10 @@ export const ModalProvider = ({ children }: { children: React.ReactNode }) => {
     );
 };
 
+
 export const useModal = (): ModalContextProps => {
+    
+
     const context = useContext(ModalContext);
     if (!context) {
         throw new Error("useModal must be used within a ModalProvider");

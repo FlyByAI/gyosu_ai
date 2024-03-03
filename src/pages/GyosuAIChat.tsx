@@ -175,6 +175,7 @@ const GyosuAIChat = () => {
 
     useEffect(() => {
         if (error) {
+            console.log(error)
             toast(error, { id: 'error-toast' }); // Show toast notification on error
         }
     }, [error]);
