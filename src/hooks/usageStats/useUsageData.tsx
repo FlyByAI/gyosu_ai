@@ -3,17 +3,27 @@ import { useQuery } from '@tanstack/react-query';
 import humps from 'humps';
 import toast from 'react-hot-toast';
 
-export interface ChatUsageData {
-    uniqueChatters: string[];
-    chatSessionsPerChatter: { [username: string]: number };
+interface ChatUser {
+    username: string;
+    chatSessionCount: number;
+  }
+  
+  interface UsersBySubscriptionType {
+    Free: number;
+    Lite: number;
+    Paid: number;
+    Premium: number;
+  }
+  
+  export interface ChatStats {
+    uniqueChatters: number;
+    mostActiveUsers: ChatUser[];
+    usersBySubscription_type: UsersBySubscriptionType;
     singleChatUserCount: number;
-    averageMessagesPerUser: { [username: string]: number };
-    averageMessagesPerUserPerDay: { [day: string]: number }; 
     activeUsersOverDays: number;
     activeUsersOverWeeks: number;
     activeUsersOverMonths: number;
-    mostActiveUsers: { username: string; chatSessionCount: number }[];
-}
+  }
 
 const fetchChatUsageData = async (endpoint: string, token: string | null) => {
     const response = await fetch(endpoint, {
@@ -28,13 +38,13 @@ const fetchChatUsageData = async (endpoint: string, token: string | null) => {
     }
 
     const responseData = await response.json();
-    return humps.camelizeKeys(responseData) as ChatUsageData;
+    return humps.camelizeKeys(responseData) as ChatStats;
 };
 
 const useUsageData = (endpoint: string) => {
     const { session } = useClerk();
 
-    const query = useQuery<ChatUsageData, Error>(['chatUsageData'], async () => {
+    const query = useQuery<ChatStats, Error>(['chatUsageData'], async () => {
             const token = session ? await session.getToken() : 'none';
         return fetchChatUsageData(`${endpoint}chat_stats/`, token);
     }, {
