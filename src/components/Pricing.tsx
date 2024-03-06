@@ -20,7 +20,7 @@ const Pricing = () => {
                         {/* <p className='my-4 text-left'>Plan includes:</p> */}
                         <ul className='list-decimal-none list-inside text-left space-y-4 mt-4 flex flex-col'>
                             <li className="flex flex-row"><div className="w-6 h-6 flex items-center justify-center"><CheckmarkIcon /></div><div className="ml-2"> GyosuChat Assistant</div></li>
-                            <li className="flex flex-row"><div className="w-6 h-6 flex items-center justify-center"><CheckmarkIcon /></div><div className="ml-2"> 5 message limit per day</div></li>
+                            <li className="flex flex-row"><div className="w-6 h-6 flex items-center justify-center"><CheckmarkIcon /></div><div className="ml-2"> 10 message limit per day</div></li>
                             <li className="flex flex-row"><div className="w-6 h-6 flex items-center justify-center"><CheckmarkIcon /></div><div className="ml-2"> Full access to problem database</div></li>
                         </ul>
                     </div>
@@ -35,7 +35,7 @@ const Pricing = () => {
                             <li className="flex flex-row"><div className="w-6 h-6 flex items-center justify-center"><CheckmarkIcon /></div><div className="ml-2"> GyosuChat Assistant</div></li>
                             <li className="flex flex-row"><div className="w-6 h-6 flex items-center justify-center"><CheckmarkIcon /></div><div className="ml-2"> 100 message limit per day </div></li>
                             <li className="flex flex-row"><div className="w-6 h-6 flex items-center justify-center"><CheckmarkIcon /></div><div className="ml-2">Full access to problem database</div></li>
-                            <li className="flex flex-row"><div className="w-6 h-6 flex items-center justify-center"><CheckmarkIcon /></div><div className="ml-2">Save Documents to profile - Coming Soon!</div></li>
+                            <li className="flex flex-row"><div className="w-6 h-6 flex items-center justify-center"><CheckmarkIcon /></div><div className="ml-2">Save Documents to profile</div></li>
                             <li className="flex flex-row"><div className="w-6 h-6 flex items-center justify-center"><CheckmarkIcon /></div><div className="ml-2">Community Document Library - Coming Soon!</div></li>
                             <li className="flex flex-row"><div className="w-6 h-6 flex items-center justify-center"><CheckmarkIcon /></div><div className="ml-2">Custom Document Templates - Coming Soon!</div></li>
                         </ul>
