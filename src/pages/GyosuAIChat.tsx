@@ -1,6 +1,7 @@
 import { useClerk } from '@clerk/clerk-react';
 import { useQueryClient } from '@tanstack/react-query';
-import React, { useEffect, useRef, useState } from 'react';
+import debounce from 'lodash.debounce';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast/headless';
 import ReactMarkdown from 'react-markdown';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
@@ -49,6 +50,40 @@ const GyosuAIChat = () => {
     const { chatSessions, shareChatSession, isLoading: isLoadingChatSessions, error: errorChatSessions, isLoadingSession, sessionError, chatSession, chatSessionArtifacts } = useChatSessions(chatEndpoint, sessionId);
 
     const { isDesktop } = useScreenSize();
+
+    const smoothScrollToBottom = (target: HTMLElement) => {
+        const startY = target.scrollTop;
+        const stopY = target.scrollHeight - target.clientHeight;
+        const distance = stopY - startY;
+        const speed = Math.round(distance / 50);
+        const step = Math.round(distance / 25);
+        let leapY = startY + step;
+        const timer = 0;
+
+        if (distance < 0) return; // No need to scroll
+
+        const scroll = () => {
+            setTimeout(() => {
+                target.scrollTop = leapY;
+                if (target.scrollTop === stopY) return;
+                leapY += step;
+                if (leapY > stopY) leapY = stopY;
+                scroll();
+            }, timer * speed);
+        };
+
+        scroll();
+    };
+    
+    const debouncedScrollToBottom = useCallback(debounce(() => {
+        if (endOfMessagesRef.current) {
+            const scrollHeight = endOfMessagesRef.current.scrollHeight;
+            endOfMessagesRef.current.scrollTo({
+                top: scrollHeight,
+                behavior: 'smooth',
+            });
+        }
+    }, 100, { leading: true, trailing: true, maxWait: 300 }), []);
 
 
     const handleShareClick = (sessionId: string) => {
@@ -217,28 +252,9 @@ const GyosuAIChat = () => {
         }
     }
 
-
     useEffect(() => {
-        if (endOfMessagesRef.current) {
-            const scrollHeight = endOfMessagesRef.current.scrollHeight;
-            // Using smooth scroll behavior
-            endOfMessagesRef.current.scrollTo({
-                top: scrollHeight,
-                behavior: 'smooth'
-            });
-        }
-    }, [actions, tokens]);
-
-
-    useEffect(() => {
-        // Check if the endOfMessagesRef current property is not null
-        if (endOfMessagesRef.current) {
-            // Scroll the element into view
-            const scrollHeight = endOfMessagesRef.current.scrollHeight;
-            endOfMessagesRef.current.scrollTop = scrollHeight;
-        }
-        
-    }, [isLoading]);
+        debouncedScrollToBottom();
+    }, [actions, tokens, debouncedScrollToBottom]);
 
     useEffect(() => {
         if(tokens == '' && !isLoading && sessionId){
