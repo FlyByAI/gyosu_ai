@@ -5,6 +5,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast/headless';
 import ReactMarkdown from 'react-markdown';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { animateScroll } from 'react-scroll';
 import { Tooltip as ReactTooltip } from "react-tooltip";
 import rehypeKatex from 'rehype-katex';
 import remarkMath from 'remark-math';
@@ -51,39 +52,16 @@ const GyosuAIChat = () => {
 
     const { isDesktop } = useScreenSize();
 
-    const smoothScrollToBottom = (target: HTMLElement) => {
-        const startY = target.scrollTop;
-        const stopY = target.scrollHeight - target.clientHeight;
-        const distance = stopY - startY;
-        const speed = Math.round(distance / 50);
-        const step = Math.round(distance / 25);
-        let leapY = startY + step;
-        const timer = 0;
-
-        if (distance < 0) return; // No need to scroll
-
-        const scroll = () => {
-            setTimeout(() => {
-                target.scrollTop = leapY;
-                if (target.scrollTop === stopY) return;
-                leapY += step;
-                if (leapY > stopY) leapY = stopY;
-                scroll();
-            }, timer * speed);
-        };
-
-        scroll();
-    };
-    
     const debouncedScrollToBottom = useCallback(debounce(() => {
         if (endOfMessagesRef.current) {
-            const scrollHeight = endOfMessagesRef.current.scrollHeight;
-            endOfMessagesRef.current.scrollTo({
-                top: scrollHeight,
-                behavior: 'smooth',
+            animateScroll.scrollToBottom({
+                containerId: endOfMessagesRef.current.getAttribute('id'),
+                duration: 500, // Duration of the scroll animation in milliseconds
+                smooth: true, // Enable smooth scrolling
+                delay: 0, // No delay
             });
         }
-    }, 100, { leading: true, trailing: true, maxWait: 300 }), []);
+    }, 500, { leading: true, trailing: true, maxWait: 1500 }), []);
 
 
     const handleShareClick = (sessionId: string) => {
@@ -252,9 +230,12 @@ const GyosuAIChat = () => {
         }
     }
 
+
     useEffect(() => {
         debouncedScrollToBottom();
-    }, [actions, tokens, debouncedScrollToBottom]);
+
+    }, [actions, tokens, debouncedScrollToBottom, chatSession?.messageHistory]);
+
 
     useEffect(() => {
         if(tokens == '' && !isLoading && sessionId){
@@ -281,7 +262,7 @@ const GyosuAIChat = () => {
                     <ChatSessionSidebar />
                 </div>
                 <div className="flex-grow mx-auto relative">
-                    <div className={`${chatSession?.messageHistory.length === 0 && "flex flex-col"} h-70vh overflow-y-auto p-2 border border-gray-300 mx-2 text-gray-100 scroll-smooth`}
+                    <div id="chatContainer" className={`${chatSession?.messageHistory.length === 0 && "flex flex-col"} h-70vh overflow-y-auto p-2 border border-gray-300 mx-2 text-gray-100`}
                         ref={endOfMessagesRef}>
 
                         {sessionId && <div className='absolute top-0 right-4 p-4 z-50'>
