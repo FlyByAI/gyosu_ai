@@ -20,7 +20,7 @@ const Pricing = () => {
                         {/* <p className='my-4 text-left'>Plan includes:</p> */}
                         <ul className='list-decimal-none list-inside text-left space-y-4 mt-4 flex flex-col'>
                             <li className="flex flex-row"><div className="w-6 h-6 flex items-center justify-center"><CheckmarkIcon /></div><div className="ml-2"> GyosuChat Assistant</div></li>
-                            <li className="flex flex-row"><div className="w-6 h-6 flex items-center justify-center"><CheckmarkIcon /></div><div className="ml-2"> 10 message limit per day</div></li>
+                            <li className="flex flex-row"><div className="w-6 h-6 flex items-center justify-center"><CheckmarkIcon /></div><div className="ml-2"> 10 message limit per week</div></li>
                             <li className="flex flex-row"><div className="w-6 h-6 flex items-center justify-center"><CheckmarkIcon /></div><div className="ml-2"> Full access to problem database</div></li>
                         </ul>
                     </div>
