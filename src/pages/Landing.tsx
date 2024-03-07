@@ -50,11 +50,11 @@ const LandingPage: React.FC = () => {
             <section className="h-full flex flex-col md:flex-row items-center" style={{ backgroundImage: `url('/png/dark-bg.png')`, backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundColor: '#0b1536' }}>
                 <img className="w-1/2 pt-4 md:pt-0 md:w-1/3 md:mx-0" src="/png/teacher1.png" alt="Teacher illustration with open book" />
                 <div className="ml-0 md:ml-20 w-full md:w-2/3 text-center md:text-left text-3xl md:text-5xl text-gray-300 p-4">
-                    <p className="font-bold my-4 flex-col">Create math </p><LoopingText variant='typed' textArray={['worksheets', 'lesson plans', 'quizzes', 'exams', "answer keys", "flashcards", "class activities"]} />
-                    <p className="font-bold mt-4">with AI</p>
-                    <p className="mt-4 text-lg">Generative AI, for math teachers.</p>
+                    <p className="font-bold my-4 flex-col">Create </p><LoopingText variant='typed' textArray={['worksheets', 'lesson plans', 'quizzes', 'exams', "study guides", "class activities"]} />
+                    {/* <p className="font-bold mt-4">quickly & easily</p> */}
+                    <p className="mt-4 text-lg">Customized & classroom-ready educational content sourced directly from textbooks.</p>
                     <form onSubmit={handleSubmit} className="flex flex-col overflow-hidden shadow-lg my-4 p-2">
-                        <textarea
+                        {/* <textarea
                             value={inputText}
                             onKeyDown={handleKeyDown}
                             onChange={(e) => setInputText(e.target.value)}
@@ -63,10 +63,10 @@ const LandingPage: React.FC = () => {
                             style={{
                                 boxShadow: '0 0 5px rgba(81, 203, 238, 0.5)',
                             }}
-                        />
+                        /> */}
                         <button
                             type="submit"
-                            className="md:w-1/3 w-2/3 text-white text-lg leading-tight bg-gradient-to-r from-blue-700 to-green-600 hover:from-blue-500 hover:to-green-500 rounded-full mt-2 px-4 py-2 flex items-center justify-center overflow-hidden flex-wrap"
+                            className="md:w-2/5 w-2/3 text-white text-lg leading-tight bg-gradient-to-r from-blue-700 to-green-600 hover:from-blue-500 hover:to-green-500 rounded-full mt-2 px-4 py-2 flex items-center justify-center overflow-hidden flex-wrap"
                             style={{
                                 boxShadow: '0 0 5px rgba(81, 203, 238, 0.5)',
                             }}
@@ -77,36 +77,36 @@ const LandingPage: React.FC = () => {
                     </form>
                 </div>
             </section>
-            <section className="h-full bg-gray-100 justify-center py-8 text-gray-700 flex flex-col items-center" style={{ backgroundImage: `url('/png/tech-bg.png')`, backgroundPosition: 'center', backgroundRepeat: 'repeat', backgroundSize: 'cover', backgroundColor: '#0b1536' }}>
+            <section className="h-full bg-white justify-center py-8 text-gray-700 flex flex-col items-center" style={{ backgroundPosition: 'center', backgroundRepeat: 'repeat', backgroundSize: 'cover' }}>
                 <h1 className='font-bold w-full text-center text-3xl md:text-5xl mb-4'>
-                    Teacher burnout is a major problem.
+                    Improving access to high-quality, customized education for everyone.
                 </h1>
-                <div className='w-full text-center text-xl mb-8'>
+                {/* <div className='w-full text-center text-xl mb-8'>
                     We believe we can be a part of your solution.
-                </div>
+                </div> */}
 
-                <div className='flex flex-col md:flex-row space-x-0 space-y-16 md:space-x-16 md:space-y-0 w-3/4 h-full'>
+                <div className='flex flex-col md:flex-row space-x-0 space-y-16 md:space-x-8 md:space-y-0 w-4/5 h-full'>
                     <div className="w-full xl:w-1/4 text-gray-800 max-w-lg p-4 bg-orange-100 flex flex-col items-center rounded-3xl">
                         <img className="w-1/4 sm:w-1/4 h-auto m-6" src="/png/time.png" alt="Time Illustration" />
-                        <div className="text-center text-2xl font-bold mb-4">Save Time</div>
-                        <div className='text-left text-lg'>Spend more time with your students, spend less time finding problems & creating content.</div>
+                        <div className="text-center text-2xl font-bold mb-4">Quality of Life</div>
+                        <div className='text-left text-lg'>Spend more time teaching, not preparing to teach.</div>
                     </div>
                     <div className="w-full xl:w-1/4 text-gray-800 max-w-lg p-4 bg-blue-100 flex flex-col items-center rounded-3xl">
                         <img className="w-1/4 sm:w-1/4 h-auto m-6" src="/png/pencilwrench.png" alt="Customization Illustration" />
-                        <div className="text-center text-2xl font-bold mb-4">Customize</div>
-                        <div className='text-left text-lg'>Every year, class, and student is unique. Create customized content just for them.</div>
+                        <div className="text-center text-2xl font-bold mb-4">Effective Teaching</div>
+                        <div className='text-left text-lg'>Teach to the student, not the standard.</div>
                     </div>
                     <div className="w-full xl:w-1/4 text-gray-800 max-w-lg p-4 bg-pink-100 flex flex-col items-center rounded-3xl">
                         <img className="w-1/4 sm:w-1/4 h-auto m-6" src="/png/ai.png" alt="AI Illustration" />
-                        <div className="text-center text-2xl font-bold mb-4">AI</div>
-                        <div className="text-left text-lg">Chat with our AI to create math content, update it, and download it for class.</div>
+                        <div className="text-center text-2xl font-bold mb-4">Verifiable AI</div>
+                        <div className="text-left text-lg">Verify quality with ease. Documents link directly to textbook sources.</div>
                     </div>
                     <div className="w-full xl:w-1/4 text-gray-800 max-w-lg p-4 bg-green-100 flex flex-col items-center rounded-3xl">
                         <div className='flex m-4 w-1/2'>
                             <PdfSVG height="100%" color="#cc1510" className='bg-white py-1 rounded-md mb-2 mr-4' />
                             <DocxSVG height="100%" color="#0167b3" className='bg-white py-1 rounded-md mb-2' />
                         </div>
-                        <div className="text-center text-2xl font-bold mb-4">Download</div>
+                        <div className="text-center text-2xl font-bold mb-4">Classroom Ready</div>
                         <div className="text-left text-lg">Export your session quiz or worksheet in a format you can edit and print.</div>
                     </div>
                 </div>
@@ -149,7 +149,7 @@ const LandingPage: React.FC = () => {
                     <h1 className="font-bold"></h1>
                     <p className="mt-4 text-lg">starts with you.</p>
                     <form onSubmit={handleSubmit} className="flex flex-col overflow-hidden my-4 p-2">
-                        <textarea
+                        {/* <textarea
                             value={inputText}
                             onChange={(e) => setInputText(e.target.value)}
                             placeholder="Can you help me write a quiz for grade 5 students on fraction multiplication?"
@@ -157,7 +157,7 @@ const LandingPage: React.FC = () => {
                             style={{
                                 boxShadow: '0 0 5px rgba(81, 203, 238, 0.5)',
                             }}
-                        />
+                        /> */}
                         <button
                             type="submit"
                             className="md:w-1/3 w-2/3 text-white text-lg leading-tight bg-gradient-to-r from-blue-700 to-green-600 hover:from-blue-500 hover:to-green-500 rounded-full mt-2 px-4 py-2 flex items-center justify-center overflow-hidden flex-wrap"
