@@ -1,6 +1,6 @@
 import { useClerk } from '@clerk/clerk-react';
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import LoopingText from '../components/LoopingText';
 import ArrowRightMore from '../svg/ArrowRightMore';
 import DocxSVG from '../svg/DocxSVG';
@@ -129,18 +129,86 @@ const LandingPage: React.FC = () => {
                     <h1 className="font-bold text-2xl md:text-5xl mb-4">Customized Classroom Materials</h1>
                     <p className="text-lg md:text-xl">Created by you in seconds.</p>
                 </div>
-                <div className="flex flex-wrap justify-center w-full h-1/2 space-x-10">
-                    <img
+
+                {/* <div className="flex flex-wrap justify-center w-full h-1/2 space-x-10">
+                    <Link to="/images/landing_page_worksheet_demo.jpg"
+                        className="object-contain w-1/6 h-full max-h-1/2 border-2 border-gray-900"
+                        target="_blank">
+                        <img
+                            src="/images/landing_page_worksheet_demo.jpg"
+                            alt="Math Worksheet - Understanding Functions and Relations"
+                        />
+                    </Link>
+                    <Link to="/images/landing_page_worksheet_demo2.jpg"
+                        className="object-contain w-1/6 h-full max-h-1/2 border-2 border-gray-900"
+                        target="_blank">
+                        <img
+                            src="/images/landing_page_worksheet_demo2.jpg"
+                            alt="Math Worksheet - Understanding Functions and Relations"
+                        />
+                    </Link>
+                    <Link to="/images/landing_page_worksheet_demo3.jpg"
+                        className="object-contain w-1/6 h-full max-h-1/2 border-2 border-gray-900"
+                        target="_blank">
+
+                        <img
+                            src="/images/landing_page_worksheet_demo3.jpg"
+                            alt="Math Worksheet - Understanding Functions and Relations"
+                        />
+                    </Link>
+                    <Link to="/images/landing_page_worksheet_demo4.jpg"
+                        className="object-contain w-1/6 h-full max-h-1/2 border-2 border-gray-900"
+                        target="_blank">
+
+                        <img
+                            src="/images/landing_page_worksheet_demo4.jpg"
+                            alt="Math Worksheet - Understanding Functions and Relations"
+                        />
+                    </Link>
+                </div> */}
+
+                <div className="flex flex-wrap justify-center w-full h-1/2 space-x-10 pt-10">
+                    <Link to="/images/landing_page_worksheet_demo.jpg"
                         className="object-contain w-1/3 h-full max-h-1/2 border-2 border-gray-900"
-                        src="/images/landing_page_worksheet_demo1.png"
-                        alt="Math Worksheet - Understanding Functions and Relations"
-                    />
-                    <img
+                        target="_blank">
+                        <img
+                            src="/images/landing_page_worksheet_demo.jpg"
+                            alt="Math Worksheet - Understanding Functions and Relations"
+                        />
+                    </Link>
+                    <Link to="/images/landing_page_worksheet_demo2.jpg"
                         className="object-contain w-1/3 h-full max-h-1/2 border-2 border-gray-900"
-                        src="/images/landing_page_worksheet_demo2.png"
-                        alt="Math Worksheet - Understanding Functions and Relations"
-                    />
+                        target="_blank">
+                        <img
+                            src="/images/landing_page_worksheet_demo2.jpg"
+                            alt="Math Worksheet - Understanding Functions and Relations"
+                        />
+                    </Link>
                 </div>
+
+                <div className="flex flex-wrap justify-center w-full h-1/2 space-x-10 pt-10">
+
+                    <Link to="/images/landing_page_worksheet_demo3.jpg"
+                        className="object-contain w-1/3 h-full max-h-1/2 border-2 border-gray-900"
+                        target="_blank">
+
+                        <img
+                            src="/images/landing_page_worksheet_demo3.jpg"
+                            alt="Math Worksheet - Understanding Functions and Relations"
+                        />
+                    </Link>
+                    <Link to="/images/landing_page_worksheet_demo4.jpg"
+                        className="object-contain w-1/3 h-full max-h-1/2 border-2 border-gray-900"
+                        target="_blank">
+
+                        <img
+                            src="/images/landing_page_worksheet_demo4.jpg"
+                            alt="Math Worksheet - Understanding Functions and Relations"
+                        />
+                    </Link>
+                </div>
+
+
             </section>
 
             <section className="p-10 h-full flex items-center" style={{ backgroundImage: `url('/png/dark-bg.png')`, backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundColor: '#0b1536' }}>
