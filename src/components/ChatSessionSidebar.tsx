@@ -93,7 +93,7 @@ const ChatSessionSidebar: React.FC = () => {
     };
 
 
-    if (isLoading) return <p className="text-center text-white">Loading...</p>;
+    if (isLoading) return <p className="text-center text-gray-300">Loading...</p>;
     if (error) return <p className="text-red-500">Error loading chat sessions</p>;
 
     const categorizedChats = categorizeChatsByDate(chatSessions || []);
@@ -132,11 +132,11 @@ const ChatSessionSidebar: React.FC = () => {
                                             handleRenameSubmit(chat.sessionId);
                                         }
                                     }}
-                                    className="block w-full text-white bg-transparent border-b border-white focus:outline-none"
+                                    className="block w-full text-gray-300 bg-transparent border-b border-gray-300 focus:outline-none"
                                     autoFocus
                                 />
                             ) : (
-                                <Link to={`/math-app/chat/${chat.sessionId}`} className="block text-white hover:text-blue-300 whitespace-nowrap overflow-hidden overflow-ellipsis hover:text-left">
+                                <Link to={`/math-app/chat/${chat.sessionId}`} className="block text-gray-300 hover:text-blue-300 whitespace-nowrap overflow-hidden overflow-ellipsis hover:text-left">
                                     <div className={`${getMarqueeClass(chat.chatTitle)}`}>
                                         {chat.chatTitle}
                                     </div>
@@ -182,13 +182,11 @@ const ChatSessionSidebar: React.FC = () => {
         );
     };
 
-
-
     return (
-        <div className="chat-sidebar h-75vh md:h-85vh p-4 max-w-xs md:max-w-none bg-gray-800 md:bg-transparent border border-gray-300 text-white flex flex-col"
+        <div className="chat-sidebar h-75vh md:h-85vh p-4 pr-0 max-w-xs md:max-w-none bg-gray-800 md:bg-transparent border border-gray-600 text-gray-300 flex flex-col"
             ref={portalRootRef}
         >
-            <div className="flex-grow overflow-y-auto">
+            <div className="flex-grow overflow-y-auto scrollbar-gyosu">
                 <ul>
                     {renderChatsInSection(categorizedChats.today, "Today")}
                     {renderChatsInSection(categorizedChats.yesterday, "Yesterday")}
@@ -203,7 +201,7 @@ const ChatSessionSidebar: React.FC = () => {
                 <div className='flex flex-row justify-center items-center'>
                     <SignedIn>
                         {<UserButton afterSignOutUrl={window.location.href} appearance={getGyosuClerkTheme()} />}
-                        <div className="user-name text-white text-xs ml-2">
+                        <div className="user-name text-gray-300 text-xs ml-2">
                             {user?.fullName || 'User Name'}
                         </div>
                     </SignedIn>

@@ -1,10 +1,9 @@
-import React, { useCallback } from 'react';
-import useStreamedResponse from '../hooks/tools/math/useStreamedResponse';
+import { useCallback } from 'react';
 import ReactMarkdown from 'react-markdown';
+import rehypeKatex from 'rehype-katex';
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
-import rehypeKatex from 'rehype-katex';
-import CreateDocsFromMarkdownComponent from './CreateDocxFromMarkdownComponent';
+import useStreamedResponse from '../hooks/tools/math/useStreamedResponse';
 
 interface StreamedResponseProps {
     endpoint: string;
@@ -33,7 +32,7 @@ function StreamedResponseComponent({
 
 
     return (
-        <div className='flex flex-col justify-center text-white'>
+        <div className='flex flex-col justify-center text-gray-300'>
             <div>
                 {isLoading && <p>Loading...</p>}
                 {error && <p>Error: {error}</p>}
@@ -51,7 +50,7 @@ function StreamedResponseComponent({
                 }
             </div>
             <button
-                className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mb-4"
+                className="w-full bg-blue-500 hover:bg-blue-700 text-gray-300 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mb-4"
                 onClick={handleSubmit}>{buttonLabel}</button>
         </div>
     );

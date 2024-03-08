@@ -270,7 +270,7 @@ const GyosuAIChat = () => {
                     <ChatSessionSidebar />
                 </div>
                 <div className="flex-grow mx-auto relative">
-                    <div id="chatContainer" className={`${chatSession?.messageHistory.length === 0 && "flex flex-col"} h-70vh overflow-y-auto p-2 border border-gray-300 mx-2 text-gray-100`}
+                    <div id="chatContainer" className={`${chatSession?.messageHistory.length === 0 && "flex flex-col"} h-70vh overflow-y-auto p-2  mx-2 text-gray-100`}
                         ref={endOfMessagesRef}>
 
                         {sessionId && <div className='absolute top-0 right-4 p-4 z-50'>
@@ -403,7 +403,8 @@ const GyosuAIChat = () => {
                         />
                         <button
                             type="submit"
-                            className="send-button px-4 py-2 mr-2 rounded bg-blue-500 text-white disabled:bg-gray-300"
+                            id="send-button"
+                            className="px-4 py-2 mr-2 rounded btn-blue disabled:bg-gray-300"
                             disabled={isLoading}
 
                         >
@@ -415,7 +416,7 @@ const GyosuAIChat = () => {
 
             </div >
 
-            <div className='md:block text-white text-sm self-center text-center'>Note: This feature is in beta, if you are having issues please email us at <a href="mailto:support@gyosu.ai" className="text-blue-300 underline">support@gyosu.ai</a></div>
+            <div className='md:block text-gray-300 text-sm self-center text-center'>Note: This feature is in beta, if you are having issues please email us at <a href="mailto:support@gyosu.ai" className="text-blue-300 underline">support@gyosu.ai</a></div>
         </div >
     );
 

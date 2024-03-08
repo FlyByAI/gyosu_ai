@@ -1,29 +1,25 @@
-import React, { useEffect, useState } from 'react';
 import 'katex/dist/katex.min.css';
-import KaTeX from 'katex';
-import { CHUNK_DRAG_TYPE, CHUNK_TYPE, Chunk, Document, INSTRUCTION_DRAG_TYPE, INSTRUCTION_TYPE, Instruction, PROBLEM_DRAG_TYPE, PROBLEM_TYPE, Problem, Subproblem, Subproblems } from '../interfaces';
+import React, { useState } from 'react';
+import { DropTargetMonitor, useDrag, useDrop } from 'react-dnd';
 import ReactMarkdown from 'react-markdown';
+import { useParams } from 'react-router-dom';
+import { Tooltip as ReactTooltip } from "react-tooltip";
+import rehypeKatex from 'rehype-katex';
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
-import rehypeKatex from 'rehype-katex';
-import { DropTargetMonitor, useDrag, useDrop } from 'react-dnd';
-import ToolWrapper from './math/ToolWrapper';
-import { useSidebarContext } from '../contexts/useSidebarContext';
-import CheckmarkIcon from '../svg/CheckmarkIcon';
-import TrashIcon from '../svg/TrashIcon';
-import useSubmitDocument from '../hooks/tools/math/useSubmitDocument';
-import useGetDocument from '../hooks/tools/math/useGetDocument';
-import { useParams } from 'react-router-dom';
-import useEnvironment from '../hooks/useEnvironment';
-import { Tooltip as ReactTooltip } from "react-tooltip";
-import OverflowMenu from './OverflowMenu';
-import PlusIcon from '../svg/PlusIcon';
-import ArrowLeft from '../svg/ArrowLeftIcon';
-import { useModal } from '../contexts/useModal';
-import AddChunkModal from './AddChunkModal';
-import Feedback from './Feedback';
 import { useDragContext } from '../contexts/DragContext';
 import { useScreenSize } from '../contexts/ScreenSizeContext';
+import { useSidebarContext } from '../contexts/useSidebarContext';
+import useGetDocument from '../hooks/tools/math/useGetDocument';
+import useSubmitDocument from '../hooks/tools/math/useSubmitDocument';
+import useEnvironment from '../hooks/useEnvironment';
+import { CHUNK_DRAG_TYPE, Chunk, INSTRUCTION_DRAG_TYPE, INSTRUCTION_TYPE, Instruction, PROBLEM_DRAG_TYPE, PROBLEM_TYPE, Problem, Subproblem, Subproblems } from '../interfaces';
+import CheckmarkIcon from '../svg/CheckmarkIcon';
+import TrashIcon from '../svg/TrashIcon';
+import AddChunkModal from './AddChunkModal';
+import Feedback from './Feedback';
+import OverflowMenu from './OverflowMenu';
+import ToolWrapper from './math/ToolWrapper';
 
 
 interface ChunkProps {
@@ -154,9 +150,9 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
                 onMouseEnter={() => !isHovered && setIsHovered(true)}
                 onMouseLeave={() => isHovered && setIsHovered(false)}
                 data-tooltip-id='chunkDragTip'
-                className={"border-2 relative border-transparent p-4 pe-12 w-full " + (isHovered ? " hover:border-white border-dashed hover:border-2 hover:border-purple-dashed" : '') + ((activeChunkIndices.includes(chunkIndex)) ? " bg-blue-900 " : '')}
+                className={"border-2 relative border-transparent p-4 pe-12 w-full " + (isHovered ? " hover:border-gray-300 border-dashed hover:border-2 hover:border-purple-dashed" : '') + ((activeChunkIndices.includes(chunkIndex)) ? " bg-blue-900 " : '')}
             >
-                <div className="absolute top-0 right-0 text-white flex-row flex mt-2">
+                <div className="absolute top-0 right-0 text-gray-300 flex-row flex mt-2">
                     <AddChunkModal variant={"button"} chunk={chunk} modalId={'addChunkModal' + chunk.chunkId} enabled={false} />
                     <OverflowMenu
                         isOpen={isOverflowOpen}

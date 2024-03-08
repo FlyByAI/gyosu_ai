@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 interface Props {
     messages: string[];
@@ -21,7 +21,7 @@ const ChatHistory: React.FC<Props> = ({ messages, label }) => {
     }, []);
 
     return (
-        <div className="w-full border bg-gray-800 text-white">
+        <div className="w-full border bg-gray-800 text-gray-300">
             <div
                 onClick={() => setExpanded(!isExpanded)}
                 className="cursor-pointer py-2 px-4 flex justify-between items-center"

@@ -22,7 +22,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({ value, handleChange, className, onFoc
             onChange={handleChange}
             onFocus={() => handleFocus(true)}
             onBlur={() => handleFocus(false)}
-            className={className + " m-0 p-2 my-0 bg-gray-100 dark:bg-gray-800 rounded dark:text-white flex-grow form-textarea mt-1 block w-full"}
+            className={className + " m-0 p-2 my-0 bg-gray-100 dark:bg-gray-800 rounded dark:text-gray-300 flex-grow form-textarea mt-1 block w-full"}
             placeholder="Example: Change problem 3 and problem 4 to teach the students about...."
             rows={rows}
         />

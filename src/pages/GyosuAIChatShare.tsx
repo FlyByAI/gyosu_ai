@@ -24,7 +24,7 @@ const GyosuAIChatShare = () => {
     }, [acceptShareChatSession, session, token])
 
     return (
-        <div className="text-white items-center justify-center flex my-4 py-4 flex-grow h-75vh">
+        <div className="text-gray-300 items-center justify-center flex my-4 py-4 flex-grow h-75vh">
             <GridLoader color="#4A90E2" size={8} margin={4} speedMultiplier={.75} className='mr-2' />
             {session && "Creating chat session"}
             {session == null && "Please log in"}

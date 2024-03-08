@@ -108,7 +108,7 @@ const CreateDocxForm: React.FC<CreateDocsFormProps> = ({ document }) => {
                     disabled={isLoading || activeChunkIndices.length === 0}
                     type="submit"
                     data-tooltip-id={"createWorksheetTip"}
-                    className={`mt-2 w-full px-4 py-2 bg-green-600 hover:bg-green-700 rounded-md border-2 text-white ${activeChunkIndices.length === 0 || isLoading ? " opacity-50" : ""}`}
+                    className={`mt-2 w-full px-4 py-2 bg-green-600 hover:bg-green-700 rounded-md border-2 text-gray-300 ${activeChunkIndices.length === 0 || isLoading ? " opacity-50" : ""}`}
                 >
                     {isLoading ? "Creating..." : "Create Worksheet"}
                 </button>

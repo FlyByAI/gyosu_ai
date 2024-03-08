@@ -14,7 +14,7 @@ interface PolicyPageProps {
 
 const PolicyPage: React.FC<PolicyPageProps> = ({ title, content }) => {
     return (
-        <div className="container mx-auto px-4 py-8 dark:text-white">
+        <div className="container mx-auto px-4 py-8 dark:text-gray-300">
             <h1 className="text-3xl font-bold mb-4 text-center">{title}</h1>
             <div className="max-w-2xl mx-auto">
                 {content.map((section, index) => (

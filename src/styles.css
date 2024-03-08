@@ -1,0 +1,14 @@
+/* styles.css */
+
+.btn-gradient-blue-green {
+  @apply bg-gradient-to-tr from-blue-800 to-green-600 hover:from-blue-700 hover:to-green-700 text-white !important;
+}
+
+.btn-blue {
+  @apply bg-blue-700 text-white !important;
+}
+
+.scrollbar-gyosu {
+  @apply scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100;
+}
+

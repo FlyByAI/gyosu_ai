@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
 import { useClerk } from '@clerk/clerk-react';
+import { useEffect, useState } from 'react';
+import useEnvironment from '../../hooks/useEnvironment';
 import useIpAddress from '../../hooks/useIpAddress';
 import useSubmitSubscribe from '../../hooks/useSubscribe';
-import useEnvironment from '../../hooks/useEnvironment';
 
 
 interface SubscribeFormModalProps {
@@ -55,9 +55,9 @@ const SubscribeFormModal = ({ isOpen, onClose }: SubscribeFormModalProps) => {
             <div className="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-xl transform transition-all sm:w-full md:w-3/4 lg:w-2/3">
                 <div className="bg-white dark:bg-gray-800 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                     <div className="mb-4 text-center">
-                        <h2 className="text-3xl font-bold dark:text-white">Stay Updated</h2>
-                        <p className="mt-4 text-xl dark:text-white">Receive the latest emerging AI powered newsletters in your niche, directly to your inbox.</p>
-                        <p className="mt-2 text-xl dark:text-white">Select the email you’d like to receive and enter your email below to sign up.</p>
+                        <h2 className="text-3xl font-bold dark:text-gray-300">Stay Updated</h2>
+                        <p className="mt-4 text-xl dark:text-gray-300">Receive the latest emerging AI powered newsletters in your niche, directly to your inbox.</p>
+                        <p className="mt-2 text-xl dark:text-gray-300">Select the email you’d like to receive and enter your email below to sign up.</p>
                     </div>
                     <form className="mt-4">
                         <input
@@ -99,10 +99,10 @@ const SubscribeFormModal = ({ isOpen, onClose }: SubscribeFormModalProps) => {
                     </form>
                 </div>
                 <div className="bg-gray-50 dark:bg-gray-700 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse items-center justify-center">
-                    <button type="submit" className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 sm:ml-3 sm:w-auto sm:text-sm" onClick={handleSubmit}>
+                    <button type="submit" className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-gray-300 hover:bg-blue-700 sm:ml-3 sm:w-auto sm:text-sm" onClick={handleSubmit}>
                         Subscribe
                     </button>
-                    <button onClick={onClose} type="button" className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 dark:bg-gray-700 dark:text-white dark:border-gray-600 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                    <button onClick={onClose} type="button" className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
                         Cancel
                     </button>
                 </div>

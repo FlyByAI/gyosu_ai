@@ -163,7 +163,7 @@ const faqs = [
 
 const FAQPage: React.FC = () => {
     return (
-        <div className="faq-container text-white">
+        <div className="faq-container text-gray-300">
             <h1 className="text-4xl font-semibold text-center mb-6">Frequently Asked Questions</h1>
             {faqs.map((faq, index) => (
                 <Accordion key={index} title={faq.question} visible={false}>

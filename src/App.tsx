@@ -21,6 +21,7 @@ import { LanguageProvider } from './contexts/useLanguage';
 import { ModalProvider } from './contexts/useModal';
 import { SidebarProvider } from './contexts/useSidebarContext';
 import useEnvironment from './hooks/useEnvironment';
+import './styles.css';
 import { getGyosuClerkTheme } from './theme/customClerkTheme';
 
 interface AppProps {

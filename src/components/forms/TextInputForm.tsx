@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent, FormEvent } from "react";
+import React, { ChangeEvent, FormEvent, useState } from "react";
 
 interface TextInputFormProps {
   onSubmit: (input: string) => void;
@@ -31,7 +31,7 @@ const TextInputForm: React.FC<TextInputFormProps> = ({ onSubmit, label, placehol
   return (
     <>
       <form onSubmit={handleSubmit}>
-        <label htmlFor="TextInputForm" className="block font-semibold mb-2 dark:text-white">
+        <label htmlFor="TextInputForm" className="block font-semibold mb-2 dark:text-gray-300">
           {label}:
         </label>
         <div className="flex">
@@ -46,7 +46,7 @@ const TextInputForm: React.FC<TextInputFormProps> = ({ onSubmit, label, placehol
           />
           <button
             type="submit"
-            className="bg-blue-500 text-white px-4 py-2 rounded-r font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="bg-blue-500 text-gray-300 px-4 py-2 rounded-r font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             Submit
           </button>

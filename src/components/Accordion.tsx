@@ -15,7 +15,7 @@ const Accordion: React.FC<AccordionProps> = ({ title, children, visible }) => {
         <div className="flex justify-left items-start">
             <div className="w-full bg-gray-700 rounded-lg p-4 shadow-lg m-2">
                 <h1
-                    className="text-2xl text-start text-white cursor-pointer"
+                    className="text-2xl text-start text-gray-300 cursor-pointer"
                     onClick={() => setIsVisible(!isVisible)}
                 >
 

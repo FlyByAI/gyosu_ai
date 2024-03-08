@@ -1,9 +1,9 @@
+import 'katex/dist/katex.min.css';
 import React, { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
+import rehypeKatex from 'rehype-katex';
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
-import rehypeKatex from 'rehype-katex';
-import 'katex/dist/katex.min.css';
 
 interface MathMarkdownProps {
     markdown: string;
@@ -30,7 +30,7 @@ const MathMarkdown: React.FC<MathMarkdownProps> = ({ markdown }) => {
         <>
             {markdown && <>
                 {/* this hidden div gets printed, it contains extra formatting for the printed document */}
-                <div className="text-gray-700 dark:text-white" id="markdownToPrint" hidden={true}>
+                <div className="text-gray-700 dark:text-gray-300" id="markdownToPrint" hidden={true}>
                     {printReadyMarkdown.map((problem, index) => {
                         return (
                             <div key={index}>

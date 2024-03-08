@@ -30,7 +30,7 @@ const ChatArtifacts = () => {
                 </div>
             }
             {chatSessionArtifacts && Object.keys(chatSessionArtifacts).map((key) => (
-                <ul key={key} className="text-white">
+                <ul key={key} className="text-gray-300">
                     <Accordion
                         title={`${key}: ${chatSessionArtifacts[key as keyof typeof chatSessionArtifacts] ? typeof(chatSessionArtifacts[key as keyof typeof chatSessionArtifacts]): 'empty'
                             }`}
@@ -48,7 +48,7 @@ const ChatArtifacts = () => {
                                     )
                                 ) : (
                                     <ReactMarkdown
-                                        className={'text-xs md:text-lg z-10 text-white'}
+                                        className={'text-xs md:text-lg z-10 text-gray-300'}
                                         remarkPlugins={[remarkGfm, remarkMath]}
                                         rehypePlugins={[rehypeKatex]}
                                     >

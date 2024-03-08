@@ -18,10 +18,10 @@ const HighlightedText: React.FC<HighlightedTextProps> = ({ children, highlighted
     };
 
     return (
-        <div onMouseUp={getSelectionText} onKeyUp={getSelectionText} className="text-white dark:text-black">
+        <div onMouseUp={getSelectionText} onKeyUp={getSelectionText} className="text-gray-300 dark:text-black">
             {children}
             {highlightedText && (
-                <div className="text-white">
+                <div className="text-gray-300">
                     <strong>Selected Text:</strong> {highlightedText}
                 </div>
             )}

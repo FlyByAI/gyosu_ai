@@ -31,7 +31,7 @@ const ChatTutorial = ({ startStreaming }: ChatTutorialProps) => {
             placement: 'top' as const,
         },
         {
-            target: '.send-button',
+            target: '#send-button',
             content: 'Click here to send your chat message to the AI agent.',
             placement: 'top' as const,
         },
@@ -108,7 +108,7 @@ const ChatTutorial = ({ startStreaming }: ChatTutorialProps) => {
 
     return (
         <div className='w-full flex items-center'>
-            <button className='mx-auto p-4 border-2 border-white' onClick={handleStartTutorial}>Start Tutorial</button>
+            <button className={`mx-auto font-semibold btn-gradient-blue-green rounded p-4`} onClick={handleStartTutorial}>Start Tutorial</button>
             <Joyride
                 continuous
                 run={run}

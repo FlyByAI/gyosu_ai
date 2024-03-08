@@ -18,7 +18,7 @@ const UsagePage: React.FC = () => {
     if (error) return <div>Error: {error.message}</div>;
 
     return (
-        <div className='text-white'>
+        <div className='text-gray-300'>
             <h1 className='text-2xl'>Chat Usage Data:</h1>
             {usageData && (
                 <div>

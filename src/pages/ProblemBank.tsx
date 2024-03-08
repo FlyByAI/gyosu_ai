@@ -1,17 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link, useParams } from 'react-router-dom';
-import useGetDocument from '../hooks/tools/math/useGetDocument';
 import ProblemBankShelf from '../components/document/ProblemBankShelf';
+import useGetDocument from '../hooks/tools/math/useGetDocument';
 
-import { Chunk } from '../interfaces';
-import MathProblem from '../components/math/MathProblem';
-import useSubmitDocument from '../hooks/tools/math/useSubmitDocument';
-import PlusIcon from '../svg/PlusIcon';
-import useEnvironment from '../hooks/useEnvironment';
 import CreateDocxModal from '../components/CreateDocxModal';
-import { useSidebarContext } from '../contexts/useSidebarContext';
-import SearchIcon from '../svg/SearchIcon';
+import MathProblem from '../components/math/MathProblem';
 import { useScreenSize } from '../contexts/ScreenSizeContext';
+import { useSidebarContext } from '../contexts/useSidebarContext';
+import useSubmitDocument from '../hooks/tools/math/useSubmitDocument';
+import useEnvironment from '../hooks/useEnvironment';
+import { Chunk } from '../interfaces';
 
 const ProblemBank: React.FC = () => {
     const { id } = useParams();
@@ -26,7 +24,7 @@ const ProblemBank: React.FC = () => {
     const { isDesktop } = useScreenSize();
 
     if (isLoading) {
-        return <div className="text-white">Loading...</div>;
+        return <div className="text-gray-300">Loading...</div>;
     }
 
     if (error) {
@@ -34,10 +32,10 @@ const ProblemBank: React.FC = () => {
             <div className='flex'>
                 <ProblemBankShelf isExporting={false} />
                 <div className="w-5/6">
-                    <div className="text-white text-center mt-2">
+                    <div className="text-gray-300 text-center mt-2">
                         Error: {error.message}
                     </div>
-                    <div className="text-white text-center mt-4">
+                    <div className="text-gray-300 text-center mt-4">
                         Document not found.
                     </div>
                 </div>
@@ -46,7 +44,7 @@ const ProblemBank: React.FC = () => {
     }
 
     if (!document) {
-        return <div className="text-white">No document found</div>;
+        return <div className="text-gray-300">No document found</div>;
     }
 
     const insertChunk = (index: number) => {
@@ -95,8 +93,8 @@ const ProblemBank: React.FC = () => {
 
             <div className="w-5/6 mt-4 overflow-x-hidden" style={{ marginRight: isDesktop ? '16.6667%' : "0" }}>
                 <ol>
-                    <li className="text-center text-lg text-white m-4 italic">Step 1: Select problems</li>
-                    <li className="text-center text-lg text-white m-4 italic">Step 2: Click "Create Worksheet"</li>
+                    <li className="text-center text-lg text-gray-300 m-4 italic">Step 1: Select problems</li>
+                    <li className="text-center text-lg text-gray-300 m-4 italic">Step 2: Click "Create Worksheet"</li>
                 </ol>
 
                 {document && document.problemChunks
@@ -123,7 +121,7 @@ const ProblemBank: React.FC = () => {
                     })}
                 {document && document.problemChunks && document.problemChunks.length === 0 &&
                     <div className="flex flex-col items-center">
-                        <div className="text-white text-center my-4">
+                        <div className="text-gray-300 text-center my-4">
                             You don't have any problems in this banks yet, try
                             <Link to="/math-app" className="px-2 text-blue-300 text-bold underline">
                                 Search

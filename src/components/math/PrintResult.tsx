@@ -118,7 +118,7 @@ body::before {
 
     return (
         <button
-            className={`text-white rounded p-2 w-auto flex font-bold bg-blue-700 hover:bg-blue-500`}
+            className={`text-gray-300 rounded p-2 w-auto flex font-bold bg-blue-700 hover:bg-blue-500`}
             onClick={() => printDiv(divPrintId)}
         >
             <p className='me-2 hidden md:block'>Print</p>

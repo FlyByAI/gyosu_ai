@@ -1,6 +1,6 @@
 export default function Attributions() {
     return (
-        <div className="dark:text-white dark:bg-gradient-to-r from-gray-800 to-gray-900 p-4">
+        <div className="dark:text-gray-300 dark:bg-gradient-to-r from-gray-800 to-gray-900 p-4">
         <h3 className="text-2xl font-bold mb-3">Attributions</h3>
         <hr />
         <div className="dark:bg-gray-700 max-w-xl mx-auto shadow-lg rounded p-5 p-3 my-2 bg-gray-600 shadow-md rounded">

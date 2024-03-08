@@ -41,14 +41,14 @@ const DocumentToolbarNav: React.FC = () => {
     return (
         <>
             <div className='mt-20'></div> {/* Placeholder */}
-            <header className="z-20 fixed top-0 left-0 w-full px-6 py-4 bg-blue-900 text-white dark:bg-gray-900 dark:text-gray-200">
+            <header className="z-20 fixed top-0 left-0 w-full px-6 py-4 bg-blue-900 text-gray-300 dark:bg-gray-900 dark:text-gray-200">
                 <div className="flex justify-between items-center w-full">
                     <div className=" w-1/6">
-                        <Link to="/math-app" className="text-3xl font-semibold text-white font-mono flex items-center"><ChevronLeft />Home</Link>
+                        <Link to="/math-app" className="text-3xl font-semibold text-gray-300 font-mono flex items-center"><ChevronLeft />Home</Link>
                     </div>
                     <div className="w-1/6 justify-between flex flex-row">
                         {/* {document && <button
-                            className="ms-2 text-xl font-semibold text-white font-mono flex flex-row items-end"
+                            className="ms-2 text-xl font-semibold text-gray-300 font-mono flex flex-row items-end"
                             onClick={handleShare}
                         >
                             <div>Shared </div>

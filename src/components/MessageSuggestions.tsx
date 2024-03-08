@@ -17,7 +17,7 @@ const MessageSuggestion: React.FC<MessageSuggestionProps> = ({ onClick }) => {
             {suggestions.map((suggestion, index) => (
                 <button
                     key={index}
-                    className={`bg-transparent border-2 hover:border-blue-500 text-white font-semibold py-2 px-4 rounded shadow m-2 ${buttonClass}`}
+                    className={`bg-transparent border hover:border-blue-700 text-gray-300 py-2 px-4 rounded shadow m-2 ${buttonClass}`}
                     onClick={() => onClick(suggestion)}
                 >
                     {suggestion}

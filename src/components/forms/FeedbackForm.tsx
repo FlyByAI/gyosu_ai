@@ -1,5 +1,5 @@
-import React, { useState, FormEvent } from 'react';
-import { Chunk, ChunkInstructionProblem, IFeedbackData, ProblemData, Rating } from '../../interfaces';
+import React, { FormEvent, useState } from 'react';
+import { ChunkInstructionProblem, IFeedbackData, Rating } from '../../interfaces';
 import { ThumbsDownSvg, ThumbsUpSvg } from '../../svg/customSVGs';
 
 interface FeedbackFormProps {
@@ -78,7 +78,7 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ feedbackLabel, rating, onSu
                 })()}
             </div>
             <div className="mb-4">
-                <label className="block text-md text-white mb-2">
+                <label className="block text-md text-gray-300 mb-2">
                     The feedback we receive from our users will help us to improve the quality of our content. Please let us know what you think.
                 </label>
                 <textarea
@@ -89,7 +89,7 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ feedbackLabel, rating, onSu
                 ></textarea>
             </div>
 
-            <button type="submit" className="bg-blue-500 text-white p-2 rounded">
+            <button type="submit" className="bg-blue-500 text-gray-300 p-2 rounded">
                 Submit
             </button>
         </form>

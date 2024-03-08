@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 interface DropdownProps {
     options: (string | { option_text: string } | { label: string, value: string })[] | { [key: string]: { option_text: string } };
@@ -38,7 +38,7 @@ const Dropdown: React.FC<DropdownProps> = ({ options, handleChange, disabled = f
 
     return (
         <div className={className}>
-            {label && <h2 className="h-6 text-lg mb-2 text-white text-left">{label + (showSelected ? ": " + selectedValue : "")}</h2>}
+            {label && <h2 className="h-6 text-lg mb-2 text-gray-300 text-left">{label + (showSelected ? ": " + selectedValue : "")}</h2>}
             <select
                 disabled={disabled}
                 value={selectedValue}

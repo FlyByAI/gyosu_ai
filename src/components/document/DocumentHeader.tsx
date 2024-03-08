@@ -11,7 +11,7 @@ const DocumentHeader: React.FC<DocumentHeaderProps> = ({ document }) => {
     return (
         <div className="mt-4">
             <Accordion title="Document Details" visible={visible}>
-                <div className="bg-gray-800 text-white p-2 rounded-lg m-2 shadow-md">
+                <div className="bg-gray-800 text-gray-300 p-2 rounded-lg m-2 shadow-md">
                     {Object.entries(document).map(([key, value]) => {
                         if (typeof value === "object") {
                             return (

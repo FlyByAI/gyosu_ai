@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import useEnvironment from '../hooks/useEnvironment';
 import toast from 'react-hot-toast/headless';
-import PdfSVG from '../svg/PdfSVG';
-import DocxSVG from '../svg/DocxSVG';
+import { Link } from 'react-router-dom';
 import useCreateDocxFromMarkdown from '../hooks/tools/math/useCreateDocsFromMarkdown';
+import useEnvironment from '../hooks/useEnvironment';
+import DocxSVG from '../svg/DocxSVG';
+import PdfSVG from '../svg/PdfSVG';
 
 interface CreateDocsFromMarkdownComponentProps {
     markdown: string;
@@ -34,7 +34,7 @@ const CreateDocsFromMarkdownComponent = ({ markdown }: CreateDocsFromMarkdownCom
             {error && <p>Error: {error.message}</p>}
 
             {markdown && ( // If there's markdown content available
-                <button onClick={handleCreate} className="p-2 bg-blue-500 text-white rounded-md">
+                <button onClick={handleCreate} className="p-2 bg-blue-500 text-gray-300 rounded-md">
                     Create Document
                 </button>
             )}

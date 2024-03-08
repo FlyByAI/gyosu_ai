@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useModal } from '../contexts/useModal';
 import { Chunk } from '../interfaces';
-import AddChunkForm from './forms/AddChunkForm';
 import PlusIcon from '../svg/PlusIcon';
+import AddChunkForm from './forms/AddChunkForm';
 
 interface AddChunkModalProps {
     chunk: Chunk;
@@ -30,7 +30,7 @@ const AddChunkModal: React.FC<AddChunkModalProps> = ({ chunk, modalId, variant }
             </button>
 
             {currentModal === modalId && (
-                <div className="fixed inset-0 flex items-center justify-center z-50 text-white">
+                <div className="fixed inset-0 flex items-center justify-center z-50 text-gray-300">
                     <div className="bg-gray-800 p-2 rounded shadow-lg w-5/6 md:w-3/4 max-w-2xl">
                         <div className="bg-gray-700 p-4 rounded shadow-lg">
                             <AddChunkForm chunk={chunk} />

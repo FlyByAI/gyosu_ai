@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import SendIcon from "../../svg/SendIcon";
-import { Chunk, ProblemData } from "../../interfaces";
 import useSubmitTextWithChunk from "../../hooks/tools/math/useSubmitTextWithChunk";
 import useEnvironment from "../../hooks/useEnvironment";
+import { Chunk } from "../../interfaces";
+import SendIcon from "../../svg/SendIcon";
 
 interface AIChatSmallWrapperProps {
     children: React.ReactNode;
@@ -68,16 +68,16 @@ const AIChatSmallWrapper: React.FC<AIChatSmallWrapperProps> = ({ updateChunk, cl
                     value={smallChatText}
                     onChange={handleSmallChatChange}
                     onKeyDown={handleKeyDown}
-                    className={className + " px-2 resize-none bg-gray-100 dark:bg-gray-800 rounded dark:text-white form-textarea block w-full"}
+                    className={className + " px-2 resize-none bg-gray-100 dark:bg-gray-800 rounded dark:text-gray-300 form-textarea block w-full"}
                     placeholder="Change this problem with AI"
                 />
-                <button ref={submitButtonRef} type="submit" className="ms-2 p-2 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded flex flex-col justify-center items-center">
+                <button ref={submitButtonRef} type="submit" className="ms-2 p-2 bg-blue-500 hover:bg-blue-700 text-gray-300 font-bold rounded flex flex-col justify-center items-center">
                     <SendIcon className="h-3 w-3" />
                     <p className="text-xs">Send</p>
                 </button>
             </form>
 
-            {isLoading && <p className="dark:text-white">Loading...</p>}
+            {isLoading && <p className="dark:text-gray-300">Loading...</p>}
         </div>
 
     )

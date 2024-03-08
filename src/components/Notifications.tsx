@@ -31,7 +31,7 @@ const Notifications = () => {
                     <div
                         key={toast.id}
                         ref={ref}
-                        className={`flex items-center text-lg font-bold animate-bounce z-80 p-4 rounded-md ${bgColorClass} border-2 text-white fixed z-90 ${isDesktop ? "w-96" : "w-80"} transition-all duration-400 ease-out ${toast.visible ? 'opacity-100' : 'opacity-0'}`}
+                        className={`flex items-center text-lg font-bold animate-bounce z-80 p-4 rounded-md ${bgColorClass} border-2 text-gray-300 fixed z-90 ${isDesktop ? "w-96" : "w-80"} transition-all duration-400 ease-out ${toast.visible ? 'opacity-100' : 'opacity-0'}`}
                     >
                         {toast.message}
                     </div>

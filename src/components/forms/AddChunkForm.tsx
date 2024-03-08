@@ -70,7 +70,7 @@ const AddChunkForm: React.FC<AddChunkFormProps> = ({ chunk, preview }) => {
 
     return (
         <div className="flex flex-col">
-            <label className="text-white mb-2">Select Problem Bank:</label>
+            <label className="text-gray-300 mb-2">Select Problem Bank:</label>
             <select
                 className="mb-4 text-black p-2"
                 value={selectedBank || ''}
@@ -88,7 +88,7 @@ const AddChunkForm: React.FC<AddChunkFormProps> = ({ chunk, preview }) => {
             )}
             <div className='flex flex-row'>
                 <button
-                    className={`p-2 rounded w-1/2 me-2 ${selectedBank ? "bg-blue-500 text-white" : "bg-gray-500 text-gray-300"}`}
+                    className={`p-2 rounded w-1/2 me-2 ${selectedBank ? "bg-blue-500 text-gray-300" : "bg-gray-500 text-gray-300"}`}
                     disabled={!selectedBank}
                     onClick={handleDocumentClick}
                     data-tooltip-id={!selectedBank ? 'addChunkModelButtonDisabled' : ""}
@@ -96,7 +96,7 @@ const AddChunkForm: React.FC<AddChunkFormProps> = ({ chunk, preview }) => {
                     Add
                 </button>
                 <button onClick={handleAddDocument}
-                    className="bg-blue-500 text-white p-2 rounded w-1/2">
+                    className="bg-blue-500 text-gray-300 p-2 rounded w-1/2">
                     Create New Problem Bank
                 </button>
             </div>

@@ -14,7 +14,7 @@ const DisplayResponse: React.FC<DisplayResponseProps> = ({ label, message, Respo
     <div className="p-4 bg-white dark:bg-gray-900 shadow-md rounded-md w-full">
       {ResponseComponent ? <ResponseComponent {...responseProps} /> :
         <>
-          <h2 className="text-xl font-bold mb-2 dark:text-white pe-4 place-self-end">{label}</h2>
+          <h2 className="text-xl font-bold mb-2 dark:text-gray-300 pe-4 place-self-end">{label}</h2>
           <p className="text-gray-700 dark:text-gray-300 pe-4 place-self-center mr-auto">{message}</p>
         </>
       }

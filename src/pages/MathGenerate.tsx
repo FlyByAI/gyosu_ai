@@ -46,26 +46,26 @@ const MathGenerate: React.FC = () => {
                 <div className="flex justify-start items-center flex-col">
                     <div className="w-full md:w-2/3 mx-4 md:mx-0 bg-gray-700 rounded-lg p-4 my-4 shadow-lg flex flex-col">
 
-                        <div className="text-left text-white mb-4">
+                        <div className="text-left text-gray-300 mb-4">
                             <span className="font-bold items-left ml-4 italic">Step 1: Select Problem Source</span>
 
                         </div>
                         <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 mb-8 mx-auto">
                             <button
                                 onClick={() => setFormType('Textbook')}
-                                className={`p-4 text-lg rounded-lg shadow-md transform transition-all duration-300 hover:scale-105 ${formType === 'Textbook' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-black hover:bg-gray-300'}`}
+                                className={`p-4 text-lg rounded-lg shadow-md transform transition-all duration-300 hover:scale-105 ${formType === 'Textbook' ? 'bg-blue-500 text-gray-300' : 'bg-gray-200 text-black hover:bg-gray-300'}`}
                             >
                                 Textbooks
                             </button>
                             <button
                                 onClick={() => setFormType('Competition')}
-                                className={`p-4 text-lg rounded-lg shadow-md transform transition-all duration-300 hover:scale-105 ${formType === 'Competition' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-black hover:bg-gray-300'}`}
+                                className={`p-4 text-lg rounded-lg shadow-md transform transition-all duration-300 hover:scale-105 ${formType === 'Competition' ? 'bg-blue-500 text-gray-300' : 'bg-gray-200 text-black hover:bg-gray-300'}`}
                             >
                                 Competition Math
                             </button>
                         </div>
 
-                        <div className="text-left text-white mb-4">
+                        <div className="text-left text-gray-300 mb-4">
                             {formType && <span className="font-bold items-left ml-4 italic">Step 2: Search for problems using drop downs</span>}
                         </div>
 

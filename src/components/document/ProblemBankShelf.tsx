@@ -1,15 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import PlusIcon from '../../svg/PlusIcon';
-import { Document, Chunk, Problem, Instruction, CHUNK_TYPE } from '../../interfaces';
-import DocumentItem from './DocumentItem';
+import React from 'react';
+import toast, { useToaster } from 'react-hot-toast/headless';
+import { Link } from 'react-router-dom';
+import { useScreenSize } from '../../contexts/ScreenSizeContext';
 import useGetDocuments from '../../hooks/tools/math/useGetDocuments';
 import useSubmitDocument from '../../hooks/tools/math/useSubmitDocument';
 import useEnvironment from '../../hooks/useEnvironment';
-import { Link } from 'react-router-dom';
-import toast, { useToaster } from 'react-hot-toast/headless';
-import InfoCircle from '../../svg/InfoCircle';
+import { CHUNK_TYPE, Chunk, Document, Instruction, Problem } from '../../interfaces';
+import PlusIcon from '../../svg/PlusIcon';
 import SearchIcon from '../../svg/SearchIcon';
-import { useScreenSize } from '../../contexts/ScreenSizeContext';
+import DocumentItem from './DocumentItem';
 
 
 
@@ -92,18 +91,18 @@ const ProblemBankShelf: React.FC<ProblemBankShelfProps> = ({ isExporting }) => {
 
 
     const createButtonClass = documents && documents.length > 0
-        ? "spacing-x-2 items-center justify-center w-full bg-blue-500 hover:bg-blue-700 h-10 p-2 rounded-md text-white font-extrabold flex-row flex"
-        : "spacing-x-2 items-center justify-center w-full bg-green-500 hover:bg-green-700 h-10 p-4 rounded-md text-white font-extrabold text-lg flex-row flex";
+        ? "spacing-x-2 items-center justify-center w-full bg-blue-500 hover:bg-blue-700 h-10 p-2 rounded-md text-gray-300 font-extrabold flex-row flex"
+        : "spacing-x-2 items-center justify-center w-full bg-green-500 hover:bg-green-700 h-10 p-4 rounded-md text-gray-300 font-extrabold text-lg flex-row flex";
 
     return (<>
 
         <div style={{ marginLeft: isDesktop ? '16.6667%' : "33%" }} />
         <div className="flex z-10 flex-col w-1/3 md:w-1/6 bg-gray-800 p-2 fixed" style={{ top: isDesktop ? "80px" : "144px", height: `calc(100vh - ${isDesktop ? "80px" : "144px"})` }}>
             <div className="flex flex-col justify-between items-center mb-2">
-                <Link to="/math-app" className="p-4 items-center justify-center  hover:underline w-full bg-blue-500 text-sm md:text-lg text-white rounded-md font-extrabold flex-row flex">
+                <Link to="/math-app" className="p-4 items-center justify-center  hover:underline w-full bg-blue-500 text-sm md:text-lg text-gray-300 rounded-md font-extrabold flex-row flex">
                     <div className='w-5/6'>Find new problems</div> {isDesktop ? <SearchIcon className='' /> : null}
                 </Link>
-                <h3 className="text-white text-lg mt-4 mb-2 flex-row flex items-center">Problem Banks</h3>
+                <h3 className="text-gray-300 text-lg mt-4 mb-2 flex-row flex items-center">Problem Banks</h3>
                 <button onClick={handleAddDocument} className={createButtonClass}>
                     Create<PlusIcon className="ps-2 h-8 w-8" />
                 </button>

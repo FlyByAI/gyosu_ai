@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 interface IdeaGenerationFormProps {
   onSubmit: (args: { shopInformation: string, productInformation: string, targetAudience: string, additionalText: string }) => void;
@@ -40,7 +40,7 @@ const IdeaGenerationForm = ({ onSubmit }: IdeaGenerationFormProps) => {
         <textarea placeholder={""} value={additionalText} onChange={(e) => setAdditionalText(e.target.value)} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm" />
       </label>
 
-      <button type="submit" className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+      <button type="submit" className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-gray-300 bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
         Generate Etsy Listing Details
       </button>
     </form>

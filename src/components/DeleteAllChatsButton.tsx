@@ -14,7 +14,7 @@ const DeleteAllChatsButton = () => {
     };
 
     return (
-        <button onClick={handleDeleteAllClick} className="px-2 py-2 border border-red-500 text-white rounded">
+        <button onClick={handleDeleteAllClick} className="px-2 py-2 border border-red-500 text-gray-300 rounded">
             Delete All Chats
         </button>
     );

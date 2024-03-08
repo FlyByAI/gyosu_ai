@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
+import rehypeKatex from 'rehype-katex';
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
-import rehypeKatex from 'rehype-katex';
-import { Link } from 'react-router-dom';
-import { Document, Table, Image, Text, Math, Subproblem, Subproblems } from '../../interfaces';
+import { Document, Image, Math, Subproblems, Table, Text } from '../../interfaces';
 import SubproblemComponent from '../AST';
 
 interface DocumentPreviewProps {
@@ -24,7 +23,7 @@ const DocumentPreview: React.FC<DocumentPreviewProps> = ({ document, disabledCli
                     return (
                         <ReactMarkdown
                             key={index}
-                            className={'z-10 text-gray-200 border-2 border-transparent border-dashed hover:border-2 hover:border-purple-dashed p-1 m-1 group-hover:border-2 group-hover:border-white group-hover:border-dashed'}
+                            className={'z-10 text-gray-200 border-2 border-transparent border-dashed hover:border-2 hover:border-purple-dashed p-1 m-1 group-hover:border-2 group-hover:border-gray-300 group-hover:border-dashed'}
                             remarkPlugins={[remarkGfm, remarkMath]}
                             rehypePlugins={[rehypeKatex]}
                         >
@@ -113,7 +112,7 @@ const DocumentPreview: React.FC<DocumentPreviewProps> = ({ document, disabledCli
                     <h2 className="text-base font-bold">Created by {document.creator || "unknown"}</h2>
                     {!disabledClick && isHovering && (
                         <div className="rounded-b-2xl absolute inset-x-0 top-2/3 bottom-0 bg-gray-600 bg-opacity-70 flex justify-center items-center">
-                            <span className="text-white text-xl font-bold">View</span>
+                            <span className="text-gray-300 text-xl font-bold">View</span>
                         </div>
                     )}
                     {document.title}

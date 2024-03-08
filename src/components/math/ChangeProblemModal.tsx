@@ -28,7 +28,7 @@ const ChangeProblemModal: React.FC<ChangeProblemModalProps> = ({ error, markdown
     };
 
     return isOpen ? (
-        <div className="fixed z-10 inset-0 overflow-y-auto flex items-center justify-center text-white">
+        <div className="fixed z-10 inset-0 overflow-y-auto flex items-center justify-center text-gray-300">
             <div className="fixed inset-0 transition-opacity" aria-hidden="true">
                 <div className="absolute inset-0 bg-gray-500 opacity-75 dark:bg-gray-700"></div>
             </div>
@@ -47,7 +47,7 @@ const ChangeProblemModal: React.FC<ChangeProblemModalProps> = ({ error, markdown
                         >
                             {markdown}
                         </ReactMarkdown>
-                        {/* <textarea id="problem" defaultValue={markdown} className="mt-1 p-2 block w-full border-gray-300 rounded-md dark:bg-gray-700 dark:text-white dark:border-gray-600" readOnly /> */}
+                        {/* <textarea id="problem" defaultValue={markdown} className="mt-1 p-2 block w-full border-gray-300 rounded-md dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600" readOnly /> */}
                     </div>
                 </div>
                 <div className="bg-white dark:bg-gray-800 px-4 pt-2">
@@ -64,15 +64,15 @@ const ChangeProblemModal: React.FC<ChangeProblemModalProps> = ({ error, markdown
                         >
                             {newProblem}
                         </ReactMarkdown>
-                        {/* <textarea id="problem" defaultValue={newProblem} className="mt-1 p-2 block w-full border-gray-300 rounded-md dark:bg-gray-700 dark:text-white dark:border-gray-600" readOnly /> */}
+                        {/* <textarea id="problem" defaultValue={newProblem} className="mt-1 p-2 block w-full border-gray-300 rounded-md dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600" readOnly /> */}
                     </div> : <div className='text-green-300'>"Loading..."</div>}
                     {error && <div className='mb-4 text-red-300'>{error.message || "Failed, please try again or try a different "}</div>}
                 </div>
                 <div className=" bg-gray-50 dark:bg-gray-700 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse items-center justify-center">
-                    <button disabled={!!error} type="button" className={`${error ? "bg-gray-500" : "hover:bg-green-700 bg-green-600"} w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 text-base font-medium text-white sm:ml-3 sm:w-auto sm:text-sm`} onClick={handleAccept}>
+                    <button disabled={!!error} type="button" className={`${error ? "bg-gray-500" : "hover:bg-green-700 bg-green-600"} w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 text-base font-medium text-gray-300 sm:ml-3 sm:w-auto sm:text-sm`} onClick={handleAccept}>
                         Accept
                     </button>
-                    <button onClick={handleReject} type="button" className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 dark:bg-gray-700 dark:text-white dark:border-gray-600 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                    <button onClick={handleReject} type="button" className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
                         Reject
                     </button>
                 </div>

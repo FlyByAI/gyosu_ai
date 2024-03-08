@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
-import { MathFormData } from '../../hooks/tools/math/useSubmitMathForm';
 import useSubmitDocument from '../../hooks/tools/math/useSubmitDocument';
-import ViewIcon from '../../svg/ViewIcon';
+import { MathFormData } from '../../hooks/tools/math/useSubmitMathForm';
 import useEnvironment from '../../hooks/useEnvironment';
+import ViewIcon from '../../svg/ViewIcon';
 
 interface PublishMarkdownDocumentProps {
     markdown: string;
@@ -59,7 +59,7 @@ const PublishMarkdownDocument: React.FC<PublishMarkdownDocumentProps> = ({ markd
                 <button
                     onClick={handleClick}
                     disabled={isLoading}
-                    className="text-white bg-blue-700 rounded p-2 w-auto flex font-bold mr-4"
+                    className="text-gray-300 bg-blue-700 rounded p-2 w-auto flex font-bold mr-4"
                 >
                     {isLoading && <p className='me-2 w-20 hidden md:block'>Publishing</p>}
                     {saved && !isLoading && <p className='me-2 w-20 hidden md:block'>Published </p>}

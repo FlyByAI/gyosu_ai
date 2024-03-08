@@ -54,7 +54,7 @@ const Documents: React.FC = () => {
                 <div className="flex justify-center items-center  mt-4">
                     <Accordion title={"Documents"} visible={true}>
                         {documentDownloads.length > 0 ?
-                            <ul className="list-inside space-y-4 text-white mt-4">
+                            <ul className="list-inside space-y-4 text-gray-300 mt-4">
                                 {documentDownloads.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
                                     .map((doc) => (
                                         <div key={doc.id}>
@@ -70,7 +70,7 @@ const Documents: React.FC = () => {
                                                     <div>Shared: {doc.shared ? 'Yes' : 'No'}</div>
                                                     <div>Times Downloaded: {doc.timesDownloaded}</div>
                                                     {!doc.blobName ? <div>
-                                                        <span className="text-white-300 hover:underline cursor-pointer">
+                                                        <span className="text-gray-300-300 hover:underline cursor-pointer">
                                                             No Answer Key
                                                         </span>
                                                     </div> :
@@ -99,7 +99,7 @@ const Documents: React.FC = () => {
                                                         </div>
                                                     }
                                                     {!doc.blobName ? <div className="w-1/2">
-                                                        <span className="text-white-300 ">
+                                                        <span className="text-gray-300-300 ">
                                                             No Answer Key
                                                         </span>
                                                     </div> :
@@ -120,13 +120,13 @@ const Documents: React.FC = () => {
                             </ul>
 
                             :
-                            <div className='text-white'>
+                            <div className='text-gray-300'>
                                 "You don't have any documents yet. "
                             </div>
                         }
                     </Accordion>
                 </div>
-            ) : <div className="text-white mt-4 text-center h-screen">
+            ) : <div className="text-gray-300 mt-4 text-center h-screen">
                 Loading...
             </div>}
             {error && <p className="text-red-600 mt-4 text-center">Error: {error.message}</p>}

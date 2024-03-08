@@ -1,19 +1,18 @@
-import { MathProblemDragItem } from "./ProblemBankShelf";
 import { CHUNK_DRAG_TYPE, CHUNK_TYPE, Chunk, Document, INSTRUCTION_DRAG_TYPE, Instruction, PROBLEM_DRAG_TYPE, Problem } from '../../interfaces';
 import EditIcon from "../../svg/Edit";
 import TrashIcon from "../../svg/TrashIcon";
 
 
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDrop } from 'react-dnd';
-import { useParams, useNavigate } from 'react-router-dom';
-import useSubmitDocument from '../../hooks/tools/math/useSubmitDocument';
-import useGetDocument from '../../hooks/tools/math/useGetDocument';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Tooltip as ReactTooltip } from "react-tooltip";
-import useEnvironment from '../../hooks/useEnvironment';
-import OverflowMenu from "../OverflowMenu";
 import { useDragContext } from "../../contexts/DragContext";
 import { useScreenSize } from "../../contexts/ScreenSizeContext";
+import useGetDocument from '../../hooks/tools/math/useGetDocument';
+import useSubmitDocument from '../../hooks/tools/math/useSubmitDocument';
+import useEnvironment from '../../hooks/useEnvironment';
+import OverflowMenu from "../OverflowMenu";
 
 interface DocumentItemProps {
     document: Document;
@@ -135,7 +134,7 @@ const DocumentItem: React.FC<DocumentItemProps> = ({ document, onDropChunk, isEx
         <>
             <li ref={dropRef}
                 key={document.id}
-                className={`${id == document.id ? "bg-blue-900" : "bg-gray-700"} text-white h-16 p-1 rounded-md overflow-clip relative cursor-pointer border-2 ` + getDropStyle() + " " + getDragStyle()}
+                className={`${id == document.id ? "bg-blue-900" : "bg-gray-700"} text-gray-300 h-16 p-1 rounded-md overflow-clip relative cursor-pointer border-2 ` + getDropStyle() + " " + getDragStyle()}
                 onClick={handleClick}
                 data-tooltip-id="hoverDocumentItem"
             >
@@ -176,7 +175,7 @@ const DocumentItem: React.FC<DocumentItemProps> = ({ document, onDropChunk, isEx
                     <div className="p-1">
                         <div className="flex h-4">
                             {
-                                <div className="text-white rounded-full text-xs">
+                                <div className="text-gray-300 rounded-full text-xs">
                                     {document.problemChunks.length || "No"} Problems
                                 </div>
                             }
