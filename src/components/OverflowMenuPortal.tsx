@@ -79,7 +79,7 @@ const OverflowMenu: React.FC<OverflowMenuProps> = ({
     const flickerFix = menuStyles.top === "0px"
 
     return (
-        <div className="relative">
+        <div className="relative chat-sidebar-session-ellipsis">
             <button
                 ref={buttonRef}
                 onClick={(e) => {

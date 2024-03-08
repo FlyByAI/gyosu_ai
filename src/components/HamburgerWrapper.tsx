@@ -3,8 +3,9 @@ import React, { ReactNode, useEffect, useState } from 'react';
 
 interface HamburgerWrapperProps {
     children: ReactNode;
+    className: string;
 }
-const HamburgerWrapper: React.FC<HamburgerWrapperProps> = ({ children }) => {
+const HamburgerWrapper: React.FC<HamburgerWrapperProps> = ({ children, className }) => {
     const [isOpen, setOpen] = useState(false);
 
     const closeOnScroll = () => {
@@ -19,7 +20,7 @@ const HamburgerWrapper: React.FC<HamburgerWrapperProps> = ({ children }) => {
     }, []);
 
     return (
-        <div className="relative">
+        <div className={"relative " + className}>
             {/* Hamburger Menu */}
             <Hamburger toggled={isOpen} toggle={setOpen} />
 

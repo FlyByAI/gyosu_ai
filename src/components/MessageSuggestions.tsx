@@ -13,7 +13,7 @@ const MessageSuggestion: React.FC<MessageSuggestionProps> = ({ onClick }) => {
         : "w-full"; // Full width for more than two suggestions
 
     return (
-        <div className={`${isTwoSuggestions ? "flex" : "grid grid-cols-2 gap-2"} p-2`}>
+        <div className={`${isTwoSuggestions ? "flex" : "grid grid-cols-2 gap-2"} p-2 m-2`}>
             {suggestions.map((suggestion, index) => (
                 <button
                     key={index}

@@ -11,13 +11,16 @@ import rehypeKatex from 'rehype-katex';
 import remarkMath from 'remark-math';
 import ChatActions from '../components/ChatActions';
 import ChatSessionSidebar from '../components/ChatSessionSidebar';
+import ChatTutorial from '../components/ChatTutorial';
 import MessageSuggestions from '../components/MessageSuggestions';
 import { useScreenSize } from '../contexts/ScreenSizeContext';
+import { useRunTutorial } from '../contexts/runTutorialContext';
 import useChatSessions, { ChatSession } from '../hooks/tools/math/useChatSessions';
 import useStreamedResponse from '../hooks/tools/math/useStreamedResponse';
 import useEnvironment from '../hooks/useEnvironment';
 import { useRequireSignIn } from '../hooks/useRequireSignIn';
 import OutlineIcon from '../svg/Outline';
+import QuestionIcon from '../svg/QuestionIcon';
 import ShareIcon from '../svg/Share';
 
 export interface IChatMessage {
@@ -72,7 +75,12 @@ const GyosuAIChat = () => {
         navigate(`/math-app/chat/artifacts/${sessionId}`)
     };
 
+    const { setRunTutorial } = useRunTutorial();
+
     const handleSuggestionClick = (suggestionText: string) => {
+        if (suggestionText.includes("I'm new to using GyosuChat")) {
+            setRunTutorial(true);
+        }
         handleSubmitWithText(suggestionText);
     };
 
@@ -238,7 +246,7 @@ const GyosuAIChat = () => {
 
 
     useEffect(() => {
-        if(tokens == '' && !isLoading && sessionId){
+        if (tokens == '' && !isLoading && sessionId) {
             console.log("fetching artifacts for session: ", sessionId)
             queryClient.invalidateQueries(['chatSessionArtifacts', sessionId]);
         }
@@ -258,7 +266,7 @@ const GyosuAIChat = () => {
     return (
         <div className='main-container flex-col flex'>
             <div className="flex flex-row">
-                <div className="w-1/6 hidden md:block">
+                <div className="chat-sidebar w-1/6 hidden md:block">
                     <ChatSessionSidebar />
                 </div>
                 <div className="flex-grow mx-auto relative">
@@ -269,7 +277,7 @@ const GyosuAIChat = () => {
                             <div className='flex flex-col space-y-2'>
                                 <button onClick={() => handleShareClick(sessionId || "")}
                                     disabled={!sessionId}
-                                    className="bg-gray-900 rounded flex flex-row p-2"
+                                    className="share-button bg-gray-900 rounded flex flex-row p-2"
                                     data-tooltip-id={`shareChatSession`}
                                 >
                                     <ShareIcon width="32" height='32' />
@@ -283,7 +291,7 @@ const GyosuAIChat = () => {
                                 {chatSessionArtifacts && <div>
                                     <button onClick={() => handleOutlineClick(sessionId || "")}
                                         disabled={!sessionId}
-                                        className="bg-gray-900 rounded flex flex-row p-2"
+                                        className="artifact-button bg-gray-900 rounded flex flex-row p-2"
                                         data-tooltip-id={`chatArtifactsButton`}
                                     >
                                         <OutlineIcon width="32" height='32' />
@@ -295,8 +303,26 @@ const GyosuAIChat = () => {
                                         />}
                                     </button>
                                 </div>}
+                                <div>
+                                    <button onClick={() => setRunTutorial(true)}
+                                        id="start-tutorial-button"
+                                        className="bg-gray-900 rounded flex flex-row p-2"
+                                        data-tooltip-id={`tutorialButton`}
+                                    >
+                                        <QuestionIcon width="32" height='32' />
+                                        {isDesktop && <ReactTooltip
+                                            id='tutorialButton'
+                                            place="left"
+                                            variant="light"
+                                            content={"Show chat tutorial!"}
+                                        />}
+                                    </button>
+                                </div>
+
                             </div>
+
                         </div>}
+
 
                         {chatSession?.messageHistory.map((message, index) => (
                             <div key={index} className={`p-2 my-1 border border-transparent rounded max-w-80% ${message.role === 'user' ? 'ml-auto bg-transparent' : 'mr-auto bg-transparent'}`}>
@@ -322,6 +348,7 @@ const GyosuAIChat = () => {
                                         <p>{message.content}</p>
                                     </>
                                 }
+
                             </div>
                         ))}
                         {tokens && (
@@ -347,6 +374,8 @@ const GyosuAIChat = () => {
                                 />
                             </div>
                         )}
+                        <ChatTutorial startStreaming={startStreaming} />
+
                         {actions && (
                             <div className="text-center text-sm p-1">
                                 Time elapsed on current action: {timeElapsed} seconds
@@ -358,10 +387,11 @@ const GyosuAIChat = () => {
                                 <p className="">Waiting for response...</p>
                             </div>
                         }
+
                     </div>
                     <div className='h-1vh'></div>
 
-                    <form onSubmit={handleChatSubmit} className="flex h-14vh">
+                    <form onSubmit={handleChatSubmit} className="flex h-14vh text-input">
                         <textarea
                             name="input"
                             placeholder={isLoading ? "Loading..." : "Ask for what you need here..."}
@@ -373,18 +403,20 @@ const GyosuAIChat = () => {
                         />
                         <button
                             type="submit"
-                            className="px-4 py-2 mr-2 rounded bg-blue-500 text-white disabled:bg-gray-300"
+                            className="send-button px-4 py-2 mr-2 rounded bg-blue-500 text-white disabled:bg-gray-300"
                             disabled={isLoading}
+
                         >
                             Send
                         </button>
                     </form>
                     {error && <p>Error: {error}</p>}
                 </div>
+
             </div >
 
             <div className='md:block text-white text-sm self-center text-center'>Note: This feature is in beta, if you are having issues please email us at <a href="mailto:support@gyosu.ai" className="text-blue-300 underline">support@gyosu.ai</a></div>
-        </div>
+        </div >
     );
 
 };
