@@ -3,7 +3,7 @@ import React, { ReactNode, useEffect, useState } from 'react';
 
 interface HamburgerWrapperProps {
     children: ReactNode;
-    className: string;
+    className?: string;
 }
 const HamburgerWrapper: React.FC<HamburgerWrapperProps> = ({ children, className }) => {
     const [isOpen, setOpen] = useState(false);

@@ -1,4 +1,4 @@
-import { FunctionComponent, ReactNode, createContext, useContext, useState } from 'react';
+import { ReactNode, createContext, useContext, useState } from 'react';
 
 // Define the context type
 interface RunTutorialContextType {
@@ -18,7 +18,7 @@ interface RunTutorialProviderProps {
   children: ReactNode;
 }
 
-export const RunTutorialProvider: FunctionComponent<RunTutorialProviderProps> = ({ children }) => {
+export const RunTutorialProvider: React.FC<RunTutorialProviderProps> = ({ children }) => {
   const [runTutorial, setRunTutorial] = useState<boolean>(false);
 
   return (
