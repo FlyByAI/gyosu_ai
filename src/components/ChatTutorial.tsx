@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import Joyride, { CallBackProps, STATUS } from 'react-joyride';
 import { useParams } from 'react-router-dom';
-import { useRunTutorial } from '../contexts/RunTutorialContext2';
+import { useRunTutorial } from '../contexts/RunTutorialContext';
 import useChatSessions from '../hooks/tools/math/useChatSessions';
 import { StartStreamingPayload } from '../hooks/tools/math/useStreamedResponse';
 import useEnvironment from '../hooks/useEnvironment';

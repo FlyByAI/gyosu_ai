@@ -14,7 +14,7 @@ import Notifications from './components/Notifications';
 import SubscribeModal from './components/SubscribeModal';
 import { notSecretConstants } from './constants/notSecretConstants';
 import { DragProvider } from './contexts/DragContext';
-import { RunTutorialProvider } from './contexts/RunTutorialContext2';
+import { RunTutorialProvider } from './contexts/RunTutorialContext';
 import { ScreenSizeProvider } from './contexts/ScreenSizeContext';
 import { DarkModeProvider } from './contexts/useDarkMode';
 import { LanguageProvider } from './contexts/useLanguage';

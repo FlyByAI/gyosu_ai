@@ -13,7 +13,7 @@ import ChatActions from '../components/ChatActions';
 import ChatSessionSidebar from '../components/ChatSessionSidebar';
 import ChatTutorial from '../components/ChatTutorial';
 import MessageSuggestions from '../components/MessageSuggestions';
-import { useRunTutorial } from '../contexts/RunTutorialContext2';
+import { useRunTutorial } from '../contexts/RunTutorialContext';
 import { useScreenSize } from '../contexts/ScreenSizeContext';
 import useChatSessions, { ChatSession } from '../hooks/tools/math/useChatSessions';
 import useStreamedResponse from '../hooks/tools/math/useStreamedResponse';
