@@ -51,7 +51,7 @@ const ChatNavbar: React.FC = () => {
 
                     {/* Placeholder div to balance flex space */}
                     <div className="w-[68px]">
-                        <HamburgerWrapper>
+                        <HamburgerWrapper className="hamburger-menu">
                             <div className='flex flex-col space-y-2'>
                                 {/* <LanguageDropdown /> */}
                                 <ManageSubscriptionButton />

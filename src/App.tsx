@@ -15,6 +15,7 @@ import SubscribeModal from './components/SubscribeModal';
 import { notSecretConstants } from './constants/notSecretConstants';
 import { DragProvider } from './contexts/DragContext';
 import { ScreenSizeProvider } from './contexts/ScreenSizeContext';
+import { RunTutorialProvider } from './contexts/runTutorialContext';
 import { DarkModeProvider } from './contexts/useDarkMode';
 import { LanguageProvider } from './contexts/useLanguage';
 import { ModalProvider } from './contexts/useModal';
@@ -45,6 +46,7 @@ function App({ children }: AppProps) {
         appearance={getGyosuClerkTheme()}
       >
         <QueryClientProvider client={queryClient}>
+          <RunTutorialProvider>
           <DarkModeProvider>
             <ModalProvider>
               <AppModal modalId={'appModal'} />
@@ -66,6 +68,7 @@ function App({ children }: AppProps) {
               </SidebarProvider>
             </ModalProvider>
           </DarkModeProvider>
+          </RunTutorialProvider>
         </QueryClientProvider>
       </ClerkProvider>
     </div>

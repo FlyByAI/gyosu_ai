@@ -7,7 +7,7 @@ import { IChatMessage } from '../../../pages/GyosuAIChat';
 import { ChatSession } from "./useChatSessions";
 
 
-interface StartStreamingPayload {
+export interface StartStreamingPayload {
     newMessage: IChatMessage;
     messages: IChatMessage[];
     sessionId?: string;
