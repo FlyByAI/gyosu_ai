@@ -9,17 +9,30 @@ import { IChatMessage } from '../pages/GyosuAIChat';
 
 interface ChatTutorialProps {
     startStreaming: (bodyContent: StartStreamingPayload) => Promise<() => void>
+    updateTextbox: (text: string) => void;
 }
-const ChatTutorial = ({ startStreaming }: ChatTutorialProps) => {
+const ChatTutorial = ({ startStreaming, updateTextbox}: ChatTutorialProps) => {
     const [run, setRun] = useState(false);
 
     const { runTutorial, setRunTutorial } = useRunTutorial();
 
     const { sessionId } = useParams();
 
+    const [showStartButton, setShowStartButton] = useState(localStorage.getItem('tutorialSeen') !== 'true');
 
+    useEffect(() => {
+        // Optionally, if the runTutorial state changes and you want to react to it
+        // This ensures that if the tutorial state is programmatically changed elsewhere, it updates the button visibility accordingly
+        const tutorialSeen = localStorage.getItem('tutorialSeen') === 'true';
+        setShowStartButton(!tutorialSeen);
+    }, [runTutorial]);
 
     const [steps, setSteps] = useState([
+        {
+            target: '#start-tutorial-button',
+            content: 'If you ever need to see this tutorial again, click this button. You can pause the tutorial at any time by clicking the X.',
+            placement: 'top' as const,
+        },
         {
             target: '.chat-sidebar',
             content: 'This sidebar contains your previous chat sessions. You can revisit them anytime.',
@@ -27,7 +40,7 @@ const ChatTutorial = ({ startStreaming }: ChatTutorialProps) => {
         },
         {
             target: '.text-input',
-            content: 'Start by asking what topic you want to create a worksheet for, like "Create a worksheet on fractions for my 5th grade class."',
+            content: 'Start by asking what topic you want to create a worksheet for, like "What textbooks are available for 5th grade math?".',
             placement: 'top' as const,
         },
         {
@@ -65,13 +78,23 @@ const ChatTutorial = ({ startStreaming }: ChatTutorialProps) => {
 
 
     const handleJoyrideCallback = (data: CallBackProps) => {
-        const { status } = data;
+        const { status, action, index } = data;
         const finishedStatuses: string[] = [STATUS.FINISHED, STATUS.SKIPPED];
-
+    
+        // Check if the tutorial has been finished or skipped
         if (finishedStatuses.includes(status)) {
             setRun(false);
+            localStorage.setItem('tutorialSeen', 'true');
+        }
+
+        // Assuming step 2 is the one where you want to input text, and 'index' is zero-based
+        if (index === 1 && action === 'next') {
+            // Programmatically set the value of the text input
+            // This assumes you have a way to reference the text input, for example using a ref or document.querySelector
+            updateTextbox('What textbooks are available for 5th grade math?');
         }
     };
+    
 
     const { apiUrl } = useEnvironment();
     const chatEndpoint = `${apiUrl}/math_app/chat/`;
@@ -93,9 +116,11 @@ const ChatTutorial = ({ startStreaming }: ChatTutorialProps) => {
         if (!sessionId) {
             setRunTutorial(true);
             startTutorialStream();
+            setShowStartButton(false); 
         }
         else {
             setRun(true);
+            setShowStartButton(false); 
         }
     }
 
@@ -108,7 +133,9 @@ const ChatTutorial = ({ startStreaming }: ChatTutorialProps) => {
 
     return (
         <div className='w-full flex items-center'>
-            <button className='mx-auto p-4 border-2 border-white' onClick={handleStartTutorial}>Start Tutorial</button>
+            {showStartButton && 
+                <button className='mx-auto p-4 bg-gradient-to-b rounded from-blue-700 to-blue-500 hover:from-blue-800 hover:to-blue-600 border-white' onClick={handleStartTutorial}>Start Tutorial</button>
+            }
             <Joyride
                 continuous
                 run={run}
@@ -124,7 +151,7 @@ const ChatTutorial = ({ startStreaming }: ChatTutorialProps) => {
                     },
                 }}
             />
-        </div>
+        </div> 
     );
 };
 
