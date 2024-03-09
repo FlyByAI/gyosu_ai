@@ -98,7 +98,7 @@ const ChatTutorial = ({ startStreaming, updateTextbox}: ChatTutorialProps) => {
 
     const { apiUrl } = useEnvironment();
     const chatEndpoint = `${apiUrl}/math_app/chat/`;
-    const {chatSession} = useChatSessions(chatEndpoint, sessionId);
+    const {chatSession, isLoading} = useChatSessions(chatEndpoint, sessionId);
 
     const startTutorialStream = () => {
         const newMessage: IChatMessage = { role: 'user', content: 'I am using the chat tutorial, please help me get started creating content for my classroom. ' };
@@ -125,6 +125,12 @@ const ChatTutorial = ({ startStreaming, updateTextbox}: ChatTutorialProps) => {
     }
 
     useEffect(() => {
+        if(chatSession && chatSession?.messageHistory.length !== 0) {
+            setShowStartButton(false);
+        }
+    }, [chatSession, chatSession?.messageHistory.length])
+
+    useEffect(() => {
         if (runTutorial && sessionId) {
             setRun(true);
             setRunTutorial(false);
@@ -133,7 +139,7 @@ const ChatTutorial = ({ startStreaming, updateTextbox}: ChatTutorialProps) => {
 
     return (
         <div className='w-full flex items-center'>
-            {showStartButton && 
+            {showStartButton && !isLoading &&
                 <button className='mx-auto p-4 bg-gradient-to-b rounded from-blue-700 to-blue-500 hover:from-blue-800 hover:to-blue-600 border-white' onClick={handleStartTutorial}>Start Tutorial</button>
             }
             <Joyride
