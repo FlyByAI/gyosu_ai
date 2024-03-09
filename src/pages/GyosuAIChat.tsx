@@ -201,8 +201,10 @@ const GyosuAIChat = () => {
         }
     }, [error]);
 
-    const handleChatSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
+    const handleChatSubmit = (event?: React.FormEvent<HTMLFormElement>) => {
+        if (event){
+            event.preventDefault();
+        }
         if (isLoading) return;
 
         const newMessage: IChatMessage = { role: 'user', content: userInput };
@@ -374,8 +376,7 @@ const GyosuAIChat = () => {
                                 />
                             </div>
                         )}
-                        <ChatTutorial startStreaming={startStreaming} />
-
+                        <ChatTutorial startStreaming={startStreaming} updateTextbox={setUserInput} />
                         {actions && (
                             <div className="text-center text-sm p-1">
                                 Time elapsed on current action: {timeElapsed} seconds
