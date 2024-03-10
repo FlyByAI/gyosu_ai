@@ -307,8 +307,7 @@ const GyosuAIChat = () => {
                                 </div>}
                                 <div>
                                     <button onClick={() => setRunTutorial(true)}
-                                        id="start-tutorial-button"
-                                        className="bg-gray-900 rounded flex flex-row p-2"
+                                        className="start-tutorial-button bg-gray-900 rounded flex flex-row p-2"
                                         data-tooltip-id={`tutorialButton`}
                                     >
                                         <QuestionIcon width="32" height='32' />

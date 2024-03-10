@@ -25,14 +25,10 @@ const ChatTutorial = ({ startStreaming, updateTextbox}: ChatTutorialProps) => {
         // This ensures that if the tutorial state is programmatically changed elsewhere, it updates the button visibility accordingly
         const tutorialSeen = localStorage.getItem('tutorialSeen') === 'true';
         setShowStartButton(!tutorialSeen);
-    }, [runTutorial]);
+    }, [runTutorial, sessionId]);
 
     const [steps, setSteps] = useState([
-        {
-            target: '#start-tutorial-button',
-            content: 'If you ever need to see this tutorial again, click this button. You can pause the tutorial at any time by clicking the X.',
-            placement: 'top' as const,
-        },
+       
         {
             target: '.chat-sidebar',
             content: 'This sidebar contains your previous chat sessions. You can revisit them anytime.',
@@ -128,7 +124,7 @@ const ChatTutorial = ({ startStreaming, updateTextbox}: ChatTutorialProps) => {
         if(chatSession && chatSession?.messageHistory.length !== 0) {
             setShowStartButton(false);
         }
-    }, [chatSession, chatSession?.messageHistory.length])
+    }, [chatSession, chatSession?.messageHistory.length, sessionId])
 
     useEffect(() => {
         if (runTutorial && sessionId) {
