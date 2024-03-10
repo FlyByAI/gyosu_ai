@@ -403,7 +403,7 @@ const GyosuAIChat = () => {
                         />
                         <button
                             type="submit"
-                            className="send-button px-4 py-2 mr-2 rounded bg-blue-500 text-white disabled:bg-gray-300"
+                            className="send-button px-4 py-2 mr-2 rounded bg-gradient-to-b from-blue-700 to-blue-600 hover:from-blue-800 hover:to-blue-600 text-white disabled:bg-gray-300"
                             disabled={isLoading}
 
                         >
