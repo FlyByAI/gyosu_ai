@@ -28,7 +28,7 @@ const ChatNavbar: React.FC = () => {
                     <Link to="/" className="text-xl font-semibold text-white font-mono">Gyosu.ai</Link>
 
                     {/* New Chat Button */}
-                    <button onClick={navigateToNewChat} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex flex-row">
+                    <button onClick={navigateToNewChat} className="bg-gradient-to-b from-blue-700 to-blue-600 hover:from-blue-800 hover:to-blue-600 text-white font-bold py-2 px-4 rounded flex flex-row">
                         <div className='mr-2'>
                             New
                         </div>
@@ -39,7 +39,7 @@ const ChatNavbar: React.FC = () => {
                 {/* desktop */}
                 <div className="hidden md:flex justify-between items-center py-2">
                     {/* New Chat Button with Margin */}
-                    <button onClick={navigateToNewChat} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-2 flex-row flex">
+                    <button onClick={navigateToNewChat} className="bg-gradient-to-b from-blue-700 to-blue-600 hover:from-blue-800 hover:to-blue-600 text-white font-bold py-2 px-4 rounded ml-2 flex-row flex">
                         <div className='mr-4 '>New Chat</div>
                         <NewChatIcon />
                     </button>
@@ -51,7 +51,7 @@ const ChatNavbar: React.FC = () => {
 
                     {/* Placeholder div to balance flex space */}
                     <div className="w-[68px]">
-                        <HamburgerWrapper>
+                        <HamburgerWrapper className="hamburger-menu">
                             <div className='flex flex-col space-y-2'>
                                 {/* <LanguageDropdown /> */}
                                 <ManageSubscriptionButton />
