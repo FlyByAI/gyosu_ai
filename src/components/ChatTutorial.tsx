@@ -35,16 +35,6 @@ const ChatTutorial = ({ startStreaming, updateTextbox}: ChatTutorialProps) => {
             placement: 'right' as const,
         },
         {
-            target: '.text-input',
-            content: 'Start by asking what topic you want to create a worksheet for, like "What textbooks are available for 5th grade math?".',
-            placement: 'top' as const,
-        },
-        {
-            target: '.send-button',
-            content: 'Click here to send your chat message to the AI agent.',
-            placement: 'top' as const,
-        },
-        {
             target: '.chat-sidebar-session-ellipsis',
             content: 'Click here to see options for sharing, renaming, and deleting a session.',
             placement: 'right' as const,
@@ -70,6 +60,16 @@ const ChatTutorial = ({ startStreaming, updateTextbox}: ChatTutorialProps) => {
             content: 'If you ever need to see this tutorial again, click this button. It will guide you through the features step by step.',
             placement: 'top' as const,
         },
+        {
+            target: '.text-input',
+            content: 'Start by asking what topic you want to create a worksheet for, like "What textbooks are available for 5th grade math?".',
+            placement: 'top' as const,
+        },
+        {
+            target: '.send-button',
+            content: 'Click here to send your chat message.',
+            placement: 'top' as const,
+        },
     ]);
 
 
@@ -84,7 +84,7 @@ const ChatTutorial = ({ startStreaming, updateTextbox}: ChatTutorialProps) => {
         }
 
         // Assuming step 2 is the one where you want to input text, and 'index' is zero-based
-        if (index === 1 && action === 'next') {
+        if (index === 7 && action === 'next') {
             // Programmatically set the value of the text input
             // This assumes you have a way to reference the text input, for example using a ref or document.querySelector
             updateTextbox('What textbooks are available for 5th grade math?');

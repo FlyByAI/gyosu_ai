@@ -1,6 +1,6 @@
-import { useState } from 'react';
 import { useClerk } from '@clerk/clerk-react';
 import { loadStripe } from '@stripe/stripe-js';
+import { useState } from 'react';
 import { notSecretConstants } from '../../constants/notSecretConstants';
 import useEnvironment from '../useEnvironment';
 
