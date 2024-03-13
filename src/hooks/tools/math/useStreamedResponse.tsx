@@ -35,8 +35,9 @@ const useStreamedResponse = (endpoint: string, headers: any) => {
                     <li>Save Documents to profile</li>
                     <li>Early access to upcoming features</li>
                 </ul>
-                <div className='text-bold'>
-                    Use code GYOSU50 to get 50% off monthly rate. Cancel anytime.
+                <div className='flex flex-col space-y-4 py-4'>
+                    <div>Use code <b>GYOSU50</b> to get 50% off monthly rate. </div>
+                    <div>Cancel anytime.</div>
                 </div>
             </div>
         </div>
@@ -44,7 +45,7 @@ const useStreamedResponse = (endpoint: string, headers: any) => {
     )
 
     
-
+   
 
     const startStreaming = useCallback(async (bodyContent: StartStreamingPayload) => {
         setData("");
