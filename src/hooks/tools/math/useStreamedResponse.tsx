@@ -35,13 +35,17 @@ const useStreamedResponse = (endpoint: string, headers: any) => {
                     <li>Save Documents to profile</li>
                     <li>Early access to upcoming features</li>
                 </ul>
+                <div className='flex flex-col space-y-4 py-4'>
+                    <div>Use code <b>GYOSU50</b> to get 50% off monthly rate. </div>
+                    <div>Cancel anytime.</div>
+                </div>
             </div>
         </div>
     </div>
     )
 
     
-
+   
 
     const startStreaming = useCallback(async (bodyContent: StartStreamingPayload) => {
         setData("");
@@ -72,7 +76,7 @@ const useStreamedResponse = (endpoint: string, headers: any) => {
 
                 if (!response.ok) {
                     if (response.status === 429) {
-                        setError("You are out of uses for today :(");
+                        setError("You are out of uses for this week :(");
                         openModal("subscribe", modalComponentContent())
                         console.log("openedModal")
                     }

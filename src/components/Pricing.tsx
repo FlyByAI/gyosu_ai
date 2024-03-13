@@ -40,6 +40,10 @@ const Pricing = () => {
                             <li className="flex flex-row"><div className="w-6 h-6 flex items-center justify-center"><CheckmarkIcon /></div><div className="ml-2">Custom Document Templates - Coming Soon!</div></li>
                         </ul>
                         <br></br>
+                        <div className='flex flex-col space-y-4 pb-4'>
+                            <div>Use code <b>GYOSU50</b> to get 50% off monthly rate. </div>
+                            <div>Cancel anytime.</div>
+                        </div>
                         <SubscribePaidButton className="btn w-1/3 text-white font-bold min-w-fit rounded-md border border-blue-500 shadow-sm p-4 bg-gradient-to-r from-blue-600 to-green-500 hover:from-blue-700 hover:to-green-600 cursor-pointer" />
                     </div>
 
