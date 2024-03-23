@@ -9,7 +9,6 @@ import { animateScroll } from 'react-scroll';
 import { Tooltip as ReactTooltip } from "react-tooltip";
 import rehypeKatex from 'rehype-katex';
 import remarkMath from 'remark-math';
-import ChatActions from '../components/ChatActions';
 import ChatSessionSidebar from '../components/ChatSessionSidebar';
 import ChatTutorial from '../components/ChatTutorial';
 import MessageSuggestions from '../components/MessageSuggestions';
@@ -19,6 +18,7 @@ import useChatSessions, { ChatSession } from '../hooks/tools/math/useChatSession
 import useStreamedResponse from '../hooks/tools/math/useStreamedResponse';
 import useEnvironment from '../hooks/useEnvironment';
 import { useRequireSignIn } from '../hooks/useRequireSignIn';
+import ChevronDown from '../svg/ChevronDown';
 import OutlineIcon from '../svg/Outline';
 import QuestionIcon from '../svg/QuestionIcon';
 import ShareIcon from '../svg/Share';
@@ -44,6 +44,8 @@ const GyosuAIChat = () => {
 
     const { sessionId } = useParams();
     const endOfMessagesRef = useRef<HTMLDivElement>(null);
+    
+    const [isAutoScrollEnabled, setIsAutoScrollEnabled] = useState(true);
 
     const [jsonBuffer, setJsonBuffer] = useState('');
 
@@ -56,15 +58,15 @@ const GyosuAIChat = () => {
     const { isDesktop } = useScreenSize();
 
     const debouncedScrollToBottom = useCallback(debounce(() => {
-        if (endOfMessagesRef.current) {
+        if (isAutoScrollEnabled && endOfMessagesRef.current) {
             animateScroll.scrollToBottom({
                 containerId: endOfMessagesRef.current.getAttribute('id'),
-                duration: 500, // Duration of the scroll animation in milliseconds
-                smooth: true, // Enable smooth scrolling
-                delay: 0, // No delay
+                duration: 100,
+                smooth: true,
+                delay: 0,
             });
         }
-    }, 500, { leading: true, trailing: true, maxWait: 1500 }), []);
+    }, 500, { leading: true, trailing: true, maxWait: 1500 }), [isAutoScrollEnabled]);
 
 
     const handleShareClick = (sessionId: string) => {
@@ -74,6 +76,8 @@ const GyosuAIChat = () => {
     const handleOutlineClick = (sessionId: string) => {
         navigate(`/math-app/chat/artifacts/${sessionId}`)
     };
+
+    const enableAutoScroll = () => setIsAutoScrollEnabled(true);
 
     const { setRunTutorial } = useRunTutorial();
 
@@ -105,6 +109,7 @@ const GyosuAIChat = () => {
             sessionId: sessionId,
         };
 
+        enableAutoScroll();
         startStreaming(payload);
     };
 
@@ -202,7 +207,7 @@ const GyosuAIChat = () => {
     }, [error]);
 
     const handleChatSubmit = (event?: React.FormEvent<HTMLFormElement>) => {
-        if (event){
+        if (event) {
             event.preventDefault();
         }
         if (isLoading) return;
@@ -215,6 +220,7 @@ const GyosuAIChat = () => {
             sessionId: sessionId,
         };
 
+        enableAutoScroll();
         startStreaming(payload);
 
         setUserInput('');
@@ -244,7 +250,7 @@ const GyosuAIChat = () => {
     useEffect(() => {
         debouncedScrollToBottom();
 
-    }, [actions, tokens, debouncedScrollToBottom, chatSession?.messageHistory]);
+    }, [isLoading, actions, tokens, debouncedScrollToBottom, chatSession?.messageHistory]);
 
 
     useEffect(() => {
@@ -263,6 +269,16 @@ const GyosuAIChat = () => {
             document.body.classList.remove('main-container');
         };
     }, []);
+
+    useEffect(() => {
+        const container = endOfMessagesRef.current;
+        if (!container) return;
+    
+        const handleWheel = () => setIsAutoScrollEnabled(false);
+    
+        container.addEventListener('wheel', handleWheel);
+        return () => container.removeEventListener('wheel', handleWheel);
+      }, []);
 
 
     return (
@@ -381,13 +397,18 @@ const GyosuAIChat = () => {
                                 Time elapsed on current action: {timeElapsed} seconds
                             </div>
                         )}
-                        <ChatActions actions={actions} />
+                        {/* <ChatActions actions={actions} /> */}
                         {
                             isLoading && !tokens && !actions && <div>
                                 <p className="">Waiting for response...</p>
                             </div>
                         }
 
+                        {!isAutoScrollEnabled &&
+                              <div className="absolute left-1/2 bottom-36 z-50 p-2 chat-action-container flex flex-row items-center bg-green-100 border border-green-100 rounded text-black transform -translate-x-1/2">
+                                <button className="auto-scroll-button mr-2" onClick={enableAutoScroll}>Scroll to bottom</button> <ChevronDown/>
+                            </div>
+                        }
                     </div>
                     <div className='h-1vh'></div>
 
