@@ -1,12 +1,12 @@
-import { SignedIn, UserButton, useClerk } from '@clerk/clerk-react';
+import { useClerk } from '@clerk/clerk-react';
 import React, { useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import useChatSessions, { ChatSession } from '../hooks/tools/math/useChatSessions';
 import useEnvironment from '../hooks/useEnvironment';
 import EditIcon from '../svg/Edit';
+import NewChatIcon from '../svg/NewChatIcon';
 import ShareIcon from '../svg/Share';
 import TrashIcon from '../svg/TrashIcon';
-import { getGyosuClerkTheme } from '../theme/customClerkTheme';
 import DeleteAllChatsButton from './DeleteAllChatsButton';
 import ManageSubscriptionButton from './ManageSubscriptionButton';
 import OverflowMenuPortal from './OverflowMenuPortal';
@@ -56,6 +56,12 @@ const categorizeChatsByDate = (chats: ChatSession[]) => {
 const ChatSessionSidebar: React.FC = () => {
     const { apiUrl } = useEnvironment();
     const chatSessionsEndpoint = `${apiUrl}/math_app/chat/`;
+
+    const navigate = useNavigate();
+
+    const navigateToNewChat = () => {
+        navigate('/math-app/chat/', { replace: true, state: { sessionId: undefined } });
+    };
 
     const { user } = useClerk();
 
@@ -188,6 +194,13 @@ const ChatSessionSidebar: React.FC = () => {
         <div className="chat-sidebar h-75vh md:h-85vh p-4 max-w-xs md:max-w-none bg-gray-800 md:bg-transparent border border-gray-300 text-white flex flex-col"
             ref={portalRootRef}
         >
+            <button onClick={navigateToNewChat} className="md:flex md:flex-row hidden p-2 mb-4 bg-gradient-to-b from-blue-700 to-blue-600 hover:from-blue-800 hover:to-blue-700 text-white font-bold rounded">
+                <div className='mr-auto'>New Chat</div>
+                <NewChatIcon />
+            </button>
+            
+            <hr className='p-1 md:block hidden' />
+
             <div className="flex-grow overflow-y-auto">
                 <ul>
                     {renderChatsInSection(categorizedChats.today, "Today")}
@@ -200,21 +213,10 @@ const ChatSessionSidebar: React.FC = () => {
             </div>
             <hr className='p-1' />
             <div className="user-profile">
-                <div className='flex flex-row justify-center items-center'>
-                    <SignedIn>
-                        {<UserButton afterSignOutUrl={window.location.href} appearance={getGyosuClerkTheme()} />}
-                        <div className="user-name text-white text-xs ml-2">
-                            {user?.fullName || 'User Name'}
-                        </div>
-                    </SignedIn>
-                </div>
-                {/* <div className='text-xs mt-2 md:hidden block'>
-                    <LanguageDropdown />
-                </div> */}
-                <div className='text-xs mt-2 md:hidden block' >
+                <div className='text-xs mt-2' >
                     <ManageSubscriptionButton />
                 </div>
-                <div className='text-xs mt-2 md:hidden block' >
+                <div className='text-xs mt-2' >
                     <DeleteAllChatsButton />
                 </div>
             </div>
