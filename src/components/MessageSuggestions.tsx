@@ -3,29 +3,41 @@ interface MessageSuggestionProps {
 }
 
 const MessageSuggestion: React.FC<MessageSuggestionProps> = ({ onClick }) => {
-
-    const suggestions = ["I'm new to using GyosuChat. What subjects do you have? What are your capabilities?", "Please create a homework for learning inverse functions for calc 1. Please provide an example with steps to help the students recall about what we did in class so they can complete the problems successfully at home. Add key terms at the top like 'one to one' that are helpful for understanding the work.", "Please create a lesson plan for me to teach about the unit circle?", "Can you create me a quiz on Polynomials from Elementary Algebra?"];
-
-
-    const isTwoSuggestions = suggestions.length === 2;
-    const buttonClass = isTwoSuggestions
-        ? "w-1/2"
-        : "w-full"; // Full width for more than two suggestions
+    const suggestions = [
+        {
+            header: "Homework on Inverse Functions",
+            text: "Please create a homework for learning inverse functions for calc 1. Please provide an example with steps to help the students recall about what we did in class so they can complete the problems successfully at home. Add key terms at the top like 'one to one' that are helpful for understanding the work.",
+        },
+        {
+            header: "Write a Lesson Plan about Unit Circle",
+            text: "Please create a lesson plan for me to teach about the unit circle?",
+        },
+        {
+            header: "Create a Quiz on Polynomials",
+            text: "Can you create me a quiz on Polynomials from Elementary Algebra?",
+        },
+        {
+            header: "I'm New",
+            text: "What subjects do you have? What are your capabilities?",
+        },
+    ];
 
     return (
-        <div className={`${isTwoSuggestions ? "flex" : "grid grid-cols-2 gap-2"} p-2 m-2`}>
+        <div className="p-4 grid grid-cols-1 md:grid-cols-2 gap-4">
             {suggestions.map((suggestion, index) => (
-                <button
+                <div
                     key={index}
-                    className={`bg-transparent border-2 hover:border-blue-500 text-white font-semibold py-2 px-4 rounded shadow m-2 ${buttonClass}`}
-                    onClick={() => onClick(suggestion)}
+                    onClick={() => onClick(`${suggestion.header}: ${suggestion.text}`)}
+                    className="flex flex-col p-4 bg-base-300 rounded-lg shadow hover:bg-base-200 cursor-pointer transition-colors duration-200 ease-in-out text-sm text-primary"
                 >
-                    {suggestion}
-                </button>
+                    <h3 className="font-semibold">{suggestion.header}</h3>
+                    <p className="text-xs mt-2">{suggestion.text}</p>
+                </div>
             ))}
+
+            {/* <p className="text-sm font-bold">Try one of these or type your own message.</p> */}
         </div>
     );
 };
-
 
 export default MessageSuggestion;

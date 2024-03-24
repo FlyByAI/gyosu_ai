@@ -1,19 +1,17 @@
-import { MathProblemDragItem } from "./ProblemBankShelf";
 import { CHUNK_DRAG_TYPE, CHUNK_TYPE, Chunk, Document, INSTRUCTION_DRAG_TYPE, Instruction, PROBLEM_DRAG_TYPE, Problem } from '../../interfaces';
 import EditIcon from "../../svg/Edit";
 import TrashIcon from "../../svg/TrashIcon";
 
 
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDrop } from 'react-dnd';
-import { useParams, useNavigate } from 'react-router-dom';
-import useSubmitDocument from '../../hooks/tools/math/useSubmitDocument';
-import useGetDocument from '../../hooks/tools/math/useGetDocument';
-import { Tooltip as ReactTooltip } from "react-tooltip";
-import useEnvironment from '../../hooks/useEnvironment';
-import OverflowMenu from "../OverflowMenu";
+import { useNavigate, useParams } from 'react-router-dom';
 import { useDragContext } from "../../contexts/DragContext";
 import { useScreenSize } from "../../contexts/ScreenSizeContext";
+import useGetDocument from '../../hooks/tools/math/useGetDocument';
+import useSubmitDocument from '../../hooks/tools/math/useSubmitDocument';
+import useEnvironment from '../../hooks/useEnvironment';
+import OverflowMenu from "../OverflowMenu";
 
 interface DocumentItemProps {
     document: Document;
@@ -134,83 +132,43 @@ const DocumentItem: React.FC<DocumentItemProps> = ({ document, onDropChunk, isEx
     return (
         <>
             <li ref={dropRef}
-                key={document.id}
-                className={`${id == document.id ? "bg-blue-900" : "bg-gray-700"} text-white h-16 p-1 rounded-md overflow-clip relative cursor-pointer border-2 ` + getDropStyle() + " " + getDragStyle()}
+                className={`${id === document.id ? "bg-primary" : "bg-base-200"} p-2 rounded-lg overflow-hidden relative cursor-pointer border border-base-300 hover:border-primary transition-all duration-300 ${getDropStyle()} ${getDragStyle()}`}
                 onClick={handleClick}
                 data-tooltip-id="hoverDocumentItem"
             >
-                <div className="z-10 absolute top-1 right-1 flex space-x-2">
-                    <OverflowMenu
-                        variant="bottom"
-                        isOpen={isOverflowOpen}
-                        setIsOpen={setIsOverflowOpen}
-                    >
-                        <button onClick={handleEditClick}
-                            className="p-1 text-green-700 rounded"
-                            data-tooltip-id="editDocumentTip"
-                        >
+                <div className="absolute top-2 right-2 flex space-x-2 z-20">
+                    <OverflowMenu variant="bottom" isOpen={isOverflowOpen} setIsOpen={setIsOverflowOpen}>
+                        <button onClick={handleEditClick} className="btn btn-circle btn-ghost btn-xs" data-tooltip="Edit" data-tooltip-placement="left">
                             <EditIcon />
-                            {isDesktop && <ReactTooltip
-                                id='editDocumentTip'
-                                place="bottom"
-                                positionStrategy="fixed"
-                                variant="light"
-                                opacity={1}
-                                content={`Rename`} />}
                         </button>
-                        <button className='text-red-500 px-1 rounded'
-                            data-tooltip-id="deleteDocumentTip"
-                            onClick={handleDeleteClick}>
+                        <button onClick={handleDeleteClick} className="btn btn-circle btn-ghost btn-xs" data-tooltip="Delete" data-tooltip-placement="left">
                             <TrashIcon />
-                            {isDesktop && <ReactTooltip
-                                id='deleteDocumentTip'
-                                place="bottom"
-                                positionStrategy="fixed"
-                                variant="light"
-                                opacity={1}
-                                content={`Delete`} />}
                         </button>
                     </OverflowMenu>
                 </div>
-                {document && document.problemChunks && (
-                    <div className="p-1">
-                        <div className="flex h-4">
-                            {
-                                <div className="text-white rounded-full text-xs">
-                                    {document.problemChunks.length || "No"} Problems
-                                </div>
-                            }
-                        </div>
-                        <div className="absolute text-sm flex flex-col">
-                            <div className="w-100 truncate">
-                                {isEditing ? (
-                                    <input
-                                        type="text"
-                                        value={title}
-                                        onClick={handleEditClick}
-                                        onChange={handleTitleChange}
-                                        onBlur={handleTitleBlur}
-                                        onKeyDown={handleKeyDown}
-                                        autoFocus
-                                        className="w-full text-black cursor-text"
-                                    />
-                                ) : (
-                                    <h1
-                                        className="truncate">
-                                        {document.title}
-                                    </h1>
-                                )}
-                            </div>
-                        </div>
+                <div className="flex flex-col h-full justify-between">
+                    <div className="flex-1">
+                        {isEditing ? (
+                            <input
+                                type="text"
+                                value={title}
+                                onClick={(e) => e.stopPropagation()} // Prevent li click event
+                                onChange={handleTitleChange}
+                                onBlur={handleTitleBlur}
+                                onKeyDown={handleKeyDown}
+                                autoFocus
+                                className="input input-bordered input-sm w-full font-medium"
+                            />
+                        ) : (
+                            <h3 className="text-lg font-medium truncate">{document.title}</h3>
+                        )}
                     </div>
-                )}
+                    <div className="mt-2">
+                        <span className={`badge ${document.problemChunks?.length ? "badge-accent" : "badge-ghost"} badge-outline font-medium`}>{document.problemChunks?.length || "No"} Problems</span>
+                    </div>
+                </div>
             </li>
-            {isDesktop && <ReactTooltip
-                id='hoverDocumentItem'
-                place="right"
-                variant="light"
-                opacity={1}
-                content={`View this problem bank`} />}
+
         </>
     );
 };

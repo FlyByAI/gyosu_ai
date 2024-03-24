@@ -6,7 +6,6 @@ import toast from 'react-hot-toast/headless';
 import ReactMarkdown from 'react-markdown';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { animateScroll } from 'react-scroll';
-import { Tooltip as ReactTooltip } from "react-tooltip";
 import rehypeKatex from 'rehype-katex';
 import remarkMath from 'remark-math';
 import ChatSessionSidebar from '../components/ChatSessionSidebar';
@@ -44,7 +43,7 @@ const GyosuAIChat = () => {
 
     const { sessionId } = useParams();
     const endOfMessagesRef = useRef<HTMLDivElement>(null);
-    
+
     const [isAutoScrollEnabled, setIsAutoScrollEnabled] = useState(true);
 
     const [jsonBuffer, setJsonBuffer] = useState('');
@@ -273,73 +272,61 @@ const GyosuAIChat = () => {
     useEffect(() => {
         const container = endOfMessagesRef.current;
         if (!container) return;
-    
-        const handleWheel = () => setIsAutoScrollEnabled(false);
-    
+
+        const handleWheel = () => {
+            if (sessionId && isLoading) { setIsAutoScrollEnabled(false); }
+        }
+
         container.addEventListener('wheel', handleWheel);
         return () => container.removeEventListener('wheel', handleWheel);
-      }, []);
+    }, [isLoading, sessionId]);
 
 
     return (
-        <div className='main-container flex-col flex'>
+        <div className='main-container flex flex-col'>
             <div className="flex flex-row">
-                <div className="chat-sidebar w-1/6 hidden md:block">
+                <div className="chat-sidebar hidden md:block w-1/6 bg-base-200">
                     <ChatSessionSidebar />
                 </div>
                 <div className="flex-grow mx-auto relative">
-                    <div id="chatContainer" className={`${chatSession?.messageHistory.length === 0 && "flex flex-col"} h-70vh overflow-y-auto p-2 border border-gray-300 mx-2 text-gray-100`}
+                    <div id="chatContainer" className={`${chatSession?.messageHistory.length === 0 ? "flex flex-col" : ""} h-[76vh] overflow-y-auto p-2 border border-base-300 mx-2 text-base-content`}
                         ref={endOfMessagesRef}>
 
                         {sessionId && <div className='absolute top-0 right-4 p-4 z-50'>
                             <div className='flex flex-col space-y-2'>
                                 <button onClick={() => handleShareClick(sessionId || "")}
                                     disabled={!sessionId}
-                                    className="share-button bg-gray-900 rounded flex flex-row p-2"
+                                    className="btn btn-circle btn-ghost"
                                     data-tooltip-id={`shareChatSession`}
                                 >
-                                    <ShareIcon width="32" height='32' />
-                                    {isDesktop && <ReactTooltip
-                                        id='shareChatSession'
-                                        place="left"
-                                        variant="light"
-                                        content={"Share this chat session with a friend!"}
-                                    />}
+
+                                    {isDesktop && <div data-tip="Share this chat session with a friend!" data-for='shareChatSession' className='tooltip tooltip-left'>
+                                        <ShareIcon width="32" height="32" />
+                                    </div>}
                                 </button>
                                 {chatSessionArtifacts && <div>
                                     <button onClick={() => handleOutlineClick(sessionId || "")}
                                         disabled={!sessionId}
-                                        className="artifact-button bg-gray-900 rounded flex flex-row p-2"
+                                        className="btn btn-circle btn-ghost"
                                         data-tooltip-id={`chatArtifactsButton`}
                                     >
-                                        <OutlineIcon width="32" height='32' />
-                                        {isDesktop && <ReactTooltip
-                                            id='chatArtifactsButton'
-                                            place="left"
-                                            variant="light"
-                                            content={"View the artifacts you've created for this session!"}
-                                        />}
+                                        {isDesktop && <div data-tip="View the artifacts you've created for this session!" data-for='chatArtifactsButton' className='tooltip tooltip-left'>
+                                            <OutlineIcon width="32" height="32" />
+                                        </div>}
                                     </button>
                                 </div>}
                                 <div>
                                     <button onClick={() => setRunTutorial(true)}
-                                        className="start-tutorial-button bg-gray-900 rounded flex flex-row p-2"
+                                        className="btn btn-circle btn-ghost"
                                         data-tooltip-id={`tutorialButton`}
                                     >
-                                        <QuestionIcon width="32" height='32' />
-                                        {isDesktop && <ReactTooltip
-                                            id='tutorialButton'
-                                            place="left"
-                                            variant="light"
-                                            content={"Show chat tutorial!"}
-                                        />}
+                                        {isDesktop && <div data-tip="Show chat tutorial!" data-for='tutorialButton' className='tooltip tooltip-left'>
+                                            <QuestionIcon width="32" height="32" />
+                                        </div>}
                                     </button>
                                 </div>
-
                             </div>
-
                         </div>}
-
 
                         {chatSession?.messageHistory.map((message, index) => (
                             <div key={index} className={`p-2 my-1 border border-transparent rounded max-w-80% ${message.role === 'user' ? 'ml-auto bg-transparent' : 'mr-auto bg-transparent'}`}>
@@ -391,55 +378,49 @@ const GyosuAIChat = () => {
                                 />
                             </div>
                         )}
+
                         <ChatTutorial startStreaming={startStreaming} updateTextbox={setUserInput} />
                         {actions && (
                             <div className="text-center text-sm p-1">
                                 Time elapsed on current action: {timeElapsed} seconds
                             </div>
                         )}
-                        {/* <ChatActions actions={actions} /> */}
-                        {
-                            isLoading && !tokens && !actions && <div>
-                                <p className="">Waiting for response...</p>
-                            </div>
-                        }
+                        {/* Other components unchanged */}
 
                         {!isAutoScrollEnabled &&
-                              <div className="absolute left-1/2 bottom-36 z-50 p-2 chat-action-container flex flex-row items-center bg-green-100 border border-green-100 rounded text-black transform -translate-x-1/2">
-                                <button className="auto-scroll-button mr-2" onClick={enableAutoScroll}>Scroll to bottom</button> <ChevronDown/>
+                            <div className="absolute left-1/2 bottom-36 z-40 p-2 chat-action-container flex flex-row items-center border-primary rounded text-primary-content transform -translate-x-1/2">
+                                <button className="btn btn-sm btn-primary" onClick={enableAutoScroll}>Scroll to bottom</button>
+                                <ChevronDown />
                             </div>
                         }
                     </div>
                     <div className='h-1vh'></div>
 
-                    <form onSubmit={handleChatSubmit} className="flex h-14vh text-input">
+                    <form onSubmit={handleChatSubmit} className="flex h-16 items-end p-2">
                         <textarea
                             name="input"
                             placeholder={isLoading ? "Loading..." : "Ask for what you need here..."}
                             value={userInput}
                             onChange={handleInputChange}
                             onKeyDown={handleKeyPress}
-                            className="flex-grow p-2 mx-2 rounded border border-gray-300"
-                            rows={3}
+                            className="textarea textarea-bordered flex-grow mx-2 h-16"
+                            rows={1}
                         />
                         <button
                             type="submit"
-                            className="send-button px-4 py-2 mr-2 rounded bg-gradient-to-b from-blue-700 to-blue-600 hover:from-blue-800 hover:to-blue-600 text-white disabled:bg-gray-300"
+                            className="btn btn-primary rounded-lg w-20 h-16 px-4 py-2 mr-2 disabled:btn-disabled"
                             disabled={isLoading}
-
                         >
                             Send
                         </button>
                     </form>
-                    {error && <p>Error: {error}</p>}
+                    {error && <p className="text-error">{error}</p>}
                 </div>
+            </div>
 
-            </div >
-
-            <div className='md:block text-white text-sm self-center text-center'>Note: This feature is in beta, if you are having issues please email us at <a href="mailto:support@gyosu.ai" className="text-blue-300 underline">support@gyosu.ai</a></div>
-        </div >
+            <div className='md:block text-base-content text-sm self-center text-center mt-4'>Note: This feature is in beta, if you are having issues please email us at <a href="mailto:support@gyosu.ai" className="link link-primary">support@gyosu.ai</a></div>
+        </div>
     );
-
 };
 
 export default GyosuAIChat;

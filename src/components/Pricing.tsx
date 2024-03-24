@@ -4,69 +4,68 @@ import { SubscribePaidButton } from './SubscribeButton';
 const Pricing = () => {
 
     return (
-        <div className='text-white text-l'>
-            <section id="pricing">
-                <div className='flex flex-col md:flex-row justify-between'>
+        <div className='text-base-content'>
+            <section id="pricing" className="flex flex-col items-center w-full my-8">
+                <div className='grid md:grid-cols-3 gap-8 w-full px-4 md:px-0'>
 
-                    <div className="tier w-full md:w-1/3 p-6 rounded-md shadow-lg bg-gray-800 border border-gray-700 my-4 md:mx-4">
-                        <h2 className='text-2xl font-semibold mb-1 text-center'>Free Tier</h2>
-                        <p className='my-4 text-left'>For teachers testing out Gyosu.</p>
-                        {/* <h3 className='text-left'>Free</h3> */}
-                        {/* {!session && <SubscribeFreeButton className="btn w-1/3 text-white font-bold min-w-fit rounded-md border border-blue-500 shadow-sm p-4 bg-gradient-to-r from-blue-600 to-green-500 hover:from-blue-700 hover:to-green-600 cursor-pointer" />}
-                        {session && <SubscribeFreeButton className="w-1/3 text-white font-bold min-w-fit rounded-md shadow-sm p-4 bg-gray-600" />} */}
-                        <br></br>
-                        <div className='mb-2' />
-                        <hr></hr>
-                        {/* <p className='my-4 text-left'>Plan includes:</p> */}
-                        <ul className='list-decimal-none list-inside text-left space-y-4 mt-4 flex flex-col'>
-                            <li className="flex flex-row"><div className="w-6 h-6 flex items-center justify-center"><CheckmarkIcon /></div><div className="ml-2"> GyosuChat Assistant</div></li>
-                            <li className="flex flex-row"><div className="w-6 h-6 flex items-center justify-center"><CheckmarkIcon /></div><div className="ml-2"> 10 message limit per week</div></li>
-                            <li className="flex flex-row"><div className="w-6 h-6 flex items-center justify-center"><CheckmarkIcon /></div><div className="ml-2"> Full access to problem database</div></li>
-                        </ul>
-                    </div>
-
-                    <div className="tier w-full md:w-1/3 p-6 rounded-md shadow-lg bg-gray-800 border border-gray-700 my-4 md:mx-4">
-                        <h2 className='text-2xl font-semibold mb-1 text-center'>Paid Tier - $10/Month</h2>
-                        <p className='my-4 text-left'>For innovative teachers using Gyosu regularly.</p>
-                        {/* <h3 className='text-left'>$10/Month</h3> */}
-                        <hr></hr>
-                        {/* <p className='my-4 text-left'>Plan includes:</p> */}
-                        <ul className='list-decimal-none list-inside text-left space-y-4 mt-4 flex flex-col'>
-                            <li className="flex flex-row"><div className="w-6 h-6 flex items-center justify-center"><CheckmarkIcon /></div><div className="ml-2"> GyosuChat Assistant</div></li>
-                            <li className="flex flex-row"><div className="w-6 h-6 flex items-center justify-center"><CheckmarkIcon /></div><div className="ml-2"> 100 message limit per day </div></li>
-                            <li className="flex flex-row"><div className="w-6 h-6 flex items-center justify-center"><CheckmarkIcon /></div><div className="ml-2">Full access to problem database</div></li>
-                            <li className="flex flex-row"><div className="w-6 h-6 flex items-center justify-center"><CheckmarkIcon /></div><div className="ml-2">Save Documents to profile</div></li>
-                            <li className="flex flex-row"><div className="w-6 h-6 flex items-center justify-center"><CheckmarkIcon /></div><div className="ml-2">Community Document Library - Coming Soon!</div></li>
-                            <li className="flex flex-row"><div className="w-6 h-6 flex items-center justify-center"><CheckmarkIcon /></div><div className="ml-2">Custom Document Templates - Coming Soon!</div></li>
-                        </ul>
-                        <br></br>
-                        <div className='flex flex-col space-y-4 pb-4'>
-                            <div>Use code <b>GYOSU50</b> to get 50% off monthly rate. </div>
-                            <div>Cancel anytime.</div>
+                    {/* Free Tier */}
+                    <div className="card bg-base-100 shadow-xl p-6">
+                        <div className="card-body text-left">
+                            <h2 className="card-title text-center">Free Tier</h2>
+                            <div className="list-inside space-y-2 mt-4">
+                                <p>For teachers testing out Gyosu.</p>
+                                <div className="w-full flex items-center pr-2"><div><CheckmarkIcon /></div><div>GyosuChat Assistant</div></div>
+                                <div className="w-full flex items-center pr-2"><div><CheckmarkIcon /></div><div>10 message limit per week</div></div>
+                                <div className="w-full flex items-center pr-2"><div><CheckmarkIcon /></div><div>Full access to problem database</div></div>
+                            </div>
                         </div>
-                        <SubscribePaidButton className="btn w-1/3 text-white font-bold min-w-fit rounded-md border border-blue-500 shadow-sm p-4 bg-gradient-to-r from-blue-600 to-green-500 hover:from-blue-700 hover:to-green-600 cursor-pointer" />
                     </div>
 
-                    <div className="tier w-full md:w-1/3 p-6 rounded-md shadow-lg bg-gray-800 border border-gray-700 my-4 md:mx-4">
-                        <h2 className='text-2xl font-semibold mb-1 text-center'>Custom School Package</h2>
-                        <p className='my-4 text-left'>For Schools with advanced educational needs.</p>
-                        {/* <SubscribePremiumButton className="btn w-1/3 text-white font-bold min-w-fit rounded-md border border-blue-500 shadow-sm py-4 bg-gradient-to-r from-blue-600 to-green-500 hover:from-blue-700 hover:to-green-600 cursor-pointer" /> */}
-                        <hr></hr>
-                        {/* <p className='my-4 text-left'>Plan includes:</p> */}
-                        <ul className='list-decimal-none list-inside text-left space-y-4 mt-4 flex flex-col'>
-                            <li className="flex flex-row"><div className="w-6 h-6 flex items-center justify-center"><CheckmarkIcon /></div><div className="ml-2">Customized GyosuChat - Fine Tuned for your school.</div></li>
-                            <li className="flex flex-row"><div className="w-6 h-6 flex items-center justify-center"><CheckmarkIcon /></div><div className="ml-2">Customized Curriculum - Just for your students.</div></li>
-                            <li className="flex flex-row"><div className="w-6 h-6 flex items-center justify-center"><CheckmarkIcon /></div><div className="ml-2">Discounted licenses for all teachers.</div></li>
-                            <li className="flex flex-row"><div className="w-6 h-6 flex items-center justify-center"><CheckmarkIcon /></div><div className="ml-2 w-full mr-auto">Prioritized Support.</div></li>
-                        </ul>
-                        <br></br>
-                        <br></br>
-                        <h3 className='text-left'>Custom Pricing - <a href="mailto:support@gyosu.ai" className="text-blue-300 underline">Contact Us</a></h3>
+                    {/* Paid Tier */}
+                    <div className="card bg-base-100 shadow-xl p-6">
+                        <div className="card-body text-left">
+                            <h2 className="card-title text-center">Paid Tier - $10/Month</h2>
+                            <div className="list-inside space-y-2 mt-4">
+                                <p>For innovative teachers using Gyosu regularly.</p>
+                                <div className="w-full flex items-center pr-2"><div><CheckmarkIcon /></div><div>GyosuChat Assistant</div></div>
+                                <div className="w-full flex items-center pr-2"><div><CheckmarkIcon /></div><div>100 message limit per day</div></div>
+                                <div className="w-full flex items-center pr-2"><div><CheckmarkIcon /></div><div>Full access to problem database</div></div>
+                                <div className="w-full flex items-center pr-2"><div><CheckmarkIcon /></div><div>Save Documents to profile</div></div>
+                                <div className="w-full flex items-center pr-2"><div><CheckmarkIcon /></div><div>Community Document Library - Coming Soon!</div></div>
+                                <div className="w-full flex items-center pr-2"><div><CheckmarkIcon /></div><div>Custom Document Templates - Coming Soon!</div></div>
+                            </div>
+                            <div className="flex flex-col space-y-2 mt-4">
+                                <p>Use code <b>GYOSU50</b> to get 50% off monthly rate.</p>
+                                <p>Cancel anytime.</p>
+                            </div>
+                            <SubscribePaidButton className="btn btn-primary mt-4" />
+                        </div>
+                    </div>
+
+                    {/* Custom School Package */}
+                    <div className="card bg-base-100 shadow-xl p-6">
+                        <div className="card-body text-left">
+                            <h2 className="card-title text-center">Custom School Package</h2>
+                            <div className="list-inside space-y-2 mt-4">
+                                <p>For Schools with advanced educational needs.</p>
+                                <div className="w-full flex items-center pr-2"><div><CheckmarkIcon /></div><div>Customized GyosuChat - Fine Tuned for your school.</div></div>
+                                <div className="w-full flex items-center pr-2"><div><CheckmarkIcon /></div><div>Customized Curriculum - Just for your students.</div></div>
+                                <div className="w-full flex items-center pr-2"><div><CheckmarkIcon /></div><div>Discounted licenses for all teachers.</div></div>
+                                <div className="w-full flex items-center pr-2"><div><CheckmarkIcon /></div><div>Prioritized Support.</div></div>
+                            </div>
+                            <button
+                                onClick={() => window.location.href = 'mailto:support@gyosu.ai'}
+                                className="btn btn-primary">
+                                Contact Us
+                            </button>
+                        </div>
                     </div>
 
                 </div>
-            </section >
-        </div >
+            </section>
+        </div>
+
+
     );
 };
 

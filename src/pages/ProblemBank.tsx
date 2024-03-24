@@ -1,17 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link, useParams } from 'react-router-dom';
-import useGetDocument from '../hooks/tools/math/useGetDocument';
 import ProblemBankShelf from '../components/document/ProblemBankShelf';
+import useGetDocument from '../hooks/tools/math/useGetDocument';
 
-import { Chunk } from '../interfaces';
-import MathProblem from '../components/math/MathProblem';
-import useSubmitDocument from '../hooks/tools/math/useSubmitDocument';
-import PlusIcon from '../svg/PlusIcon';
-import useEnvironment from '../hooks/useEnvironment';
 import CreateDocxModal from '../components/CreateDocxModal';
-import { useSidebarContext } from '../contexts/useSidebarContext';
-import SearchIcon from '../svg/SearchIcon';
+import MathProblem from '../components/math/MathProblem';
 import { useScreenSize } from '../contexts/ScreenSizeContext';
+import { useSidebarContext } from '../contexts/useSidebarContext';
+import useSubmitDocument from '../hooks/tools/math/useSubmitDocument';
+import useEnvironment from '../hooks/useEnvironment';
+import { Chunk } from '../interfaces';
 
 const ProblemBank: React.FC = () => {
     const { id } = useParams();
@@ -89,51 +87,44 @@ const ProblemBank: React.FC = () => {
 
 
     return (
-        <div className='flex '>
+        <div className='flex'>
             <ProblemBankShelf isExporting={false} />
-            <CreateDocxModal enabled={activeChunkIndices.length > 0} document={document} modalId={"createDocx"} />
+            <CreateDocxModal enabled={activeChunkIndices.length > 0} document={document} modalId="createDocx" />
 
-            <div className="w-5/6 mt-4 overflow-x-hidden" style={{ marginRight: isDesktop ? '16.6667%' : "0" }}>
-                <ol>
-                    <li className="text-center text-lg text-white m-4 italic">Step 1: Select problems</li>
-                    <li className="text-center text-lg text-white m-4 italic">Step 2: Click "Create Worksheet"</li>
-                </ol>
+            <div className="w-5/6 flex-grow mt-4 overflow-x-hidden" style={{ marginRight: isDesktop ? '16.6667%' : "0" }}>
+                <div className="space-y-4 bg-base-100 p-4 border border-base-300 text-base-content rounded-lg shadow">
+                    <h2 className="text-center text-lg font-bold text-neutral">How to Create Your Worksheet</h2>
+                    <ol className="list-decimal list-inside space-y-2">
+                        <li className="italic">Select problems from the list below.</li>
+                        <li className="italic">Click "Create Worksheet" to generate your document.</li>
+                    </ol>
 
-                {document && document.problemChunks
-                    && document.problemChunks.length > 0
-                    && document.problemChunks?.map((chunk, chunkIndex) => {
-                        return (
-                            <div
-                                key={chunkIndex} className='w-full md:w-3/4 mx-auto flex flex-row mb-4 bg-gray-900 p-2'>
-                                <div className='w-full rounded-xl' >
-                                    <MathProblem
-                                        insertChunk={insertChunk}
-                                        selectable={true}
-                                        disableInstructionProblemDrag={true}
-                                        updateChunk={updateDocumentChunk}
-                                        key={chunkIndex}
-                                        chunkIndex={chunkIndex}
-                                        problem={chunk}
-                                        enableTools={true}
-                                    />
-                                </div>
-
+                    {document.problemChunks && document?.problemChunks?.length > 0 ? (
+                        document.problemChunks.map((chunk, chunkIndex) => (
+                            <div key={chunkIndex} className='mx-auto mb-4 bg-base-200 p-4 rounded-lg shadow'>
+                                <MathProblem
+                                    insertChunk={insertChunk}
+                                    selectable={true}
+                                    disableInstructionProblemDrag={true}
+                                    updateChunk={updateDocumentChunk}
+                                    chunkIndex={chunkIndex}
+                                    problem={chunk}
+                                    enableTools={true}
+                                />
                             </div>
-                        )
-                    })}
-                {document && document.problemChunks && document.problemChunks.length === 0 &&
-                    <div className="flex flex-col items-center">
-                        <div className="text-white text-center my-4">
-                            You don't have any problems in this banks yet, try
-                            <Link to="/math-app" className="px-2 text-blue-300 text-bold underline">
-                                Search
-                            </Link>
-
+                        ))
+                    ) : (
+                        <div className="text-neutral text-center my-4">
+                            You don't have any problems in this bank yet. Try
+                            <Link to="/math-app" className="text-primary font-bold underline px-2">searching</Link> for some.
                         </div>
-
-                    </div>}
+                    )}
+                </div>
             </div>
         </div>
+
+
+
     );
 };
 

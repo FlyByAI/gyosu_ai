@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
+import { useSidebarContext } from '../../contexts/useSidebarContext';
 import { Chunk } from '../../interfaces';
 import { ChunkComponent } from '../AST';
-import { useSidebarContext } from '../../contexts/useSidebarContext';
-import { Tooltip as ReactTooltip } from "react-tooltip";
 
 interface MathProblemProps {
     problem: Chunk;
@@ -33,7 +32,7 @@ const MathProblem: React.FC<MathProblemProps> = ({ problem, chunkIndex, insertCh
     };
 
     return (
-        <div onClick={() => selectable && setActiveChunkIndices(toggleChunkIndex(chunkIndex))} className={`flex flex-row w-full bg-white dark:bg-gray-700 shadow-md rounded-md `}>
+        <div onClick={() => selectable && setActiveChunkIndices(toggleChunkIndex(chunkIndex))} className={`flex flex-row w-full `}>
             {problem &&
                 <ChunkComponent
                     selectable={selectable}

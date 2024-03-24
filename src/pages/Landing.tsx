@@ -66,7 +66,7 @@ const LandingPage: React.FC = () => {
                         /> */}
                         <button
                             type="submit"
-                            className="md:w-2/5 w-2/3 text-white text-lg leading-tight bg-gradient-to-r from-blue-700 to-green-600 hover:from-blue-500 hover:to-green-500 rounded-full mt-2 px-4 py-2 flex items-center justify-center overflow-hidden flex-wrap"
+                            className="btn btn-accent md:w-2/5 w-2/3 "
                             style={{
                                 boxShadow: '0 0 5px rgba(81, 203, 238, 0.5)',
                             }}
@@ -228,7 +228,7 @@ const LandingPage: React.FC = () => {
                         /> */}
                         <button
                             type="submit"
-                            className="md:w-1/3 w-2/3 text-white text-lg leading-tight bg-gradient-to-r from-blue-700 to-green-600 hover:from-blue-500 hover:to-green-500 rounded-full mt-2 px-4 py-2 flex items-center justify-center overflow-hidden flex-wrap"
+                            className="md:w-1/3 w-2/3 btn btn-accent items-center justify-center overflow-hidden flex-wrap"
                             style={{
                                 boxShadow: '0 0 5px rgba(81, 203, 238, 0.5)',
                             }}

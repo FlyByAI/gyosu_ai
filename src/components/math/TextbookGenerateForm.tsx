@@ -128,7 +128,7 @@ const TextbookGenerateForm: React.FC<TextbookGenerateFormProps> = ({ onSubmit, s
         else {
             openSignIn({
                 afterSignInUrl: window.location.href
-              });
+            });
         }
     };
 
@@ -140,56 +140,53 @@ const TextbookGenerateForm: React.FC<TextbookGenerateFormProps> = ({ onSubmit, s
 
     return (
         <>
-            <div className="flex flex-col justify-center items-center w-full">
+            <div className="flex flex-col justify-center items-center w-full p-4">
                 <Dropdown
                     showSelected={false}
-                    label={"Textbook"}
+                    label="Textbook"
                     options={sourceMaterialOptions}
                     defaultValue={sourceMaterial}
                     handleChange={handleSourceMaterialChange}
-                    className="form-select block w-full"
+                    className="w-full max-w-xs"
                 />
                 <Dropdown
                     showSelected={false}
-                    label={"Chapter"}
+                    label="Chapter"
                     options={chapterOptions}
                     defaultValue={chapter}
                     handleChange={handleChapterChange}
-                    className="form-select block w-full"
+                    className="w-full max-w-xs mt-2"
                 />
                 <Dropdown
                     showSelected={false}
-                    label={"Section"}
+                    label="Section"
                     options={sectionOptions}
                     defaultValue={section}
                     handleChange={handleSectionChange}
-                    className="form-select block w-full"
+                    className="w-full max-w-xs mt-2"
                 />
                 <Dropdown
                     showSelected={false}
-                    label={"Problem Type"}
+                    label="Problem Type"
                     options={problemTypeOptions}
                     defaultValue={problemType}
                     handleChange={handleChangeProblemType}
-                    className="form-select block w-full"
+                    className="w-full max-w-xs mt-2"
                 />
                 <SubmitButton
-                    buttonText={"Search"}
                     handleClick={handleMathSubmit}
-                    className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full lg:w-1/2"
+                    buttonText={"Search"}
+                    className="btn mt-4 w-full lg:w-1/2"
                 />
-
             </div>
-            {error && <p className="text-red-600 mt-4 text-center">Error: {error}</p>}
-            {error && !user?.user?.username && <p className="text-red-600 mt-4 text-center">Note: {"Our tools require you to be signed in."}</p>}
-            {isLoading && <p className="dark:text-white">Loading...</p>}
+            {error && <p className="text-error mt-4 text-center">Error: {error}</p>}
+            {error && !user?.user?.username && <p className="text-error mt-4 text-center">Note: Our tools require you to be signed in.</p>}
+            {isLoading && <p className="text-base-content">Loading...</p>}
             {isLoading && (
                 <div className="flex justify-center mt-4">
                     <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12"></div>
                 </div>
             )}
-
-
         </>
     );
 };

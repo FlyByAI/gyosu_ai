@@ -2,6 +2,9 @@
 export default {
   darkMode: "class",
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
+  daisyui: {
+    themes: ["dark"],
+  },
   theme: {
     extend: {
       height: {
@@ -38,5 +41,5 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [require("daisyui")],
 };

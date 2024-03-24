@@ -53,13 +53,16 @@ const OverflowMenu: React.FC<OverflowMenuProps> = ({
     const renderMenuContent = () => {
         switch (type) {
             case 'iconRow':
-                return <div className="flex flex-col">{children}</div>;
+                // For an icon row, ensure proper spacing and alignment with daisyUI utilities
+                return <div className="flex flex-col gap-2">{children}</div>;
             case 'default':
-                return children;
+                // For default, you might want to wrap the content to ensure it aligns with daisyUI's design system
+                return <div className="p-2">{children}</div>;
             default:
                 return null;
         }
     };
+    
     
     useEffect(() => {
         const styles = {
@@ -86,16 +89,17 @@ const OverflowMenu: React.FC<OverflowMenuProps> = ({
                     e.stopPropagation();
                     setIsOpen(!isOpen); // Toggle the menu's open state
                 }}
-                className="m-1"
+                className="m-1 btn btn-ghost btn-circle"
             >
-                <DotsVerticalIcon />
+                <DotsVerticalIcon className="w-5 h-5" />
             </button>
-
+    
             {isOpen && portalRoot.current && ReactDOM.createPortal(
                 <div
                     style={{...menuStyles}}
                     ref={menuRef}
-                    className={`p-2 text-black bg-gray-900 rounded-lg absolute z-50 ${flickerFix && "hidden"}`}
+                    className={`p-2 text-base-content bg-base-100 rounded-box shadow-lg menu absolute z-50 ${flickerFix && "hidden"}`}
+                    // Adjusted class names for daisyUI: bg-base-100 for background, rounded-box for rounded corners, shadow-lg for a shadow effect
                 >
                     {renderMenuContent()}
                 </div>,
@@ -103,6 +107,7 @@ const OverflowMenu: React.FC<OverflowMenuProps> = ({
             )}
         </div>
     );
+    
 };
 
 export default OverflowMenu;
