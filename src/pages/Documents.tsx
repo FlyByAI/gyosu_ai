@@ -50,76 +50,76 @@ const Documents: React.FC = () => {
     return (
         <>
             {!isLoading && documentDownloads ? (
-                <div className="flex justify-center items-center mt-4 bg-base-200">
-                    <div className="w-full max-w-4xl bg-base-200 rounded-box p-4">
+                <div className="flex justify-center items-center mt-4 px-4 w-full">
+                    <div className="w-full max-w-4xl overflow-x-auto bg-base-200 rounded-box p-4">
                         {documentDownloads.length > 0 ? (
                             <ul className="menu menu-compact flex flex-col space-y-4">
-                                {documentDownloads.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
-                                    .map((doc) => (
-                                        <li key={doc.id} className="border-base-200 border rounded-box">
-                                            <div className='flex justify-between items-center p-4 bg-base-100'>
-                                                <div className='flex flex-col space-y-2'>
-                                                    <span className="link link-hover" onClick={() => handleDocumentClick(doc.blobName, "document")}>
-                                                        {doc.blobName}
-                                                    </span>
-                                                    <span>Document Type: {doc.docType}</span>
-                                                    <span>Timestamp: {new Date(doc.timestamp).toLocaleString()}</span>
-                                                    <span>Shared: {doc.shared ? 'Yes' : 'No'}</span>
-                                                    <span>Times Downloaded: {doc.timesDownloaded}</span>
-                                                    {!doc.blobName ? (
-                                                        <span className="text-error">No Answer Key</span>
-                                                    ) : (
-                                                        <span className="link link-hover" onClick={() => handleDocumentClick(doc.blobName, "answer_key")}>
-                                                            Download Answer Key
+                                    {documentDownloads.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
+                                        .map((doc) => (
+                                            <li key={doc.id} className="border-base-200 border rounded-box">
+                                                <div className='flex justify-between items-center p-4 bg-base-100'>
+                                                    <div className='flex flex-col space-y-2'>
+                                                        <span className="link link-hover" onClick={() => handleDocumentClick(doc.blobName, "document")}>
+                                                            {doc.blobName}
                                                         </span>
-                                                    )}
-                                                </div>
-                                                <div className='flex flex-row items-center space-x-4'>
-                                                    {doc.docType.toUpperCase() === "PDF" && (
-                                                        <div onClick={() => handleDocumentClick(doc.blobName, "document")}>
-                                                            <span className="card cursor-pointer">
-                                                            <PdfSVG height="80px" width="80px" color="#cc1510" className='bg-white py-1 rounded-md mb-2' />
-                                                                Download PDF
+                                                        <span>Document Type: {doc.docType}</span>
+                                                        <span>Timestamp: {new Date(doc.timestamp).toLocaleString()}</span>
+                                                        <span>Shared: {doc.shared ? 'Yes' : 'No'}</span>
+                                                        <span>Times Downloaded: {doc.timesDownloaded}</span>
+                                                        {!doc.blobName ? (
+                                                            <span className="text-error">No Answer Key</span>
+                                                        ) : (
+                                                            <span className="link link-hover" onClick={() => handleDocumentClick(doc.blobName, "answer_key")}>
+                                                                Download Answer Key
                                                             </span>
-                                                        </div>
-                                                    )}
-                                                    {doc.docType.toUpperCase() === "DOCX" && (
-                                                        <div onClick={() => handleDocumentClick(doc.blobName, "document")}>
-                                                            <span className="card cursor-pointer">
-                                                            <DocxSVG height="80px" width="80px" color="#0167b3" className='bg-white py-1 rounded-md mb-2' />
+                                                        )}
+                                                    </div>
+                                                    <div className='flex md:flex-row flex-col md:space-x-4 md:space-y-0 space-y-4 space-x-0 items-center '>
+                                                        {doc.docType.toUpperCase() === "PDF" && (
+                                                            <div onClick={() => handleDocumentClick(doc.blobName, "document")}>
+                                                                <span className="card cursor-pointer">
+                                                                    <PdfSVG height="80px" width="80px" color="#cc1510" className='bg-white py-1 rounded-md mb-2' />
+                                                                    Download PDF
+                                                                </span>
+                                                            </div>
+                                                        )}
+                                                        {doc.docType.toUpperCase() === "DOCX" && (
+                                                            <div onClick={() => handleDocumentClick(doc.blobName, "document")}>
+                                                                <span className="card cursor-pointer">
+                                                                    <DocxSVG height="80px" width="80px" color="#0167b3" className='bg-white py-1 rounded-md mb-2' />
 
-                                                                Download DOCX
-                                                            </span>
-                                                        </div>
-                                                    )}
-                                                    {doc.blobName && (
-                                                        <div onClick={() => handleDocumentClick(doc.blobName, "answer_key")}>
-                                                            <span className="card cursor-pointer">
-                                                                <PdfSVG height="80px" width="80px" color="#ebb305" className='bg-white py-1 rounded-md mb-2' />
-                                                                Answer Key
-                                                            </span>
-                                                        </div>
-                                                    )}
+                                                                    Download DOCX
+                                                                </span>
+                                                            </div>
+                                                        )}
+                                                        {doc.blobName && (
+                                                            <div onClick={() => handleDocumentClick(doc.blobName, "answer_key")}>
+                                                                <span className="card cursor-pointer">
+                                                                    <PdfSVG height="80px" width="80px" color="#ebb305" className='bg-white py-1 rounded-md mb-2' />
+                                                                    Answer Key
+                                                                </span>
+                                                            </div>
+                                                        )}
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </li>
-                                    ))}
-                            </ul>
-                        ) : (
-                            <div className="text-base-content">You don't have any documents yet.</div>
+                                            </li>
+                                        ))}
+                                </ul>
+                                ) : (
+                                <div className="text-base-content">You don't have any documents yet.</div>
                         )}
+                            </div>
+                </div>
+                    ) : (
+                    <div className="text-base-content mt-4 text-center h-screen">
+                        Loading...
                     </div>
-                </div>
-            ) : (
-                <div className="text-base-content mt-4 text-center h-screen">
-                    Loading...
-                </div>
             )}
-            {error && <p className="text-error mt-4 text-center">Error: {error.message}</p>}
-            {error && !user?.user?.username && <p className="text-error mt-4 text-center">Note: Our tools require you to be signed in.</p>}
-        </>
+                    {error && <p className="text-error mt-4 text-center">Error: {error.message}</p>}
+                    {error && !user?.user?.username && <p className="text-error mt-4 text-center">Note: Our tools require you to be signed in.</p>}
+                </>
 
-    );
+            );
 };
 
-export default Documents;
+            export default Documents;

@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link, useParams } from 'react-router-dom';
-import ProblemBankShelf from '../components/document/ProblemBankShelf';
 import useGetDocument from '../hooks/tools/math/useGetDocument';
 
 import CreateDocxModal from '../components/CreateDocxModal';
@@ -30,14 +29,11 @@ const ProblemBank: React.FC = () => {
     if (error) {
         return (
             <div className='flex'>
-                <ProblemBankShelf isExporting={false} />
-                <div className="w-5/6">
-                    <div className="text-white text-center mt-2">
-                        Error: {error.message}
-                    </div>
-                    <div className="text-white text-center mt-4">
-                        Document not found.
-                    </div>
+                <div className="text-white text-center mt-2">
+                    Error: {error.message}
+                </div>
+                <div className="text-white text-center mt-4">
+                    Document not found.
                 </div>
             </div>
         );
@@ -88,7 +84,7 @@ const ProblemBank: React.FC = () => {
 
     return (
         <div className='flex'>
-            <ProblemBankShelf isExporting={false} />
+
             <CreateDocxModal enabled={activeChunkIndices.length > 0} document={document} modalId="createDocx" />
 
             <div className="w-5/6 flex-grow mt-4 overflow-x-hidden" style={{ marginRight: isDesktop ? '16.6667%' : "0" }}>

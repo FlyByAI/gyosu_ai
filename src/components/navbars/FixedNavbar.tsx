@@ -19,6 +19,7 @@ const FixedNavbar: React.FC = () => {
         {/* Mobile view */}
 
         <div className="navbar-start md:hidden">
+          
         </div>
         <div className="navbar-center md:hidden">
           <Link to="/" className="btn btn-ghost normal-case text-xl">Gyosu.ai</Link>

@@ -41,7 +41,7 @@ const HamburgerWrapperX = ({ children }: { children: React.ReactNode }) => {
                 <div className='flex flex-row'>
                     {isOpen && children}
                     <div>
-                        <button className='m-2 p-2 bg-blue-500 border rounded' onClick={closeButtonClick}>
+                        <button className='m-2 p-2 btn btn-secondary rounded' onClick={closeButtonClick}>
                             <XIcon />
                         </button>
                     </div>
