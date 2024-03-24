@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 import 'tailwindcss/tailwind.css';
-import HamburgerWrapperX from '../components/HamburgerWrapperX';
 import ProblemBankShelf from '../components/document/ProblemBankShelf';
 import ChunkManager from '../components/math/ChunkManager';
 import CompetitionMathGenerateForm from '../components/math/CompetitonMathGenerateForm';
@@ -39,63 +38,71 @@ const MathGenerate: React.FC = () => {
         }
     }, [chunkArray]);
 
-    return (<>
-        <HamburgerWrapperX mobileOrDesktop='desktop'>
-            <ProblemBankShelf isExporting={false} />
-        </HamburgerWrapperX>
-        <div className="flex flex-row">
+    function getShowClass(mobileOrDesktop: string) {
+        if (mobileOrDesktop === "desktop") {
+            return "hidden md:block";
+        }
+        if (mobileOrDesktop === "mobile") {
+            return "block md:hidden";
+        }
+        return "block";
+    }
 
-            <div className="flex-grow mt-4 overflow-x-hidden">
-                <div className="flex justify-start items-center flex-col">
-                    {/* Step 1: Problem Source Selection */}
-                    <div className="card w-full md:w-2/3 mx-4 md:mx-auto rounded-lg p-4 my-4 shadow-lg bg-base-300">
+    return (
+        <>
+            <div className="flex flex-col md:flex-row w-full">
+                {/* Always visible Problem Bank Shelf on the side for larger screens, toggle-able or hidden on smaller screens */}
+                <div className={`card bg-base-300 shadow-lg my-4 md:my-0 md:mr-4 p-4 ${getShowClass('desktop')} md:w-1/4 lg:w-1/5`}>
+                    <ProblemBankShelf isExporting={false} />
+                </div>
+
+                {/* Center column for search and results, full width on small screens and adjusted on larger screens */}
+                <div className="flex-1">
+                    {/* Search Section */}
+                    <div className="card rounded-lg p-4 my-4 shadow-lg bg-base-300">
                         <div className="text-left mb-4">
-                            <span className="font-bold text-xl ml-4 italic">Step 1: Select Problem Source</span>
+                            <span className="font-bold text-xl italic">Step 1: Select Problem Source</span>
                         </div>
-                        <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 mb-8 mx-auto">
+                        <div className="flex space-x-4 space-y-0 mb-8 mx-4">
                             <button
                                 onClick={() => setFormType('Textbook')}
-                                className={`btn ${formType === 'Textbook' ? 'btn-primary' : 'btn-outline'} w-full md:w-auto`}
+                                className={`btn ${formType === 'Textbook' ? 'btn-primary' : 'btn-outline'} w-1/2`}
                             >
                                 Textbooks
                             </button>
                             <button
                                 onClick={() => setFormType('Competition')}
-                                className={`btn ${formType === 'Competition' ? 'btn-primary' : 'btn-outline'} w-full md:w-auto`}
+                                className={`btn ${formType === 'Competition' ? 'btn-primary' : 'btn-outline'} w-1/2`}
                             >
                                 Competition Math
                             </button>
                         </div>
-
-                        {/* Step 2: Detailed Search */}
                         {formType && (
                             <div className="text-left mb-4">
-                                <span className="font-bold text-xl ml-4 italic">Step 2: Search for problems using dropdowns</span>
+                                <span className="font-bold text-xl italic">Step 2: Search for problems using dropdowns</span>
                             </div>
                         )}
-
-                        <div className='w-full mx-auto md:w-5/6'>
+                        <div>
                             {formType === 'Textbook' && <TextbookGenerateForm onSubmit={handleSubmit} setGenerateFormData={setGenerateFormData} />}
                             {formType === 'Competition' && <CompetitionMathGenerateForm onSubmit={handleSubmit} setGenerateFormData={setGenerateFormData} />}
                         </div>
                     </div>
 
-                    {/* Generated Problem Chunks Display */}
-                    {generateFormData &&
-                        <div ref={myRef} className="card w-full md:w-3/4 mx-4 md:mx-auto rounded-lg p-4 my-4 bg-base-100">
-                            <div className='w-full'>
-                                {chunkArray.length > 0 &&
-                                    <ChunkManager
-                                        setChunkArray={setChunkArray}
-                                        chunkArray={chunkArray}
-                                    />}
-                            </div>
-                        </div>}
+                    {/* Results Display */}
+                    {generateFormData && (
+                        <div className="card rounded-lg p-4 my-4 bg-base-100 shadow-lg">
+                            {chunkArray.length > 0 && (
+                                <ChunkManager
+                                    setChunkArray={setChunkArray}
+                                    chunkArray={chunkArray}
+                                />
+                            )}
+                        </div>
+                    )}
                 </div>
             </div>
-        </div>
+        </>
 
-    </>
     );
 };
 

@@ -1,7 +1,6 @@
 import 'katex/dist/katex.min.css';
 import React, { useState } from 'react';
 import { DropTargetMonitor, useDrag, useDrop } from 'react-dnd';
-import { CheckmarkIcon } from 'react-hot-toast';
 import ReactMarkdown from 'react-markdown';
 import { useParams } from 'react-router-dom';
 import rehypeKatex from 'rehype-katex';
@@ -12,8 +11,11 @@ import { useScreenSize } from '../contexts/ScreenSizeContext';
 import { useSidebarContext } from '../contexts/useSidebarContext';
 import useGetDocument from '../hooks/tools/math/useGetDocument';
 import useSubmitDocument from '../hooks/tools/math/useSubmitDocument';
+import useSubmitReroll from '../hooks/tools/math/useSubmitReroll';
+import useSubmitTextWithChunk from '../hooks/tools/math/useSubmitTextWithChunk';
 import useEnvironment from '../hooks/useEnvironment';
 import { CHUNK_DRAG_TYPE, Chunk, INSTRUCTION_DRAG_TYPE, INSTRUCTION_TYPE, Instruction, PROBLEM_DRAG_TYPE, PROBLEM_TYPE, Problem, Subproblem, Subproblems } from '../interfaces';
+import AddChunkModal from './AddChunkModal';
 import ToolWrapper from './math/ToolWrapper';
 
 
@@ -38,6 +40,8 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
     const { isLoading, updateDocument } = useSubmitDocument(endpoint2);
 
     const [isHovered, setIsHovered] = useState(false);
+
+    const [userInput, setUserInput] = useState("")
 
     const [, ref] = useDrag({
         type: CHUNK_DRAG_TYPE,
@@ -108,6 +112,20 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
 
     const { isDesktop } = useScreenSize();
 
+    const { submitReroll } = useSubmitReroll(`${apiUrl}/math_app/reroll/`)
+
+    const handleReroll = () => {
+        submitReroll({ chunk: chunk, action: "reroll" }).then((data) => {
+            console.log(data)
+        })
+    }
+
+    const { submitTextWithChunk } = useSubmitTextWithChunk(`${apiUrl}/math_app/chat/problem/`)
+
+    const handleSubmitText = () => {
+        submitTextWithChunk({ chunk: chunk, userInput: userInput })
+    }
+
     return (
         <>
             <div
@@ -119,12 +137,17 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
                 title={!id ? "Click and drag to a problem bank." : "Click to select this problem."}
             >
                 <div className="absolute top-0 right-0 flex flex-row gap-2 mt-2">
-                    <button
-                        className="btn btn-primary tooltip tooltip-bottom"
+                    {!id && <AddChunkModal chunk={chunk} modalId={'addChunkModal' + chunk.chunkId} enabled={false} />}
+
+                    {id && <button
+                        className="btn btn-secondary tooltip tooltip-bottom"
                         data-tip="Add problem to problem bank."
+                        onClick={handleReroll}
                     >
-                        Add
-                    </button>
+                        Reroll
+                    </button>}
+
+
                     {id && (
                         <button
                             onClick={(e) => {
@@ -137,21 +160,33 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
                             Delete
                         </button>
                     )}
+
+
                 </div>
 
-                <div className="pb-4 pe-4">
-                    {selectable && (
-                        activeChunkIndices.includes(chunkIndex) ? (
-                            <div className="text-green-500">Selected <CheckmarkIcon /></div>
-                        ) : (
-                            <input
-                                type="checkbox"
-                                checked={activeChunkIndices.includes(chunkIndex)}
-                                className="checkbox checkbox-primary"
-                            />
-                        )
+                <div className="w-full flex items-center"
+                    onClick={() => {
+                        setActiveChunkIndices((prev) => {
+                            if (prev.includes(chunkIndex)) {
+                                return prev.filter((index) => index !== chunkIndex);
+                            } else {
+                                return [...prev, chunkIndex];
+                            }
+                        })
+                    }}>
+                    <input
+                        type="checkbox"
+                        checked={activeChunkIndices.includes(chunkIndex)}
+                        className="checkbox checkbox-primary"
+                        id={`checkbox-${chunkIndex}`} // Ensure unique ID for labeling
+                    />
+                    {selectable && activeChunkIndices.includes(chunkIndex) && (
+                        <label htmlFor={`checkbox-${chunkIndex}`} className="text-green-500 ml-2 flex items-center">
+                            Selected
+                        </label>
                     )}
                 </div>
+
 
                 {chunk?.content?.map((item, index) => {
                     const element = (() => {
@@ -184,6 +219,23 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
                         </div>
                     );
                 })}
+                {id && <>
+                    <input
+                        type="text"
+                        placeholder="Enter your input"
+                        value={userInput} // Assuming userInput is your state variable
+                        onChange={(e) => setUserInput(e.target.value)} // And setUserInput is the setter
+                        className="input input-bordered w-full max-w-xs m-2"
+                    />
+
+                    <button
+                        className="btn btn-secondary tooltip tooltip-bottom"
+                        data-tip="Send your input."
+                        onClick={handleSubmitText}
+                    >
+                        Send
+                    </button>
+                </>}
 
             </div>
         </>
@@ -248,17 +300,9 @@ const InstructionComponent: React.FC<InstructionProps> = ({ chunkIndex, parentCh
         }
 
     });
-    const { activeChunkIndices, setActiveChunkIndices } = useSidebarContext();
 
     return (
         <div
-            onClick={() => {
-                if (activeChunkIndices.includes(chunkIndex)) {
-                    setActiveChunkIndices(activeChunkIndices.filter(index => index !== chunkIndex));
-                } else {
-                    setActiveChunkIndices([...activeChunkIndices, chunkIndex]);
-                }
-            }}
             ref={(node) => disableInstructionProblemDrag ? ref(drop(node)) : node}
             className="flex group flex-row flex-wrap cursor-pointer"
         >
@@ -373,19 +417,11 @@ const ProblemComponent: React.FC<ProblemProps> = ({ chunkIndex, parentChunk, par
         }
     });
 
-    const { activeChunkIndices, setActiveChunkIndices } = useSidebarContext();
 
     return (
 
         <div
-            onClick={() => {
-                if (activeChunkIndices.includes(chunkIndex)) {
-                    setActiveChunkIndices(activeChunkIndices.filter(chunkIndex => chunkIndex !== chunkIndex));
-                } else {
-                    setActiveChunkIndices([...activeChunkIndices, chunkIndex]);
-                }
-            }
-            }
+
             ref={(node) => disableInstructionProblemDrag ? ref(drop(node)) : node}
             className="flex group flex-row flex-wrap cursor-pointer">
             {problem.content.map((item, index) => (
@@ -514,3 +550,4 @@ const SubproblemComponent: React.FC<{ subproblem: Subproblem }> = ({ subproblem 
 };
 
 export default SubproblemComponent;
+

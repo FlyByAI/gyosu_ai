@@ -1,5 +1,4 @@
 import React from 'react';
-import { useSidebarContext } from '../../contexts/useSidebarContext';
 import { Chunk } from '../../interfaces';
 import MathProblem from './MathProblem';
 
@@ -9,8 +8,6 @@ interface ChunkManagerProps {
 }
 
 const ChunkManager: React.FC<ChunkManagerProps> = ({ chunkArray, setChunkArray }) => {
-
-    const { activeChunkIndices, setActiveChunkIndices } = useSidebarContext();
 
     const updateChunk = (updatedChunk: Chunk, index: number) => {
         console.log("update chunk: ", chunkArray[index], "new chunk:", updatedChunk, index)

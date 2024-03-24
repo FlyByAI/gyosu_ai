@@ -13,7 +13,7 @@ interface CreateDocsFormProps {
 }
 
 const CreateDocxForm: React.FC<CreateDocsFormProps> = ({ document }) => {
-    const { activeChunkIndices, setActiveChunkIndices } = useSidebarContext();
+    const { activeChunkIndices } = useSidebarContext();
     const { apiUrl } = useEnvironment();
     const { createDocx, isLoading, error } = useCreateDocx(`${apiUrl}/math_app/generate_docx/`);
     const { id } = useParams();

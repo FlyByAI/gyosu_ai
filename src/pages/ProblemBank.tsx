@@ -19,7 +19,7 @@ const ProblemBank: React.FC = () => {
     const endpoint2 = `${apiUrl}/math_app/school_document/`;
     const { updateDocument } = useSubmitDocument(endpoint2);
 
-    const { activeChunkIndices, setActiveChunkIndices } = useSidebarContext();
+    const { activeChunkIndices } = useSidebarContext();
 
     const { isDesktop } = useScreenSize();
 

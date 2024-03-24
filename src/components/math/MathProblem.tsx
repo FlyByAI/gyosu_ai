@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useSidebarContext } from '../../contexts/useSidebarContext';
 import { Chunk } from '../../interfaces';
 import { ChunkComponent } from '../AST';
@@ -17,11 +17,7 @@ const MathProblem: React.FC<MathProblemProps> = ({ problem, chunkIndex, insertCh
 
     const { activeChunkIndices, setActiveChunkIndices } = useSidebarContext();
 
-    useEffect(() => {
-        if (!selectable) {
-            setActiveChunkIndices([]);
-        }
-    }, [selectable, setActiveChunkIndices])
+    
 
     const toggleChunkIndex = (chunkIndex: number): number[] => {
         if (activeChunkIndices.includes(chunkIndex)) {
@@ -32,7 +28,7 @@ const MathProblem: React.FC<MathProblemProps> = ({ problem, chunkIndex, insertCh
     };
 
     return (
-        <div onClick={() => selectable && setActiveChunkIndices(toggleChunkIndex(chunkIndex))} className={`flex flex-row w-full `}>
+        <div className={`flex flex-row w-full `}>
             {problem &&
                 <ChunkComponent
                     selectable={selectable}

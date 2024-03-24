@@ -68,46 +68,55 @@ const AddChunkForm: React.FC<AddChunkFormProps> = ({ chunk, preview }) => {
     const { isDesktop } = useScreenSize();
 
     return (
-        <div className="flex flex-col space-y-4">
-            <button onClick={handleAddDocument}
-                className="btn btn-accent w-1/2 mb-2">
-                Create New Problem Bank
-            </button>
-            OR
-            <label className="text-white">Add To Existing Problem Bank:</label>
-            <select
-                className="select select-bordered w-full max-w-xs"
-                value={selectedBank || ''}
-                onChange={(e) => setSelectedBank(Number(e.target.value))}
-            >
-                <option value="" disabled>Select a bank</option>
-                {documents?.map((doc) => (
-                    <option key={doc.id} value={doc.id}>{doc.title}</option>
-                ))}
-            </select>
-            {selectedDocument && preview && (
-                <div className="mb-4">
-                    <DocumentPreview disabledClick document={selectedDocument} />
+        <div className="max-w-4xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
+                
+                {/* Add to Existing Problem Bank */}
+                <div className="flex flex-col items-center justify-start space-y-4">
+                    <label className="text-white self-start mb-1">Add To Existing Problem Bank:</label>
+                    <select
+                        className="select select-bordered w-full"
+                        value={selectedBank || ''}
+                        onChange={(e) => setSelectedBank(Number(e.target.value))}
+                    >
+                        <option value="" disabled>Select a bank</option>
+                        {documents?.map((doc) => (
+                            <option key={doc.id} value={doc.id}>{doc.title}</option>
+                        ))}
+                    </select>
+                    {selectedDocument && preview && (
+                        <div className="w-full">
+                            <DocumentPreview disabledClick document={selectedDocument} />
+                        </div>
+                    )}
+                    <button
+                        className={`btn w-full ${selectedBank ? "btn-primary" : "btn-disabled"}`}
+                        disabled={!selectedBank}
+                        onClick={handleDocumentClick}
+                    >
+                        Add to Selected Bank
+                    </button>
+                    {!selectedBank && isDesktop && (
+                        <div className='tooltip' data-tip="Select a problem bank to add this problem to.">
+                            <span className="label label-text-alt text-xs">Select a bank to enable "Add"</span>
+                        </div>
+                    )}
                 </div>
-            )}
-            <div className='flex flex-row space-x-2'>
-                <button
-                    className={`btn w-1/2 ${selectedBank ? "btn-primary" : "btn-disabled"}`}
-                    disabled={!selectedBank}
-                    onClick={handleDocumentClick}
-                >
-                    Add
-                </button>
 
+                {/* Create New Problem Bank */}
+                <div className="flex flex-col items-center justify-start space-y-4">
+                    <button onClick={handleAddDocument} className="btn btn-accent">
+                        Create New Problem Bank
+                    </button>
+                    <div className="text-white text-center">
+                        <p>Create a brand new problem bank where you can add problems.</p>
+                    </div>
+                </div>
             </div>
-            {!selectedBank && isDesktop && (
-                <div id='addChunkModelButtonDisabled' className='tooltip tooltip-bottom' data-tip="Select a problem bank to add this problem to.">
-                    {/* Tooltip content could be more interactive with DaisyUI */}
-                </div>
-            )}
         </div>
-
     );
+
+
 };
 
 export default AddChunkForm;

@@ -23,7 +23,7 @@ const AddChunkModal: React.FC<AddChunkModalProps> = ({ chunk, modalId, variant }
         <>
             <button
                 onClick={handleOpenClick}
-                className={variant == "button" ? `btn btn-primary z-10 rounded-md` : ` flex-row flex w-max`}
+                className={variant == "button" ? `btn btn-primary z-10 rounded-md` : ` btn btn-primary flex-row flex w-max`}
                 data-tooltip-id='addChunkTip'
             >
                 <PlusIcon />
@@ -31,8 +31,8 @@ const AddChunkModal: React.FC<AddChunkModalProps> = ({ chunk, modalId, variant }
 
             {currentModal === modalId && (
                 <div className="fixed inset-0 flex items-center justify-center z-50 text-white">
-                    <div className="bg-gray-800 p-2 rounded shadow-lg w-5/6 md:w-3/4 max-w-2xl">
-                        <div className="bg-gray-700 p-4 rounded shadow-lg">
+                    <div className="bg-base-100 p-2 rounded shadow-lg w-5/6 md:w-3/4 max-w-2xl">
+                        <div className="p-4 rounded shadow-lg">
                             <AddChunkForm chunk={chunk} />
                             <button onClick={closeModal} className="mt-4 w-1/2 bg-red-500 hover:bg-red-700 p-2 rounded-md">
                                 Cancel
