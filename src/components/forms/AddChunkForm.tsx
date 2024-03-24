@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import toast from 'react-hot-toast/headless';
-import { Tooltip as ReactTooltip } from "react-tooltip";
 import { useScreenSize } from '../../contexts/ScreenSizeContext';
 import { useModal } from '../../contexts/useModal';
 import useGetDocuments from '../../hooks/tools/math/useGetDocuments';
@@ -69,10 +68,15 @@ const AddChunkForm: React.FC<AddChunkFormProps> = ({ chunk, preview }) => {
     const { isDesktop } = useScreenSize();
 
     return (
-        <div className="flex flex-col">
-            <label className="text-white mb-2">Select Problem Bank:</label>
+        <div className="flex flex-col space-y-4">
+            <button onClick={handleAddDocument}
+                className="btn btn-accent w-1/2 mb-2">
+                Create New Problem Bank
+            </button>
+            OR
+            <label className="text-white">Add To Existing Problem Bank:</label>
             <select
-                className="mb-4 text-black p-2"
+                className="select select-bordered w-full max-w-xs"
                 value={selectedBank || ''}
                 onChange={(e) => setSelectedBank(Number(e.target.value))}
             >
@@ -86,32 +90,23 @@ const AddChunkForm: React.FC<AddChunkFormProps> = ({ chunk, preview }) => {
                     <DocumentPreview disabledClick document={selectedDocument} />
                 </div>
             )}
-            <div className='flex flex-row'>
+            <div className='flex flex-row space-x-2'>
                 <button
-                    className={`p-2 rounded w-1/2 me-2 ${selectedBank ? "bg-blue-500 text-white" : "bg-gray-500 text-gray-300"}`}
+                    className={`btn w-1/2 ${selectedBank ? "btn-primary" : "btn-disabled"}`}
                     disabled={!selectedBank}
                     onClick={handleDocumentClick}
-                    data-tooltip-id={!selectedBank ? 'addChunkModelButtonDisabled' : ""}
                 >
                     Add
                 </button>
-                <button onClick={handleAddDocument}
-                    className="bg-blue-500 text-white p-2 rounded w-1/2">
-                    Create New Problem Bank
-                </button>
-            </div>
-            {!selectedBank && (
-                isDesktop && <ReactTooltip
-                    id='addChunkModelButtonDisabled'
-                    place="bottom"
-                    children={<><div className='flex flex-row items-center justify-center'>Select a problem bank</div>
-                        <div className='flex flex-row items-center justify-center'> to add this problem to.</div>
-                    </>}
-                    variant="light"
-                />
-            )}
 
-        </div >
+            </div>
+            {!selectedBank && isDesktop && (
+                <div id='addChunkModelButtonDisabled' className='tooltip tooltip-bottom' data-tip="Select a problem bank to add this problem to.">
+                    {/* Tooltip content could be more interactive with DaisyUI */}
+                </div>
+            )}
+        </div>
+
     );
 };
 

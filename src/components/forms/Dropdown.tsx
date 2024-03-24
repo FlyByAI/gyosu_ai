@@ -32,7 +32,7 @@ const Dropdown: React.FC<DropdownProps> = ({
       });
     } else {
       return Object.keys(options).map((key, index) => (
-        <option key={index} value={options[key].option_text}>{options[key].option_text}</option>
+        <option key={index + 1} value={options[key].option_text}>{options[key].option_text}</option>
       ));
     }
   };
@@ -46,6 +46,7 @@ const Dropdown: React.FC<DropdownProps> = ({
         disabled={disabled}
         className="select select-bordered w-full max-w-xs"
       >
+        <option key={0} value={defaultValue}>{defaultValue}</option>
         {renderOptions()}
       </select>
     </div>

@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useModal } from '../contexts/useModal';
 import { Chunk } from '../interfaces';
-import AddChunkForm from './forms/AddChunkForm';
 import PlusIcon from '../svg/PlusIcon';
+import AddChunkForm from './forms/AddChunkForm';
 
 interface AddChunkModalProps {
     chunk: Chunk;
@@ -23,7 +23,7 @@ const AddChunkModal: React.FC<AddChunkModalProps> = ({ chunk, modalId, variant }
         <>
             <button
                 onClick={handleOpenClick}
-                className={variant == "button" ? `z-10 bg-blue-500 rounded-md p-1` : `text-green-500 flex-row flex w-max`}
+                className={variant == "button" ? `btn btn-primary z-10 rounded-md` : ` flex-row flex w-max`}
                 data-tooltip-id='addChunkTip'
             >
                 <PlusIcon />

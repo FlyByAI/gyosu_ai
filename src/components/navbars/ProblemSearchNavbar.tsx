@@ -9,7 +9,7 @@ import HamburgerWrapperX from '../HamburgerWrapperX';
 import ManageSubscriptionButton from '../ManageSubscriptionButton';
 import ProblemBankShelf from '../document/ProblemBankShelf';
 
-const FixedNavbar: React.FC = () => {
+const ProblemSearchNavbar: React.FC = () => {
   const { darkMode } = useDarkMode();
   const { apiUrl } = useEnvironment();
   const { subscriptionInfo } = useFetchSubscriptionInfo(`${apiUrl}/user_data/get_subscription_info/`);
@@ -17,7 +17,7 @@ const FixedNavbar: React.FC = () => {
   return (
     <>
       <div className='mt-20 md:mt-16'></div>
-      <header className="navbar fixed top-0 left-0 z-20 w-full">
+      <header className="navbar fixed top-0 left-0 z-20 w-full bg-base-100">
         {/* Mobile view */}
 
         <div className="navbar-start md:hidden">
@@ -87,4 +87,4 @@ const FixedNavbar: React.FC = () => {
   );
 };
 
-export default FixedNavbar;
+export default ProblemSearchNavbar;

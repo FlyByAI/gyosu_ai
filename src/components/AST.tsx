@@ -164,7 +164,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
                                 deleteChunk(chunkIndex);
                             }}
                             data-tooltip-id="deleteChunkTip"
-                            className="text-red-500 flex-row flex w-max"
+                            className="btn btn-warning flex-row flex w-max"
                         >
                             <TrashIcon className='ms-2' />
                         </button>}

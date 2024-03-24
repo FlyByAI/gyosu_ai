@@ -12,38 +12,41 @@ import SubmitButton from '../forms/SubmitButton';
 type TextbookGenerateFormProps = {
     onSubmit: (data: any) => void;
     setGenerateFormData: (problemData: GenerateFormData) => void; // Include the type of ProblemData
+    setFirstValue?: boolean;
 };
 
-const TextbookGenerateForm: React.FC<TextbookGenerateFormProps> = ({ onSubmit, setGenerateFormData }) => {
+const TextbookGenerateForm: React.FC<TextbookGenerateFormProps> = ({ onSubmit, setGenerateFormData, setFirstValue = false }) => {
 
     const formOptionsObj = Object(formOptionsJSON);
-    const [sourceMaterial, setSourceMaterial] = useState<string>(Object.keys(formOptionsObj)[0]);
-    const firstChapter = Object.keys(formOptionsObj[sourceMaterial].chapters)[0];
-    const firstSection = Object.keys(formOptionsObj[sourceMaterial].chapters[firstChapter].sections)[0];
-    const [chapter, setChapter] = useState<string>(firstChapter);
-    const [section, setSection] = useState<string>(firstSection);
-    const [problemType, setProblemType] = useState<string>(
-        formOptionsObj[sourceMaterial].chapters[firstChapter].sections[firstSection].problem_types[0].value
+    const firstChapter = Object.keys(formOptionsObj[Object.keys(formOptionsObj)[0]].chapters)[0];
+    const firstSection = Object.keys(formOptionsObj[Object.keys(formOptionsObj)[0]].chapters[firstChapter].sections)[0];
+    const [chapter, setChapter] = useState<string>(setFirstValue ? firstChapter : "");
+    const [section, setSection] = useState<string>(setFirstValue ? firstSection : "");
+    const [sourceMaterial, setSourceMaterial] = useState<string>(setFirstValue ? Object.keys(formOptionsObj)[0] : "");
+
+    const [problemType, setProblemType] = useState<string>(setFirstValue ?
+        formOptionsObj[sourceMaterial].chapters[firstChapter].sections[firstSection].problem_types[0].value : ""
     );
 
 
     const sourceMaterialOptions = Object.keys(formOptionsObj).map(sm => ({ label: formOptionsObj[sm].label, value: sm }));
 
     //prob_type
-    const problemTypeOptions = formOptionsObj[sourceMaterial]?.chapters[chapter]?.sections[section]?.problem_types;
+    const problemTypeOptions = formOptionsObj[Object.keys(formOptionsObj)[0]]?.chapters[firstChapter]?.sections[firstSection]?.problem_types;
 
     // section
-    const sectionKeys = Object.keys(formOptionsObj[sourceMaterial].chapters[chapter].sections);
-    const sectionOptions = sectionKeys.map(sec => ({ label: formOptionsObj[sourceMaterial].chapters[chapter].sections[sec].label, value: sec }));
+    const sectionKeys = Object.keys(formOptionsObj[Object.keys(formOptionsObj)[0]].chapters[firstChapter].sections);
+    const sectionOptions = sectionKeys.map(sec => ({ label: formOptionsObj[Object.keys(formOptionsObj)[0]].chapters[firstChapter].sections[sec].label, value: sec }));
 
     // For Chapter Dropdown
-    const chapterOptions = Object.keys(formOptionsObj[sourceMaterial].chapters).map(chap => ({ label: formOptionsObj[sourceMaterial].chapters[chap].label, value: chap }));
+    const chapterOptions = Object.keys(formOptionsObj[Object.keys(formOptionsObj)[0]].chapters).map(chap => ({ label: formOptionsObj[Object.keys(formOptionsObj)[0]].chapters[chap].label, value: chap }));
 
 
     const user = useUser();
 
     const { session, openSignIn } = useClerk();
 
+    const [userInput, setUserInput] = useState('');
     const { apiUrl } = useEnvironment();
     const { isLoading, error, submitMathForm, data } = useSubmitMathForm(`${apiUrl}/math_app/generate/`)
 
@@ -120,7 +123,8 @@ const TextbookGenerateForm: React.FC<TextbookGenerateFormProps> = ({ onSubmit, s
                 section: section,
                 problemType: problemType,
                 sourceMaterial: sourceMaterial,
-                documentType: "worksheet"
+                documentType: "worksheet",
+                userInput: userInput,
             } as TextbookProblemData;
 
             await submitMathForm({ data: formData });
@@ -141,35 +145,47 @@ const TextbookGenerateForm: React.FC<TextbookGenerateFormProps> = ({ onSubmit, s
     return (
         <>
             <div className="flex flex-col justify-center items-center w-full p-4">
+                <div className="form-control w-full max-w-xs mb-4">
+                    <label className="label">
+                        <span className="label-text">Search for math problems</span>
+                    </label>
+                    <input
+                        type="text"
+                        value={userInput}
+                        onChange={(e) => setUserInput(e.target.value)}
+                        className="input input-bordered w-full"
+                        placeholder="sin and cos, fractions, etc. "
+                    />
+                </div>
                 <Dropdown
-                    showSelected={false}
-                    label="Textbook"
+                    showSelected={true}
+                    label="Textbook (optional)"
                     options={sourceMaterialOptions}
-                    defaultValue={sourceMaterial}
+                    defaultValue={""}
                     handleChange={handleSourceMaterialChange}
                     className="w-full max-w-xs"
                 />
                 <Dropdown
-                    showSelected={false}
-                    label="Chapter"
+                    showSelected={true}
+                    label="Chapter (optional)"
                     options={chapterOptions}
-                    defaultValue={chapter}
+                    defaultValue={""}
                     handleChange={handleChapterChange}
                     className="w-full max-w-xs mt-2"
                 />
                 <Dropdown
-                    showSelected={false}
-                    label="Section"
+                    showSelected={true}
+                    label="Section (optional)"
                     options={sectionOptions}
-                    defaultValue={section}
+                    defaultValue={""}
                     handleChange={handleSectionChange}
                     className="w-full max-w-xs mt-2"
                 />
                 <Dropdown
-                    showSelected={false}
-                    label="Problem Type"
+                    showSelected={true}
+                    label="Problem Type (optional)"
                     options={problemTypeOptions}
-                    defaultValue={problemType}
+                    defaultValue={""}
                     handleChange={handleChangeProblemType}
                     className="w-full max-w-xs mt-2"
                 />

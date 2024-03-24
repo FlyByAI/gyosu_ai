@@ -14,6 +14,7 @@ type CompetitionMathGenerateFormProps = {
 
 const CompetitionMathGenerateForm: React.FC<CompetitionMathGenerateFormProps> = ({ onSubmit, setGenerateFormData }) => {
     const formOptionsObj = Object(formOptionsJSON)["competition_math"];
+    const [userInput, setUserInput] = useState('');
 
     const [problemType, setProblemType] = useState<string>(() => {
         const problemTypeKeys = Object.keys(formOptionsObj.problem_types).filter(key => key !== 'label');
@@ -63,13 +64,19 @@ const CompetitionMathGenerateForm: React.FC<CompetitionMathGenerateFormProps> = 
 
     const handleMathSubmit = async () => {
         if (session) {
-            const formData = { sourceMaterial: "competition_math", problemType, level } as CompetitionData;
+            const formData = {
+                sourceMaterial: "competition_math",
+                problemType,
+                level,
+                userInput: userInput,
+
+            } as CompetitionData;
             await submitMathForm({ data: formData });
         }
         else {
             openSignIn({
                 afterSignInUrl: window.location.href
-              });
+            });
         }
     };
 
@@ -82,6 +89,18 @@ const CompetitionMathGenerateForm: React.FC<CompetitionMathGenerateFormProps> = 
     return (
         <>
             <div className="flex flex-col justify-center items-center w-full p-4">
+                <div className="form-control w-full max-w-xs mb-4">
+                    <label className="label">
+                        <span className="label-text">Search for math problems</span>
+                    </label>
+                    <input
+                        type="text"
+                        value={userInput}
+                        onChange={(e) => setUserInput(e.target.value)}
+                        className="input input-bordered w-full"
+                        placeholder="sin and cos, fractions, etc. "
+                    />
+                </div>
                 <Dropdown
                     showSelected={false}
                     label={"Problem Type"}
