@@ -51,13 +51,13 @@ const Documents: React.FC = () => {
         <>
             {!isLoading && documentDownloads ? (
                 <div className="flex justify-center items-center mt-4 px-4 w-full">
-                    <div className="w-full max-w-4xl overflow-x-auto bg-base-200 rounded-box p-4">
+                    <div className="w-full max-w-4xl overflow-x-auto rounded-box p-4">
                         {documentDownloads.length > 0 ? (
                             <ul className="menu menu-compact flex flex-col space-y-4">
                                     {documentDownloads.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
                                         .map((doc) => (
                                             <li key={doc.id} className="border-base-200 border rounded-box">
-                                                <div className='flex justify-between items-center p-4 bg-base-100'>
+                                                <div className='flex justify-between items-center p-4 bg-base-300'>
                                                     <div className='flex flex-col space-y-2'>
                                                         <span className="link link-hover" onClick={() => handleDocumentClick(doc.blobName, "document")}>
                                                             {doc.blobName}

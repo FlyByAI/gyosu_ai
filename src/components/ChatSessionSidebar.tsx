@@ -123,7 +123,7 @@ const ChatSessionSidebar: React.FC = () => {
         if (chats.length === 0) return null;
         return (
             <>
-                <h3 className="text-gray-400">{sectionLabel}</h3>
+                <h3 className="text-info">{sectionLabel}</h3>
                 {chats.map(chat => (
                     <li key={chat.sessionId} className="flex justify-between items-center">
                         <div className="overflow-hidden">

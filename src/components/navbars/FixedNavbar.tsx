@@ -14,8 +14,8 @@ const FixedNavbar: React.FC = () => {
 
   return (
     <>
-      <div className='mt-32 md:mt-16'></div>
-      <header className="navbar bg-blue-900 text-white fixed top-0 left-0 z-20 w-full">
+      <div className='mt-20 md:mt-16'></div>
+      <header className="navbar text-default fixed top-0 left-0 z-20 w-full">
         {/* Mobile view */}
 
         <div className="navbar-start md:hidden">
@@ -28,22 +28,22 @@ const FixedNavbar: React.FC = () => {
           <HamburgerWrapper>
             <nav className='flex flex-col space-y-2'>
               {/* <LanguageDropdown /> */}
-              <Link to="/math-app/chat" className="relative text-lg text-white mx-3 hover:underline dark:text-gray-200 font-mono font-bold">
+              <Link to="/math-app/chat" className="relative text-lg text-default mx-3 hover:underline dark:text-gray-200 font-mono font-bold">
                 GyosuChat
                 <span className="absolute top-1 left-12 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 transform translate-x-1/2 -translate-y-1/2 bg-orange-700 rounded-full">
                   New!
                 </span>
               </Link>
-              <Link to="/math-app" className="text-lg text-white mx-3 hover:underline dark:text-gray-200 font-mono font-bold">
+              <Link to="/math-app" className="text-lg text-default mx-3 hover:underline dark:text-gray-200 font-mono font-bold">
                 Problem Search
               </Link>
-              <Link to="/math-app/documents" className="text-lg text-white mx-3 hover:underline dark:text-gray-200 font-mono font-bold">
+              <Link to="/math-app/documents" className="text-lg text-default mx-3 hover:underline dark:text-gray-200 font-mono font-bold">
                 My Documents
               </Link>
-              <Link to="/faq" className="text-lg text-white mx-3 hover:underline dark:text-gray-200 font-mono font-bold">
+              <Link to="/faq" className="text-lg text-default mx-3 hover:underline dark:text-gray-200 font-mono font-bold">
                 How To
               </Link>
-              <Link to="/subscribe" className="text-lg text-white mx-3 mt-2 hover:underline dark:text-gray-200 font-mono font-bold">
+              <Link to="/subscribe" className="text-lg text-default mx-3 mt-2 hover:underline dark:text-gray-200 font-mono font-bold">
                 Pricing
               </Link>
               <ManageSubscriptionButton />
@@ -62,7 +62,7 @@ const FixedNavbar: React.FC = () => {
         </div>
         <div className="navbar-end hidden md:flex items-center flex-grow">
           <Link to="/math-app/chat" className="btn btn-ghost">
-            GyosuChat <span className="badge badge-error">New!</span>
+            GyosuChat <span className="badge badge-info">New!</span>
           </Link>
           <Link to="/math-app" className="btn btn-ghost">Problem Search</Link>
           <Link to="/math-app/documents" className="btn btn-ghost">My Documents</Link>

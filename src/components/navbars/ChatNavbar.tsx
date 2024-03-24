@@ -22,7 +22,7 @@ const ChatNavbar: React.FC = () => {
   return (
     <>
       <div className='mt-24 md:mt-20'></div>
-      <header className="navbar bg-blue-900 text-white fixed top-0 left-0 z-20 w-full">
+      <header className="navbar fixed top-0 left-0 z-20 w-full">
         {/* Mobile view */}
         <div className="navbar-start block md:hidden">
           <HamburgerWrapperX>
@@ -44,7 +44,7 @@ const ChatNavbar: React.FC = () => {
         </div>
         <div className="navbar-end items-center flex-grow hidden md:flex">
           <Link to="/math-app/chat" className="btn btn-ghost">
-            GyosuChat <span className="badge badge-error">New!</span>
+            GyosuChat <span className="badge badge-info">New!</span>
           </Link>
           <Link to="/math-app" className="btn btn-ghost">Problem Search</Link>
           <Link to="/math-app/documents" className="btn btn-ghost">My Documents</Link>

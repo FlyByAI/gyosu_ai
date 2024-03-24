@@ -42,7 +42,7 @@ const MathGenerate: React.FC = () => {
             <div className="flex-grow mt-4 overflow-x-hidden">
                 <div className="flex justify-start items-center flex-col">
                     {/* Step 1: Problem Source Selection */}
-                    <div className="card w-full md:w-2/3 mx-4 md:mx-auto rounded-lg p-4 my-4 shadow-lg bg-base-100">
+                    <div className="card w-full md:w-2/3 mx-4 md:mx-auto rounded-lg p-4 my-4 shadow-lg bg-base-300">
                         <div className="text-left mb-4">
                             <span className="font-bold text-xl ml-4 italic">Step 1: Select Problem Source</span>
                         </div>

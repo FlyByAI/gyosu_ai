@@ -28,7 +28,7 @@ const MessageSuggestion: React.FC<MessageSuggestionProps> = ({ onClick }) => {
                 <div
                     key={index}
                     onClick={() => onClick(`${suggestion.header}: ${suggestion.text}`)}
-                    className="flex flex-col p-4 bg-base-300 rounded-lg shadow hover:bg-base-200 cursor-pointer transition-colors duration-200 ease-in-out text-sm text-primary"
+                    className="flex flex-col p-4 bg-base-300 rounded-lg shadow hover:bg-base-200 cursor-pointer transition-colors duration-200 ease-in-out text-sm text-default"
                 >
                     <h3 className="font-semibold">{suggestion.header}</h3>
                     <p className="text-xs mt-2">{suggestion.text}</p>

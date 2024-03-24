@@ -47,9 +47,9 @@ const LandingPage: React.FC = () => {
 
     return (
         <div>
-            <section className="h-full flex flex-col md:flex-row items-center" style={{ backgroundImage: `url('/png/dark-bg.png')`, backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundColor: '#0b1536' }}>
+            <section className="h-full flex flex-col md:flex-row items-center" style={{ backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover' }}>
                 <img className="w-1/2 pt-4 md:pt-0 md:w-1/3 md:mx-0" src="/png/teacher1.png" alt="Teacher illustration with open book" />
-                <div className="ml-0 md:ml-20 w-full md:w-2/3 text-center md:text-left text-3xl md:text-5xl text-gray-300 p-4">
+                <div className="ml-0 md:ml-20 w-full md:w-2/3 text-center md:text-left text-3xl md:text-5xl p-4">
                     <p className="font-bold my-4 flex-col">Create </p><LoopingText variant='typed' textArray={['worksheets', 'lesson plans', 'quizzes', 'exams', "study guides", "class activities"]} />
                     {/* <p className="font-bold mt-4">quickly & easily</p> */}
                     <p className="mt-4 text-lg">Customized & classroom-ready educational content sourced directly from textbooks.</p>
@@ -66,7 +66,7 @@ const LandingPage: React.FC = () => {
                         /> */}
                         <button
                             type="submit"
-                            className="btn btn-accent md:w-2/5 w-2/3 "
+                            className="btn btn-primary md:w-2/5 w-2/3 "
                             style={{
                                 boxShadow: '0 0 5px rgba(81, 203, 238, 0.5)',
                             }}
@@ -211,8 +211,8 @@ const LandingPage: React.FC = () => {
 
             </section>
 
-            <section className="p-10 h-full flex items-center" style={{ backgroundImage: `url('/png/dark-bg.png')`, backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundColor: '#0b1536' }}>
-                <div className="w-3/4 text-3xl text-gray-100">
+            <section className="p-10 h-full flex items-center" style={{ backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover' }}>
+                <div className="w-3/4 text-3xl">
                     <h1 className="font-bold" ><LoopingText variant='typed' textArray={['Innovative', 'Impactful', 'Customized']} /></h1><h1>Education</h1>
                     <h1 className="font-bold"></h1>
                     <p className="mt-4 text-lg">starts with you.</p>
@@ -221,14 +221,14 @@ const LandingPage: React.FC = () => {
                             value={inputText}
                             onChange={(e) => setInputText(e.target.value)}
                             placeholder="Can you help me write a quiz for grade 5 students on fraction multiplication?"
-                            className="resize-none md:w-1/2 w-full bg-gray-100 text-gray-100 text-lg rounded leading-tight p-2 flex-1 border-green-700 border"
+                            className="resize-none md:w-1/2 w-full bg-gray-100 text-lg rounded leading-tight p-2 flex-1 border-green-700 border"
                             style={{
                                 boxShadow: '0 0 5px rgba(81, 203, 238, 0.5)',
                             }}
                         /> */}
                         <button
                             type="submit"
-                            className="md:w-1/3 w-2/3 btn btn-accent items-center justify-center overflow-hidden flex-wrap"
+                            className="md:w-1/3 w-2/3 btn btn-primary items-center justify-center overflow-hidden flex-wrap"
                             style={{
                                 boxShadow: '0 0 5px rgba(81, 203, 238, 0.5)',
                             }}
