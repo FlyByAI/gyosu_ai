@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 import useGetDocument from '../hooks/tools/math/useGetDocument';
 
+import ContentWrapper from '../components/ContentWrapper';
 import CreateDocxModal from '../components/CreateDocxModal';
 import MathProblem from '../components/math/MathProblem';
 import { useScreenSize } from '../contexts/ScreenSizeContext';
@@ -86,8 +87,8 @@ const ProblemBank: React.FC = () => {
         <div className='flex'>
 
             <CreateDocxModal enabled={activeChunkIndices.length > 0} document={document} modalId="createDocx" />
-
-            <div className="w-5/6 flex-grow mt-4 overflow-x-hidden" style={{ marginRight: isDesktop ? '16.6667%' : "0" }}>
+            <ContentWrapper>
+            <div className="w-full flex-grow mt-4 overflow-x-hidden">
                 <div className="space-y-4 bg-base-100 p-4 border border-base-300 text-base-content rounded-lg shadow">
                     <h2 className="text-center text-lg font-bold text-neutral">How to Create Your Worksheet</h2>
                     <ol className="list-decimal list-inside space-y-2">
@@ -117,6 +118,7 @@ const ProblemBank: React.FC = () => {
                     )}
                 </div>
             </div>
+            </ContentWrapper>
         </div>
 
 

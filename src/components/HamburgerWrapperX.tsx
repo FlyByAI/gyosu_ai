@@ -1,11 +1,10 @@
 import Hamburger from 'hamburger-react';
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import XIcon from '../svg/XIcon';
 
-const HamburgerWrapperX = ({ children }: { children: React.ReactNode }) => {
-    const [isOpen, setOpen] = useState(true);
-    const navigate = useNavigate();
+const HamburgerWrapperX = ({ children, mobileOrDesktop = "both"}: { children: React.ReactNode, mobileOrDesktop: string }) => {
+    const [isOpen, setOpen] = useState<boolean>(true);
 
     const { sessionId } = useParams();
 
@@ -13,31 +12,28 @@ const HamburgerWrapperX = ({ children }: { children: React.ReactNode }) => {
         setOpen(false)
     }, [sessionId])
 
-    const closeOnScroll = () => {
-        setOpen(false);
-    };
-
     const closeButtonClick = () => {
         setOpen(false);
     };
 
-    useEffect(() => {
-        window.addEventListener('scroll', closeOnScroll);
-        return () => {
-            window.removeEventListener('scroll', closeOnScroll);
-        };
-    }, []);
+    const showClass = getShowClass();
 
-    const navigateToNewChat = () => {
-        navigate('/math-app/chat');
-    };
+    function getShowClass() {
+        if (mobileOrDesktop === "desktop") {
+            return "hidden md:block";
+        }
+        if (mobileOrDesktop === "mobile") {
+            return "block md:hidden";
+        }
+        return "block";
+    }
 
     return (
-        <div className="relative">
+        <div className={"relative " + getShowClass()}>
             {/* Hamburger Menu */}
             <Hamburger toggled={isOpen} toggle={setOpen} />
             {/* Mini Nav */}
-            <div className={`backdrop-blur-sm fixed left-0 top-0 z-100 w-auto h-auto transition-transform duration-300 transform ${isOpen ? 'translate-x-0' : '-translate-x-full'} md:hidden`}>
+            <div className={`${mobileOrDesktop != "desktop" && "backdrop-blur-sm"} absolute left-0 top-0 z-50 w-auto h-auto transition-transform duration-300 transform ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}>
                 <div className='flex flex-row'>
                     {isOpen && children}
                     <div>

@@ -3,7 +3,7 @@ export default {
   darkMode: "class",
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   daisyui: {
-    themes: ["dim"],
+    themes: ["cupcake"],
   },
   theme: {
     extend: {
@@ -23,7 +23,6 @@ export default {
       },
       fontFamily: {
         sans: [
-          "ui-monospace",
           "SFMono-Regular",
           "Menlo",
           "Monaco",

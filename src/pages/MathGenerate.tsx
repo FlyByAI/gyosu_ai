@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import 'tailwindcss/tailwind.css';
+import HamburgerWrapperX from '../components/HamburgerWrapperX';
+import ProblemBankShelf from '../components/document/ProblemBankShelf';
 import ChunkManager from '../components/math/ChunkManager';
 import CompetitionMathGenerateForm from '../components/math/CompetitonMathGenerateForm';
 import TextbookGenerateForm from '../components/math/TextbookGenerateForm';
@@ -37,8 +39,12 @@ const MathGenerate: React.FC = () => {
         }
     }, [chunkArray]);
 
-    return (
+    return (<>
+        <HamburgerWrapperX mobileOrDesktop='desktop'>
+            <ProblemBankShelf isExporting={false} />
+        </HamburgerWrapperX>
         <div className="flex flex-row">
+
             <div className="flex-grow mt-4 overflow-x-hidden">
                 <div className="flex justify-start items-center flex-col">
                     {/* Step 1: Problem Source Selection */}
@@ -89,7 +95,7 @@ const MathGenerate: React.FC = () => {
             </div>
         </div>
 
-
+    </>
     );
 };
 

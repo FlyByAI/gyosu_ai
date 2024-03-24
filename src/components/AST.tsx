@@ -1,9 +1,9 @@
 import 'katex/dist/katex.min.css';
 import React, { useState } from 'react';
 import { DropTargetMonitor, useDrag, useDrop } from 'react-dnd';
+import { CheckmarkIcon } from 'react-hot-toast';
 import ReactMarkdown from 'react-markdown';
 import { useParams } from 'react-router-dom';
-import { Tooltip as ReactTooltip } from "react-tooltip";
 import rehypeKatex from 'rehype-katex';
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
@@ -14,11 +14,6 @@ import useGetDocument from '../hooks/tools/math/useGetDocument';
 import useSubmitDocument from '../hooks/tools/math/useSubmitDocument';
 import useEnvironment from '../hooks/useEnvironment';
 import { CHUNK_DRAG_TYPE, Chunk, INSTRUCTION_DRAG_TYPE, INSTRUCTION_TYPE, Instruction, PROBLEM_DRAG_TYPE, PROBLEM_TYPE, Problem, Subproblem, Subproblems } from '../interfaces';
-import CheckmarkIcon from '../svg/CheckmarkIcon';
-import TrashIcon from '../svg/TrashIcon';
-import AddChunkModal from './AddChunkModal';
-import Feedback from './Feedback';
-import OverflowMenu from './OverflowMenu';
 import ToolWrapper from './math/ToolWrapper';
 
 
@@ -115,80 +110,48 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
 
     return (
         <>
-            {isDesktop && <ReactTooltip
-                id='chunkDragTip'
-                place={!id ? "right" : "left-start"}
-                offset={8}
-                positionStrategy='fixed'
-                className='z-10'
-                children={!id ?
-                    <>
-                        <div className='flex flex-row items-center justify-center'>Click and drag to</div>
-                        <div className='flex flex-row items-center justify-center'>a problem bank.</div>
-                    </> : <>
-                        <div className='flex flex-row items-center justify-center'>Click to select </div>
-                        <div className='flex flex-row items-center justify-center'>this problem.</div>
-
-                    </>}
-                variant="light"
-            />}
-
-            {isDesktop && <ReactTooltip
-                id='addChunkTip'
-                place="bottom"
-                content={`Add problem to problem bank.`}
-                variant="light"
-            />}
-            {isDesktop && <ReactTooltip
-                id='deleteChunkTip'
-                place="bottom"
-                content={`Delete this problem from bank.`}
-                variant="light"
-            />}
             <div
                 ref={(node) => ref(drop(node))}
                 onMouseEnter={() => !isHovered && setIsHovered(true)}
                 onMouseLeave={() => isHovered && setIsHovered(false)}
-                data-tooltip-id='chunkDragTip'
-                className={"border-2 relative border-transparent p-4 pe-12 w-full " + (isHovered ? " hover:border-white border-dashed hover:border-2 hover:border-purple-dashed" : '') + ((activeChunkIndices.includes(chunkIndex)) ? " bg-blue-900 " : '')}
+                className={`border-2 relative p-4 pe-12 w-full transition-all duration-300 ease-in-out ${isHovered ? "border-base-content border-dashed" : "border-transparent"
+                    } ${activeChunkIndices.includes(chunkIndex) ? "bg-base-content text-base-100" : ""}`}
+                title={!id ? "Click and drag to a problem bank." : "Click to select this problem."}
             >
-                <div className="absolute top-0 right-0 text-white flex-row flex mt-2">
-                    <AddChunkModal variant={"button"} chunk={chunk} modalId={'addChunkModal' + chunk.chunkId} enabled={false} />
-                    <OverflowMenu
-                        isOpen={isOverflowOpen}
-                        setIsOpen={setIsOverflowOpen}
+                <div className="absolute top-0 right-0 flex flex-row gap-2 mt-2">
+                    <button
+                        className="btn btn-primary tooltip tooltip-bottom"
+                        data-tip="Add problem to problem bank."
                     >
-                        {id && <button
+                        Add
+                    </button>
+                    {id && (
+                        <button
                             onClick={(e) => {
                                 e.stopPropagation();
                                 deleteChunk(chunkIndex);
                             }}
-                            data-tooltip-id="deleteChunkTip"
-                            className="btn btn-warning flex-row flex w-max"
+                            className="btn btn-error tooltip tooltip-bottom"
+                            data-tip="Delete this problem from bank."
                         >
-                            <TrashIcon className='ms-2' />
-                        </button>}
-                        <Feedback feedbackLabel={'Chunk Feedback'} data={{ chunk: chunk }} />
-                        <AddChunkModal chunk={chunk} modalId={'addChunkModal' + chunk.chunkId} enabled={false} />
-
-                    </OverflowMenu>
-                </div>
-
-                <div className='pb-4 pe-4'>
-                    {selectable && (activeChunkIndices.includes(chunkIndex) ?
-                        <div className='flex text-green-300 h-4 w-6 mb-1'>
-                            <CheckmarkIcon />
-                        </div> :
-                        <div className='flex'>
-                            <input
-                                type="checkbox"
-                                defaultChecked={activeChunkIndices.includes(chunkIndex)}
-                                className="focus:ring-green-500 mt-1 h-4 w-6 text-green-600 rounded"
-                            />
-                        </div>
+                            Delete
+                        </button>
                     )}
                 </div>
-                {/* {chunk.parentChunkId && <div className='text-gray-400 text-xs'>Parent: {chunk.parentChunkId}</div>} */}
+
+                <div className="pb-4 pe-4">
+                    {selectable && (
+                        activeChunkIndices.includes(chunkIndex) ? (
+                            <div className="text-green-500">Selected <CheckmarkIcon /></div>
+                        ) : (
+                            <input
+                                type="checkbox"
+                                checked={activeChunkIndices.includes(chunkIndex)}
+                                className="checkbox checkbox-primary"
+                            />
+                        )
+                    )}
+                </div>
 
                 {chunk?.content?.map((item, index) => {
                     const element = (() => {
@@ -222,7 +185,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
                     );
                 })}
 
-            </div >
+            </div>
         </>
     );
 
@@ -288,18 +251,17 @@ const InstructionComponent: React.FC<InstructionProps> = ({ chunkIndex, parentCh
     const { activeChunkIndices, setActiveChunkIndices } = useSidebarContext();
 
     return (
-
         <div
             onClick={() => {
                 if (activeChunkIndices.includes(chunkIndex)) {
-                    setActiveChunkIndices(activeChunkIndices.filter(chunkIndex => chunkIndex !== chunkIndex));
+                    setActiveChunkIndices(activeChunkIndices.filter(index => index !== chunkIndex));
                 } else {
                     setActiveChunkIndices([...activeChunkIndices, chunkIndex]);
                 }
-            }
-            }
+            }}
             ref={(node) => disableInstructionProblemDrag ? ref(drop(node)) : node}
-            className="flex group flex-row flex-wrap">
+            className="flex group flex-row flex-wrap cursor-pointer"
+        >
             {instruction.content.map((item, index) => (
                 <span key={index} style={{ display: 'inline' }}>
                     {(() => {
@@ -307,7 +269,7 @@ const InstructionComponent: React.FC<InstructionProps> = ({ chunkIndex, parentCh
                             case 'text':
                                 return (
                                     <div
-                                        className={"text-xs md:text-lg z-10 text-blue-300 border-2 border-transparent border-dashed hover:border-2 p-1 m-1 group-hover:border-2 group-hover:border-dashed"}
+                                        className="text-xs z-10 bg-transparent  p-1 m-1 rounded-lg transition duration-300 ease-in-out group- group"
                                     >
                                         {item.value}
                                     </div>
@@ -315,7 +277,7 @@ const InstructionComponent: React.FC<InstructionProps> = ({ chunkIndex, parentCh
                             case 'math':
                                 return (
                                     <ReactMarkdown
-                                        className={"text-xs md:text-lg z-10 text-yellow-200 border-2 border-transparent border-dashed hover:border-2 p-1 m-1 group-hover:border-2 group-hover:border-dashed"}
+                                        className="text-xs z-10 bg-transparent   p-1 m-1 rounded-lg transition duration-300 ease-in-out group- group-"
                                         remarkPlugins={[remarkGfm, remarkMath]}
                                         rehypePlugins={[rehypeKatex]}
                                     >
@@ -325,7 +287,7 @@ const InstructionComponent: React.FC<InstructionProps> = ({ chunkIndex, parentCh
                             case 'table':
                                 return (
                                     <ReactMarkdown
-                                        className={"text-xs md:text-lg z-10 text-purple-300 border-gray-100  border-2 border-transparent border-dashed hover:border-2 p-1 m-1 group-hover:border-2 group-hover:border-dashed"}
+                                        className="text-xs z-10  bg-transparent   p-1 m-1 rounded-lg transition duration-300 ease-in-out group- group-"
                                         remarkPlugins={[remarkGfm, remarkMath]}
                                         rehypePlugins={[rehypeKatex]}
                                     >
@@ -337,7 +299,7 @@ const InstructionComponent: React.FC<InstructionProps> = ({ chunkIndex, parentCh
                                     <img
                                         src={item.value}
                                         alt="Description"
-                                        className="text-xs md:text-lg z-10 p-1 m-1 border-2 border-transparent border-dashed hover:border-2 group-hover:border-2 group-hover:border-dashed"
+                                        className="z-10 p-1 m-1 border-2 border-transparent border-dashed  rounded-lg transition duration-300 ease-in-out group-"
                                     />
                                 );
                             case 'subproblems':
@@ -349,9 +311,9 @@ const InstructionComponent: React.FC<InstructionProps> = ({ chunkIndex, parentCh
                 </span>
             ))}
         </div>
-
-
     );
+
+
 };
 
 
@@ -425,7 +387,7 @@ const ProblemComponent: React.FC<ProblemProps> = ({ chunkIndex, parentChunk, par
             }
             }
             ref={(node) => disableInstructionProblemDrag ? ref(drop(node)) : node}
-            className="flex group flex-row flex-wrap">
+            className="flex group flex-row flex-wrap cursor-pointer">
             {problem.content.map((item, index) => (
                 <span key={index} style={{ display: 'inline' }}>
                     {(() => {
@@ -433,7 +395,7 @@ const ProblemComponent: React.FC<ProblemProps> = ({ chunkIndex, parentChunk, par
                             case 'text':
                                 return (
                                     <div
-                                        className={'text-xs md:text-lg z-10 text-yellow-100 border-2 border-transparent border-dashed hover:border-2 p-1 m-1 group-hover:border-2 group-hover:border-dashed'}
+                                        className={'text-xs md:text-lg z-10  border-2 border-transparent border-dashed hover:border-2 p-1 m-1 group-hover:border-2 group-hover:border-dashed'}
                                     >
                                         {item.value}
                                     </div>
@@ -441,7 +403,7 @@ const ProblemComponent: React.FC<ProblemProps> = ({ chunkIndex, parentChunk, par
                             case 'math':
                                 return (
                                     <ReactMarkdown
-                                        className={"text-xs md:text-lg z-10 text-purple-300 border-gray-100 border-2 border-transparent border-dashed hover:border-2 p-1 m-1 group-hover:border-2 group-hover:border-dashed"}
+                                        className={"text-xs md:text-lg z-10  border-gray-100 border-2 border-transparent border-dashed hover:border-2 p-1 m-1 group-hover:border-2 group-hover:border-dashed"}
                                         remarkPlugins={[remarkGfm, remarkMath]}
                                         rehypePlugins={[rehypeKatex]}
                                     >
@@ -451,7 +413,7 @@ const ProblemComponent: React.FC<ProblemProps> = ({ chunkIndex, parentChunk, par
                             case 'table':
                                 return (
                                     <ReactMarkdown
-                                        className={"text-xs md:text-lg z-10 text-purple-300 border-gray-100 border-2 border-transparent border-dashed hover:border-2 p-1 m-1 group-hover:border-2 group-hover:border-dashed"}
+                                        className={"text-xs md:text-lg z-10  border-gray-100 border-2 border-transparent border-dashed hover:border-2 p-1 m-1 group-hover:border-2 group-hover:border-dashed"}
                                         remarkPlugins={[remarkGfm, remarkMath]}
                                         rehypePlugins={[rehypeKatex]}
                                     >
@@ -506,11 +468,17 @@ const SubproblemComponent: React.FC<{ subproblem: Subproblem }> = ({ subproblem 
                     {(() => {
                         switch (item.type) {
                             case 'text':
-                                return <div className="text-xs md:text-lg z-10 p-1 m-1 border-2 border-transparent border-dashed hover:border-blue-500">{item.value}</div>;
+                                return (
+                                    <div
+                                        className="text-xs md:text-lg z-10 border-2 border-transparent border-dashed hover:border-purple-500 p-1 m-1 group-hover:border-purple-500"
+                                    >
+                                        {item.value}
+                                    </div>
+                                );
                             case 'math':
                                 return (
                                     <ReactMarkdown
-                                        className="text-xs md:text-lg z-10 p-1 m-1 border-2 border-transparent border-dashed hover:border-yellow-500"
+                                        className="prose prose-sm md:prose-lg z-10 border-2 border-transparent border-dashed hover:border-purple-500 p-1 m-1 group-hover:border-purple-500"
                                         remarkPlugins={[remarkGfm, remarkMath]}
                                         rehypePlugins={[rehypeKatex]}
                                     >
@@ -520,7 +488,7 @@ const SubproblemComponent: React.FC<{ subproblem: Subproblem }> = ({ subproblem 
                             case 'table':
                                 return (
                                     <ReactMarkdown
-                                        className="text-xs md:text-lg z-10 p-1 m-1 border-2 border-transparent border-dashed hover:border-purple-500"
+                                        className="prose prose-sm md:prose-lg z-10 border-2 border-transparent border-dashed hover:border-purple-500 p-1 m-1 group-hover:border-purple-500"
                                         remarkPlugins={[remarkGfm, remarkMath]}
                                         rehypePlugins={[rehypeKatex]}
                                     >
@@ -528,7 +496,13 @@ const SubproblemComponent: React.FC<{ subproblem: Subproblem }> = ({ subproblem 
                                     </ReactMarkdown>
                                 );
                             case 'image':
-                                return <img src={item.value} alt="Description" className="text-xs md:text-lg z-10 p-1 m-1 border-2 border-transparent border-dashed hover:border-green-500" />;
+                                return (
+                                    <img
+                                        src={item.value}
+                                        alt="Description"
+                                        className="text-xs md:text-lg z-10 p-1 m-1 border-2 border-transparent border-dashed hover:border-purple-500 group-hover:border-purple-500"
+                                    />
+                                );
                             default:
                                 return null;
                         }
