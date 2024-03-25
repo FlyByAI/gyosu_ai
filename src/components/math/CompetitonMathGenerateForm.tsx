@@ -2,7 +2,7 @@ import { useClerk, useUser } from '@clerk/clerk-react';
 import React, { useEffect, useState } from 'react';
 import useSubmitMathForm from '../../hooks/tools/math/useSubmitMathForm';
 import useEnvironment from '../../hooks/useEnvironment';
-import { Chunk, CompetitionData, GenerateFormData } from '../../interfaces';
+import { CompetitionData, GenerateFormData } from '../../interfaces';
 import formOptionsJSON from '../../json/competition_math_data.json';
 import Dropdown from '../forms/Dropdown';
 import SubmitButton from '../forms/SubmitButton';
@@ -16,10 +16,7 @@ const CompetitionMathGenerateForm: React.FC<CompetitionMathGenerateFormProps> = 
     const formOptionsObj = Object(formOptionsJSON)["competition_math"];
     const [userInput, setUserInput] = useState('');
 
-    const [problemType, setProblemType] = useState<string>(() => {
-        const problemTypeKeys = Object.keys(formOptionsObj.problem_types).filter(key => key !== 'label');
-        return problemTypeKeys[0] || '';
-    });
+    const [problemType, setProblemType] = useState<string>("");
 
     const [level, setLevel] = useState<string>(() => {
         return formOptionsObj?.problem_types?.[problemType]?.levels?.[0]?.value || '';
@@ -29,7 +26,7 @@ const CompetitionMathGenerateForm: React.FC<CompetitionMathGenerateFormProps> = 
         .filter(key => key !== 'label')
         .map(type => ({ label: formOptionsObj.problem_types[type].label, value: type }));
 
-    const levelOptions = formOptionsObj?.problem_types?.[problemType]?.levels || [];
+    const [levelOptions, setLevelOptions] = useState([]);
 
     const { apiUrl } = useEnvironment();
 
@@ -38,8 +35,6 @@ const CompetitionMathGenerateForm: React.FC<CompetitionMathGenerateFormProps> = 
     const { session, openSignIn } = useClerk();
 
     const { isLoading, error, submitMathForm, data } = useSubmitMathForm(`${apiUrl}/math_app/generate/`);
-
-    const [chunkArray, setChunkArray] = useState<Chunk[]>([]);
 
     useEffect(() => {
         const problemData = {
@@ -50,12 +45,9 @@ const CompetitionMathGenerateForm: React.FC<CompetitionMathGenerateFormProps> = 
     }, [problemType, level, setGenerateFormData]);
 
     const handleProblemTypeChange = (newValue: string) => {
+        setLevelOptions(formOptionsObj?.problem_types?.[newValue]?.levels || [])
         setProblemType(newValue);
-
-        const firstLevel = formOptionsObj.problem_types[newValue]?.levels[0]?.value;
-        if (firstLevel) {
-            setLevel(firstLevel);
-        }
+        setLevel("");
     };
 
     const handleLevelChange = (newValue: string) => {
