@@ -112,18 +112,21 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
 
     const { isDesktop } = useScreenSize();
 
-    const { submitReroll } = useSubmitReroll(`${apiUrl}/math_app/reroll/`)
+    const { submitReroll, data: rerollData } = useSubmitReroll(`${apiUrl}/math_app/reroll/`)
 
     const handleReroll = () => {
-        submitReroll({ chunk: chunk, action: "reroll" }).then((data) => {
-            console.log(data)
-        })
+        submitReroll({ chunk: chunk, action: "reroll", chunkIndex: chunkIndex})
+        if (rerollData) {
+            console.log("new chunk", rerollData.chunk)
+        }
+
     }
 
-    const { submitTextWithChunk } = useSubmitTextWithChunk(`${apiUrl}/math_app/chat/problem/`)
+    const { submitTextWithChunk, data: submitTextData } = useSubmitTextWithChunk(`${apiUrl}/math_app/chat/problem/`)
 
     const handleSubmitText = () => {
-        submitTextWithChunk({ chunk: chunk, userInput: userInput })
+        submitTextWithChunk({ chunk: chunk, userInput: userInput, chunkIndex: chunkIndex })
+        console.log("new chunk", submitTextData)
     }
 
     return (
@@ -222,12 +225,11 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
                 {id && <>
                     <input
                         type="text"
-                        placeholder="Enter your input"
+                        placeholder="Please make this problem easier."
                         value={userInput} // Assuming userInput is your state variable
                         onChange={(e) => setUserInput(e.target.value)} // And setUserInput is the setter
-                        className="input input-bordered w-full max-w-xs m-2"
+                        className="input input-bordered w-full max-w-lg m-2"
                     />
-
                     <button
                         className="btn btn-secondary tooltip tooltip-bottom"
                         data-tip="Send your input."
@@ -313,7 +315,7 @@ const InstructionComponent: React.FC<InstructionProps> = ({ chunkIndex, parentCh
                             case 'text':
                                 return (
                                     <div
-                                        className="text-xs z-10 bg-transparent  p-1 m-1 rounded-lg transition duration-300 ease-in-out group- group"
+                                        className="text-sm z-10 bg-transparent p-1 m-1 rounded-lg transition duration-300 ease-in-out group- group"
                                     >
                                         {item.value}
                                     </div>
@@ -321,7 +323,7 @@ const InstructionComponent: React.FC<InstructionProps> = ({ chunkIndex, parentCh
                             case 'math':
                                 return (
                                     <ReactMarkdown
-                                        className="text-xs z-10 bg-transparent   p-1 m-1 rounded-lg transition duration-300 ease-in-out group- group-"
+                                        className="text-sm z-10 bg-transparent p-1 m-1 rounded-lg transition duration-300 ease-in-out group- group-"
                                         remarkPlugins={[remarkGfm, remarkMath]}
                                         rehypePlugins={[rehypeKatex]}
                                     >
@@ -331,7 +333,7 @@ const InstructionComponent: React.FC<InstructionProps> = ({ chunkIndex, parentCh
                             case 'table':
                                 return (
                                     <ReactMarkdown
-                                        className="text-xs z-10  bg-transparent   p-1 m-1 rounded-lg transition duration-300 ease-in-out group- group-"
+                                        className="text-sm z-10 bg-transparent p-1 m-1 rounded-lg transition duration-300 ease-in-out group- group-"
                                         remarkPlugins={[remarkGfm, remarkMath]}
                                         rehypePlugins={[rehypeKatex]}
                                     >

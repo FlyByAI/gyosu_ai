@@ -61,7 +61,7 @@ const CreateDocxForm: React.FC<CreateDocsFormProps> = ({ document }) => {
         }}>
             <div className="flex flex-row justify-between items-center mb-2">
                 <div className="text-xl font-bold w-64">
-                    Worksheet Creator
+                    Export Problems to Document
                 </div>
                 {/* Feedback component remains unchanged as it likely has custom implementation */}
                 <Feedback feedbackLabel={'Create Worksheet Feedback'} data={undefined} responseQuestions={["Please tell us what we can do better. "]} />
@@ -71,7 +71,7 @@ const CreateDocxForm: React.FC<CreateDocsFormProps> = ({ document }) => {
             </div>
       
             {/* Form inputs with DaisyUI classes */}
-            <div className="form-control my-2">
+            {/* <div className="form-control my-2">
                 <label className="label">
                     <span className="label-text">Title</span>
                 </label>
@@ -104,7 +104,7 @@ const CreateDocxForm: React.FC<CreateDocsFormProps> = ({ document }) => {
                     value={formState.theme}
                     onChange={e => setFormState({ ...formState, theme: e.target.value })}
                 />
-            </div>
+            </div> */}
             <hr className="my-4" />
       
             {/* Submit button with DaisyUI classes */}

@@ -89,8 +89,8 @@ const ProblemBank: React.FC = () => {
             <CreateDocxModal enabled={activeChunkIndices.length > 0} document={document} modalId="createDocx" />
             <ContentWrapper>
             <div className="w-full flex-grow mt-4 overflow-x-hidden">
-                <div className="space-y-4 bg-base-100 p-4 border border-base-300 text-base-content rounded-lg shadow">
-                    <h2 className="text-center text-lg font-bold text-neutral">How to Create Your Worksheet</h2>
+                <div className="space-y-4 bg-base-100 p-4 border border-base-300 rounded-lg shadow">
+                    <h2 className="text-center text-lg font-bold">How to Create Your Worksheet</h2>
                     <ol className="list-decimal list-inside space-y-2">
                         <li className="italic">Select problems from the list below.</li>
                         <li className="italic">Click "Create Worksheet" to generate your document.</li>
@@ -111,7 +111,7 @@ const ProblemBank: React.FC = () => {
                             </div>
                         ))
                     ) : (
-                        <div className="text-neutral text-center my-4">
+                        <div className="text-center my-4">
                             You don't have any problems in this bank yet. Try
                             <Link to="/math-app" className="text-primary font-bold underline px-2">searching</Link> for some.
                         </div>

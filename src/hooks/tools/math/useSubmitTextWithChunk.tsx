@@ -1,9 +1,9 @@
-import { useMutation } from '@tanstack/react-query';
 import { useClerk } from '@clerk/clerk-react';
+import { useMutation } from '@tanstack/react-query';
 import humps from 'humps';
-import { Chunk } from '../../../interfaces';
 import { useLanguage } from '../../../contexts/useLanguage';
 import { languageNames } from '../../../helpers/language';
+import { Chunk } from '../../../interfaces';
 
 const useSubmitTextWithChunk = (endpoint: string) => {
     const { session } = useClerk();
@@ -13,7 +13,7 @@ const useSubmitTextWithChunk = (endpoint: string) => {
     const options = { site_language: languageNames[language] };
 
     const submitTextWithChunkMutation = useMutation(
-        async ({ userInput, chunk }: { userInput: string; chunk: Chunk }) => {
+        async ({ userInput, chunk, chunkIndex }: { userInput: string; chunk: Chunk, chunkIndex: number }) => {
             const token = session ? await session.getToken() : "none";
             const body = humps.decamelizeKeys({ userInput, chunk, ...options });
 
@@ -30,7 +30,7 @@ const useSubmitTextWithChunk = (endpoint: string) => {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
 
-            return response.json().then((json) => humps.camelizeKeys(json));
+            return response.json().then((json) => humps.camelizeKeys({...json, chunkIndex}));
         }
     );
 

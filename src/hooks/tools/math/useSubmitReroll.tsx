@@ -1,15 +1,16 @@
-import { useMutation } from '@tanstack/react-query';
 import { useClerk } from '@clerk/clerk-react';
+import { useMutation } from '@tanstack/react-query';
 import humps from 'humps';
-import { Chunk, ChunkInstructionProblem, Instruction, Problem } from '../../../interfaces';
 import { useLanguage } from '../../../contexts/useLanguage';
 import { languageNames } from '../../../helpers/language';
+import { Chunk, Instruction, Problem } from '../../../interfaces';
 
 interface SubmitRerollParams {
     action: string;
     chunk: Chunk;
     instruction?: Instruction;
     problem?: Problem;
+    chunkIndex?: number;
 }
 
 interface SubmitRerollResponse {
@@ -23,7 +24,7 @@ const useSubmitReroll = (endpoint: string) => {
     const options = { site_language: languageNames[language] };
 
     const submitRerollMutation = useMutation<SubmitRerollResponse, Error, SubmitRerollParams>(
-        async ({ chunk, action, instruction, problem }): Promise<SubmitRerollResponse> => {
+        async ({ chunk, action, instruction, problem, chunkIndex }): Promise<SubmitRerollResponse> => {
             const token = session ? await session.getToken() : "none";
             const body = humps.decamelizeKeys({ chunk, action, instruction, problem, ...options });
 
@@ -41,7 +42,7 @@ const useSubmitReroll = (endpoint: string) => {
             }
 
             const responseData = await response.json();
-            return humps.camelizeKeys(responseData) as SubmitRerollResponse;
+            return humps.camelizeKeys({...responseData, chunkIndex}) as SubmitRerollResponse;
         }
     );
 

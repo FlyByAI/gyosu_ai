@@ -49,7 +49,7 @@ const CreateDocxModal: React.FC<CreateDocxModalProps> = ({ document, modalId, en
                         className={`btn w-full md:w-1/2 text-xl ${enabled ? 'btn-success' : 'btn-info'}`}
                         title="Select some problems to create a worksheet."
                     >
-                        Create Worksheet
+                        Export Selected Problems
                     </button>
                 </div>
             </div>
