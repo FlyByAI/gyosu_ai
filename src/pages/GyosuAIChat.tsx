@@ -396,7 +396,7 @@ const GyosuAIChat = () => {
                     </div>
                     <div className='h-1vh'></div>
 
-                    <form onSubmit={handleChatSubmit} className="flex h-16 items-end p-2">
+                    <form onSubmit={handleChatSubmit} className="flex h-16 items-end pt-2">
                         <textarea
                             name="input"
                             placeholder={isLoading ? "Loading..." : "Ask for what you need here..."}
