@@ -11,7 +11,7 @@ interface MathProblemProps {
     enableTools?: boolean;
     selectable?: boolean;
     disableInstructionProblemDrag?: boolean;
-    problemBankId?: number;
+    problemBankId?: string;
 }
 
 const MathProblem: React.FC<MathProblemProps> = ({ problem, chunkIndex, insertChunk, updateChunk, enableTools, selectable, problemBankId }) => {

@@ -28,7 +28,7 @@ interface ChunkProps {
     enableTools?: boolean;
     disableInstructionProblemDrag?: boolean;
     selectable?: boolean; //used to disable drag and drop for instructions and problems when on the search
-    problemBankId?: number;
+    problemBankId?: string;
 }
 
 export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updateChunk, chunkIndex, enableTools, selectable, disableInstructionProblemDrag, problemBankId }) => {
@@ -116,6 +116,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
     const { submitReroll, data: rerollData } = useSubmitReroll(`${apiUrl}/math_app/reroll/`)
 
     const handleReroll = () => {
+        console.log(problemBankId)
         submitReroll({ chunk: chunk, action: "reroll", chunkIndex: chunkIndex, problemBankId: problemBankId})
         if (rerollData) {
             console.log("new chunk", rerollData.chunk)
