@@ -12,34 +12,51 @@ import SubmitButton from '../forms/SubmitButton';
 type TextbookGenerateFormProps = {
     onSubmit: (data: any) => void;
     setGenerateFormData: (problemData: GenerateFormData) => void; // Include the type of ProblemData
-    setFirstValue?: boolean;
 };
 
-const TextbookGenerateForm: React.FC<TextbookGenerateFormProps> = ({ onSubmit, setGenerateFormData, setFirstValue = false }) => {
+interface Option {
+    label: string;
+    value: string;
+}
+
+const TextbookGenerateForm: React.FC<TextbookGenerateFormProps> = ({ onSubmit, setGenerateFormData }) => {
 
     const formOptionsObj = Object(formOptionsJSON);
-    const firstChapter = Object.keys(formOptionsObj[Object.keys(formOptionsObj)[0]].chapters)[0];
-    const firstSection = Object.keys(formOptionsObj[Object.keys(formOptionsObj)[0]].chapters[firstChapter].sections)[0];
-    const [chapter, setChapter] = useState<string>(setFirstValue ? firstChapter : "");
-    const [section, setSection] = useState<string>(setFirstValue ? firstSection : "");
-    const [sourceMaterial, setSourceMaterial] = useState<string>(setFirstValue ? Object.keys(formOptionsObj)[0] : "");
+    const [chapter, setChapter] = useState<string>("");
+    const [section, setSection] = useState<string>("");
+    const [sourceMaterial, setSourceMaterial] = useState<string>("");
+    const [problemType, setProblemType] = useState<string>("");
 
-    const [problemType, setProblemType] = useState<string>(setFirstValue ?
-        formOptionsObj[sourceMaterial].chapters[firstChapter].sections[firstSection].problem_types[0].value : ""
-    );
+    const getSafeValue = (obj: any, path: string[], defaultValue: any = []) => {
+        return path.reduce((acc, key) => acc?.[key] ?? defaultValue, obj);
+    };
 
+    // Initial values computation
+    const initialSourceMaterialOptions = Object.keys(formOptionsObj).map(sm => ({
+        label: formOptionsObj[sm]?.label ?? 'Default Label',
+        value: sm
+    }));
 
-    const sourceMaterialOptions = Object.keys(formOptionsObj).map(sm => ({ label: formOptionsObj[sm].label, value: sm }));
+    const initialProblemTypeOptions = getSafeValue(formOptionsObj, [Object.keys(formOptionsObj)[0], 'chapters', chapter, 'sections', section, 'problem_types'], []);
 
-    //prob_type
-    const problemTypeOptions = formOptionsObj[Object.keys(formOptionsObj)[0]]?.chapters[firstChapter]?.sections[firstSection]?.problem_types;
+    const sectionBasePath = [Object.keys(formOptionsObj)[0], 'chapters', chapter, 'sections'];
+    const sectionObj = getSafeValue(formOptionsObj, sectionBasePath, {});
+    const initialSectionOptions = Object.keys(sectionObj).map(sec => ({
+        label: sectionObj[sec]?.label ?? 'Default Section Label',
+        value: sec
+    }));
 
-    // section
-    const sectionKeys = Object.keys(formOptionsObj[Object.keys(formOptionsObj)[0]].chapters[firstChapter].sections);
-    const sectionOptions = sectionKeys.map(sec => ({ label: formOptionsObj[Object.keys(formOptionsObj)[0]].chapters[firstChapter].sections[sec].label, value: sec }));
+    const chaptersObj = getSafeValue(formOptionsObj, [Object.keys(formOptionsObj)[0], 'chapters'], {});
+    const initialChapterOptions = Object.keys(chaptersObj).map(chap => ({
+        label: chaptersObj[chap]?.label ?? 'Default Chapter Label',
+        value: chap
+    }));
 
-    // For Chapter Dropdown
-    const chapterOptions = Object.keys(formOptionsObj[Object.keys(formOptionsObj)[0]].chapters).map(chap => ({ label: formOptionsObj[Object.keys(formOptionsObj)[0]].chapters[chap].label, value: chap }));
+    // useState hooks
+    const [sourceMaterialOptions, setSourceMaterialOptions] = useState(initialSourceMaterialOptions);
+    const [problemTypeOptions, setProblemTypeOptions] = useState(initialProblemTypeOptions);
+    const [chapterOptions, setChapterOptions] = useState<Option[]>([]);
+    const [sectionOptions, setSectionOptions] = useState<Option[]>([]);
 
 
     const user = useUser();
@@ -62,51 +79,72 @@ const TextbookGenerateForm: React.FC<TextbookGenerateFormProps> = ({ onSubmit, s
         setGenerateFormData({ data: problemData });
     }, [sourceMaterial, chapter, section, problemType, setGenerateFormData]);
 
+    const handleSourceMaterialChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        const newSourceMaterial = event.target.value;
+        setSourceMaterial(newSourceMaterial);
+    
+        // Reset chapter, section, and problemType to initial states
+        setChapter('');
+        setSection('');
+        setProblemType('');
+    
+        // Compute new chapter options based on the newly selected source material
+        const newChapterKeys = Object.keys(formOptionsObj[newSourceMaterial]?.chapters || {});
+        const newChapterOptions: Option[] = newChapterKeys.map(chapKey => ({
+            label: formOptionsObj[newSourceMaterial]?.chapters[chapKey]?.label ?? 'Default Chapter Label',
+            value: chapKey
+        }));
+    
+        // Update state, and reset rest
+        setChapterOptions(newChapterOptions);
+        setSectionOptions([]);
+        setProblemTypeOptions([]);
+    
+    };
+
     const handleChapterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const newChapter = event.target.value;
         setChapter(newChapter);
+    
+        setSection('');
+        setProblemType('');
+    
+        // Compute new section options based on the new chapter
+        const newSectionBasePath = [Object.keys(formOptionsObj)[0], 'chapters', newChapter, 'sections'];
+        const newSectionObj = getSafeValue(formOptionsObj, newSectionBasePath, {});
+        const newSectionOptions = Object.keys(newSectionObj).map(sec => ({
+            label: newSectionObj[sec]?.label ?? 'Default Section Label',
+            value: sec
+        }));
+    
+        // Update state, and reset rest
+        setSectionOptions(newSectionOptions);
+        setProblemTypeOptions([]);
 
-        const firstSection = Object.keys(formOptionsObj[sourceMaterial].chapters[newChapter]?.sections || {})[0];
-        if (firstSection) {
-            setSection(firstSection);
-            const newProblemTypes = formOptionsObj[sourceMaterial].chapters[newChapter].sections[firstSection]?.problem_types || [];
-            if (newProblemTypes.length > 0) {
-                setProblemType(newProblemTypes[0].value);
-            }
-        }
     };
 
     const handleSectionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const newSection = event.target.value;
         setSection(newSection);
 
-        const newProblemTypes = formOptionsObj[sourceMaterial].chapters[chapter]?.sections[newSection]?.problem_types || [];
-        if (newProblemTypes.length > 0) {
-            setProblemType(newProblemTypes[0].value);
-        }
+        // Directly reset problemType to an empty string when a new section is selected
+        setProblemType('');
+
+        // Compute new problem types based on the newly selected section
+        const newProblemTypes = formOptionsObj[sourceMaterial]?.chapters[chapter]?.sections[newSection]?.problem_types || [];
+
+        // Optionally, update problem type options state if you have such a state variable
+        // This is just an example of how you might update the options for a dropdown of problem types
+        const newProblemTypeOptions = newProblemTypes.map((pt: Option) => ({
+            label: pt.label ?? 'Default Problem Type Label',
+            value: pt.value
+        }));
+        // Assuming you have a state for problemTypeOptions, you would update it like this:
+        setProblemTypeOptions(newProblemTypeOptions);
     };
 
-    const handleSourceMaterialChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        const newSourceMaterial = event.target.value;
-        setSourceMaterial(newSourceMaterial);
-
-        const newChapterKeys = Object.keys(formOptionsObj[newSourceMaterial]?.chapters || {});
-        const newChapter = newChapterKeys[0];
-        if (newChapter) {
-            setChapter(newChapter);
-
-            const newSectionKeys = Object.keys(formOptionsObj[newSourceMaterial]?.chapters[newChapter]?.sections || {});
-            const firstSection = newSectionKeys[0];
-            if (firstSection) {
-                setSection(firstSection);
-
-                const newProblemTypes = formOptionsObj[newSourceMaterial]?.chapters[newChapter]?.sections[firstSection]?.problem_types || [];
-                if (newProblemTypes.length > 0) {
-                    setProblemType(newProblemTypes[0].value);
-                }
-            }
-        }
-    };
+    
+    
 
     const handleChangeProblemType = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setProblemType(event.target.value);
@@ -161,34 +199,34 @@ const TextbookGenerateForm: React.FC<TextbookGenerateFormProps> = ({ onSubmit, s
                     showSelected={true}
                     label="Textbook (optional)"
                     options={sourceMaterialOptions}
-                    defaultValue={""}
+                    value={sourceMaterial}
                     handleChange={handleSourceMaterialChange}
                     className="w-full max-w-xs"
                 />
-                <Dropdown
+                {sourceMaterial && <Dropdown
                     showSelected={true}
                     label="Chapter (optional)"
                     options={chapterOptions}
-                    defaultValue={""}
+                    value={chapter}
                     handleChange={handleChapterChange}
                     className="w-full max-w-xs mt-2"
-                />
-                <Dropdown
+                />}
+                {chapter && <Dropdown
                     showSelected={true}
                     label="Section (optional)"
                     options={sectionOptions}
-                    defaultValue={""}
+                    value={section}
                     handleChange={handleSectionChange}
                     className="w-full max-w-xs mt-2"
-                />
-                <Dropdown
+                />}
+                {section && <Dropdown
                     showSelected={true}
                     label="Problem Type (optional)"
                     options={problemTypeOptions}
-                    defaultValue={""}
+                    value={problemType}
                     handleChange={handleChangeProblemType}
                     className="w-full max-w-xs mt-2"
-                />
+                />}
                 <SubmitButton
                     handleClick={handleMathSubmit}
                     buttonText={"Search"}

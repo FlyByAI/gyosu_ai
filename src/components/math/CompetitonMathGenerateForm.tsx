@@ -105,19 +105,19 @@ const CompetitionMathGenerateForm: React.FC<CompetitionMathGenerateFormProps> = 
                     showSelected={false}
                     label={"Problem Type"}
                     options={problemTypeOptions}
-                    defaultValue={problemType}
+                    value={problemType}
                     handleChange={(e) => handleProblemTypeChange(e.target.value)}
                     className="w-full max-w-xs"
                 />
-                <Dropdown
+                {problemType && <Dropdown
                     showSelected={false}
                     label={"Level"}
                     options={levelOptions}
-                    defaultValue={level}
+                    value={level}
                     handleChange={(e) => handleLevelChange(e.target.value)}
                     className="w-full max-w-xs mt-2"
 
-                />
+                />}
                 <SubmitButton
                     buttonText={"Search"}
                     handleClick={handleMathSubmit}

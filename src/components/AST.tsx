@@ -137,11 +137,11 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
                 ref={(node) => ref(drop(node))}
                 onMouseEnter={() => !isHovered && setIsHovered(true)}
                 onMouseLeave={() => isHovered && setIsHovered(false)}
-                className={`border-2 relative p-4 pe-12 w-full transition-all duration-300 ease-in-out ${isHovered ? "border-base-content border-dashed" : "border-transparent"
+                className={`border relative p-2 w-full transition-all duration-300 ease-in-out ${isHovered ? "border-base-content border-dashed" : "border-transparent"
                     } ${activeChunkIndices.includes(chunkIndex) ? "bg-base-content text-base-100" : ""}`}
                 title={!id ? "Click and drag to a problem bank." : "Click to select this problem."}
             >
-                <div className="absolute top-0 right-0 flex flex-row gap-2 mt-2">
+                <div className="absolute top-0 right-0 flex flex-row gap-2">
                     {!id && <AddChunkModal chunk={chunk} modalId={'addChunkModal' + chunk.chunkId} enabled={false} />}
 
                     {id && <button
@@ -190,6 +190,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
                             Selected
                         </label>
                     )}
+                    {!selectable && <h3 className="h-12">{}</h3>}
                 </div>
 
 

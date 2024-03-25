@@ -1,13 +1,13 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 
 interface DropdownProps {
   options: (string | { option_text: string } | { label: string, value: string })[] | { [key: string]: { option_text: string } };
   handleChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
   disabled?: boolean;
   className?: string;
-  defaultValue?: string;
   label: string;
   showSelected: boolean;
+  value: string;
 }
 
 const Dropdown: React.FC<DropdownProps> = ({
@@ -15,11 +15,11 @@ const Dropdown: React.FC<DropdownProps> = ({
   handleChange,
   disabled = false,
   className = '',
-  defaultValue = '',
   label,
-  showSelected
+  showSelected,
+  value
 }) => {
-  const renderOptions = () => {
+  const renderOptions = useCallback(() => {
     if (Array.isArray(options)) {
       return options.map((option, index) => {
         if (typeof option === 'string') {
@@ -35,18 +35,18 @@ const Dropdown: React.FC<DropdownProps> = ({
         <option key={index + 1} value={options[key].option_text}>{options[key].option_text}</option>
       ));
     }
-  };
+  },[options])
 
   return (
     <div className={`dropdown ${className}`} >
-      {label}: {showSelected && <span>{defaultValue}</span>}
+      {label}: {showSelected && <span>{value}</span>}
       <select
-        defaultValue={defaultValue}
         onChange={handleChange}
         disabled={disabled}
+        value={value}
         className="select select-bordered w-full max-w-xs"
       >
-        <option key={0} value={defaultValue}>{defaultValue}</option>
+        <option key={0} value={""}>{"None"}</option>
         {renderOptions()}
       </select>
     </div>
