@@ -11,13 +11,14 @@ interface MathProblemProps {
     enableTools?: boolean;
     selectable?: boolean;
     disableInstructionProblemDrag?: boolean;
+    problemBankId?: number;
 }
 
-const MathProblem: React.FC<MathProblemProps> = ({ problem, chunkIndex, insertChunk, updateChunk, enableTools, selectable }) => {
+const MathProblem: React.FC<MathProblemProps> = ({ problem, chunkIndex, insertChunk, updateChunk, enableTools, selectable, problemBankId }) => {
 
     const { activeChunkIndices, setActiveChunkIndices } = useSidebarContext();
 
-    
+
 
     const toggleChunkIndex = (chunkIndex: number): number[] => {
         if (activeChunkIndices.includes(chunkIndex)) {
@@ -31,7 +32,8 @@ const MathProblem: React.FC<MathProblemProps> = ({ problem, chunkIndex, insertCh
         <div className={`flex flex-row w-full `}>
             {problem &&
                 <ChunkComponent
-                    selectable={selectable}
+                    problemBankId={problemBankId}
+                    selectable={false}
                     chunk={problem}
                     insertChunk={insertChunk || undefined}
                     updateChunk={updateChunk}

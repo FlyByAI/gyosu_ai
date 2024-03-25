@@ -104,7 +104,7 @@ const ProblemBankShelf: React.FC<ProblemBankShelfProps> = ({ isExporting }) => {
                     </Link>
                 )}
                 <h3 className="text-xl mt-4 mb-4">Problem Banks</h3>
-                <button onClick={handleAddDocument} className="btn btn-accent w-full rounded-lg flex items-center justify-center gap-2 py-2 text-sm md:text-lg">
+                <button onClick={handleAddDocument} className="btn btn-secondary w-full rounded-lg flex items-center justify-center gap-2 py-2 text-sm md:text-lg">
                     Create <PlusIcon className="w-5 h-5" />
                 </button>
             </div>

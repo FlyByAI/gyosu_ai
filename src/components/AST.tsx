@@ -28,9 +28,10 @@ interface ChunkProps {
     enableTools?: boolean;
     disableInstructionProblemDrag?: boolean;
     selectable?: boolean; //used to disable drag and drop for instructions and problems when on the search
+    problemBankId?: number;
 }
 
-export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updateChunk, chunkIndex, enableTools, selectable, disableInstructionProblemDrag }) => {
+export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updateChunk, chunkIndex, enableTools, selectable, disableInstructionProblemDrag, problemBankId }) => {
     const { setDragState } = useDragContext();
 
     const { activeChunkIndices, setActiveChunkIndices } = useSidebarContext();
@@ -115,7 +116,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
     const { submitReroll, data: rerollData } = useSubmitReroll(`${apiUrl}/math_app/reroll/`)
 
     const handleReroll = () => {
-        submitReroll({ chunk: chunk, action: "reroll", chunkIndex: chunkIndex})
+        submitReroll({ chunk: chunk, action: "reroll", chunkIndex: chunkIndex, problemBankId: problemBankId})
         if (rerollData) {
             console.log("new chunk", rerollData.chunk)
         }
@@ -125,7 +126,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
     const { submitTextWithChunk, data: submitTextData } = useSubmitTextWithChunk(`${apiUrl}/math_app/chat/problem/`)
 
     const handleSubmitText = () => {
-        submitTextWithChunk({ chunk: chunk, userInput: userInput, chunkIndex: chunkIndex })
+        submitTextWithChunk({ chunk: chunk, userInput: userInput, chunkIndex: chunkIndex, problemBankId: problemBankId })
         console.log("new chunk", submitTextData)
     }
 
@@ -177,12 +178,12 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
                             }
                         })
                     }}>
-                    <input
+                    {selectable && <input
                         type="checkbox"
                         checked={activeChunkIndices.includes(chunkIndex)}
                         className="checkbox checkbox-primary"
                         id={`checkbox-${chunkIndex}`} // Ensure unique ID for labeling
-                    />
+                    />}
                     {selectable && activeChunkIndices.includes(chunkIndex) && (
                         <label htmlFor={`checkbox-${chunkIndex}`} className="text-green-500 ml-2 flex items-center">
                             Selected

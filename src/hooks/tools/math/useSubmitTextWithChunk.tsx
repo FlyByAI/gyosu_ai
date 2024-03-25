@@ -13,7 +13,7 @@ const useSubmitTextWithChunk = (endpoint: string) => {
     const options = { site_language: languageNames[language] };
 
     const submitTextWithChunkMutation = useMutation(
-        async ({ userInput, chunk, chunkIndex }: { userInput: string; chunk: Chunk, chunkIndex: number }) => {
+        async ({ userInput, chunk, chunkIndex }: { userInput: string; chunk: Chunk, chunkIndex: number, problemBankId?: number }) => {
             const token = session ? await session.getToken() : "none";
             const body = humps.decamelizeKeys({ userInput, chunk, ...options });
 

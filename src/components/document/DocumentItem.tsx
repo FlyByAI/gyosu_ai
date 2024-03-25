@@ -164,7 +164,7 @@ const DocumentItem: React.FC<DocumentItemProps> = ({ document, onDropChunk, isEx
                         )}
                     </div>
                     <div className="mt-2">
-                        <span className={`badge ${document.problemChunks?.length ? "badge-accent" : "badge-ghost"} badge-outline font-medium`}>{document.problemChunks?.length || "No"} Problems</span>
+                        <span className={`badge font-medium`}>{document.problemChunks?.length || "No"} Problems</span>
                     </div>
                 </div>
             </li>

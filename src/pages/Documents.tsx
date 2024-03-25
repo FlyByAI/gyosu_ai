@@ -57,7 +57,7 @@ const Documents: React.FC = () => {
                                     {documentDownloads.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
                                         .map((doc) => (
                                             <li key={doc.id} className="border-base-200 border rounded-box">
-                                                <div className='flex justify-between items-center p-4 bg-base-300'>
+                                                <div className='flex justify-between items-center p-4 bg-base-200'>
                                                     <div className='flex flex-col space-y-2'>
                                                         <span className="link link-hover" onClick={() => handleDocumentClick(doc.blobName, "document")}>
                                                             {doc.blobName}

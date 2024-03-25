@@ -9,7 +9,7 @@ const Pricing = () => {
                 <div className='grid md:grid-cols-3 w-full'>
 
                     {/* Free Tier */}
-                    <div className="card bg-base-300 shadow-xl p-6 mx-2">
+                    <div className="card bg-base-200 shadow-xl p-6 mx-2">
                         <div className="card-body text-left">
                             <h2 className="card-title text-center">Free Tier</h2>
                             <div className="list-inside space-y-2 mt-4">
@@ -22,7 +22,7 @@ const Pricing = () => {
                     </div>
 
                     {/* Paid Tier */}
-                    <div className="card bg-base-300 shadow-xl p-6 mx-2">
+                    <div className="card bg-base-200 shadow-xl p-6 mx-2">
                         <div className="card-body text-left">
                             <h2 className="card-title text-center">Paid Tier - $10/Month</h2>
                             <div className="list-inside space-y-2 mt-4">
@@ -43,7 +43,7 @@ const Pricing = () => {
                     </div>
 
                     {/* Custom School Package */}
-                    <div className="card bg-base-300 shadow-xl p-6 mx-2">
+                    <div className="card bg-base-200 shadow-xl p-6 mx-2">
                         <div className="card-body text-left">
                             <h2 className="card-title text-center">Custom School Package</h2>
                             <div className="list-inside space-y-2 mt-4">

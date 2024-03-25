@@ -100,6 +100,7 @@ const ProblemBank: React.FC = () => {
                         document.problemChunks.map((chunk, chunkIndex) => (
                             <div key={chunkIndex} className='mx-auto mb-4 bg-base-200 p-4 rounded-lg shadow'>
                                 <MathProblem
+                                    problemBankId={id}
                                     insertChunk={insertChunk}
                                     selectable={true}
                                     disableInstructionProblemDrag={true}

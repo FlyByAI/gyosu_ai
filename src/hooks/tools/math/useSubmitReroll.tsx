@@ -11,6 +11,7 @@ interface SubmitRerollParams {
     instruction?: Instruction;
     problem?: Problem;
     chunkIndex?: number;
+    problemBankId?: number;
 }
 
 interface SubmitRerollResponse {
@@ -24,7 +25,7 @@ const useSubmitReroll = (endpoint: string) => {
     const options = { site_language: languageNames[language] };
 
     const submitRerollMutation = useMutation<SubmitRerollResponse, Error, SubmitRerollParams>(
-        async ({ chunk, action, instruction, problem, chunkIndex }): Promise<SubmitRerollResponse> => {
+        async ({ chunk, action, instruction, problem, chunkIndex, problemBankId }): Promise<SubmitRerollResponse> => {
             const token = session ? await session.getToken() : "none";
             const body = humps.decamelizeKeys({ chunk, action, instruction, problem, ...options });
 
