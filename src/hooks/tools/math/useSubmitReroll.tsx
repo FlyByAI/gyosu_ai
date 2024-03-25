@@ -15,7 +15,8 @@ interface SubmitRerollParams {
 }
 
 interface SubmitRerollResponse {
-    chunk: Chunk;
+    chunks: Chunk[]
+    chunkIndex?: number
 }
 
 const useSubmitReroll = (endpoint: string) => {

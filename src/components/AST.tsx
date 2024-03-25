@@ -1,5 +1,5 @@
 import 'katex/dist/katex.min.css';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { DropTargetMonitor, useDrag, useDrop } from 'react-dnd';
 import ReactMarkdown from 'react-markdown';
 import { useParams } from 'react-router-dom';
@@ -16,7 +16,6 @@ import useSubmitTextWithChunk from '../hooks/tools/math/useSubmitTextWithChunk';
 import useEnvironment from '../hooks/useEnvironment';
 import { CHUNK_DRAG_TYPE, Chunk, INSTRUCTION_DRAG_TYPE, INSTRUCTION_TYPE, Instruction, PROBLEM_DRAG_TYPE, PROBLEM_TYPE, Problem, Subproblem, Subproblems } from '../interfaces';
 import AddChunkModal from './AddChunkModal';
-import ToolWrapper from './math/ToolWrapper';
 
 
 interface ChunkProps {
@@ -33,6 +32,8 @@ interface ChunkProps {
 
 export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updateChunk, chunkIndex, enableTools, selectable, disableInstructionProblemDrag, problemBankId }) => {
     const { setDragState } = useDragContext();
+
+    const [currentRerollIndex, setCurrentRerollIndex] = useState(0);
 
     const { activeChunkIndices, setActiveChunkIndices } = useSidebarContext();
     const { apiUrl } = useEnvironment();
@@ -116,20 +117,40 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
     const { submitReroll, data: rerollData } = useSubmitReroll(`${apiUrl}/math_app/reroll/`)
 
     const handleReroll = () => {
-        console.log(problemBankId)
-        submitReroll({ chunk: chunk, action: "reroll", chunkIndex: chunkIndex, problemBankId: problemBankId})
-        if (rerollData) {
-            console.log("new chunk", rerollData.chunk)
+        if (!rerollData) {
+            submitReroll({ chunk: chunk, action: "reroll", chunkIndex: chunkIndex, problemBankId: problemBankId })
         }
-
+        else {
+            // set the value of the rerolledProblem to the next index in the rerollData.problems array
+            console.log("setting index + 1 for reroll data", )
+            setCurrentRerollIndex((prev) => {
+                if (prev === rerollData.chunks.length - 1) {
+                    return 0
+                }
+                else {
+                    return prev + 1
+                }
+            })
+        }
     }
+
+    useEffect(() => {
+        if (rerollData) {
+            console.log("new chunks", rerollData)
+        }
+    }, [rerollData])
 
     const { submitTextWithChunk, data: submitTextData } = useSubmitTextWithChunk(`${apiUrl}/math_app/chat/problem/`)
 
     const handleSubmitText = () => {
         submitTextWithChunk({ chunk: chunk, userInput: userInput, chunkIndex: chunkIndex, problemBankId: problemBankId })
-        console.log("new chunk", submitTextData)
     }
+
+    useEffect(() => {
+        if (submitTextData) {
+            console.log("new chunks", submitTextData)
+        }
+    }, [submitTextData])
 
     return (
         <>
@@ -152,7 +173,6 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
                         Reroll
                     </button>}
 
-
                     {id && (
                         <button
                             onClick={(e) => {
@@ -165,7 +185,6 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
                             Delete
                         </button>
                     )}
-
 
                 </div>
 
@@ -190,9 +209,8 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
                             Selected
                         </label>
                     )}
-                    {!selectable && <h3 className="h-12">{}</h3>}
+                    {!selectable && <h3 className="h-12">{ }</h3>}
                 </div>
-
 
                 {chunk?.content?.map((item, index) => {
                     const element = (() => {
@@ -206,22 +224,28 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
                         }
                     })();
 
-                    const wrappedElement = enableTools ? (
-                        <ToolWrapper
-                            key={`${item.type}-${index}-${chunk.content.length}`}
-                            insertChunk={insertChunk}
-                            updateChunk={updateChunk}
-                            chunkIndex={chunkIndex}
-                            chunk={chunk}
-                            {...(item.type === 'instruction' ? { instruction: item } : { problem: item })}
-                        >
-                            {element}
-                        </ToolWrapper>
-                    ) : element;
-
                     return (
                         <div key={`${item.type}-${index}-${chunk.content.length}`}>
-                            {wrappedElement}
+                            {element}
+                        </div>
+                    );
+                })}
+
+                {chunkIndex == rerollData?.chunkIndex && rerollData?.chunks[currentRerollIndex].content.map((rerolledItem, rerollIndex) => {
+                    const rerollElement = (() => {
+                        switch (rerolledItem.type) {
+                            case 'instruction':
+                                return <InstructionComponent debug={true} chunkIndex={chunkIndex} instructionIndex={rerollIndex} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} instruction={rerolledItem} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
+                            case 'problem':
+                                return <ProblemComponent chunkIndex={chunkIndex} problemIndex={rerollIndex} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} problem={rerolledItem} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
+                            default:
+                                return <div>None</div>;
+                        }
+                    })();
+
+                    return (
+                        <div key={`${rerolledItem.type}-${rerollIndex}-${chunk.content.length}`}>
+                            {chunkIndex == rerollData?.chunkIndex && rerollElement}
                         </div>
                     );
                 })}
@@ -261,9 +285,10 @@ interface InstructionProps {
     disableInstructionProblemDrag?: boolean; //used to disable drag and drop for instructions and problems when on the search
 
     chunkIndex: number;
+    debug?: boolean;
 }
 
-const InstructionComponent: React.FC<InstructionProps> = ({ chunkIndex, parentChunk, parentChunkIndex, updateChunk, instruction, instructionIndex, disableInstructionProblemDrag }) => {
+const InstructionComponent: React.FC<InstructionProps> = ({ debug, chunkIndex, parentChunk, parentChunkIndex, updateChunk, instruction, instructionIndex, disableInstructionProblemDrag }) => {
     const { setDragState } = useDragContext();
 
     const [, ref] = useDrag({
@@ -306,6 +331,8 @@ const InstructionComponent: React.FC<InstructionProps> = ({ chunkIndex, parentCh
 
     });
 
+    if (debug) { console.log(instruction.content) }
+
     return (
         <div
             ref={(node) => disableInstructionProblemDrag ? ref(drop(node)) : node}
@@ -344,6 +371,8 @@ const InstructionComponent: React.FC<InstructionProps> = ({ chunkIndex, parentCh
                                     </ReactMarkdown>
                                 );
                             case 'image':
+                                //todo: get better descriptions added to the ASTs
+                                // console.log("image", item)
                                 return (
                                     <img
                                         src={item.value}
@@ -462,6 +491,8 @@ const ProblemComponent: React.FC<ProblemProps> = ({ chunkIndex, parentChunk, par
                                     </ReactMarkdown>
                                 );
                             case 'image':
+                                //todo: get better descriptions added to the ASTs
+                                // console.log("image", item)
                                 return (
                                     <img
                                         src={item.value}
@@ -537,6 +568,8 @@ const SubproblemComponent: React.FC<{ subproblem: Subproblem }> = ({ subproblem 
                                     </ReactMarkdown>
                                 );
                             case 'image':
+                                //todo: get better descriptions added to the ASTs
+                                // console.log("image", item)
                                 return (
                                     <img
                                         src={item.value}
