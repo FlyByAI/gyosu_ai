@@ -19,13 +19,13 @@ const RegularNavbar: React.FC = () => {
             <header className="navbar fixed top-0 left-0 z-20 w-full bg-base-100">
                 {/* Mobile view */}
                 <div className="navbar-start md:hidden">
-                   
+
                 </div>
                 <div className="navbar-center md:hidden">
                     <Link to="/" className="btn btn-ghost normal-case text-xl">Gyosu.ai</Link>
                 </div>
                 <div className="navbar-end md:hidden">
-                <HamburgerWrapper>
+                    <HamburgerWrapper>
                         <nav className='flex flex-col space-y-2'>
                             {/* <LanguageDropdown /> */}
                             <Link to="/math-app/chat" className="relative text-lg mx-3 hover:underline dark:text-gray-200 font-mono font-bold">
@@ -51,7 +51,7 @@ const RegularNavbar: React.FC = () => {
                         </nav>
                     </HamburgerWrapper>
                     <SignedOut>
-                    <div
+                        <div
                             className="flex justify-center items-center bg-orange-500 hover:bg-orange-600 rounded-md p-2 cursor-pointer"
                             onClick={(e) => {
                                 // Programmatically click the inner button
@@ -61,7 +61,7 @@ const RegularNavbar: React.FC = () => {
                                 }
                             }}
                         >
-                        <SignInButton mode="modal" afterSignInUrl={window.location.href} />
+                            <SignInButton mode="modal" afterSignInUrl={window.location.href} />
                         </div>
                     </SignedOut>
                 </div>
@@ -71,11 +71,11 @@ const RegularNavbar: React.FC = () => {
                     <Link to="/" className="btn btn-ghost normal-case text-xl">Gyosu.ai</Link>
                 </div>
                 <div className="navbar-end hidden md:flex items-center flex-grow">
-                        <Link to="/math-app/chat" className="btn btn-ghost">GyosuChat <span className="badge badge-info">New!</span></Link>
-                        <Link to="/math-app" className="btn btn-ghost">Problem Search</Link>
-                        <Link to="/math-app/documents" className="btn btn-ghost">My Documents</Link>
-                        <Link to="/faq" className="btn btn-ghost">How To</Link>
-                        <Link to="/subscribe" className="btn btn-ghost">Pricing</Link>
+                    <Link to="/math-app/chat" className="btn btn-ghost">GyosuChat <span className="badge badge-info">New!</span></Link>
+                    <Link to="/math-app" className="btn btn-ghost">Problem Search</Link>
+                    <Link to="/math-app/documents" className="btn btn-ghost">My Documents</Link>
+                    <Link to="/faq" className="btn btn-ghost">How To</Link>
+                    <Link to="/subscribe" className="btn btn-ghost">Pricing</Link>
                     <SignedIn>
                         <UserButton afterSignOutUrl={window.location.href} appearance={darkMode ? getGyosuClerkTheme() : undefined} />
                         {subscriptionInfo?.has_valid_subscription && <ManageSubscriptionButton />}

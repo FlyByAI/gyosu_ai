@@ -19,10 +19,13 @@ const ProblemSearchNavbar: React.FC = () => {
       <div className='mt-20 md:mt-16'></div>
       <header className="navbar fixed top-0 left-0 z-20 w-full bg-base-100">
         {/* Mobile view */}
+        <div className="navbar-start md:hidden">
 
-        <HamburgerWrapperX mobileOrDesktop={'mobile'}>
-          <ProblemBankShelf isExporting={false} />
-        </HamburgerWrapperX>
+          <HamburgerWrapperX mobileOrDesktop={'mobile'}>
+            <ProblemBankShelf isExporting={false} />
+          </HamburgerWrapperX>
+        </div>
+
         <div className="navbar-center md:hidden">
           <Link to="/" className="btn btn-ghost normal-case text-xl">Gyosu.ai</Link>
         </div>

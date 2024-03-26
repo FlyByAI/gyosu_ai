@@ -53,7 +53,7 @@ const MathGenerate: React.FC = () => {
             <div className="flex flex-col md:flex-row w-full">
                 {/* Always visible Problem Bank Shelf on the side for larger screens, toggle-able or hidden on smaller screens */}
                 <div className='w-1/4'>
-                    <div style={{ position: 'fixed', top: '10px', left: '10px', zIndex: 999 }}> {/* This div contains the sidebar */}
+                    <div style={{ position: 'fixed', top: '80px', left: '10px', zIndex: 999 }}> {/* This div contains the sidebar */}
                         <div className={`card bg-base-200 shadow-lg my-4 md:my-0 md:mr-4 p-4 ${getShowClass('desktop')}`}>
                             <ProblemBankShelf isExporting={false} />
                         </div>
