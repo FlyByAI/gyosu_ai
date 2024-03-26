@@ -5,6 +5,11 @@ import { useLanguage } from '../../../contexts/useLanguage';
 import { languageNames } from '../../../helpers/language';
 import { Chunk } from '../../../interfaces';
 
+interface SubmitTextWithChunkResponse {
+    chunk: Chunk
+    chunkIndex?: number
+}
+
 const useSubmitTextWithChunk = (endpoint: string) => {
     const { session } = useClerk();
 
@@ -30,7 +35,9 @@ const useSubmitTextWithChunk = (endpoint: string) => {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
 
-            return response.json().then((json) => humps.camelizeKeys({ ...json, chunkIndex }));
+            const responseData = await response.json();
+            return humps.camelizeKeys({ ...responseData, chunkIndex }) as SubmitTextWithChunkResponse;
+
         }
     );
 
@@ -39,6 +46,7 @@ const useSubmitTextWithChunk = (endpoint: string) => {
         isLoading: submitTextWithChunkMutation.isLoading,
         error: submitTextWithChunkMutation.error,
         data: submitTextWithChunkMutation.data,
+        reset: submitTextWithChunkMutation.reset,
     };
 };
 

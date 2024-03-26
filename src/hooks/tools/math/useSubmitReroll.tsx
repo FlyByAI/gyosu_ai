@@ -44,15 +44,16 @@ const useSubmitReroll = (endpoint: string) => {
             }
 
             const responseData = await response.json();
-            return humps.camelizeKeys({...responseData, chunkIndex}) as SubmitRerollResponse;
+            return humps.camelizeKeys({ ...responseData, chunkIndex }) as SubmitRerollResponse;
         }
     );
 
     return {
-        submitReroll: submitRerollMutation.mutateAsync, // Use mutateAsync here
+        submitReroll: submitRerollMutation.mutateAsync,
         isLoading: submitRerollMutation.isLoading,
         error: submitRerollMutation.error,
         data: submitRerollMutation.data,
+        reset: submitRerollMutation.reset,
     };
 };
 

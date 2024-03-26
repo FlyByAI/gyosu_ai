@@ -88,37 +88,43 @@ const ProblemBank: React.FC = () => {
 
             <CreateDocxModal enabled={activeChunkIndices.length > 0} document={document} modalId="createDocx" />
             <ContentWrapper>
-            <div className="w-full flex-grow mt-4 overflow-x-hidden">
-                <div className="space-y-4 bg-base-100 p-4 border border-base-300 rounded-lg shadow">
-                    <h2 className="text-center text-lg font-bold">How to Create Your Worksheet</h2>
-                    <ol className="list-decimal list-inside space-y-2">
-                        <li className="italic">Select problems from the list below.</li>
-                        <li className="italic">Click "Create Worksheet" to generate your document.</li>
-                    </ol>
+                <div className="w-full flex-grow mt-4 overflow-x-hidden pb-28">
+                    <div className="space-y-4 bg-base-100 p-4 border border-base-300 rounded-lg shadow">
+                        <h2 className="text-center text-lg font-bold">How to Create Your Worksheet</h2>
+                        <ol className="list-inside space-y-2">
+                            <li className="italic">Review the problems below, make changes, and finalize.</li>
+                            <li className="italic">Click "Export Problems" to generate your document.</li>
+                        </ol>
 
-                    {document.problemChunks && document?.problemChunks?.length > 0 ? (
-                        document.problemChunks.map((chunk, chunkIndex) => (
-                            <div key={chunkIndex} className='mx-auto mb-4 bg-base-200 p-4 rounded-lg shadow'>
-                                <MathProblem
-                                    problemBankId={id}
-                                    insertChunk={insertChunk}
-                                    selectable={true}
-                                    disableInstructionProblemDrag={true}
-                                    updateChunk={updateDocumentChunk}
-                                    chunkIndex={chunkIndex}
-                                    problem={chunk}
-                                    enableTools={true}
-                                />
+                        {document.problemChunks && document?.problemChunks?.length > 0 ? (
+                            document.problemChunks.map((chunk, chunkIndex) => (
+                                <div key={chunkIndex} className='mx-auto mb-4 bg-base-200 p-4 rounded-lg shadow'>
+                                    <MathProblem
+                                        problemBankId={id}
+                                        insertChunk={insertChunk}
+                                        selectable={true}
+                                        disableInstructionProblemDrag={true}
+                                        updateChunk={updateDocumentChunk}
+                                        chunkIndex={chunkIndex}
+                                        problem={chunk}
+                                        enableTools={true}
+                                    />
+                                </div>
+                            ))
+                        ) : (
+                            <div className="text-center my-4">
+                                You don't have any problems in this bank yet. Try
+                                <Link to="/math-app" className="text-primary font-bold underline px-2">searching</Link> for some.
                             </div>
-                        ))
-                    ) : (
-                        <div className="text-center my-4">
-                            You don't have any problems in this bank yet. Try
-                            <Link to="/math-app" className="text-primary font-bold underline px-2">searching</Link> for some.
-                        </div>
-                    )}
+                        )}
+
+                        {
+                            <button className='btn btn-primary'
+                                onClick={() => insertChunk(document.problemChunks ? document.problemChunks.length : 0)}
+                            > Add new chunk</button>
+                        }
+                    </div>
                 </div>
-            </div>
             </ContentWrapper>
         </div>
 

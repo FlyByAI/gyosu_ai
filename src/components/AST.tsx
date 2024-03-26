@@ -114,15 +114,14 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
 
     const { isDesktop } = useScreenSize();
 
-    const { submitReroll, data: rerollData } = useSubmitReroll(`${apiUrl}/math_app/reroll/`)
+    const { submitReroll, data: rerollData, reset: resetReroll } = useSubmitReroll(`${apiUrl}/math_app/reroll/`)
 
     const handleReroll = () => {
         if (!rerollData) {
             submitReroll({ chunk: chunk, action: "reroll", chunkIndex: chunkIndex, problemBankId: problemBankId })
         }
         else {
-            // set the value of the rerolledProblem to the next index in the rerollData.problems array
-            console.log("setting index + 1 for reroll data", )
+            // loop 
             setCurrentRerollIndex((prev) => {
                 if (prev === rerollData.chunks.length - 1) {
                     return 0
@@ -134,23 +133,35 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
         }
     }
 
-    useEffect(() => {
-        if (rerollData) {
-            console.log("new chunks", rerollData)
-        }
-    }, [rerollData])
-
-    const { submitTextWithChunk, data: submitTextData } = useSubmitTextWithChunk(`${apiUrl}/math_app/chat/problem/`)
+    const { submitTextWithChunk, data: submitTextData, reset: resetTextChange } = useSubmitTextWithChunk(`${apiUrl}/math_app/chat/problem/`)
 
     const handleSubmitText = () => {
         submitTextWithChunk({ chunk: chunk, userInput: userInput, chunkIndex: chunkIndex, problemBankId: problemBankId })
     }
 
+
+    const handleAcceptChunkChange = () => {
+        if (rerollData) {
+            const updatedChunk = rerollData.chunks[currentRerollIndex]
+            updateChunk(updatedChunk, chunkIndex)
+            resetReroll()
+        }
+        if (submitTextData) {
+            const updatedChunk = submitTextData.chunk
+            updateChunk(updatedChunk, chunkIndex)
+            resetTextChange()
+        }
+
+    }
+
     useEffect(() => {
         if (submitTextData) {
-            console.log("new chunks", submitTextData)
+            console.log("new text changed chunks", submitTextData)
         }
-    }, [submitTextData])
+        if (rerollData) {
+            console.log("new rerolled chunks", rerollData)
+        }
+    }, [submitTextData, rerollData])
 
     return (
         <>
@@ -231,25 +242,66 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
                     );
                 })}
 
-                {chunkIndex == rerollData?.chunkIndex && rerollData?.chunks[currentRerollIndex].content.map((rerolledItem, rerollIndex) => {
-                    const rerollElement = (() => {
-                        switch (rerolledItem.type) {
-                            case 'instruction':
-                                return <InstructionComponent debug={true} chunkIndex={chunkIndex} instructionIndex={rerollIndex} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} instruction={rerolledItem} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
-                            case 'problem':
-                                return <ProblemComponent chunkIndex={chunkIndex} problemIndex={rerollIndex} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} problem={rerolledItem} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
-                            default:
-                                return <div>None</div>;
-                        }
-                    })();
+                {chunkIndex == rerollData?.chunkIndex &&
+                    <div>
+                        Rerolled Chunk:
+                        {rerollData?.chunks[currentRerollIndex].content.map((rerolledItem, rerollIndex) => {
+                            const rerollElement = (() => {
+                                switch (rerolledItem.type) {
+                                    case 'instruction':
+                                        return <InstructionComponent debug={true} chunkIndex={chunkIndex} instructionIndex={rerollIndex} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} instruction={rerolledItem} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
+                                    case 'problem':
+                                        return <ProblemComponent chunkIndex={chunkIndex} problemIndex={rerollIndex} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} problem={rerolledItem} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
+                                    default:
+                                        return <div>None</div>;
+                                }
+                            })();
 
-                    return (
-                        <div key={`${rerolledItem.type}-${rerollIndex}-${chunk.content.length}`}>
-                            {chunkIndex == rerollData?.chunkIndex && rerollElement}
-                        </div>
-                    );
-                })}
-                {id && <>
+                            return (
+                                <div key={`${rerolledItem.type}-${rerollIndex}-${chunk.content.length}`}>
+                                    {chunkIndex == rerollData?.chunkIndex && rerollElement}
+                                </div>
+                            );
+                        })}
+                    </div>
+
+                }
+
+                {chunkIndex == submitTextData?.chunkIndex &&
+                    <div>
+                        Text changed:
+                        {
+                            submitTextData?.chunk.content.map((changedItem, changedIndex) => {
+                                const rerollElement = (() => {
+                                    switch (changedItem.type) {
+                                        case 'instruction':
+                                            return <InstructionComponent debug={true} chunkIndex={chunkIndex} instructionIndex={changedIndex} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} instruction={changedItem} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
+                                        case 'problem':
+                                            return <ProblemComponent chunkIndex={chunkIndex} problemIndex={changedIndex} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} problem={changedItem} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
+                                        default:
+                                            return <div>None</div>;
+                                    }
+                                })();
+
+                                return (
+                                    <div key={`${changedItem.type}-${changedIndex}-${chunk.content.length}`}>
+                                        {chunkIndex == submitTextData?.chunkIndex && rerollElement}
+                                    </div>
+                                );
+                            })}
+                    </div>}
+
+                {id && (submitTextData || rerollData) && <>
+                    <button
+                        className="btn btn-secondary tooltip tooltip-bottom"
+                        data-tip="Accept this change."
+                        onClick={handleAcceptChunkChange}
+                    >
+                        Accept
+                    </button>
+                </>}
+
+                {id && !submitTextData && !rerollData && <>
                     <input
                         type="text"
                         placeholder="Please make this problem easier."
