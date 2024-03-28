@@ -70,7 +70,7 @@ const Documents: React.FC = () => {
                                                             <span className="text-error">No Answer Key</span>
                                                         ) : (
                                                             <span className="link link-hover" onClick={() => handleDocumentClick(doc.blobName, "answer_key")}>
-                                                                Download Answer Key
+                                                                    Download Answer Key
                                                             </span>
                                                         )}
                                                     </div>

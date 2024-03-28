@@ -93,7 +93,7 @@ const CreateDocxForm: React.FC<CreateDocsFormProps> = ({ document }) => {
                         <button onClick={() => window.open(downloadLinks.pdfUrl, '_blank')} className="btn btn-success flex-1">
                             Download PDF
                         </button>
-                        <button onClick={() => window.open(downloadLinks.answerKeyUrl, '_blank')} className="btn btn-warning flex-1">
+                        <button disabled={downloadLinks.answerKeyUrl == "None" || downloadLinks.answerKeyUrl == ""} onClick={() => window.open(downloadLinks.answerKeyUrl, '_blank')} className="btn btn-warning flex-1">
                             Answer Key
                         </button>
                     </div>
