@@ -35,13 +35,12 @@ interface ChunkProps {
     insertChunk?: (chunkIndex: number) => void;
     updateChunk: (updatedChunk: Chunk, chunkIndex: number) => void;
     chunkIndex: number;
-    enableTools?: boolean;
     disableInstructionProblemDrag?: boolean;
     selectable?: boolean; //used to disable drag and drop for instructions and problems when on the search
     problemBankId?: string;
 }
 
-export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updateChunk, chunkIndex, enableTools, selectable, disableInstructionProblemDrag, problemBankId }) => {
+export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunkIndex, selectable, disableInstructionProblemDrag, problemBankId }) => {
     const { setDragState } = useDragContext();
 
     const [currentRerollIndex, setCurrentRerollIndex] = useState(0);
@@ -415,7 +414,7 @@ interface InstructionProps {
     debug?: boolean;
 }
 
-const InstructionComponent: React.FC<InstructionProps> = ({ debug, chunkIndex, parentChunk, parentChunkIndex, updateChunk, instruction, instructionIndex, disableInstructionProblemDrag }) => {
+const InstructionComponent: React.FC<InstructionProps> = ({ debug, parentChunk, parentChunkIndex, updateChunk, instruction, instructionIndex, disableInstructionProblemDrag }) => {
     const { setDragState } = useDragContext();
 
     const [, ref] = useDrag({
@@ -536,7 +535,7 @@ interface ProblemProps {
     chunkIndex: number;
 }
 
-const ProblemComponent: React.FC<ProblemProps> = ({ chunkIndex, parentChunk, parentChunkIndex, updateChunk, problem, problemIndex, disableInstructionProblemDrag }) => {
+const ProblemComponent: React.FC<ProblemProps> = ({ parentChunk, parentChunkIndex, updateChunk, problem, problemIndex, disableInstructionProblemDrag }) => {
     const { setDragState } = useDragContext();
 
     const [, ref] = useDrag({

@@ -38,7 +38,7 @@ const Pricing = () => {
                                 <p>Use code <b>GYOSU50</b> to get 50% off monthly rate.</p>
                                 <p>Cancel anytime.</p>
                             </div>
-                            <SubscribePaidButton className="btn btn-primary mt-4" />
+                            <SubscribePaidButton />
                         </div>
                     </div>
 

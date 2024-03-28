@@ -11,7 +11,7 @@ import { SubproblemsComponent } from '../AST';
 interface DocumentPreviewProps {
     document: Document;
     disabledClick?: boolean;
-    handleDelete: (document: Document) => void;
+    handleDelete?: (document: Document) => void;
 }
 
 const DocumentPreview: React.FC<DocumentPreviewProps> = ({ document, disabledClick, handleDelete }) => {
@@ -20,7 +20,7 @@ const DocumentPreview: React.FC<DocumentPreviewProps> = ({ document, disabledCli
     const { creator, upvotes, tips, id, problemChunks } = document;
 
     const renderContent = (content: (Text | Math | Table | Image | Subproblems)[]) => {
-        return content.map((item, index) => {
+        return content.map((item) => {
             switch (item.type) {
                 case 'text':
                     return (
@@ -85,7 +85,7 @@ const DocumentPreview: React.FC<DocumentPreviewProps> = ({ document, disabledCli
         >
             <div className="card-header">
                 <div className="card-title">{document.title}</div>
-                    <div className="absolute top-0 right-0 flex gap-2 p-2">
+                <div className="absolute top-0 right-0 flex gap-2 p-2">
                     {/* <button
                         onClick={(e) => { e.stopPropagation(); handleEditClick(); }}
                         className="btn btn-sm btn-ghost tooltip tooltip-left"
@@ -93,16 +93,18 @@ const DocumentPreview: React.FC<DocumentPreviewProps> = ({ document, disabledCli
                     >
                         <EditIcon />
                     </button> */}
-                    <button
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            handleDelete(document);
-                        }}
-                        className="btn btn-sm btn-ghost tooltip tooltip-left"
-                        data-tip="Delete"
-                    >
-                        <TrashIcon />
-                    </button>
+                    {handleDelete &&
+                        <button
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                handleDelete(document);
+                            }}
+                            className="btn btn-sm btn-ghost tooltip tooltip-left"
+                            data-tip="Delete"
+                        >
+                            <TrashIcon />
+                        </button>
+                    }
                 </div>
             </div>
             <div className="card-body">

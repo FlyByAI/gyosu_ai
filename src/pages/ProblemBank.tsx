@@ -110,7 +110,6 @@ const ProblemBank: React.FC = () => {
                                     <MathProblem
                                         problemBankId={id}
                                         insertChunk={insertChunk}
-                                        selectable={true}
                                         disableInstructionProblemDrag={true}
                                         updateChunk={updateDocumentChunk}
                                         chunkIndex={chunkIndex}

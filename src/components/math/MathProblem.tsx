@@ -1,5 +1,4 @@
 import React from 'react';
-import { useSidebarContext } from '../../contexts/useSidebarContext';
 import { Chunk } from '../../interfaces';
 import { ChunkComponent } from '../AST';
 
@@ -9,24 +8,11 @@ interface MathProblemProps {
     insertChunk?: (chunkIndex: number) => void;
     updateChunk: (updatedChunk: Chunk, chunkIndex: number) => void;
     enableTools?: boolean;
-    selectable?: boolean;
     disableInstructionProblemDrag?: boolean;
     problemBankId?: string;
 }
 
-const MathProblem: React.FC<MathProblemProps> = ({ problem, chunkIndex, insertChunk, updateChunk, enableTools, selectable, problemBankId }) => {
-
-    const { activeChunkIndices, setActiveChunkIndices } = useSidebarContext();
-
-
-
-    const toggleChunkIndex = (chunkIndex: number): number[] => {
-        if (activeChunkIndices.includes(chunkIndex)) {
-            return activeChunkIndices.filter(index => index !== chunkIndex);
-        } else {
-            return [...activeChunkIndices, chunkIndex];
-        }
-    };
+const MathProblem: React.FC<MathProblemProps> = ({ problem, chunkIndex, insertChunk, updateChunk, problemBankId }) => {
 
     return (
         <div className={`flex flex-row w-full `}>
@@ -38,7 +24,6 @@ const MathProblem: React.FC<MathProblemProps> = ({ problem, chunkIndex, insertCh
                     insertChunk={insertChunk || undefined}
                     updateChunk={updateChunk}
                     chunkIndex={chunkIndex}
-                    enableTools={enableTools}
                 />}
         </div>
     )

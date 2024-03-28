@@ -29,7 +29,6 @@ const ChunkManager: React.FC<ChunkManagerProps> = ({ chunkArray, setChunkArray }
                         <div className='w-full rounded-xl'>
                             <MathProblem
                                 key={chunkIndex}
-                                selectable={false}
                                 disableInstructionProblemDrag={true}
                                 chunkIndex={chunkIndex}
                                 problem={chunk}

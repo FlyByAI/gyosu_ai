@@ -116,7 +116,7 @@ const SubscribeLiteButton = ({ className }: { className: string }) => {
     );
 };
 
-const SubscribePaidButton = ({ className }: { className: string }) => {
+const SubscribePaidButton = ({ className }: { className?: string }) => {
     const { session, openSignIn } = useClerk();
 
     const { apiUrl } = useEnvironment();
@@ -137,7 +137,7 @@ const SubscribePaidButton = ({ className }: { className: string }) => {
     };
 
     return (
-        <form onSubmit={handleCheckout} className="flex flex-col items-center">
+        <form onSubmit={handleCheckout} className={"flex flex-col items-center " + className}>
             <div className="form-control w-full mt-4">
                 <input
                     type="text"
