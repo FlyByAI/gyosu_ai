@@ -13,6 +13,8 @@ import useGetDocument from '../hooks/tools/math/useGetDocument';
 import useSubmitDocument from '../hooks/tools/math/useSubmitDocument';
 import useSubmitReroll from '../hooks/tools/math/useSubmitReroll';
 import useSubmitTextWithChunk from '../hooks/tools/math/useSubmitTextWithChunk';
+import useSubmitTextWithChunkLatex from '../hooks/tools/math/useSubmitTextWithChunkLatex';
+import useSubmitTextWithChunkSimilar from '../hooks/tools/math/useSubmitTextWithChunkSimilar';
 import useEnvironment from '../hooks/useEnvironment';
 import { CHUNK_DRAG_TYPE, Chunk, INSTRUCTION_DRAG_TYPE, INSTRUCTION_TYPE, Instruction, PROBLEM_DRAG_TYPE, PROBLEM_TYPE, Problem, Subproblem, Subproblems } from '../interfaces';
 import AddChunkModal from './AddChunkModal';
@@ -143,9 +145,22 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
     }
 
     const { submitTextWithChunk, data: submitTextData, reset: resetTextChange } = useSubmitTextWithChunk(`${apiUrl}/math_app/chat/problem/`)
+    const { submitTextWithChunkLatex, data: submitTextLatexData, reset: resetTextLatex } = useSubmitTextWithChunkLatex(`${apiUrl}/math_app/chat/problem/`)
+    const { submitTextWithChunkSimilar, data: submitTextSimilarData, reset: resetTextSimilar } = useSubmitTextWithChunkSimilar(`${apiUrl}/math_app/chat/problem/`)
 
     const handleSubmitText = () => {
         submitTextWithChunk({ chunk: chunk, userInput: userInput, chunkIndex: chunkIndex, problemBankId: problemBankId })
+    }
+
+    const handleTextToLatex = () => {
+        console.log("text to latex", userInput)
+        submitTextWithChunkLatex({ userInput: userInput, chunkIndex: chunkIndex, problemBankId: problemBankId })
+
+    }
+
+    const handleSimilarSearchText = () => {
+        console.log("find similar problems from text", userInput)
+        submitTextWithChunkSimilar({ userInput: userInput, chunkIndex: chunkIndex, problemBankId: problemBankId, })
     }
 
 
@@ -170,7 +185,23 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
         if (rerollData) {
             console.log("new rerolled chunks", rerollData)
         }
-    }, [submitTextData, rerollData])
+        if (submitTextSimilarData) {
+            console.log("new similar chunk", submitTextSimilarData)
+            console.log(submitTextSimilarData.chunk, typeof (submitTextSimilarData.chunk), chunkIndex)
+            updateChunk(submitTextSimilarData.chunk, chunkIndex)
+            resetTextSimilar()
+        }
+        if (submitTextLatexData) {
+            console.log("new problem from text_to_latex", submitTextLatexData)
+            const problem = {
+                type: "problem",
+                content: [{ type: "math", value: submitTextLatexData.latex }]
+            } as Problem
+            const chunk = { content: [problem] } as Chunk
+            updateChunk(chunk, chunkIndex)
+            resetTextLatex()
+        }
+    }, [submitTextData, rerollData, submitTextSimilarData, submitTextLatexData, updateChunk, chunkIndex, resetTextSimilar, resetTextLatex])
 
     return (
         <>
@@ -310,7 +341,33 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
                     </button>
                 </>}
 
-                {id && !submitTextData && !rerollData && <>
+                {id && chunk.content.length == 0 && <>
+                    {/* if a problem does not yet exist */}
+                    <input
+                        type="text"
+                        placeholder="Please make this problem easier."
+                        value={userInput} // Assuming userInput is your state variable
+                        onChange={(e) => setUserInput(e.target.value)} // And setUserInput is the setter
+                        className="input input-bordered w-full max-w-lg m-2"
+                    />
+                    <button
+                        className="btn btn-secondary tooltip tooltip-bottom"
+                        data-tip="Send your input."
+                        onClick={handleSimilarSearchText}
+                    >
+                        Search
+                    </button>
+                    <button
+                        className="btn btn-secondary tooltip tooltip-bottom"
+                        data-tip="Send your input."
+                        onClick={handleTextToLatex}
+                    >
+                        Create
+                    </button>
+                </>}
+
+                {id && !submitTextData && !rerollData && chunk.content.length > 0 && <>
+                    {/* if a problem exists */}
                     <input
                         type="text"
                         placeholder="Please make this problem easier."
@@ -513,7 +570,7 @@ const ProblemComponent: React.FC<ProblemProps> = ({ chunkIndex, parentChunk, par
     });
 
 
-    
+
 
     return (
 
@@ -540,7 +597,7 @@ const ProblemComponent: React.FC<ProblemProps> = ({ chunkIndex, parentChunk, par
                                         remarkPlugins={[remarkGfm, remarkMath]}
                                         rehypePlugins={[rehypeKatex]}
                                     >
-                                       
+
                                         {String.raw`${item.value}`}
                                     </ReactMarkdown>
                                 );
