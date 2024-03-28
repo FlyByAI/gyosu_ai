@@ -136,7 +136,7 @@ const ChatTutorial = ({ startStreaming, updateTextbox}: ChatTutorialProps) => {
     return (
         <div className='w-full flex items-center'>
             {showStartButton && !isLoading &&
-                <button className='mx-auto p-4 rounded bg-gradient-to-b from-blue-700 to-blue-600 hover:from-blue-800 hover:to-blue-600 border-white' onClick={handleStartTutorial}>Start Tutorial</button>
+                <button className='mx-auto p-4 rounded bg-gradient-to-b btn btn-primary border-white' onClick={handleStartTutorial}>Start Tutorial</button>
             }
             <Joyride
                 continuous

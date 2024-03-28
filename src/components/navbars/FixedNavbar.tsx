@@ -51,7 +51,16 @@ const FixedNavbar: React.FC = () => {
               <ManageSubscriptionButton />
 
               <SignedOut>
-                <SignInButton mode="modal" afterSignInUrl={window.location.href} />
+                <div className='btn btn-primary'
+                  onClick={(e) => {
+                    // Programmatically click the inner button
+                    const button = e.currentTarget.querySelector('button');
+                    if (button) {
+                      button.click();
+                    }
+                  }}>
+                  <SignInButton mode="modal" afterSignInUrl={window.location.href} />
+                </div>
               </SignedOut>
             </nav>
           </HamburgerWrapper>
@@ -76,7 +85,14 @@ const FixedNavbar: React.FC = () => {
             {subscriptionInfo?.has_valid_subscription && <ManageSubscriptionButton />}
           </SignedIn>
           <SignedOut>
-            <div className="tooltip" data-tip="Sign In">
+            <div className='btn btn-primary'
+              onClick={(e) => {
+                // Programmatically click the inner button
+                const button = e.currentTarget.querySelector('button');
+                if (button) {
+                  button.click();
+                }
+              }}>
               <SignInButton mode="modal" afterSignInUrl={window.location.href} />
             </div>
           </SignedOut>
