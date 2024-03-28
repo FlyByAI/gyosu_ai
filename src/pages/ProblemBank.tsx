@@ -96,7 +96,14 @@ const ProblemBank: React.FC = () => {
                             <li className="italic">Click "Export Problems" to generate your document.</li>
                         </ol>
 
-                        {document.problemChunks && document?.problemChunks?.length > 0 ? (
+
+                        {document.problemChunks && document?.problemChunks?.length > 0 && <div className="text-center my-4">
+                            Try
+                            <Link to="/math-app" className="text-primary font-bold underline px-2">searching</Link>for some new problems here.
+                        </div>}
+
+                        {document.problemChunks && document?.problemChunks?.length > 0 ? 
+
                             document.problemChunks.map((chunk, chunkIndex) => (
                                 <div key={chunkIndex} className='mx-auto mb-4 bg-base-200 card p-4 rounded-lg shadow'>
                                     <MathProblem
@@ -110,12 +117,12 @@ const ProblemBank: React.FC = () => {
                                         enableTools={true}
                                     />
                                 </div>
-                            ))
+                        )
                         ) : (
-                            <div className="text-center my-4">
-                                You don't have any problems in this bank yet. Try
-                                <Link to="/math-app" className="text-primary font-bold underline px-2">searching</Link> for some.
-                            </div>
+                        <div className="text-center my-4">
+                            You don't have any problems in this bank yet. Try
+                            <Link to="/math-app" className="text-primary font-bold underline px-2">searching</Link> for some.
+                        </div>
                         )}
 
                         {

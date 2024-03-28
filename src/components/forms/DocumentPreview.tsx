@@ -107,11 +107,11 @@ const DocumentPreview: React.FC<DocumentPreviewProps> = ({ document, disabledCli
             </div>
             <div className="card-body">
                 {contentEmpty ? (
-                    <div className="preview-content h-max-64 flex items-center justify-center">
-                        <span>This document is empty</span>
+                    <div className="preview-content flex items-center justify-center italic">
+                        <span>This problem bank is empty</span>
                     </div>
                 ) : (
-                    <div className="preview-content overflow-y-auto hover:h-full h-max-64 hover:border">
+                    <div className="preview-content overflow-y-auto min-h-64 hover:border">
                         {problemChunks?.map((chunk, index) => (
                             <div key={index}>
                                 {chunk.content.map((contentItem, contentIndex) => (
