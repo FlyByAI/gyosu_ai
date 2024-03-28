@@ -90,6 +90,7 @@ const ProblemBank: React.FC = () => {
             <ContentWrapper>
                 <div className="w-full flex-grow mt-4 overflow-x-hidden pb-28">
                     <div className="space-y-4 bg-base-100 p-4 border border-base-300 rounded-lg shadow">
+                        <h2 className="text-center text-xl  text-red-500 font-bold">NOTE: These features are experiemental and likely to break.</h2>
                         <h2 className="text-center text-lg font-bold">How to Create Your Worksheet</h2>
                         <ol className="list-inside space-y-2">
                             <li className="italic">Review the problems below, make changes, and finalize.</li>

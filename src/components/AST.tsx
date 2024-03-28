@@ -187,8 +187,16 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
         }
         if (submitTextSimilarData) {
             console.log("new similar chunk", submitTextSimilarData)
-            console.log(submitTextSimilarData.chunk, typeof (submitTextSimilarData.chunk), chunkIndex)
-            updateChunk(submitTextSimilarData.chunk, chunkIndex)
+            if (typeof (submitTextSimilarData.chunk) == "object" && submitTextSimilarData.chunk.content instanceof Array) {
+                updateChunk(submitTextSimilarData.chunk, chunkIndex)
+            }
+            else if (submitTextSimilarData.chunk instanceof Array) {
+                const newChunk = { content: [...submitTextSimilarData.chunk] } as Chunk
+                updateChunk(newChunk, chunkIndex)
+            }
+            else {
+                console.log("chunk content is not a string or an array, chunk:", submitTextSimilarData.chunk, typeof (submitTextSimilarData.chunk.content))
+            }
             resetTextSimilar()
         }
         if (submitTextLatexData) {
@@ -343,23 +351,24 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
 
                 {id && chunk.content.length == 0 && <>
                     {/* if a problem does not yet exist */}
+                    <div>Create a new problem</div>
                     <input
                         type="text"
-                        placeholder="Please make this problem easier."
+                        placeholder="Easy Derivitive, or y=mx+b."
                         value={userInput} // Assuming userInput is your state variable
                         onChange={(e) => setUserInput(e.target.value)} // And setUserInput is the setter
                         className="input input-bordered w-full max-w-lg m-2"
                     />
                     <button
-                        className="btn btn-secondary tooltip tooltip-bottom"
-                        data-tip="Send your input."
+                        className="btn btn-secondary tooltip tooltip-left mr-2"
+                        data-tip="Find a similar problem using a text description."
                         onClick={handleSimilarSearchText}
                     >
-                        Search
+                        Find Similar
                     </button>
                     <button
-                        className="btn btn-secondary tooltip tooltip-bottom"
-                        data-tip="Send your input."
+                        className="btn btn-secondary tooltip tooltip-left"
+                        data-tip="Create a latex formatted math problem using your text description."
                         onClick={handleTextToLatex}
                     >
                         Create
@@ -380,7 +389,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
                         data-tip="Send your input."
                         onClick={handleSubmitText}
                     >
-                        Send
+                        Change it!
                     </button>
                 </>}
 
@@ -598,7 +607,7 @@ const ProblemComponent: React.FC<ProblemProps> = ({ chunkIndex, parentChunk, par
                                         rehypePlugins={[rehypeKatex]}
                                     >
 
-                                        {String.raw`${item.value}`}
+                                        {String.raw`$${item.value}$`.replace("?", "\\text{?}")}
                                     </ReactMarkdown>
                                 );
                             case 'table':
