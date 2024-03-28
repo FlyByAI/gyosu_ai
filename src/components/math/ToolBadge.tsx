@@ -1,14 +1,11 @@
-import useSubmitReroll from "../../hooks/tools/math/useSubmitReroll";
-import { Chunk, Instruction, Problem, Document, Rating, ChunkInstructionProblem } from "../../interfaces";
-import PlusIcon from "../../svg/PlusIcon";
-import { ThumbsDownSvg, ThumbsUpSvg } from "../../svg/customSVGs";
-import { useModal } from "../../contexts/useModal";
-import FeedbackForm from "../forms/FeedbackForm";
-import useSubmitFeedback from "../../hooks/useSubmitFeedback";
 import { useState } from "react";
-import TrashIcon from "../../svg/TrashIcon";
-import { Tooltip as ReactTooltip } from "react-tooltip";
+import { useModal } from "../../contexts/useModal";
 import useEnvironment from "../../hooks/useEnvironment";
+import useSubmitFeedback from "../../hooks/useSubmitFeedback";
+import { Chunk, ChunkInstructionProblem, Instruction, Problem, Rating } from "../../interfaces";
+import TrashIcon from "../../svg/TrashIcon";
+import { ThumbsDownSvg, ThumbsUpSvg } from "../../svg/customSVGs";
+import FeedbackForm from "../forms/FeedbackForm";
 
 
 interface ToolBadgeProps {
@@ -102,23 +99,21 @@ const ToolBadge: React.FC<ToolBadgeProps> = ({ chunk, instruction, problem, inse
     return (
         <div className={`z-30 bg-gray-100 rounded-full p-3 flex space-x-2 absolute transform translate-x-full -translate-y-full flex-row + ${hidden ? "hidden" : ""}`}>
             <button onClick={handleThumbUpClick} className=""
-                data-tooltip-id="reviewTip"
             >
-                <div className={`pe-1 dark:text-gray-700`}>
+                <div className="pe-1 dark:text-gray-700 tooltip" data-tip="Like">
                     <ThumbsUpSvg rating={rating} />
                 </div>
             </button>
-            <button onClick={handleThumbDownClick} className="">
+            <button onClick={handleThumbDownClick} className="tooltip" data-tip="Dislike">
                 <div className={`pe-1 dark:text-gray-700`}
-                    data-tooltip-id="reviewTip"
                 >
                     <ThumbsDownSvg rating={rating} />
                 </div>
             </button>
             <button
                 onClick={handleDeleteInstructionProblem}
-                data-tooltip-id="deleteTip"
-                className="pe-1 text-black"
+                className="pe-1 text-black tooltip"
+                data-tip="Delete"
             >
                 <TrashIcon />
             </button>

@@ -1,9 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { Chunk, EmptyDocument, } from '../../interfaces';
+import React from 'react';
+import { Chunk } from '../../interfaces';
 import MathProblem from './MathProblem';
-import CreateDocxModal from '../CreateDocxModal';
-import { useSidebarContext } from '../../contexts/useSidebarContext';
-import PlusIcon from '../../svg/PlusIcon';
 
 interface ChunkManagerProps {
     chunkArray: Chunk[];
@@ -11,8 +8,6 @@ interface ChunkManagerProps {
 }
 
 const ChunkManager: React.FC<ChunkManagerProps> = ({ chunkArray, setChunkArray }) => {
-
-    const { activeChunkIndices, setActiveChunkIndices } = useSidebarContext();
 
     const updateChunk = (updatedChunk: Chunk, index: number) => {
         console.log("update chunk: ", chunkArray[index], "new chunk:", updatedChunk, index)
@@ -26,15 +21,14 @@ const ChunkManager: React.FC<ChunkManagerProps> = ({ chunkArray, setChunkArray }
 
     return (
         <div className='flex flex-col'>
-            <div className="text-xl justify-center text-white flex items-center mb-4 italic">Step 3: Add problems to a problem bank, then open the problem bank.</div>
+            <div className="text-xl justify-center flex items-center mb-4 italic">Step 3: Add problems to a problem bank, then open the problem bank.</div>
             {chunkArray?.map((chunk, chunkIndex) => {
                 return (
                     <div key={chunkIndex}
-                        className='w-full mx-auto flex flex-row mb-4 bg-gray-900 p-2'>
+                        className='w-full mx-auto flex flex-row mb-4 bg-base-200 p-2'>
                         <div className='w-full rounded-xl'>
                             <MathProblem
                                 key={chunkIndex}
-                                selectable={false}
                                 disableInstructionProblemDrag={true}
                                 chunkIndex={chunkIndex}
                                 problem={chunk}

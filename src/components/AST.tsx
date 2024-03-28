@@ -1,44 +1,49 @@
-import React, { useEffect, useState } from 'react';
 import 'katex/dist/katex.min.css';
-import KaTeX from 'katex';
-import { CHUNK_DRAG_TYPE, CHUNK_TYPE, Chunk, Document, INSTRUCTION_DRAG_TYPE, INSTRUCTION_TYPE, Instruction, PROBLEM_DRAG_TYPE, PROBLEM_TYPE, Problem, Subproblem, Subproblems } from '../interfaces';
+import React, { useEffect, useState } from 'react';
+import { DropTargetMonitor, useDrag, useDrop } from 'react-dnd';
 import ReactMarkdown from 'react-markdown';
+import { useParams } from 'react-router-dom';
+import rehypeKatex from 'rehype-katex';
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
-import rehypeKatex from 'rehype-katex';
-import { DropTargetMonitor, useDrag, useDrop } from 'react-dnd';
-import ToolWrapper from './math/ToolWrapper';
-import { useSidebarContext } from '../contexts/useSidebarContext';
-import CheckmarkIcon from '../svg/CheckmarkIcon';
-import TrashIcon from '../svg/TrashIcon';
-import useSubmitDocument from '../hooks/tools/math/useSubmitDocument';
-import useGetDocument from '../hooks/tools/math/useGetDocument';
-import { useParams } from 'react-router-dom';
-import useEnvironment from '../hooks/useEnvironment';
-import { Tooltip as ReactTooltip } from "react-tooltip";
-import OverflowMenu from './OverflowMenu';
-import PlusIcon from '../svg/PlusIcon';
-import ArrowLeft from '../svg/ArrowLeftIcon';
-import { useModal } from '../contexts/useModal';
-import AddChunkModal from './AddChunkModal';
-import Feedback from './Feedback';
 import { useDragContext } from '../contexts/DragContext';
 import { useScreenSize } from '../contexts/ScreenSizeContext';
+import { useSidebarContext } from '../contexts/useSidebarContext';
+import useGetDocument from '../hooks/tools/math/useGetDocument';
+import useSubmitDocument from '../hooks/tools/math/useSubmitDocument';
+import useSubmitReroll from '../hooks/tools/math/useSubmitReroll';
+import useSubmitTextWithChunk from '../hooks/tools/math/useSubmitTextWithChunk';
+import useSubmitTextWithChunkLatex from '../hooks/tools/math/useSubmitTextWithChunkLatex';
+import useSubmitTextWithChunkSimilar from '../hooks/tools/math/useSubmitTextWithChunkSimilar';
+import useEnvironment from '../hooks/useEnvironment';
+import { CHUNK_DRAG_TYPE, Chunk, INSTRUCTION_DRAG_TYPE, INSTRUCTION_TYPE, Instruction, PROBLEM_DRAG_TYPE, PROBLEM_TYPE, Problem, Subproblem, Subproblems } from '../interfaces';
+import AddChunkModal from './AddChunkModal';
 
 
+function replaceSingleBackslashes(string: string) {
+    // This regex matches a single backslash followed by any letter,
+    // but not if the backslash is already doubled.
+    const str = string.replace(/(?<!\\)\\([a-zA-Z])/g, String.raw`\\$1`);
+    if (str.includes("\theta")) {
+        return str.replace("\t", "\\t")
+    }
+    return str
+}
 interface ChunkProps {
     chunk: Chunk;
     edit?: boolean;
     insertChunk?: (chunkIndex: number) => void;
     updateChunk: (updatedChunk: Chunk, chunkIndex: number) => void;
     chunkIndex: number;
-    enableTools?: boolean;
     disableInstructionProblemDrag?: boolean;
     selectable?: boolean; //used to disable drag and drop for instructions and problems when on the search
+    problemBankId?: string;
 }
 
-export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updateChunk, chunkIndex, enableTools, selectable, disableInstructionProblemDrag }) => {
+export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunkIndex, selectable, disableInstructionProblemDrag, problemBankId }) => {
     const { setDragState } = useDragContext();
+
+    const [currentRerollIndex, setCurrentRerollIndex] = useState(0);
 
     const { activeChunkIndices, setActiveChunkIndices } = useSidebarContext();
     const { apiUrl } = useEnvironment();
@@ -47,6 +52,8 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
     const { isLoading, updateDocument } = useSubmitDocument(endpoint2);
 
     const [isHovered, setIsHovered] = useState(false);
+
+    const [userInput, setUserInput] = useState("")
 
     const [, ref] = useDrag({
         type: CHUNK_DRAG_TYPE,
@@ -117,82 +124,151 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
 
     const { isDesktop } = useScreenSize();
 
+    const { submitReroll, data: rerollData, reset: resetReroll } = useSubmitReroll(`${apiUrl}/math_app/reroll/`)
+
+    const handleReroll = () => {
+        if (!rerollData) {
+            submitReroll({ chunk: chunk, action: "reroll", chunkIndex: chunkIndex, problemBankId: problemBankId })
+        }
+        else {
+            // loop 
+            setCurrentRerollIndex((prev) => {
+                if (prev === rerollData.chunks.length - 1) {
+                    return 0
+                }
+                else {
+                    return prev + 1
+                }
+            })
+        }
+    }
+
+    const { submitTextWithChunk, data: submitTextData, reset: resetTextChange } = useSubmitTextWithChunk(`${apiUrl}/math_app/chat/problem/`)
+    const { submitTextWithChunkLatex, data: submitTextLatexData, reset: resetTextLatex } = useSubmitTextWithChunkLatex(`${apiUrl}/math_app/chat/problem/`)
+    const { submitTextWithChunkSimilar, data: submitTextSimilarData, reset: resetTextSimilar } = useSubmitTextWithChunkSimilar(`${apiUrl}/math_app/chat/problem/`)
+
+    const handleSubmitText = () => {
+        submitTextWithChunk({ chunk: chunk, userInput: userInput, chunkIndex: chunkIndex, problemBankId: problemBankId })
+    }
+
+    const handleTextToLatex = () => {
+        console.log("text to latex", userInput)
+        submitTextWithChunkLatex({ userInput: userInput, chunkIndex: chunkIndex, problemBankId: problemBankId })
+
+    }
+
+    const handleSimilarSearchText = () => {
+        console.log("find similar problems from text", userInput)
+        submitTextWithChunkSimilar({ userInput: userInput, chunkIndex: chunkIndex, problemBankId: problemBankId, })
+    }
+
+
+    const handleAcceptChunkChange = () => {
+        if (rerollData) {
+            const updatedChunk = rerollData.chunks[currentRerollIndex]
+            updateChunk(updatedChunk, chunkIndex)
+            resetReroll()
+        }
+        if (submitTextData) {
+            const updatedChunk = submitTextData.chunk
+            updateChunk(updatedChunk, chunkIndex)
+            resetTextChange()
+        }
+
+    }
+
+    useEffect(() => {
+        if (submitTextData) {
+            console.log("new text changed chunks", submitTextData)
+        }
+        if (rerollData) {
+            console.log("new rerolled chunks", rerollData)
+        }
+        if (submitTextSimilarData) {
+            console.log("new similar chunk", submitTextSimilarData)
+            if (typeof (submitTextSimilarData.chunk) == "object" && submitTextSimilarData.chunk.content instanceof Array) {
+                updateChunk(submitTextSimilarData.chunk, chunkIndex)
+            }
+            else if (submitTextSimilarData.chunk instanceof Array) {
+                const newChunk = { content: [...submitTextSimilarData.chunk] } as Chunk
+                updateChunk(newChunk, chunkIndex)
+            }
+            else {
+                console.log("chunk content is not a string or an array, chunk:", submitTextSimilarData.chunk, typeof (submitTextSimilarData.chunk.content))
+            }
+            resetTextSimilar()
+        }
+        if (submitTextLatexData) {
+            console.log("new problem from text_to_latex", submitTextLatexData)
+            const problem = {
+                type: "problem",
+                content: [{ type: "math", value: submitTextLatexData.latex }]
+            } as Problem
+            const chunk = { content: [problem] } as Chunk
+            updateChunk(chunk, chunkIndex)
+            resetTextLatex()
+        }
+    }, [submitTextData, rerollData, submitTextSimilarData, submitTextLatexData, updateChunk, chunkIndex, resetTextSimilar, resetTextLatex])
+
     return (
         <>
-            {isDesktop && <ReactTooltip
-                id='chunkDragTip'
-                place={!id ? "right" : "left-start"}
-                offset={8}
-                positionStrategy='fixed'
-                className='z-10'
-                children={!id ?
-                    <>
-                        <div className='flex flex-row items-center justify-center'>Click and drag to</div>
-                        <div className='flex flex-row items-center justify-center'>a problem bank.</div>
-                    </> : <>
-                        <div className='flex flex-row items-center justify-center'>Click to select </div>
-                        <div className='flex flex-row items-center justify-center'>this problem.</div>
-
-                    </>}
-                variant="light"
-            />}
-
-            {isDesktop && <ReactTooltip
-                id='addChunkTip'
-                place="bottom"
-                content={`Add problem to problem bank.`}
-                variant="light"
-            />}
-            {isDesktop && <ReactTooltip
-                id='deleteChunkTip'
-                place="bottom"
-                content={`Delete this problem from bank.`}
-                variant="light"
-            />}
             <div
                 ref={(node) => ref(drop(node))}
                 onMouseEnter={() => !isHovered && setIsHovered(true)}
                 onMouseLeave={() => isHovered && setIsHovered(false)}
-                data-tooltip-id='chunkDragTip'
-                className={"border-2 relative border-transparent p-4 pe-12 w-full " + (isHovered ? " hover:border-white border-dashed hover:border-2 hover:border-purple-dashed" : '') + ((activeChunkIndices.includes(chunkIndex)) ? " bg-blue-900 " : '')}
+                className={`border relative p-2 w-full transition-all duration-300 ease-in-out ${isHovered ? "border-base-content border-dashed" : "border-transparent"
+                    } ${activeChunkIndices.includes(chunkIndex) ? "bg-base-content text-base-100" : ""}`}
+                title={!id ? "Click and drag to a problem bank." : "Click to select this problem."}
             >
-                <div className="absolute top-0 right-0 text-white flex-row flex mt-2">
-                    <AddChunkModal variant={"button"} chunk={chunk} modalId={'addChunkModal' + chunk.chunkId} enabled={false} />
-                    <OverflowMenu
-                        isOpen={isOverflowOpen}
-                        setIsOpen={setIsOverflowOpen}
+                <div className="absolute top-0 right-0 flex flex-row gap-2">
+                    {!id && <AddChunkModal chunk={chunk} modalId={'addChunkModal' + chunk.chunkId} enabled={false} />}
+
+                    {id && <button
+                        className="btn btn-secondary tooltip tooltip-bottom"
+                        data-tip="Add problem to problem bank."
+                        onClick={handleReroll}
                     >
-                        {id && <button
+                        Reroll
+                    </button>}
+
+                    {id && (
+                        <button
                             onClick={(e) => {
                                 e.stopPropagation();
                                 deleteChunk(chunkIndex);
                             }}
-                            data-tooltip-id="deleteChunkTip"
-                            className="text-red-500 flex-row flex w-max"
+                            className="btn btn-error tooltip tooltip-bottom"
+                            data-tip="Delete this problem from bank."
                         >
-                            <TrashIcon className='ms-2' />
-                        </button>}
-                        <Feedback feedbackLabel={'Chunk Feedback'} data={{ chunk: chunk }} />
-                        <AddChunkModal chunk={chunk} modalId={'addChunkModal' + chunk.chunkId} enabled={false} />
-
-                    </OverflowMenu>
-                </div>
-
-                <div className='pb-4 pe-4'>
-                    {selectable && (activeChunkIndices.includes(chunkIndex) ?
-                        <div className='flex text-green-300 h-4 w-6 mb-1'>
-                            <CheckmarkIcon />
-                        </div> :
-                        <div className='flex'>
-                            <input
-                                type="checkbox"
-                                defaultChecked={activeChunkIndices.includes(chunkIndex)}
-                                className="focus:ring-green-500 mt-1 h-4 w-6 text-green-600 rounded"
-                            />
-                        </div>
+                            Delete
+                        </button>
                     )}
+
                 </div>
-                {/* {chunk.parentChunkId && <div className='text-gray-400 text-xs'>Parent: {chunk.parentChunkId}</div>} */}
+
+                <div className="w-full flex items-center"
+                    onClick={() => {
+                        setActiveChunkIndices((prev) => {
+                            if (prev.includes(chunkIndex)) {
+                                return prev.filter((index) => index !== chunkIndex);
+                            } else {
+                                return [...prev, chunkIndex];
+                            }
+                        })
+                    }}>
+                    {selectable && <input
+                        type="checkbox"
+                        checked={activeChunkIndices.includes(chunkIndex)}
+                        className="checkbox checkbox-primary"
+                        id={`checkbox-${chunkIndex}`} // Ensure unique ID for labeling
+                    />}
+                    {selectable && activeChunkIndices.includes(chunkIndex) && (
+                        <label htmlFor={`checkbox-${chunkIndex}`} className="text-green-500 ml-2 flex items-center">
+                            Selected
+                        </label>
+                    )}
+                    {!selectable && <h3 className="h-12">{ }</h3>}
+                </div>
 
                 {chunk?.content?.map((item, index) => {
                     const element = (() => {
@@ -206,27 +282,117 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
                         }
                     })();
 
-                    const wrappedElement = enableTools ? (
-                        <ToolWrapper
-                            key={`${item.type}-${index}-${chunk.content.length}`}
-                            insertChunk={insertChunk}
-                            updateChunk={updateChunk}
-                            chunkIndex={chunkIndex}
-                            chunk={chunk}
-                            {...(item.type === 'instruction' ? { instruction: item } : { problem: item })}
-                        >
-                            {element}
-                        </ToolWrapper>
-                    ) : element;
-
                     return (
                         <div key={`${item.type}-${index}-${chunk.content.length}`}>
-                            {wrappedElement}
+                            {element}
                         </div>
                     );
                 })}
 
-            </div >
+                {chunkIndex == rerollData?.chunkIndex &&
+                    <div>
+                        Rerolled Chunk:
+                        {rerollData?.chunks[currentRerollIndex].content.map((rerolledItem, rerollIndex) => {
+                            const rerollElement = (() => {
+                                switch (rerolledItem.type) {
+                                    case 'instruction':
+                                        return <InstructionComponent chunkIndex={chunkIndex} instructionIndex={rerollIndex} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} instruction={rerolledItem} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
+                                    case 'problem':
+                                        return <ProblemComponent chunkIndex={chunkIndex} problemIndex={rerollIndex} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} problem={rerolledItem} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
+                                    default:
+                                        return <div>None</div>;
+                                }
+                            })();
+
+                            return (
+                                <div key={`${rerolledItem.type}-${rerollIndex}-${chunk.content.length}`}>
+                                    {chunkIndex == rerollData?.chunkIndex && rerollElement}
+                                </div>
+                            );
+                        })}
+                    </div>
+
+                }
+
+                {chunkIndex == submitTextData?.chunkIndex &&
+                    <div>
+                        Text changed:
+                        {
+                            submitTextData?.chunk.content?.map((changedItem, changedIndex) => {
+                                const rerollElement = (() => {
+                                    switch (changedItem.type) {
+                                        case 'instruction':
+                                            return <InstructionComponent chunkIndex={chunkIndex} instructionIndex={changedIndex} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} instruction={changedItem} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
+                                        case 'problem':
+                                            return <ProblemComponent chunkIndex={chunkIndex} problemIndex={changedIndex} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} problem={changedItem} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
+                                        default:
+                                            return <div>None</div>;
+                                    }
+                                })();
+
+                                return (
+                                    <div key={`${changedItem.type}-${changedIndex}-${chunk.content.length}`}>
+                                        {chunkIndex == submitTextData?.chunkIndex && rerollElement}
+                                    </div>
+                                );
+                            })}
+                    </div>}
+
+                {id && (submitTextData || rerollData) && <>
+                    <button
+                        className="btn btn-secondary tooltip tooltip-bottom"
+                        data-tip="Accept this change."
+                        onClick={handleAcceptChunkChange}
+                    >
+                        Accept
+                    </button>
+                </>}
+
+                {id && chunk.content.length == 0 && <>
+                    {/* if a problem does not yet exist */}
+                    <div>Create a new problem</div>
+                    <input
+                        type="text"
+                        placeholder="Easy Derivitive, or y=mx+b."
+                        value={userInput} // Assuming userInput is your state variable
+                        onChange={(e) => setUserInput(e.target.value)} // And setUserInput is the setter
+                        className="input input-bordered w-full max-w-lg m-2"
+                    />
+                    <button
+                        className="btn btn-secondary tooltip tooltip-left mr-2"
+                        data-tip="Find a similar problem using a text description."
+                        onClick={handleSimilarSearchText}
+                    >
+                        Find Similar
+                    </button>
+                    <button
+                        className="btn btn-secondary tooltip tooltip-left"
+                        data-tip="Create a latex formatted math problem using your text description."
+                        onClick={handleTextToLatex}
+                    >
+                        Create
+                    </button>
+                </>}
+
+                {id && !submitTextData && !rerollData && chunk.content.length > 0 && <>
+                    {/* if a problem exists */}
+                    <input
+                        type="text"
+                        placeholder="Please make this problem easier."
+                        value={userInput} // Assuming userInput is your state variable
+                        onChange={(e) => setUserInput(e.target.value)} // And setUserInput is the setter
+                        className="input input-bordered w-full max-w-lg m-2"
+                    />
+                    <button
+                        className="btn btn-secondary tooltip tooltip-bottom"
+                        data-tip="Send your input."
+                        onClick={handleSubmitText}
+                    >
+                        Change it!
+                    </button>
+                </>}
+
+            </div>
         </>
     );
 
@@ -245,9 +411,10 @@ interface InstructionProps {
     disableInstructionProblemDrag?: boolean; //used to disable drag and drop for instructions and problems when on the search
 
     chunkIndex: number;
+    debug?: boolean;
 }
 
-const InstructionComponent: React.FC<InstructionProps> = ({ chunkIndex, parentChunk, parentChunkIndex, updateChunk, instruction, instructionIndex, disableInstructionProblemDrag }) => {
+const InstructionComponent: React.FC<InstructionProps> = ({ debug, parentChunk, parentChunkIndex, updateChunk, instruction, instructionIndex, disableInstructionProblemDrag }) => {
     const { setDragState } = useDragContext();
 
     const [, ref] = useDrag({
@@ -289,21 +456,14 @@ const InstructionComponent: React.FC<InstructionProps> = ({ chunkIndex, parentCh
         }
 
     });
-    const { activeChunkIndices, setActiveChunkIndices } = useSidebarContext();
+
+    if (debug) { console.log(instruction.content) }
 
     return (
-
         <div
-            onClick={() => {
-                if (activeChunkIndices.includes(chunkIndex)) {
-                    setActiveChunkIndices(activeChunkIndices.filter(chunkIndex => chunkIndex !== chunkIndex));
-                } else {
-                    setActiveChunkIndices([...activeChunkIndices, chunkIndex]);
-                }
-            }
-            }
             ref={(node) => disableInstructionProblemDrag ? ref(drop(node)) : node}
-            className="flex group flex-row flex-wrap">
+            className="flex group flex-row flex-wrap cursor-pointer"
+        >
             {instruction.content.map((item, index) => (
                 <span key={index} style={{ display: 'inline' }}>
                     {(() => {
@@ -311,7 +471,7 @@ const InstructionComponent: React.FC<InstructionProps> = ({ chunkIndex, parentCh
                             case 'text':
                                 return (
                                     <div
-                                        className={"text-xs md:text-lg z-10 text-blue-300 border-2 border-transparent border-dashed hover:border-2 p-1 m-1 group-hover:border-2 group-hover:border-dashed"}
+                                        className="text-sm z-10 bg-transparent p-1 m-1 rounded-lg transition duration-300 ease-in-out group- group"
                                     >
                                         {item.value}
                                     </div>
@@ -319,17 +479,17 @@ const InstructionComponent: React.FC<InstructionProps> = ({ chunkIndex, parentCh
                             case 'math':
                                 return (
                                     <ReactMarkdown
-                                        className={"text-xs md:text-lg z-10 text-yellow-200 border-2 border-transparent border-dashed hover:border-2 p-1 m-1 group-hover:border-2 group-hover:border-dashed"}
+                                        className="text-sm z-10 bg-transparent p-1 m-1 rounded-lg transition duration-300 ease-in-out group- group-"
                                         remarkPlugins={[remarkGfm, remarkMath]}
                                         rehypePlugins={[rehypeKatex]}
                                     >
-                                        {`${item.value}`}
+                                        {String.raw`${item.value}`}
                                     </ReactMarkdown>
                                 );
                             case 'table':
                                 return (
                                     <ReactMarkdown
-                                        className={"text-xs md:text-lg z-10 text-purple-300 border-gray-100  border-2 border-transparent border-dashed hover:border-2 p-1 m-1 group-hover:border-2 group-hover:border-dashed"}
+                                        className="text-sm z-10 bg-transparent p-1 m-1 rounded-lg transition duration-300 ease-in-out group- group-"
                                         remarkPlugins={[remarkGfm, remarkMath]}
                                         rehypePlugins={[rehypeKatex]}
                                     >
@@ -337,11 +497,13 @@ const InstructionComponent: React.FC<InstructionProps> = ({ chunkIndex, parentCh
                                     </ReactMarkdown>
                                 );
                             case 'image':
+                                //todo: get better descriptions added to the ASTs
+                                // console.log("image", item)
                                 return (
                                     <img
                                         src={item.value}
                                         alt="Description"
-                                        className="text-xs md:text-lg z-10 p-1 m-1 border-2 border-transparent border-dashed hover:border-2 group-hover:border-2 group-hover:border-dashed"
+                                        className="z-10 p-1 m-1 border-2 border-transparent border-dashed  rounded-lg transition duration-300 ease-in-out group-"
                                     />
                                 );
                             case 'subproblems':
@@ -353,9 +515,9 @@ const InstructionComponent: React.FC<InstructionProps> = ({ chunkIndex, parentCh
                 </span>
             ))}
         </div>
-
-
     );
+
+
 };
 
 
@@ -373,7 +535,7 @@ interface ProblemProps {
     chunkIndex: number;
 }
 
-const ProblemComponent: React.FC<ProblemProps> = ({ chunkIndex, parentChunk, parentChunkIndex, updateChunk, problem, problemIndex, disableInstructionProblemDrag }) => {
+const ProblemComponent: React.FC<ProblemProps> = ({ parentChunk, parentChunkIndex, updateChunk, problem, problemIndex, disableInstructionProblemDrag }) => {
     const { setDragState } = useDragContext();
 
     const [, ref] = useDrag({
@@ -415,21 +577,15 @@ const ProblemComponent: React.FC<ProblemProps> = ({ chunkIndex, parentChunk, par
         }
     });
 
-    const { activeChunkIndices, setActiveChunkIndices } = useSidebarContext();
+
+
 
     return (
 
         <div
-            onClick={() => {
-                if (activeChunkIndices.includes(chunkIndex)) {
-                    setActiveChunkIndices(activeChunkIndices.filter(chunkIndex => chunkIndex !== chunkIndex));
-                } else {
-                    setActiveChunkIndices([...activeChunkIndices, chunkIndex]);
-                }
-            }
-            }
+
             ref={(node) => disableInstructionProblemDrag ? ref(drop(node)) : node}
-            className="flex group flex-row flex-wrap">
+            className="flex group flex-row flex-wrap cursor-pointer">
             {problem.content.map((item, index) => (
                 <span key={index} style={{ display: 'inline' }}>
                     {(() => {
@@ -437,7 +593,7 @@ const ProblemComponent: React.FC<ProblemProps> = ({ chunkIndex, parentChunk, par
                             case 'text':
                                 return (
                                     <div
-                                        className={'text-xs md:text-lg z-10 text-yellow-100 border-2 border-transparent border-dashed hover:border-2 p-1 m-1 group-hover:border-2 group-hover:border-dashed'}
+                                        className={'text-xs md:text-lg z-10  border-2 border-transparent border-dashed hover:border-2 p-1 m-1 group-hover:border-2 group-hover:border-dashed'}
                                     >
                                         {item.value}
                                     </div>
@@ -445,17 +601,18 @@ const ProblemComponent: React.FC<ProblemProps> = ({ chunkIndex, parentChunk, par
                             case 'math':
                                 return (
                                     <ReactMarkdown
-                                        className={"text-xs md:text-lg z-10 text-purple-300 border-gray-100 border-2 border-transparent border-dashed hover:border-2 p-1 m-1 group-hover:border-2 group-hover:border-dashed"}
+                                        className={"text-xs md:text-lg z-10  border-gray-100 border-2 border-transparent border-dashed hover:border-2 p-1 m-1 group-hover:border-2 group-hover:border-dashed"}
                                         remarkPlugins={[remarkGfm, remarkMath]}
                                         rehypePlugins={[rehypeKatex]}
                                     >
-                                        {`${item.value}`}
+
+                                        {String.raw`$${item.value}$`.replace("?", "\\text{?}")}
                                     </ReactMarkdown>
                                 );
                             case 'table':
                                 return (
                                     <ReactMarkdown
-                                        className={"text-xs md:text-lg z-10 text-purple-300 border-gray-100 border-2 border-transparent border-dashed hover:border-2 p-1 m-1 group-hover:border-2 group-hover:border-dashed"}
+                                        className={"text-xs md:text-lg z-10  border-gray-100 border-2 border-transparent border-dashed hover:border-2 p-1 m-1 group-hover:border-2 group-hover:border-dashed"}
                                         remarkPlugins={[remarkGfm, remarkMath]}
                                         rehypePlugins={[rehypeKatex]}
                                     >
@@ -463,6 +620,8 @@ const ProblemComponent: React.FC<ProblemProps> = ({ chunkIndex, parentChunk, par
                                     </ReactMarkdown>
                                 );
                             case 'image':
+                                //todo: get better descriptions added to the ASTs
+                                // console.log("image", item)
                                 return (
                                     <img
                                         src={item.value}
@@ -487,7 +646,7 @@ interface SubproblemsProps {
     subproblems: Subproblems;
 }
 
-const SubproblemsComponent: React.FC<SubproblemsProps> = ({ subproblems }) => {
+export const SubproblemsComponent: React.FC<SubproblemsProps> = ({ subproblems }) => {
     return (
         <div className="flex flex-col">
             {subproblems.content.map((subproblem, index) => (
@@ -510,21 +669,27 @@ const SubproblemComponent: React.FC<{ subproblem: Subproblem }> = ({ subproblem 
                     {(() => {
                         switch (item.type) {
                             case 'text':
-                                return <div className="text-xs md:text-lg z-10 p-1 m-1 border-2 border-transparent border-dashed hover:border-blue-500">{item.value}</div>;
+                                return (
+                                    <div
+                                        className="text-xs md:text-lg z-10 border-2 border-transparent border-dashed hover:border-purple-500 p-1 m-1 group-hover:border-purple-500"
+                                    >
+                                        {item.value}
+                                    </div>
+                                );
                             case 'math':
                                 return (
                                     <ReactMarkdown
-                                        className="text-xs md:text-lg z-10 p-1 m-1 border-2 border-transparent border-dashed hover:border-yellow-500"
+                                        className="prose prose-sm md:prose-lg z-10 border-2 border-transparent border-dashed hover:border-purple-500 p-1 m-1 group-hover:border-purple-500"
                                         remarkPlugins={[remarkGfm, remarkMath]}
                                         rehypePlugins={[rehypeKatex]}
                                     >
-                                        {`${item.value}`}
+                                        {String.raw`${item.value}`}
                                     </ReactMarkdown>
                                 );
                             case 'table':
                                 return (
                                     <ReactMarkdown
-                                        className="text-xs md:text-lg z-10 p-1 m-1 border-2 border-transparent border-dashed hover:border-purple-500"
+                                        className="prose prose-sm md:prose-lg z-10 border-2 border-transparent border-dashed hover:border-purple-500 p-1 m-1 group-hover:border-purple-500"
                                         remarkPlugins={[remarkGfm, remarkMath]}
                                         rehypePlugins={[rehypeKatex]}
                                     >
@@ -532,7 +697,15 @@ const SubproblemComponent: React.FC<{ subproblem: Subproblem }> = ({ subproblem 
                                     </ReactMarkdown>
                                 );
                             case 'image':
-                                return <img src={item.value} alt="Description" className="text-xs md:text-lg z-10 p-1 m-1 border-2 border-transparent border-dashed hover:border-green-500" />;
+                                //todo: get better descriptions added to the ASTs
+                                // console.log("image", item)
+                                return (
+                                    <img
+                                        src={item.value}
+                                        alt="Description"
+                                        className="text-xs md:text-lg z-10 p-1 m-1 border-2 border-transparent border-dashed hover:border-purple-500 group-hover:border-purple-500"
+                                    />
+                                );
                             default:
                                 return null;
                         }
@@ -544,3 +717,4 @@ const SubproblemComponent: React.FC<{ subproblem: Subproblem }> = ({ subproblem 
 };
 
 export default SubproblemComponent;
+

@@ -1,73 +1,50 @@
 import React from 'react';
+import { useScreenSize } from '../contexts/ScreenSizeContext';
 import { useModal } from '../contexts/useModal';
 import { Document, EmptyDocument } from '../interfaces';
 import CreateDocxForm from './forms/CreateDocsForm';
-import { Tooltip as ReactTooltip } from "react-tooltip";
-import { useScreenSize } from '../contexts/ScreenSizeContext';
-import toast, { useToaster } from 'react-hot-toast/headless';
 
 interface CreateDocxModalProps {
     document: Document | EmptyDocument;
     modalId: string;
-    enabled: boolean;
 }
 
-const CreateDocxModal: React.FC<CreateDocxModalProps> = ({ document, modalId, enabled }) => {
+const CreateDocxModal: React.FC<CreateDocxModalProps> = ({ document, modalId }) => {
     const { currentModal, closeModal, openModal } = useModal();
 
     const handleOpenClick = () => {
-        if (!enabled) {
-            toast("Please select problems first in order to create a worksheet.", {
-                id: 'error-toast'
-            })
-        }
-        else {
             openModal(modalId, <CreateDocxForm document={document} />);
-        }
-
     };
 
     const { isDesktop } = useScreenSize();
 
     return (
         <div>
-            {currentModal === modalId ? (
-                <div className='fixed bottom-8 left-[50%] md:left-[50%] transform -translate-x-1/2 z-20 w-[350px] md:w-[700px]'>
-                    <div className="inset-0 flex items-center justify-center z-20 text-white">
-                        <div className="bg-gray-800 p-2 rounded shadow-lg w-full md:w-3/4 max-w-2xl max-h-[80vh] overflow-y-auto">
-                            <div className="bg-gray-700 p-4 rounded shadow-lg">
-                                <CreateDocxForm document={document} />
-                                <button onClick={closeModal} className="mt-4 w-full bg-red-500 hover:bg-red-700 p-2 rounded-md">
-                                    Close
-                                </button>
-                            </div>
-                        </div>
+        {currentModal === modalId ? (
+            <div className="fixed inset-x-0 z-20 flex justify-center">
+                <div className="p-2 bg-base-200 rounded shadow-lg w-full max-w-4xl max-h-[80vh] overflow-y-auto">
+                    <div className="p-4 rounded shadow">
+                        <CreateDocxForm document={document} />
+                        <button onClick={closeModal} className="btn btn-error mt-4 w-full">
+                            Close
+                        </button>
                     </div>
                 </div>
-            ) :
-                <div className='fixed bottom-8 left-[66%] md:left-[50%] transform -translate-x-1/2 z-20 w-[200px] md:w-[700px]'>
-                    <div
-                        className="flex flex-col items-center z-5"
-                        data-tooltip-id='selectProblemsTip'>
-                        <button
-                            onClick={handleOpenClick}
-                            className={`w-full md:w-1/2 p-4 rounded text-xl font-bold shadow-lg ${enabled ? 'bg-green-600 hover:bg-green-700 text-white' : 'bg-blue-600 text-white'}`}
-                        >
-                            Create Worksheet
-                        </button>
-                        {isDesktop && <ReactTooltip
-                            id='selectProblemsTip'
-                            place="right"
-                            offset={-40}
-                            children={<><div className='flex flex-row items-center justify-center'>Select some problems</div>
-                                <div className='flex flex-row items-center justify-center'>to create a worksheet.</div>
-                            </>}
-                            variant="light"
-                            opacity={1}
-                        />}
-                    </div>
-                </div>}
-        </div>
+            </div>
+        ) : (
+            <div className="fixed inset-x-0 bottom-8 z-20 flex justify-center">
+                <div className="flex flex-col items-center z-5 w-full max-w-xs md:max-w-4xl">
+                    <button
+                        onClick={handleOpenClick}
+                        className={`btn w-full md:w-1/2 text-xl btn-info`}
+                        title="Select some problems to create a worksheet."
+                    >
+                        Export Problems
+                    </button>
+                </div>
+            </div>
+        )}
+    </div>
     );
 };
 

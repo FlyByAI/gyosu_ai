@@ -18,11 +18,11 @@ const useSubmitTextWithChunk = (endpoint: string) => {
     const options = { site_language: languageNames[language] };
 
     const submitTextWithChunkMutation = useMutation(
-        async ({ userInput, chunk, chunkIndex, problemBankId }: { userInput: string; chunk: Chunk, chunkIndex: number, problemBankId?: string }) => {
+        async ({ userInput, chunkIndex, problemBankId }: { userInput: string; chunkIndex: number, problemBankId?: string }) => {
             const token = session ? await session.getToken() : "none";
-            const body = humps.decamelizeKeys({ userInput, chunk, problemBankId, ...options });
+            const body = humps.decamelizeKeys({ userInput, problemBankId, ...options });
 
-            const response = await fetch(endpoint, {
+            const response = await fetch(endpoint + "similar/", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -36,13 +36,14 @@ const useSubmitTextWithChunk = (endpoint: string) => {
             }
 
             const responseData = await response.json();
+            console.log(responseData)
             return humps.camelizeKeys({ ...responseData, chunkIndex }) as SubmitTextWithChunkResponse;
 
         }
     );
 
     return {
-        submitTextWithChunk: submitTextWithChunkMutation.mutate,
+        submitTextWithChunkSimilar: submitTextWithChunkMutation.mutate,
         isLoading: submitTextWithChunkMutation.isLoading,
         error: submitTextWithChunkMutation.error,
         data: submitTextWithChunkMutation.data,

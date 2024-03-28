@@ -6,7 +6,8 @@ import { languageNames } from '../../../helpers/language';
 import { Chunk } from '../../../interfaces';
 
 interface SubmitTextWithChunkResponse {
-    chunk: Chunk
+    chunk?: Chunk
+    latex?: string
     chunkIndex?: number
 }
 
@@ -18,11 +19,11 @@ const useSubmitTextWithChunk = (endpoint: string) => {
     const options = { site_language: languageNames[language] };
 
     const submitTextWithChunkMutation = useMutation(
-        async ({ userInput, chunk, chunkIndex, problemBankId }: { userInput: string; chunk: Chunk, chunkIndex: number, problemBankId?: string }) => {
+        async ({ userInput, chunkIndex, problemBankId }: { userInput: string; chunkIndex: number, problemBankId?: string }) => {
             const token = session ? await session.getToken() : "none";
-            const body = humps.decamelizeKeys({ userInput, chunk, problemBankId, ...options });
+            const body = humps.decamelizeKeys({ userInput, problemBankId, ...options });
 
-            const response = await fetch(endpoint, {
+            const response = await fetch(endpoint + "text_to_latex/", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -42,7 +43,7 @@ const useSubmitTextWithChunk = (endpoint: string) => {
     );
 
     return {
-        submitTextWithChunk: submitTextWithChunkMutation.mutate,
+        submitTextWithChunkLatex: submitTextWithChunkMutation.mutate,
         isLoading: submitTextWithChunkMutation.isLoading,
         error: submitTextWithChunkMutation.error,
         data: submitTextWithChunkMutation.data,

@@ -1,15 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import PlusIcon from '../../svg/PlusIcon';
-import { Document, Chunk, Problem, Instruction, CHUNK_TYPE } from '../../interfaces';
-import DocumentItem from './DocumentItem';
+import React from 'react';
+import toast, { useToaster } from 'react-hot-toast/headless';
+import { Link, useLocation } from 'react-router-dom';
+import { useScreenSize } from '../../contexts/ScreenSizeContext';
 import useGetDocuments from '../../hooks/tools/math/useGetDocuments';
 import useSubmitDocument from '../../hooks/tools/math/useSubmitDocument';
 import useEnvironment from '../../hooks/useEnvironment';
-import { Link } from 'react-router-dom';
-import toast, { useToaster } from 'react-hot-toast/headless';
-import InfoCircle from '../../svg/InfoCircle';
+import { CHUNK_TYPE, Chunk, Document, Instruction, Problem } from '../../interfaces';
+import PlusIcon from '../../svg/PlusIcon';
 import SearchIcon from '../../svg/SearchIcon';
-import { useScreenSize } from '../../contexts/ScreenSizeContext';
+import DocumentItem from './DocumentItem';
 
 
 
@@ -25,6 +24,7 @@ export interface ProblemBankShelfProps {
 
 const ProblemBankShelf: React.FC<ProblemBankShelfProps> = ({ isExporting }) => {
     const { apiUrl } = useEnvironment();
+    const location = useLocation();
 
     const { toasts, handlers } = useToaster();
 
@@ -96,16 +96,16 @@ const ProblemBankShelf: React.FC<ProblemBankShelfProps> = ({ isExporting }) => {
         : "spacing-x-2 items-center justify-center w-full bg-green-500 hover:bg-green-700 h-10 p-4 rounded-md text-white font-extrabold text-lg flex-row flex";
 
     return (<>
-
-        <div style={{ marginLeft: isDesktop ? '16.6667%' : "33%" }} />
-        <div className="flex z-10 flex-col w-1/3 md:w-1/6 bg-gray-800 p-2 fixed" style={{ top: isDesktop ? "80px" : "144px", height: `calc(100vh - ${isDesktop ? "80px" : "144px"})` }}>
-            <div className="flex flex-col justify-between items-center mb-2">
-                <Link to="/math-app" className="p-4 items-center justify-center  hover:underline w-full bg-blue-500 text-sm md:text-lg text-white rounded-md font-extrabold flex-row flex">
-                    <div className='w-5/6'>Find new problems</div> {isDesktop ? <SearchIcon className='' /> : null}
-                </Link>
-                <h3 className="text-white text-lg mt-4 mb-2 flex-row flex items-center">Problem Banks</h3>
-                <button onClick={handleAddDocument} className={createButtonClass}>
-                    Create<PlusIcon className="ps-2 h-8 w-8" />
+        <div className="z-10 flex flex-col w-full bg-base-200 p-4 top-[80px] md:top-[144px] h-[calc(100vh_-_80px)] md:h-[calc(100vh_-_144px)]">
+            <div className="flex flex-col items-center mb-4">
+                {location.pathname !== '/math-app' && (
+                    <Link to="/math-app" className="btn btn-primary w-full rounded-lg font-bold flex items-center justify-center gap-2 py-2 text-sm md:text-lg">
+                        Search {isDesktop && <SearchIcon className="w-5 h-5" />}
+                    </Link>
+                )}
+                <h3 className="text-xl mt-4 mb-4">Problem Banks</h3>
+                <button onClick={handleAddDocument} className="btn btn-secondary w-full rounded-lg flex items-center justify-center gap-2 py-2 text-sm md:text-lg">
+                    Create <PlusIcon className="w-5 h-5" />
                 </button>
             </div>
 
@@ -117,7 +117,7 @@ const ProblemBankShelf: React.FC<ProblemBankShelfProps> = ({ isExporting }) => {
                     ))
                 }
             </ul>
-        </div >
+        </div>
     </>
     );
 };

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { ThumbsDownSvg, ThumbsUpSvg } from '../svg/customSVGs';
 import { useModal } from '../contexts/useModal';
-import { Rating } from '../interfaces';
-import FeedbackForm from './forms/FeedbackForm';
 import useEnvironment from '../hooks/useEnvironment';
 import useSubmitFeedback from '../hooks/useSubmitFeedback';
+import { Rating } from '../interfaces';
+import { ThumbsDownSvg, ThumbsUpSvg } from '../svg/customSVGs';
+import FeedbackForm from './forms/FeedbackForm';
 
 interface FeedbackProps {
     feedbackLabel: string;
@@ -52,13 +52,13 @@ const Feedback: React.FC<FeedbackProps> = ({ feedbackLabel, data, responseQuesti
 
     return (
         <div className='w-max'>
-            <button onClick={handleThumbUpClick} className="my-2 mx-1" data-tooltip-id="reviewTip">
+            <button onClick={handleThumbUpClick} className="my-2 mx-1 tooltip" data-tip="Like">
                 <div className={`pe-1 dark:text-gray-200`}>
                     <ThumbsUpSvg rating={rating || ""} />
                 </div>
             </button>
-            <button onClick={handleThumbDownClick} className="my-2 mx-1">
-                <div className={`pe-1 dark:text-gray-200`} data-tooltip-id="reviewTip">
+            <button onClick={handleThumbDownClick} className="my-2 mx-1 tooltip">
+                <div className={`pe-1 dark:text-gray-200`} data-tip="Dislike">
                     <ThumbsDownSvg rating={rating || ""} />
                 </div>
             </button>

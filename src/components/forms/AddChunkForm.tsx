@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import toast from 'react-hot-toast/headless';
-import { Tooltip as ReactTooltip } from "react-tooltip";
 import { useScreenSize } from '../../contexts/ScreenSizeContext';
 import { useModal } from '../../contexts/useModal';
 import useGetDocuments from '../../hooks/tools/math/useGetDocuments';
@@ -69,50 +68,55 @@ const AddChunkForm: React.FC<AddChunkFormProps> = ({ chunk, preview }) => {
     const { isDesktop } = useScreenSize();
 
     return (
-        <div className="flex flex-col">
-            <label className="text-white mb-2">Select Problem Bank:</label>
-            <select
-                className="mb-4 text-black p-2"
-                value={selectedBank || ''}
-                onChange={(e) => setSelectedBank(Number(e.target.value))}
-            >
-                <option value="" disabled>Select a bank</option>
-                {documents?.map((doc) => (
-                    <option key={doc.id} value={doc.id}>{doc.title}</option>
-                ))}
-            </select>
-            {selectedDocument && preview && (
-                <div className="mb-4">
-                    <DocumentPreview disabledClick document={selectedDocument} />
+        <div className="max-w-4xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
+                
+                {/* Add to Existing Problem Bank */}
+                <div className="flex flex-col items-center justify-start space-y-4">
+                    <label className="text-white self-start mb-1">Add To Existing Problem Bank:</label>
+                    <select
+                        className="select select-bordered w-full"
+                        value={selectedBank || ''}
+                        onChange={(e) => setSelectedBank(Number(e.target.value))}
+                    >
+                        <option value="" disabled>Select a bank</option>
+                        {documents?.map((doc) => (
+                            <option key={doc.id} value={doc.id}>{doc.title}</option>
+                        ))}
+                    </select>
+                    {selectedDocument && preview && (
+                        <div className="w-full">
+                            <DocumentPreview disabledClick document={selectedDocument} />
+                        </div>
+                    )}
+                    <button
+                        className={`btn w-full ${selectedBank ? "btn-primary" : "btn-disabled"}`}
+                        disabled={!selectedBank}
+                        onClick={handleDocumentClick}
+                    >
+                        Add to Selected Bank
+                    </button>
+                    {!selectedBank && isDesktop && (
+                        <div className='tooltip' data-tip="Select a problem bank to add this problem to.">
+                            <span className="label label-text-alt text-xs">Select a bank to enable "Add"</span>
+                        </div>
+                    )}
                 </div>
-            )}
-            <div className='flex flex-row'>
-                <button
-                    className={`p-2 rounded w-1/2 me-2 ${selectedBank ? "bg-blue-500 text-white" : "bg-gray-500 text-gray-300"}`}
-                    disabled={!selectedBank}
-                    onClick={handleDocumentClick}
-                    data-tooltip-id={!selectedBank ? 'addChunkModelButtonDisabled' : ""}
-                >
-                    Add
-                </button>
-                <button onClick={handleAddDocument}
-                    className="bg-blue-500 text-white p-2 rounded w-1/2">
-                    Create New Problem Bank
-                </button>
-            </div>
-            {!selectedBank && (
-                isDesktop && <ReactTooltip
-                    id='addChunkModelButtonDisabled'
-                    place="bottom"
-                    children={<><div className='flex flex-row items-center justify-center'>Select a problem bank</div>
-                        <div className='flex flex-row items-center justify-center'> to add this problem to.</div>
-                    </>}
-                    variant="light"
-                />
-            )}
 
-        </div >
+                {/* Create New Problem Bank */}
+                <div className="flex flex-col items-center justify-start space-y-4">
+                    <button onClick={handleAddDocument} className="btn btn-accent">
+                        Create New Problem Bank
+                    </button>
+                    <div className="text-white text-center">
+                        <p>Create a brand new problem bank where you can add problems.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     );
+
+
 };
 
 export default AddChunkForm;

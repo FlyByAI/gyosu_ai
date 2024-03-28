@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import DotsVerticalIcon from '../svg/DotsVerticalIcon';
 
 type OverflowMenuProps = {
@@ -50,10 +50,10 @@ const OverflowMenu: React.FC<OverflowMenuProps> = ({ children, variant, type = "
     };
 
     return (
-        <div className="relative" ref={menuRef}>
+        <div className="relative hover:bg-base-300" ref={menuRef}>
             {isOpen && (
                 <div
-                    className={`p-2 text-black z-30 absolute ${variant === "top" ? "-top-12" : "top-0"} right-0 flex flex-row-reverse items-center bg-gray-900 rounded-lg`}
+                    className={`p-2 text-black z-30 absolute ${variant === "top" ? "-top-12" : "top-0"} right-0 flex flex-row-reverse items-center rounded-lg`}
                 >
                     {renderMenuContent()}
                 </div>
