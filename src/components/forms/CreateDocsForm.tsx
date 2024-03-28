@@ -2,10 +2,9 @@ import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast/headless';
 import { Link, useParams } from 'react-router-dom';
 import { useScreenSize } from '../../contexts/ScreenSizeContext';
-import { useSidebarContext } from '../../contexts/useSidebarContext';
 import useCreateDocx, { DocxAction } from '../../hooks/tools/math/useCreateDocs';
 import useEnvironment from '../../hooks/useEnvironment';
-import { Chunk, Document, EmptyDocument } from '../../interfaces';
+import { Document, EmptyDocument } from '../../interfaces';
 import Feedback from '../Feedback';
 
 interface CreateDocsFormProps {
@@ -13,7 +12,6 @@ interface CreateDocsFormProps {
 }
 
 const CreateDocxForm: React.FC<CreateDocsFormProps> = ({ document }) => {
-    const { activeChunkIndices } = useSidebarContext();
     const { apiUrl } = useEnvironment();
     const { createDocx, isLoading, error } = useCreateDocx(`${apiUrl}/math_app/generate_docx/`);
     const { id } = useParams();
@@ -43,8 +41,11 @@ const CreateDocxForm: React.FC<CreateDocsFormProps> = ({ document }) => {
         const nativeEvent = event.nativeEvent as MouseEvent;
         toast("Creating worksheet... This may take up to 1 minute to complete.");
         setDownloadLinks(null);  // Reset download links
-        const selectedChunks = activeChunkIndices.map(index => document.problemChunks?.[index]).filter(Boolean) as Chunk[];
-        createDocx({ chunks: selectedChunks, ...formState }, {
+        if (document.problemChunks === undefined) {
+            toast("No problems to export.", { icon: "🤔" })
+            return; // Do nothing if there are no problem chunks
+        }
+        createDocx({ chunks: document?.problemChunks, ...formState }, {
             onSuccess: (data) => {
                 setDownloadLinks(data); // Store download links in state
             }
@@ -55,63 +56,20 @@ const CreateDocxForm: React.FC<CreateDocsFormProps> = ({ document }) => {
 
     return (
         <>
-        <form className="overflow-y-auto" onSubmit={(e) => {
-            e.preventDefault();
-            handleCreate(e);
-        }}>
+
             <div className="flex flex-row justify-between items-center mb-2">
                 <div className="text-xl font-bold w-64">
-                    Export Problems to Document
+                    Export Problems
                 </div>
                 {/* Feedback component remains unchanged as it likely has custom implementation */}
                 <Feedback feedbackLabel={'Create Worksheet Feedback'} data={undefined} responseQuestions={["Please tell us what we can do better. "]} />
             </div>
-            <div className="text-md mb-2">
-                <p className="font-bold">Fill in the details below:</p>
-            </div>
-      
-            {/* Form inputs with DaisyUI classes */}
-            {/* <div className="form-control my-2">
-                <label className="label">
-                    <span className="label-text">Title</span>
-                </label>
-                <input
-                    type="text"
-                    className="input input-bordered w-full"
-                    value={formState.title}
-                    onChange={e => setFormState({ ...formState, title: e.target.value })}
-                />
-            </div>
-            <div className="form-control my-2">
-                <label className="label">
-                    <span className="label-text">Persona (for Real-World Application section at the top)</span>
-                </label>
-                <input
-                    type="text"
-                    className="input input-bordered w-full"
-                    value={formState.persona}
-                    onChange={e => setFormState({ ...formState, persona: e.target.value })}
-                />
-            </div>
-            <div className="form-control my-2">
-                <label className="label">
-                    <span className="label-text">Theme (for Real-World Application section at the top)</span>
-                </label>
-                <input
-                    type="text"
-                    placeholder="Pets, Space, etc."
-                    className="input input-bordered w-full"
-                    value={formState.theme}
-                    onChange={e => setFormState({ ...formState, theme: e.target.value })}
-                />
-            </div> */}
             <hr className="my-4" />
-      
+
             {/* Submit button with DaisyUI classes */}
             <button
-                disabled={isLoading || activeChunkIndices.length === 0}
-                type="submit"
-                className={`btn btn-primary mt-2 w-full ${activeChunkIndices.length === 0 || isLoading ? "btn-disabled" : ""}`}
+                onClick={handleCreate}
+                className={`btn btn-primary mt-2 w-full ${isLoading ? "btn-disabled" : ""}`}
             >
                 {isLoading ? "Creating..." : "Create Worksheet"}
             </button>
@@ -123,7 +81,7 @@ const CreateDocxForm: React.FC<CreateDocsFormProps> = ({ document }) => {
                     }
                 </div>
             )}
-      
+
             {/* Download buttons section */}
             {!isLoading && downloadLinks && (
                 <>
@@ -143,9 +101,8 @@ const CreateDocxForm: React.FC<CreateDocsFormProps> = ({ document }) => {
                     <p className="mt-2">Note: Problems sometimes will not show in chrome on mobile. We recommend opening in Word or Google Docs to view.</p>
                 </>
             )}
-        </form>
-      </>
-      
+        </>
+
     );
 
 };

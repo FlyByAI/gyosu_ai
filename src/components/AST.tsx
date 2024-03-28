@@ -18,6 +18,15 @@ import { CHUNK_DRAG_TYPE, Chunk, INSTRUCTION_DRAG_TYPE, INSTRUCTION_TYPE, Instru
 import AddChunkModal from './AddChunkModal';
 
 
+function replaceSingleBackslashes(string: string) {
+    // This regex matches a single backslash followed by any letter,
+    // but not if the backslash is already doubled.
+    const str = string.replace(/(?<!\\)\\([a-zA-Z])/g, String.raw`\\$1`);
+    if (str.includes("\theta")) {
+        return str.replace("\t", "\\t")
+    }
+    return str
+}
 interface ChunkProps {
     chunk: Chunk;
     edit?: boolean;
@@ -249,7 +258,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
                             const rerollElement = (() => {
                                 switch (rerolledItem.type) {
                                     case 'instruction':
-                                        return <InstructionComponent debug={true} chunkIndex={chunkIndex} instructionIndex={rerollIndex} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} instruction={rerolledItem} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
+                                        return <InstructionComponent chunkIndex={chunkIndex} instructionIndex={rerollIndex} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} instruction={rerolledItem} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
                                     case 'problem':
                                         return <ProblemComponent chunkIndex={chunkIndex} problemIndex={rerollIndex} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} problem={rerolledItem} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
                                     default:
@@ -271,11 +280,11 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, insertChunk, updat
                     <div>
                         Text changed:
                         {
-                            submitTextData?.chunk.content.map((changedItem, changedIndex) => {
+                            submitTextData?.chunk.content?.map((changedItem, changedIndex) => {
                                 const rerollElement = (() => {
                                     switch (changedItem.type) {
                                         case 'instruction':
-                                            return <InstructionComponent debug={true} chunkIndex={chunkIndex} instructionIndex={changedIndex} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} instruction={changedItem} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
+                                            return <InstructionComponent chunkIndex={chunkIndex} instructionIndex={changedIndex} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} instruction={changedItem} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
                                         case 'problem':
                                             return <ProblemComponent chunkIndex={chunkIndex} problemIndex={changedIndex} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} problem={changedItem} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
                                         default:
@@ -409,7 +418,7 @@ const InstructionComponent: React.FC<InstructionProps> = ({ debug, chunkIndex, p
                                         remarkPlugins={[remarkGfm, remarkMath]}
                                         rehypePlugins={[rehypeKatex]}
                                     >
-                                        {`${item.value}`}
+                                        {String.raw`${item.value}`}
                                     </ReactMarkdown>
                                 );
                             case 'table':
@@ -504,6 +513,8 @@ const ProblemComponent: React.FC<ProblemProps> = ({ chunkIndex, parentChunk, par
     });
 
 
+    
+
     return (
 
         <div
@@ -529,7 +540,8 @@ const ProblemComponent: React.FC<ProblemProps> = ({ chunkIndex, parentChunk, par
                                         remarkPlugins={[remarkGfm, remarkMath]}
                                         rehypePlugins={[rehypeKatex]}
                                     >
-                                        {`${item.value}`}
+                                       
+                                        {String.raw`${item.value}`}
                                     </ReactMarkdown>
                                 );
                             case 'table':
@@ -569,7 +581,7 @@ interface SubproblemsProps {
     subproblems: Subproblems;
 }
 
-const SubproblemsComponent: React.FC<SubproblemsProps> = ({ subproblems }) => {
+export const SubproblemsComponent: React.FC<SubproblemsProps> = ({ subproblems }) => {
     return (
         <div className="flex flex-col">
             {subproblems.content.map((subproblem, index) => (
@@ -606,7 +618,7 @@ const SubproblemComponent: React.FC<{ subproblem: Subproblem }> = ({ subproblem 
                                         remarkPlugins={[remarkGfm, remarkMath]}
                                         rehypePlugins={[rehypeKatex]}
                                     >
-                                        {`${item.value}`}
+                                        {String.raw`${item.value}`}
                                     </ReactMarkdown>
                                 );
                             case 'table':

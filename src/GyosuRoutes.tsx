@@ -31,7 +31,7 @@ import GyosuAIChat from './pages/GyosuAIChat.tsx';
 import GyosuAIChatShare from './pages/GyosuAIChatShare.tsx';
 import LandingPage from './pages/Landing.tsx';
 import MathGenerate from './pages/MathGenerate.tsx';
-import MyProblemBanks from './pages/MathProblemBanks.tsx';
+import MyProblemBanks from './pages/MyProblemBanks.tsx';
 import PrivacyPolicy from './pages/PrivacyPolicy.tsx';
 import ProblemBank from './pages/ProblemBank.tsx';
 import Terms from './pages/Terms.tsx';
@@ -81,7 +81,17 @@ export default function GyosuRoutes() {
                     }
                 />
                 <Route
-                    path="/math-app/document/:id"
+                    path="/math-app/bank"
+                    element={
+                        <>
+                            <Navbar />
+                            <MyProblemBanks />
+                            <Footer />
+                        </>
+                    }
+                />
+                <Route
+                    path="/math-app/bank/:id"
                     element={
                         <>
                             <Navbar />
@@ -95,16 +105,6 @@ export default function GyosuRoutes() {
                         <>
                             <Navbar />
                             <Documents />
-                            <Footer />
-                        </>
-                    }
-                />
-                <Route
-                    path="/math-app/bank"
-                    element={
-                        <>
-                            <Navbar />
-                            <MyProblemBanks />
                             <Footer />
                         </>
                     }

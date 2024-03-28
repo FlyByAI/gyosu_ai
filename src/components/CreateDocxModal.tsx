@@ -1,5 +1,4 @@
 import React from 'react';
-import toast from 'react-hot-toast/headless';
 import { useScreenSize } from '../contexts/ScreenSizeContext';
 import { useModal } from '../contexts/useModal';
 import { Document, EmptyDocument } from '../interfaces';
@@ -8,22 +7,13 @@ import CreateDocxForm from './forms/CreateDocsForm';
 interface CreateDocxModalProps {
     document: Document | EmptyDocument;
     modalId: string;
-    enabled: boolean;
 }
 
-const CreateDocxModal: React.FC<CreateDocxModalProps> = ({ document, modalId, enabled }) => {
+const CreateDocxModal: React.FC<CreateDocxModalProps> = ({ document, modalId }) => {
     const { currentModal, closeModal, openModal } = useModal();
 
     const handleOpenClick = () => {
-        if (!enabled) {
-            toast("Please select problems first in order to create a worksheet.", {
-                id: 'error-toast'
-            })
-        }
-        else {
             openModal(modalId, <CreateDocxForm document={document} />);
-        }
-
     };
 
     const { isDesktop } = useScreenSize();
@@ -46,7 +36,7 @@ const CreateDocxModal: React.FC<CreateDocxModalProps> = ({ document, modalId, en
                 <div className="flex flex-col items-center z-5 w-full max-w-xs md:max-w-4xl">
                     <button
                         onClick={handleOpenClick}
-                        className={`btn w-full md:w-1/2 text-xl ${enabled ? 'btn-success' : 'btn-info'}`}
+                        className={`btn w-full md:w-1/2 text-xl btn-info`}
                         title="Select some problems to create a worksheet."
                     >
                         Export Problems

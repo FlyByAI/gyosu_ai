@@ -33,22 +33,25 @@ const ProblemSearchNavbar: React.FC = () => {
           <HamburgerWrapper>
             <nav className='flex flex-col space-y-2'>
               {/* <LanguageDropdown /> */}
-              <Link to="/math-app/chat" className="relative text-lg mx-3 hover:underline dark:text-gray-200 font-mono font-bold">
+              <Link to="/math-app/chat" className="relative text-lg mx-3 hover:underline font-mono font-bold">
                 GyosuChat
                 <span className="absolute top-1 left-12 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 transform translate-x-1/2 -translate-y-1/2 bg-orange-700 rounded-full">
                   New!
                 </span>
               </Link>
-              <Link to="/math-app" className="text-lg mx-3 hover:underline dark:text-gray-200 font-mono font-bold">
+              <Link to="/math-app/bank" className="text-lg mx-3 hover:underline font-mono font-bold">
+                Problem Banks
+              </Link>
+              <Link to="/math-app" className="text-lg mx-3 hover:underline font-mono font-bold">
                 Problem Search
               </Link>
-              <Link to="/math-app/documents" className="text-lg mx-3 hover:underline dark:text-gray-200 font-mono font-bold">
+              <Link to="/math-app/documents" className="text-lg mx-3 hover:underline font-mono font-bold">
                 My Documents
               </Link>
-              <Link to="/faq" className="text-lg mx-3 hover:underline dark:text-gray-200 font-mono font-bold">
+              <Link to="/faq" className="text-lg mx-3 hover:underline font-mono font-bold">
                 How To
               </Link>
-              <Link to="/subscribe" className="text-lg mx-3 mt-2 hover:underline dark:text-gray-200 font-mono font-bold">
+              <Link to="/subscribe" className="text-lg mx-3 mt-2 hover:underline font-mono font-bold">
                 Pricing
               </Link>
               <ManageSubscriptionButton />
@@ -69,6 +72,7 @@ const ProblemSearchNavbar: React.FC = () => {
           <Link to="/math-app/chat" className="btn btn-ghost">
             GyosuChat <span className="badge badge-info">New!</span>
           </Link>
+          <Link to="/math-app/bank" className="btn btn-ghost">Problem Banks</Link>
           <Link to="/math-app" className="btn btn-ghost">Problem Search</Link>
           <Link to="/math-app/documents" className="btn btn-ghost">My Documents</Link>
           <Link to="/faq" className="btn btn-ghost">How To</Link>

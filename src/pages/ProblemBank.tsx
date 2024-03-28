@@ -86,7 +86,7 @@ const ProblemBank: React.FC = () => {
     return (
         <div className='flex'>
 
-            <CreateDocxModal enabled={activeChunkIndices.length > 0} document={document} modalId="createDocx" />
+            <CreateDocxModal document={document} modalId="createDocx" />
             <ContentWrapper>
                 <div className="w-full flex-grow mt-4 overflow-x-hidden pb-28">
                     <div className="space-y-4 bg-base-100 p-4 border border-base-300 rounded-lg shadow">
@@ -98,7 +98,7 @@ const ProblemBank: React.FC = () => {
 
                         {document.problemChunks && document?.problemChunks?.length > 0 ? (
                             document.problemChunks.map((chunk, chunkIndex) => (
-                                <div key={chunkIndex} className='mx-auto mb-4 bg-base-200 p-4 rounded-lg shadow'>
+                                <div key={chunkIndex} className='mx-auto mb-4 bg-base-200 card p-4 rounded-lg shadow'>
                                     <MathProblem
                                         problemBankId={id}
                                         insertChunk={insertChunk}

@@ -9,6 +9,16 @@ import { useRequireSignIn } from '../hooks/useRequireSignIn';
 import { Chunk, GenerateFormData } from '../interfaces';
 
 
+export function getShowClass(mobileOrDesktop: string) {
+    if (mobileOrDesktop === "desktop") {
+        return "hidden md:block";
+    }
+    if (mobileOrDesktop === "mobile") {
+        return "block md:hidden";
+    }
+    return "block";
+}
+
 const MathGenerate: React.FC = () => {
 
     const [chunkArray, setChunkArray] = useState<Chunk[]>([]);
@@ -38,19 +48,11 @@ const MathGenerate: React.FC = () => {
         }
     }, [chunkArray]);
 
-    function getShowClass(mobileOrDesktop: string) {
-        if (mobileOrDesktop === "desktop") {
-            return "hidden md:block";
-        }
-        if (mobileOrDesktop === "mobile") {
-            return "block md:hidden";
-        }
-        return "block";
-    }
+
 
     return (
         <>
-            <div className="flex flex-col md:flex-row w-full">
+            <div className="flex flex-col md:flex-row w-5/6">
                 {/* Always visible Problem Bank Shelf on the side for larger screens, toggle-able or hidden on smaller screens */}
                 <div className='w-1/4'>
                     <div style={{ position: 'fixed', top: '80px', left: '10px', zIndex: 999 }}> {/* This div contains the sidebar */}

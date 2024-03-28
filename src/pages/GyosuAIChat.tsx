@@ -297,7 +297,6 @@ const GyosuAIChat = () => {
                                 <button onClick={() => handleShareClick(sessionId || "")}
                                     disabled={!sessionId}
                                     className="btn btn-circle btn-ghost"
-                                    data-tooltip-id={`shareChatSession`}
                                 >
 
                                     {isDesktop && <div data-tip="Share this chat session with a friend!" data-for='shareChatSession' className='tooltip tooltip-left'>
@@ -308,7 +307,6 @@ const GyosuAIChat = () => {
                                     <button onClick={() => handleOutlineClick(sessionId || "")}
                                         disabled={!sessionId}
                                         className="btn btn-circle btn-ghost"
-                                        data-tooltip-id={`chatArtifactsButton`}
                                     >
                                         {isDesktop && <div data-tip="View the artifacts you've created for this session!" data-for='chatArtifactsButton' className='tooltip tooltip-left'>
                                             <OutlineIcon width="32" height="32" />
@@ -318,7 +316,6 @@ const GyosuAIChat = () => {
                                 <div>
                                     <button onClick={() => setRunTutorial(true)}
                                         className="btn btn-circle btn-ghost"
-                                        data-tooltip-id={`tutorialButton`}
                                     >
                                         {isDesktop && <div data-tip="Show chat tutorial!" data-for='tutorialButton' className='tooltip tooltip-left'>
                                             <QuestionIcon width="32" height="32" />

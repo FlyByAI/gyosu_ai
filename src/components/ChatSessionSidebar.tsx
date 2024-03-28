@@ -159,7 +159,6 @@ const ChatSessionSidebar: React.FC = () => {
                                 <div className="tooltip" data-tip="Rename">
                                     <button onClick={() => handleEditClick(chat.sessionId, chat.chatTitle)}
                                         className="btn btn-xs btn-success text-base-100 w-full"
-                                        data-tooltip-id={`edit-${chat.sessionId}`}
                                     >
                                         <EditIcon/> Rename
                                     </button>
@@ -167,7 +166,6 @@ const ChatSessionSidebar: React.FC = () => {
                                 <div className="tooltip" data-tip="Share">
                                     <button onClick={() => handleShareClick(chat.sessionId)}
                                         className="btn btn-xs btn-success text-base-100 w-full"
-                                        data-tooltip-id={`share-${chat.sessionId}`}
                                     >
                                         <ShareIcon /> Share
                                     </button>
@@ -175,7 +173,6 @@ const ChatSessionSidebar: React.FC = () => {
                                 <div className="tooltip" data-tip="Delete">
                                     <button onClick={() => handleDeleteClick(chat.sessionId)}
                                         className="btn btn-xs btn-error text-base-100 w-full"
-                                        data-tooltip-id={`delete-${chat.sessionId}`}
                                     >
                                         <TrashIcon /> Delete
                                     </button>

@@ -25,7 +25,7 @@ const ChatNavbar: React.FC = () => {
       <header className="navbar fixed top-0 left-0 z-20 w-full bg-base-100">
         {/* Mobile view */}
         <div className="navbar-start block md:hidden">
-          <HamburgerWrapperX>
+          <HamburgerWrapperX mobileOrDesktop={'mobile'}>
             <ChatSessionSidebar />
           </HamburgerWrapperX>
         </div>
@@ -46,6 +46,7 @@ const ChatNavbar: React.FC = () => {
           <Link to="/math-app/chat" className="btn btn-ghost">
             GyosuChat <span className="badge badge-info">New!</span>
           </Link>
+          <Link to="/math-app/bank" className="btn btn-ghost">Problem Banks</Link>
           <Link to="/math-app" className="btn btn-ghost">Problem Search</Link>
           <Link to="/math-app/documents" className="btn btn-ghost">My Documents</Link>
           <Link to="/faq" className="btn btn-ghost">How To</Link>

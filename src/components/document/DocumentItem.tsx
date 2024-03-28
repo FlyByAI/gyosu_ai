@@ -80,7 +80,7 @@ const DocumentItem: React.FC<DocumentItemProps> = ({ document, onDropChunk, isEx
     };
 
     const handleClick = () => {
-        navigate(`/math-app/document/${document.id}/${isExporting ? "export" : ""}`);
+        navigate(`/math-app/bank/${document.id}/${isExporting ? "export" : ""}`);
     };
 
     const handleEditClick = (e: React.MouseEvent) => {
@@ -134,14 +134,13 @@ const DocumentItem: React.FC<DocumentItemProps> = ({ document, onDropChunk, isEx
             <li ref={dropRef}
                 className={`${id === document.id ? "bg-primary" : "bg-base-200"} p-2 rounded-lg overflow-hidden relative cursor-pointer border border-base-300 hover:border-primary transition-all duration-300 ${getDropStyle()} ${getDragStyle()}`}
                 onClick={handleClick}
-                data-tooltip-id="hoverDocumentItem"
             >
                 <div className="absolute top-2 right-2 flex space-x-2 z-20">
                     <OverflowMenu variant="bottom" isOpen={isOverflowOpen} setIsOpen={setIsOverflowOpen}>
-                        <button onClick={handleEditClick} className="btn btn-circle btn-ghost btn-xs" data-tooltip="Edit" data-tooltip-placement="left">
+                        <button onClick={handleEditClick} className="btn tooltip tooltip-left" data-tip="Edit">
                             <EditIcon />
                         </button>
-                        <button onClick={handleDeleteClick} className="btn btn-circle btn-ghost btn-xs" data-tooltip="Delete" data-tooltip-placement="left">
+                        <button onClick={handleDeleteClick} className="btn tooltip tooltip-left" data-tip="Delete">
                             <TrashIcon />
                         </button>
                     </OverflowMenu>
