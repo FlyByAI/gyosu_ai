@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { DropTargetMonitor, useDrag, useDrop } from 'react-dnd';
 import ReactMarkdown from 'react-markdown';
 import { useParams } from 'react-router-dom';
+import { GridLoader } from 'react-spinners';
 import rehypeKatex from 'rehype-katex';
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
@@ -143,9 +144,9 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
         }
     }
 
-    const { submitTextWithChunk, data: submitTextData, reset: resetTextChange } = useSubmitTextWithChunk(`${apiUrl}/math_app/chat/problem/`)
-    const { submitTextWithChunkLatex, data: submitTextLatexData, reset: resetTextLatex } = useSubmitTextWithChunkLatex(`${apiUrl}/math_app/chat/problem/`)
-    const { submitTextWithChunkSimilar, data: submitTextSimilarData, reset: resetTextSimilar } = useSubmitTextWithChunkSimilar(`${apiUrl}/math_app/chat/problem/`)
+    const { submitTextWithChunk, data: submitTextData, reset: resetTextChange, isLoading: isLoadingSubmitText } = useSubmitTextWithChunk(`${apiUrl}/math_app/chat/problem/`)
+    const { submitTextWithChunkLatex, data: submitTextLatexData, reset: resetTextLatex, isLoading: isLoadingSubmitTextLatex } = useSubmitTextWithChunkLatex(`${apiUrl}/math_app/chat/problem/`)
+    const { submitTextWithChunkSimilar, data: submitTextSimilarData, reset: resetTextSimilar, isLoading: isLoadingSubmitTextSimilar } = useSubmitTextWithChunkSimilar(`${apiUrl}/math_app/chat/problem/`)
 
     const handleSubmitText = () => {
         submitTextWithChunk({ chunk: chunk, userInput: userInput, chunkIndex: chunkIndex, problemBankId: problemBankId })
@@ -179,7 +180,8 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
 
     useEffect(() => {
         if (submitTextData) {
-            console.log("new text changed chunks", submitTextData)
+            console.log("new text changed chunk", submitTextData)
+            console.log("old chunk", chunk)
         }
         if (rerollData) {
             console.log("new rerolled chunks", rerollData)
@@ -204,11 +206,14 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                 type: "problem",
                 content: [{ type: "math", value: submitTextLatexData.latex }]
             } as Problem
-            const chunk = { content: [problem] } as Chunk
+            const chunk: Chunk = { content: [problem], type: "chunk", tags: {}, ...submitTextLatexData.chunk }
+            console.log("new chunk!", chunk)
             updateChunk(chunk, chunkIndex)
             resetTextLatex()
         }
-    }, [submitTextData, rerollData, submitTextSimilarData, submitTextLatexData, updateChunk, chunkIndex, resetTextSimilar, resetTextLatex])
+    }, [submitTextData, rerollData, submitTextSimilarData, submitTextLatexData, updateChunk, chunkIndex, resetTextSimilar, resetTextLatex, chunk])
+
+    console.log(chunk)
 
     return (
         <>
@@ -221,15 +226,19 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                 title={!id ? "Click and drag to a problem bank." : "Click to select this problem."}
             >
                 <div className="absolute top-0 right-0 flex flex-row gap-2">
+                    {(isLoadingSubmitText || isLoadingSubmitTextLatex || isLoadingSubmitTextSimilar) && <GridLoader color="#4A90E2" size={4} margin={4} speedMultiplier={.75} className='mr-2' />}
+
                     {!id && <AddChunkModal chunk={chunk} modalId={'addChunkModal' + chunk.chunkId} enabled={false} />}
 
-                    {id && <button
-                        className="btn btn-secondary tooltip tooltip-bottom"
-                        data-tip="Add problem to problem bank."
-                        onClick={handleReroll}
-                    >
-                        Reroll
-                    </button>}
+                    {id && chunk.tags && Object.keys(chunk.tags).length > 0 && (
+                        <button
+                            className="btn btn-secondary tooltip tooltip-bottom"
+                            data-tip="Add problem to problem bank."
+                            onClick={handleReroll}
+                        >
+                            Reroll
+                        </button>
+                    )}
 
                     {id && (
                         <button
@@ -338,7 +347,16 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                             })}
                     </div>}
 
+
+
                 {id && (submitTextData || rerollData) && <>
+                    <button
+                        className="btn btn-warning tooltip tooltip-bottom"
+                        data-tip="Reject this change."
+                        onClick={() => resetTextChange()}
+                    >
+                        Reject
+                    </button>
                     <button
                         className="btn btn-secondary tooltip tooltip-bottom"
                         data-tip="Accept this change."
@@ -347,6 +365,8 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                         Accept
                     </button>
                 </>}
+
+
 
                 {id && chunk.content.length == 0 && <>
                     {/* if a problem does not yet exist */}
