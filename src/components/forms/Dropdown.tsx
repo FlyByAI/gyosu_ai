@@ -1,58 +1,56 @@
-import React, { useEffect } from 'react';
+import React, { useCallback } from 'react';
 
 interface DropdownProps {
-    options: (string | { option_text: string } | { label: string, value: string })[] | { [key: string]: { option_text: string } };
-    handleChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
-    disabled?: boolean;
-    className?: string;
-    defaultValue?: string;
-    label: string;
-    showSelected: boolean;
+  options: (string | { option_text: string } | { label: string, value: string })[] | { [key: string]: { option_text: string } };
+  handleChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+  disabled?: boolean;
+  className?: string;
+  label: string;
+  showSelected: boolean;
+  value: string;
 }
 
-const mapOptions = (options: DropdownProps['options']) => {
+const Dropdown: React.FC<DropdownProps> = ({
+  options,
+  handleChange,
+  disabled = false,
+  className = '',
+  label,
+  showSelected,
+  value
+}) => {
+  const renderOptions = useCallback(() => {
     if (Array.isArray(options)) {
-        return options.map((option, index) => {
-            if (typeof option === 'string') {
-                return { value: option, label: option };
-            } else if ('option_text' in option) {
-                return { value: option.option_text, label: option.option_text };
-            } else if ('label' in option && 'value' in option) {
-                return { value: option.value, label: option.label };
-            } else {
-                return { value: `${index}`, label: 'Invalid Option' };
-            }
-        });
+      return options.map((option, index) => {
+        if (typeof option === 'string') {
+          return <option key={index} value={option}>{option}</option>;
+        } else if ('option_text' in option) {
+          return <option key={index} value={option.option_text}>{option.option_text}</option>;
+        } else {
+          return <option key={index} value={option.value}>{option.label}</option>;
+        }
+      });
     } else {
-        return Object.entries(options).map(([key, value]) => ({
-            value: key,
-            label: value.option_text,
-        }));
+      return Object.keys(options).map((key, index) => (
+        <option key={index + 1} value={options[key].option_text}>{options[key].option_text}</option>
+      ));
     }
-};
+  },[options])
 
-
-const Dropdown: React.FC<DropdownProps> = ({ options, handleChange, disabled = false, className, defaultValue, label, showSelected }) => {
-    const optionsArray = mapOptions(options).filter(key => key.value !== 'option_text');
-    const selectedValue = defaultValue ? defaultValue : optionsArray[0]?.value || '';
-
-    return (
-        <div className={className}>
-            {label && <h2 className="h-6 text-lg mb-2 text-white text-left">{label + (showSelected ? ": " + selectedValue : "")}</h2>}
-            <select
-                disabled={disabled}
-                value={selectedValue}
-                onChange={handleChange}
-                className={"form-select block w-full mt-1"}
-            >
-                {optionsArray.map((option, index) => (
-                    <option key={index} value={option.value}>
-                        {option.label}
-                    </option>
-                ))}
-            </select>
-        </div>
-    );
+  return (
+    <div className={`dropdown ${className}`} >
+      {label}: {showSelected && <span>{value}</span>}
+      <select
+        onChange={handleChange}
+        disabled={disabled}
+        value={value}
+        className="select select-bordered w-full max-w-xs"
+      >
+        <option key={0} value={""}>{"None"}</option>
+        {renderOptions()}
+      </select>
+    </div>
+  );
 };
 
 export default Dropdown;

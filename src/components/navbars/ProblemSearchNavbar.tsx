@@ -5,9 +5,11 @@ import { useDarkMode } from '../../contexts/useDarkMode';
 import useFetchSubscriptionInfo from '../../hooks/subscription/useFetchSubscriptionInfo';
 import useEnvironment from '../../hooks/useEnvironment';
 import HamburgerWrapper from '../HamburgerWrapper';
+import HamburgerWrapperX from '../HamburgerWrapperX';
 import ManageSubscriptionButton from '../ManageSubscriptionButton';
+import ProblemBankShelf from '../document/ProblemBankShelf';
 
-const FixedNavbar: React.FC = () => {
+const ProblemSearchNavbar: React.FC = () => {
   const { darkMode } = useDarkMode();
   const { apiUrl } = useEnvironment();
   const { subscriptionInfo } = useFetchSubscriptionInfo(`${apiUrl}/user_data/get_subscription_info/`);
@@ -19,7 +21,11 @@ const FixedNavbar: React.FC = () => {
         {/* Mobile view */}
         <div className="navbar-start md:hidden">
 
+          <HamburgerWrapperX mobileOrDesktop={'mobile'}>
+            <ProblemBankShelf isExporting={false} />
+          </HamburgerWrapperX>
         </div>
+
         <div className="navbar-center md:hidden">
           <Link to="/" className="btn btn-ghost normal-case text-xl">Gyosu.ai</Link>
         </div>
@@ -27,9 +33,9 @@ const FixedNavbar: React.FC = () => {
           <HamburgerWrapper>
             <nav className='flex flex-col space-y-2'>
               {/* <LanguageDropdown /> */}
-              <Link to="/math-app/chat" className="relative text-lg mx-3 hover:underline font-bold">
+              <Link to="/math-app/chat" className="relative text-lg mx-3 hover:underline font-mono font-bold">
                 GyosuChat
-                <span className="inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 transform translate-x-1/2 -translate-y-1/2 badge-secondary rounded-full">
+                <span className="absolute top-1 left-12 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 transform translate-x-1/2 -translate-y-1/2 bg-orange-700 rounded-full">
                   New!
                 </span>
               </Link>
@@ -86,4 +92,4 @@ const FixedNavbar: React.FC = () => {
   );
 };
 
-export default FixedNavbar;
+export default ProblemSearchNavbar;

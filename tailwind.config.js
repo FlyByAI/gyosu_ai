@@ -2,6 +2,9 @@
 export default {
   darkMode: "class",
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
+  daisyui: {
+    themes: ["emerald"],
+  },
   theme: {
     extend: {
       height: {
@@ -20,7 +23,6 @@ export default {
       },
       fontFamily: {
         sans: [
-          "ui-monospace",
           "SFMono-Regular",
           "Menlo",
           "Monaco",
@@ -38,5 +40,5 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [require("daisyui")],
 };

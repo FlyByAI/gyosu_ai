@@ -123,9 +123,9 @@ const ChatSessionSidebar: React.FC = () => {
         if (chats.length === 0) return null;
         return (
             <>
-                <h3 className="text-gray-400 mb-2">{sectionLabel}</h3>
+                <h3 className="text-info">{sectionLabel}</h3>
                 {chats.map(chat => (
-                    <li key={chat.sessionId} className="mb-2 flex justify-between items-center">
+                    <li key={chat.sessionId} className="flex justify-between items-center">
                         <div className="overflow-hidden">
                             {editingSessionId === chat.sessionId ? (
                                 <input
@@ -138,11 +138,11 @@ const ChatSessionSidebar: React.FC = () => {
                                             handleRenameSubmit(chat.sessionId);
                                         }
                                     }}
-                                    className="block w-full text-white bg-transparent border-b border-white focus:outline-none"
+                                    className="input input-bordered w-full bg-transparent border-base-300 focus:border-blue-500"
                                     autoFocus
                                 />
                             ) : (
-                                <Link to={`/math-app/chat/${chat.sessionId}`} className="block text-white hover:text-blue-300 whitespace-nowrap overflow-hidden overflow-ellipsis hover:text-left">
+                                <Link to={`/math-app/chat/${chat.sessionId}`} className="link link-hover text-base-content hover:text-blue-400 whitespace-nowrap overflow-hidden overflow-ellipsis">
                                     <div className={`${getMarqueeClass(chat.chatTitle)}`}>
                                         {chat.chatTitle}
                                     </div>
@@ -156,31 +156,29 @@ const ChatSessionSidebar: React.FC = () => {
                                 isOpen={openOverflowMenuId === chat.sessionId}
                                 setIsOpen={(isOpen) => setOpenOverflowMenuId(isOpen ? chat.sessionId : null)}
                             >
-                                <button onClick={() => handleEditClick(chat.sessionId, chat.chatTitle)}
-                                    className="text-green-700 bg-gray-100 rounded-t flex flex-row p-2"
-                                    data-tooltip-id={`edit-${chat.sessionId}`}
-                                >
-                                    <EditIcon />
-                                    <div>
-                                        Rename
-                                    </div>
-                                </button>
-                                <button onClick={() => handleShareClick(chat.sessionId)}
-                                    className="text-green-700 bg-gray-100 flex flex-row p-2"
-                                    data-tooltip-id={`edit-${chat.sessionId}`}
-                                >
-                                    <ShareIcon />
-                                    <div>
-                                        Share
-                                    </div>
-                                </button>
-                                <button className='text-red-500 bg-gray-100 rounded-b flex flex-row p-2'
-                                    data-tooltip-id={`delete-${chat.sessionId}`}
-                                    onClick={() => handleDeleteClick(chat.sessionId)}>
-                                    <TrashIcon />
-                                    Delete
-                                </button>
+                                <div className="tooltip" data-tip="Rename">
+                                    <button onClick={() => handleEditClick(chat.sessionId, chat.chatTitle)}
+                                        className="btn btn-xs btn-success text-base-100 w-full"
+                                    >
+                                        <EditIcon/> Rename
+                                    </button>
+                                </div>
+                                <div className="tooltip" data-tip="Share">
+                                    <button onClick={() => handleShareClick(chat.sessionId)}
+                                        className="btn btn-xs btn-success text-base-100 w-full"
+                                    >
+                                        <ShareIcon /> Share
+                                    </button>
+                                </div>
+                                <div className="tooltip" data-tip="Delete">
+                                    <button onClick={() => handleDeleteClick(chat.sessionId)}
+                                        className="btn btn-xs btn-error text-base-100 w-full"
+                                    >
+                                        <TrashIcon /> Delete
+                                    </button>
+                                </div>
                             </OverflowMenuPortal>
+
                         </div>
                     </li>
                 ))}
@@ -190,16 +188,17 @@ const ChatSessionSidebar: React.FC = () => {
 
 
 
+
     return (
-        <div className="chat-sidebar h-75vh md:h-85vh p-4 max-w-xs md:max-w-none bg-gray-800 md:bg-transparent border border-gray-300 text-white flex flex-col"
+        <div className="chat-sidebar h-[75vh] md:h-[85vh] p-4 max-w-xs md:max-w-none bg-base-100 md:bg-transparent border border-base-300 text-base-content flex flex-col"
             ref={portalRootRef}
         >
-            <button onClick={navigateToNewChat} className="md:flex md:flex-row hidden p-2 mb-4 bg-gradient-to-b from-blue-700 to-blue-600 hover:from-blue-800 hover:to-blue-700 text-white font-bold rounded">
-                <div className='mr-auto'>New Chat</div>
+            <button onClick={navigateToNewChat} className="btn btn-primary rounded-lg md:flex md:flex-row hidden">
+                New Chat
                 <NewChatIcon />
             </button>
-            
-            <hr className='p-1 md:block hidden' />
+
+            <hr className='my-4 border-black md:block hidden' />
 
             <div className="flex-grow overflow-y-auto">
                 <ul>
@@ -211,18 +210,18 @@ const ChatSessionSidebar: React.FC = () => {
                     {renderChatsInSection(categorizedChats.older, "Older")}
                 </ul>
             </div>
-            <hr className='p-1' />
-            <div className="user-profile">
-                <div className='text-xs mt-2' >
+            <hr className='my-2 border-black' />
+            <div className="user-profile flex flex-col gap-2">
+                <div className='text-xs' >
                     <ManageSubscriptionButton />
                 </div>
-                <div className='text-xs mt-2' >
+                <div className='text-xs' >
                     <DeleteAllChatsButton />
                 </div>
             </div>
         </div>
-
     );
+
 };
 
 export default ChatSessionSidebar;

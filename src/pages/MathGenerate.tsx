@@ -2,12 +2,22 @@ import React, { useEffect, useRef, useState } from 'react';
 import 'tailwindcss/tailwind.css';
 import ProblemBankShelf from '../components/document/ProblemBankShelf';
 import ChunkManager from '../components/math/ChunkManager';
-import CompetitonMathGenerateForm from '../components/math/CompetitonMathGenerateForm';
+import CompetitionMathGenerateForm from '../components/math/CompetitonMathGenerateForm';
 import TextbookGenerateForm from '../components/math/TextbookGenerateForm';
 import { useScreenSize } from '../contexts/ScreenSizeContext';
 import { useRequireSignIn } from '../hooks/useRequireSignIn';
 import { Chunk, GenerateFormData } from '../interfaces';
 
+
+export function getShowClass(mobileOrDesktop: string) {
+    if (mobileOrDesktop === "desktop") {
+        return "hidden md:block";
+    }
+    if (mobileOrDesktop === "mobile") {
+        return "block md:hidden";
+    }
+    return "block";
+}
 
 const MathGenerate: React.FC = () => {
 
@@ -39,58 +49,65 @@ const MathGenerate: React.FC = () => {
     }, [chunkArray]);
 
 
+
     return (
-        <div className="flex">
-            <ProblemBankShelf isExporting={false} />
-            <div className="w-5/6 mt-4 overflow-x-hidden" style={{ marginRight: isDesktop ? '16.6667%' : "0" }}>
-                <div className="flex justify-start items-center flex-col">
-                    <div className="w-full md:w-2/3 mx-4 md:mx-0 bg-gray-700 rounded-lg p-4 my-4 shadow-lg flex flex-col">
-
-                        <div className="text-left text-white mb-4">
-                            <span className="font-bold items-left ml-4 italic">Step 1: Select Problem Source</span>
-
+        <>
+            <div className="flex flex-col md:flex-row w-5/6">
+                {/* Always visible Problem Bank Shelf on the side for larger screens, toggle-able or hidden on smaller screens */}
+                <div className='w-1/4'>
+                    <div style={{ position: 'fixed', top: '80px', left: '10px', zIndex: 999 }}> {/* This div contains the sidebar */}
+                        <div className={`card bg-base-200 shadow-lg my-4 md:my-0 md:mr-4 p-4 ${getShowClass('desktop')}`}>
+                            <ProblemBankShelf isExporting={false} />
                         </div>
-                        <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 mb-8 mx-auto">
+                    </div>
+                </div>
+                {/* Center column for search and results, full width on small screens and adjusted on larger screens */}
+                <div className="flex-1">
+                    {/* Search Section */}
+                    <div className="card rounded-lg p-4 my-4 shadow-lg bg-base-200">
+                        <div className="text-left mb-4">
+                            <span className="font-bold text-xl italic">Step 1: Select Problem Source</span>
+                        </div>
+                        <div className="flex space-x-4 space-y-0 mb-8 mx-4">
                             <button
                                 onClick={() => setFormType('Textbook')}
-                                className={`p-4 text-lg rounded-lg shadow-md transform transition-all duration-300 hover:scale-105 ${formType === 'Textbook' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-black hover:bg-gray-300'}`}
+                                className={`btn ${formType === 'Textbook' ? 'btn-primary' : 'btn-outline'} w-1/2`}
                             >
                                 Textbooks
                             </button>
                             <button
                                 onClick={() => setFormType('Competition')}
-                                className={`p-4 text-lg rounded-lg shadow-md transform transition-all duration-300 hover:scale-105 ${formType === 'Competition' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-black hover:bg-gray-300'}`}
+                                className={`btn ${formType === 'Competition' ? 'btn-primary' : 'btn-outline'} w-1/2`}
                             >
                                 Competition Math
                             </button>
                         </div>
-
-                        <div className="text-left text-white mb-4">
-                            {formType && <span className="font-bold items-left ml-4 italic">Step 2: Search for problems using drop downs</span>}
-                        </div>
-
-                        <div className='class="w-full mx-auto md:w-5/6"'>
+                        {formType && (
+                            <div className="text-left mb-4">
+                                <span className="font-bold text-xl italic">Step 2: Search for problems using dropdowns</span>
+                            </div>
+                        )}
+                        <div>
                             {formType === 'Textbook' && <TextbookGenerateForm onSubmit={handleSubmit} setGenerateFormData={setGenerateFormData} />}
-                            {formType === 'Competition' && <CompetitonMathGenerateForm onSubmit={handleSubmit} setGenerateFormData={setGenerateFormData} />}
+                            {formType === 'Competition' && <CompetitionMathGenerateForm onSubmit={handleSubmit} setGenerateFormData={setGenerateFormData} />}
                         </div>
-
                     </div>
 
-                    {generateFormData && <div ref={myRef} className="w-full md:w-3/4 mx-4 md:mx-0 rounded-lg p-4 my-4 shadow-lg items-center flex flex-col">
-                        <div className='w-full md:w-5/6'>
-                            {
-                                chunkArray.length > 0 &&
+                    {/* Results Display */}
+                    {generateFormData && (
+                        <div className="card rounded-lg p-4 my-4 bg-base-100 shadow-lg">
+                            {chunkArray.length > 0 && (
                                 <ChunkManager
                                     setChunkArray={setChunkArray}
                                     chunkArray={chunkArray}
-                                />}
+                                />
+                            )}
                         </div>
-                    </div>
-
-                    }
+                    )}
                 </div>
             </div>
-        </div>
+        </>
+
     );
 };
 

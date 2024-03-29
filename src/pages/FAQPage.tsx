@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Accordion from '../components/Accordion';
 
 const faqs = [
     {
@@ -19,7 +18,7 @@ const faqs = [
             <div>
                 <p> GysouChat is an assistant that has been custom built for teachers, to help guide you through the process of creating educational materials for your students.</p>
                 <p> The goal of GyosuChat is to make it as easy as possible for a teacher to utilize trusted materials, while building content that is customized for their classrooms.</p>
-                <p> GyosuChat is currently in beta, and we are working hard to improve it every day. If you have any feedback, please email us at <a href="mailto:support@gyosu.ai" className="text-blue-300 underline">support@gyosu.ai</a></p>
+                <p> GyosuChat is currently in beta, and we are working hard to improve it every day. If you have any feedback, please email us at <a href="mailto:support@gyosu.ai" className="text-secondary underline">support@gyosu.ai</a></p>
             </div>
         )
     },
@@ -28,21 +27,21 @@ const faqs = [
         answer: (
             <>
                 <p> Use GyosuChat just like you would with ChatGPT - by chatting to it! Here are some ideas of messages you could send to help get you started: </p>
-                    <br></br>
-                    <ul className="list-disc pl-5">
-                        <li> I am teaching "topic", can you help me create a lesson plan / worksheet / quiz / exam?</li>
-                        <li> Please create a PDF quiz with 3 questions on the order of operations </li>
-                        <li> Please create a study guide for my students on Pre-Algebra, chapter 3, section 4. </li>
-                        <li> I'd like to create a fun worksheet on functions & function notation </li>
-                        <li> I'd like to create an "Escape Room" game using concepts from the quadratic formula </li>
-                    </ul>
+                <br></br>
+                <ul className="list-disc pl-5">
+                    <li> I am teaching "topic", can you help me create a lesson plan / worksheet / quiz / exam?</li>
+                    <li> Please create a PDF quiz with 3 questions on the order of operations </li>
+                    <li> Please create a study guide for my students on Pre-Algebra, chapter 3, section 4. </li>
+                    <li> I'd like to create a fun worksheet on functions & function notation </li>
+                    <li> I'd like to create an "Escape Room" game using concepts from the quadratic formula </li>
+                </ul>
                 <br></br>
                 <p> Gyosu chat will then ask you a series of questions to help ensure the content it creates is customized to you. Here are some options on how you could customize your content: </p>
-                    <br></br>
-                    <ul className="list-disc pl-5">
-                        <li> Please make this content easy / medium / difficult </li>
-                        <li> Please make this content more fun and engaging, using the peronality of (insert famous person/character here) </li>
-                    </ul>
+                <br></br>
+                <ul className="list-disc pl-5">
+                    <li> Please make this content easy / medium / difficult </li>
+                    <li> Please make this content more fun and engaging, using the peronality of (insert famous person/character here) </li>
+                </ul>
             </>
         )
     },
@@ -52,18 +51,18 @@ const faqs = [
             <>
                 <p>Currently, GyosuChat is focused towards Math teachers.</p>
                 <p>We have the following books available, which were open-sourced and provided through <a href="https://openstax.org/subjects/math">OpenStax</a>: </p>
-                    <br></br>
-                    <ul className="list-disc pl-5">
-                        <li>College Algebra 2e</li>
-                        <li>Calculus Volume 2</li>
-                        <li>Pre-Algebra 2e</li>
-                        <li>Algebra and Trigonometry 2e</li>
-                        <li>Calculus Volume 1</li>
-                        <li>Calculus Volume 3</li>
-                        <li>Intermediate Algebra 2e</li>
-                        <li>Precalculus 2e</li>
-                        <li>Elementary Algebra 2e</li>
-                    </ul>
+                <br></br>
+                <ul className="list-disc pl-5">
+                    <li>College Algebra 2e</li>
+                    <li>Calculus Volume 2</li>
+                    <li>Pre-Algebra 2e</li>
+                    <li>Algebra and Trigonometry 2e</li>
+                    <li>Calculus Volume 1</li>
+                    <li>Calculus Volume 3</li>
+                    <li>Intermediate Algebra 2e</li>
+                    <li>Precalculus 2e</li>
+                    <li>Elementary Algebra 2e</li>
+                </ul>
                 <br></br>
                 <p>In the future, we plan to expand our library out to other topics. </p>
             </>
@@ -76,7 +75,7 @@ const faqs = [
                 <p className="text-base mb-4">Creating and using a problem bank involves the following steps:</p>
 
                 <div className="text-lg font-semibold mb-2">Step 1: Go to Problem Search</div>
-                <p className="text-base mb-4">Navigate to the <Link className="text-blue-300 underline" to='/math-app'>problem search</Link> section to find the problems you want to include in your problem bank.</p>
+                <p className="text-base mb-4">Navigate to the <Link className="text-secondary underline" to='/math-app'>problem search</Link> section to find the problems you want to include in your problem bank.</p>
 
                 <div className="text-lg font-semibold mb-2">Step 2: Search for Problems</div>
                 <p className="text-base mb-4">Use the available filters and search functionalities to find specific problems that align with your objectives.</p>
@@ -91,7 +90,7 @@ const faqs = [
                 </p>
 
                 <div className="text-lg font-semibold mb-2">Step 4: Visit the Playground</div>
-                <p className="text-base mb-4">Once your problem bank is ready, go to the <Link className="text-blue-300 underline" to='/math-app/playground'>playground</Link> where you can use the problems to create a document.</p>
+                <p className="text-base mb-4">Once your problem bank is ready, go to the <Link className="text-secondary underline" to='/math-app/playground'>playground</Link> where you can use the problems to create a document.</p>
 
                 <div className="text-lg font-semibold mb-2">Step 5: Create a Document</div>
                 <p className="text-base mb-4">In the playground, plug in your problem bank, make necessary adjustments, and finalize the document creation process by following the on-screen instructions.</p>
@@ -127,7 +126,7 @@ const faqs = [
                 <ol className="">
                     <li className="mb-2">
                         <div className="text-lg font-semibold">Head to the Search Page:</div>
-                        <p>Navigate to the search page by clicking on this <Link className="text-blue-300 underline" to='/math-app'>link</Link>.</p>
+                        <p>Navigate to the search page by clicking on this <Link className="text-secondary underline" to='/math-app'>link</Link>.</p>
                     </li>
 
                     <li className="mb-2">
@@ -155,20 +154,25 @@ const faqs = [
         question: 'Is there any support available if I run into issues?',
         answer: (
             <>
-                Lost in the labyrinth of logarithms? Email <a href="mailto:support@gyosu.ai" className="text-blue-300 underline">support@gyosu.ai</a>, and we'll help you find your way!
+                Lost in the labyrinth of logarithms? Email <a href="mailto:support@gyosu.ai" className="text-secondary underline">support@gyosu.ai</a>, and we'll help you find your way!
             </>
         )
     }
 ];
-
 const FAQPage: React.FC = () => {
     return (
-        <div className="faq-container text-white">
+        <div className="faq-container text-base-content p-4">
             <h1 className="text-4xl font-semibold text-center mb-6">Frequently Asked Questions</h1>
             {faqs.map((faq, index) => (
-                <Accordion key={index} title={faq.question} visible={false}>
-                    <div className='my-4'>{faq.answer}</div>
-                </Accordion>
+                <div key={index} className="collapse collapse-plus bg-base-200 rounded-box">
+                    <input type="radio" name="faq-accordion" id={`faq-${index}`} className="peer" defaultChecked={index === 0} />
+                    <div className="collapse-title text-xl font-medium">
+                        {faq.question}
+                    </div>
+                    <div className="collapse-content">
+                        <p>{faq.answer}</p>
+                    </div>
+                </div>
             ))}
         </div>
     );

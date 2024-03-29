@@ -1,76 +1,67 @@
 import React, { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
+import { useNavigate } from 'react-router-dom';
+import rehypeKatex from 'rehype-katex';
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
-import rehypeKatex from 'rehype-katex';
-import { Link } from 'react-router-dom';
-import { Document, Table, Image, Text, Math, Subproblem, Subproblems } from '../../interfaces';
-import SubproblemComponent from '../AST';
+import { Document, Image, Math, Subproblems, Table, Text } from '../../interfaces';
+import TrashIcon from '../../svg/TrashIcon';
+import { SubproblemsComponent } from '../AST';
 
 interface DocumentPreviewProps {
     document: Document;
     disabledClick?: boolean;
+    handleDelete?: (document: Document) => void;
 }
 
-const DocumentPreview: React.FC<DocumentPreviewProps> = ({ document, disabledClick }) => {
+const DocumentPreview: React.FC<DocumentPreviewProps> = ({ document, disabledClick, handleDelete }) => {
     const [isHovering, setIsHovering] = useState(false);
 
     const { creator, upvotes, tips, id, problemChunks } = document;
 
     const renderContent = (content: (Text | Math | Table | Image | Subproblems)[]) => {
-        return content.map((item, index) => {
+        return content.map((item) => {
             switch (item.type) {
                 case 'text':
                     return (
-                        <ReactMarkdown
-                            key={index}
-                            className={'z-10 text-gray-200 border-2 border-transparent border-dashed hover:border-2 hover:border-purple-dashed p-1 m-1 group-hover:border-2 group-hover:border-white group-hover:border-dashed'}
-                            remarkPlugins={[remarkGfm, remarkMath]}
-                            rehypePlugins={[rehypeKatex]}
+                        <div
+                            className={'text-xs md:text-lg z-10  border-2 border-transparent border-dashed hover:border-2 p-1 m-1 group-hover:border-2 group-hover:border-dashed'}
                         >
                             {item.value}
-                        </ReactMarkdown>
+                        </div>
                     );
                 case 'math':
                     return (
                         <ReactMarkdown
-                            key={index}
-                            className={"z-10 text-purple-300 border-gray-100 border-2 border-transparent border-dashed hover:border-2 hover:border-purple-dashed p-1 m-1 group-hover:border-2 group-hover:border-purple-500 group-hover:border-dashed"}
+                            className={"text-xs md:text-lg z-10  border-gray-100 border-2 border-transparent border-dashed hover:border-2 p-1 m-1 group-hover:border-2 group-hover:border-dashed"}
                             remarkPlugins={[remarkGfm, remarkMath]}
                             rehypePlugins={[rehypeKatex]}
                         >
-                            {`$$${item.value}$$`}
+                            {`${item.value}`}
                         </ReactMarkdown>
                     );
                 case 'table':
-                    <ReactMarkdown
-                        className={"z-10 text-purple-300 border-gray-100 border-2 border-transparent border-dashed hover:border-2 hover:border-purple-dashed p-1 m-1 group-hover:border-2 group-hover:border-purple-500 group-hover:border-dashed"}
-                        remarkPlugins={[remarkGfm, remarkMath]}
-                        rehypePlugins={[rehypeKatex]}
-                    >
-                        {item.value}
-                    </ReactMarkdown>
-
-                    break;
+                    return (
+                        <ReactMarkdown
+                            className={"text-xs md:text-lg z-10  border-gray-100 border-2 border-transparent border-dashed hover:border-2 p-1 m-1 group-hover:border-2 group-hover:border-dashed"}
+                            remarkPlugins={[remarkGfm, remarkMath]}
+                            rehypePlugins={[rehypeKatex]}
+                        >
+                            {String.raw`${item.value}`}
+                        </ReactMarkdown>
+                    );
                 case 'image':
+                    //todo: get better descriptions added to the ASTs
+                    // console.log("image", item)
                     return (
                         <img
-                            key={index}
                             src={item.value}
                             alt="Description"
-                            className="z-10 p-1 m-1 border-2 border-transparent border-dashed hover:border-2 hover:border-purple-dashed group-hover:border-2 group-hover:border-purple-500 group-hover:border-dashed"
+                            className="text-xs md:text-lg z-10 p-1 m-1 border-2 border-transparent border-dashed hover:border-2 group-hover:border-2 group-hover:border-dashed"
                         />
                     );
                 case 'subproblems':
-                    return (
-                        <div key={index} className="flex flex-col">
-                            {item.content.map((subproblem, subproblemIndex) => (
-                                <div key={subproblemIndex} className="flex flex-row">
-                                    <SubproblemComponent subproblem={subproblem} />
-                                </div>
-                            ))}
-                        </div>
-                    );
+                    return <SubproblemsComponent subproblems={item} />;
                 default:
                     return null;
             }
@@ -85,20 +76,44 @@ const DocumentPreview: React.FC<DocumentPreviewProps> = ({ document, disabledCli
 
     const contentEmpty = !problemChunks || problemChunks.length === 0;
 
+    const navigate = useNavigate();
+
     return (
         <div
-            className={`m-2 bg-white rounded-2xl relative ${disabledClick ? '' : 'cursor-pointer'}`}
-            onMouseEnter={() => setIsHovering(true)}
-            onMouseLeave={() => setIsHovering(false)}
-            onClick={(e) => { if (disabledClick) e.preventDefault(); }}
+            className={`relative ${disabledClick ? '' : 'cursor-pointer'} card shadow-xl`}
+            onClick={() => navigate(`/math-app/bank/${id}`)}
         >
-            <div className='p-2'>
+            <div className="card-header">
+                <div className="card-title">{document.title}</div>
+                <div className="absolute top-0 right-0 flex gap-2 p-2">
+                    {/* <button
+                        onClick={(e) => { e.stopPropagation(); handleEditClick(); }}
+                        className="btn btn-sm btn-ghost tooltip tooltip-left"
+                        data-tip="Edit"
+                    >
+                        <EditIcon />
+                    </button> */}
+                    {handleDelete &&
+                        <button
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                handleDelete(document);
+                            }}
+                            className="btn btn-sm btn-ghost tooltip tooltip-left"
+                            data-tip="Delete"
+                        >
+                            <TrashIcon />
+                        </button>
+                    }
+                </div>
+            </div>
+            <div className="card-body">
                 {contentEmpty ? (
-                    <div className="preview-content h-32 p-2 rounded-lg text-xs bg-gray-800 text-center flex items-center justify-center">
-                        <span>This document is empty</span>
+                    <div className="preview-content flex items-center justify-center italic">
+                        <span>This problem bank is empty</span>
                     </div>
                 ) : (
-                    <div className="preview-content overflow-y-auto h-32 p-2 rounded-lg text-xs bg-gray-800">
+                    <div className="preview-content overflow-y-auto min-h-64 hover:border">
                         {problemChunks?.map((chunk, index) => (
                             <div key={index}>
                                 {chunk.content.map((contentItem, contentIndex) => (
@@ -108,18 +123,9 @@ const DocumentPreview: React.FC<DocumentPreviewProps> = ({ document, disabledCli
                         ))}
                     </div>
                 )}
-
-                {!contentEmpty && !disabledClick && <div className="document-footer mt-4 bg-gray-200 p-4 rounded-lg text-sm w-10/12 mx-auto">
-                    <h2 className="text-base font-bold">Created by {document.creator || "unknown"}</h2>
-                    {!disabledClick && isHovering && (
-                        <div className="rounded-b-2xl absolute inset-x-0 top-2/3 bottom-0 bg-gray-600 bg-opacity-70 flex justify-center items-center">
-                            <span className="text-white text-xl font-bold">View</span>
-                        </div>
-                    )}
-                    {document.title}
-                </div>}
             </div>
         </div>
+
     );
 
 

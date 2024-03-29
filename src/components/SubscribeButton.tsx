@@ -13,7 +13,7 @@ const SubscribeFreeButton = ({ className }: { className: string }) => {
     const handleCheckout = () => {
         openSignIn({
             afterSignInUrl: window.location.href
-          });
+        });
     }
 
     const { session } = useClerk();
@@ -49,7 +49,7 @@ const SubscribePremiumButton = ({ className }: { className: string }) => {
         } else {
             openSignIn({
                 afterSignInUrl: window.location.href
-              });
+            });
         }
     };
 
@@ -91,7 +91,7 @@ const SubscribeLiteButton = ({ className }: { className: string }) => {
         } else {
             openSignIn({
                 afterSignInUrl: window.location.href
-              });
+            });
         }
     };
 
@@ -116,7 +116,7 @@ const SubscribeLiteButton = ({ className }: { className: string }) => {
     );
 };
 
-const SubscribePaidButton = ({ className }: { className: string }) => {
+const SubscribePaidButton = ({ className }: { className?: string }) => {
     const { session, openSignIn } = useClerk();
 
     const { apiUrl } = useEnvironment();
@@ -132,26 +132,26 @@ const SubscribePaidButton = ({ className }: { className: string }) => {
         } else {
             openSignIn({
                 afterSignInUrl: window.location.href
-              });
+            });
         }
     };
 
     return (
-        <form onSubmit={handleCheckout}>
-            <button
-                type="submit"
-                className={`${className} relative group w-32`}
-            >
-                <p className="">Subscribe</p>
-            </button>
-            <div className="flex flex-col items-center bg-gray-800">
+        <form onSubmit={handleCheckout} className={"flex flex-col items-center " + className}>
+            <div className="form-control w-full mt-4">
                 <input
                     type="text"
                     name="coupon"
                     placeholder="Enter coupon"
-                    className="mt-4 p-2 rounded bg-gray-700 w-64"
+                    className="input input-bordered"
                 />
             </div>
+            <button
+                type="submit"
+                className="btn btn-primary mt-4 w-full"
+            >
+                Subscribe
+            </button>
         </form>
 
     );
