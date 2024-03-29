@@ -21,7 +21,6 @@ import { LanguageProvider } from './contexts/useLanguage';
 import { ModalProvider } from './contexts/useModal';
 import { SidebarProvider } from './contexts/useSidebarContext';
 import useEnvironment from './hooks/useEnvironment';
-import { getGyosuClerkTheme } from './theme/customClerkTheme';
 
 interface AppProps {
   children: any;
@@ -43,7 +42,6 @@ function App({ children }: AppProps) {
         navigate={(to) => navigate(to)}
         publishableKey={clerkKey}
         allowedRedirectOrigins={["https://gyosu.ai", "https://www.gyosu.ai", /^https:\/\/(?:.*\.)?gyosu\.ai$/]}
-        appearance={getGyosuClerkTheme()}
       >
         <QueryClientProvider client={queryClient}>
           <RunTutorialProvider>
