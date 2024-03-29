@@ -36,6 +36,9 @@ const useSubmitTextWithChunk = (endpoint: string) => {
             }
 
             const responseData = await response.json();
+            if (typeof (responseData.chunk) == "string") {
+                return humps.camelizeKeys({ chunk: JSON.parse(responseData.chunk), chunkIndex }) as SubmitTextWithChunkResponse;
+            }
             return humps.camelizeKeys({ ...responseData, chunkIndex }) as SubmitTextWithChunkResponse;
 
         }

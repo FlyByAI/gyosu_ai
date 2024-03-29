@@ -116,7 +116,7 @@ const LandingPage: React.FC = () => {
             </section>
             <section className="py-10 h-full bg-blue-100 justify-center text-gray-700 flex flex-col md:flex-row items-center">
                 <div className='w-full md:w-1/2 text-2xl md:text-5xl flex flex-col items-center md:ms-4'>
-                    <h1 className="font-bold mb-4">22,000+ Problems</h1>
+                    <h1 className="font-bold mb-4">22,000+ Problems, 21 textbooks</h1>
                     <p className="text-center text-lg">High quality problems sourced directly from math textbooks you can trust.</p>
                 </div>
                 <div className='w-full md:w-1/2 flex flex-col py-4'>
