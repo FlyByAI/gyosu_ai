@@ -40,7 +40,7 @@ const MathGenerate: React.FC = () => {
     const myRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
-        if (chunkArray && Object.keys(chunkArray).length > 0 && myRef.current) {
+        if (chunkArray && Object.keys(chunkArray)?.length > 0 && myRef.current) {
             const rect = myRef.current.getBoundingClientRect();
             const offset = 150; // Adjust to your needs
             const y = rect.top + window.scrollY - offset;
@@ -96,7 +96,7 @@ const MathGenerate: React.FC = () => {
                     {/* Results Display */}
                     {generateFormData && (
                         <div className="card rounded-lg p-4 my-4 bg-base-100 shadow-lg">
-                            {chunkArray.length > 0 && (
+                            {chunkArray?.length > 0 && (
                                 <ChunkManager
                                     setChunkArray={setChunkArray}
                                     chunkArray={chunkArray}
