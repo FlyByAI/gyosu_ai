@@ -23,7 +23,7 @@ export default {
       },
       fontFamily: {
         sans: [
-          "SFMono-Regular",
+          "Arial",
           "Menlo",
           "Monaco",
           "Consolas",

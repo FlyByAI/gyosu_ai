@@ -6,7 +6,6 @@ import useGetDocument from '../../hooks/tools/math/useGetDocument';
 import useSubmitDocument from '../../hooks/tools/math/useSubmitDocument';
 import useEnvironment from '../../hooks/useEnvironment';
 import ChevronLeft from '../../svg/ChevronLeft';
-import { getGyosuClerkTheme } from '../../theme/customClerkTheme';
 import HamburgerWrapper from '../HamburgerWrapper';
 import ManageSubscriptionButton from '../ManageSubscriptionButton';
 
@@ -61,23 +60,21 @@ const DocumentToolbarNav: React.FC = () => {
                     <div className="w-1/2 flex justify-end items-center">
 
                         <SignedIn>
-                            {darkMode ? <UserButton afterSignOutUrl={window.location.href} appearance={getGyosuClerkTheme()} /> : <UserButton afterSignOutUrl="http://localhost:5173/" />}
+                            {darkMode ? <UserButton afterSignOutUrl={window.location.href} /> : <UserButton afterSignOutUrl="http://localhost:5173/" />}
                             <HamburgerWrapper>
                                 {/* <LanguageDropdown /> */}
                                 <ManageSubscriptionButton />
                             </HamburgerWrapper>
                         </SignedIn>
                         <SignedOut>
-                            <div
-                                className="flex justify-center items-center bg-orange-500 hover:bg-orange-600 rounded-md p-2 cursor-pointer"
+                            <div className='btn btn-primary'
                                 onClick={(e) => {
                                     // Programmatically click the inner button
                                     const button = e.currentTarget.querySelector('button');
                                     if (button) {
                                         button.click();
                                     }
-                                }}
-                            >
+                                }}>
                                 <SignInButton mode="modal" afterSignInUrl={window.location.href} />
                             </div>
                         </SignedOut>

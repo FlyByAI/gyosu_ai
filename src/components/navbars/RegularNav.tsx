@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import { useDarkMode } from '../../contexts/useDarkMode';
 import useFetchSubscriptionInfo from '../../hooks/subscription/useFetchSubscriptionInfo';
 import useEnvironment from '../../hooks/useEnvironment';
-import { getGyosuClerkTheme } from '../../theme/customClerkTheme';
 import HamburgerWrapper from '../HamburgerWrapper';
 import ManageSubscriptionButton from '../ManageSubscriptionButton';
 
@@ -54,16 +53,14 @@ const RegularNavbar: React.FC = () => {
                         </nav>
                     </HamburgerWrapper>
                     <SignedOut>
-                        <div
-                            className="flex justify-center items-center bg-orange-500 hover:bg-orange-600 rounded-md p-2 cursor-pointer"
+                        <div className='btn btn-primary'
                             onClick={(e) => {
                                 // Programmatically click the inner button
                                 const button = e.currentTarget.querySelector('button');
                                 if (button) {
                                     button.click();
                                 }
-                            }}
-                        >
+                            }}>
                             <SignInButton mode="modal" afterSignInUrl={window.location.href} />
                         </div>
                     </SignedOut>
@@ -81,11 +78,20 @@ const RegularNavbar: React.FC = () => {
                     <Link to="/faq" className="btn btn-ghost">How To</Link>
                     <Link to="/subscribe" className="btn btn-ghost">Pricing</Link>
                     <SignedIn>
-                        <UserButton afterSignOutUrl={window.location.href} appearance={darkMode ? getGyosuClerkTheme() : undefined} />
+                        <UserButton afterSignOutUrl={window.location.href} />
                         {subscriptionInfo?.has_valid_subscription && <ManageSubscriptionButton />}
                     </SignedIn>
                     <SignedOut>
-                        <SignInButton mode="modal" afterSignInUrl={window.location.href} />
+                        <div className='btn btn-primary'
+                            onClick={(e) => {
+                                // Programmatically click the inner button
+                                const button = e.currentTarget.querySelector('button');
+                                if (button) {
+                                    button.click();
+                                }
+                            }}>
+                            <SignInButton mode="modal" afterSignInUrl={window.location.href} />
+                        </div>
                     </SignedOut>
                 </div>
             </header>
