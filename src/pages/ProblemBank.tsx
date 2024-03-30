@@ -92,7 +92,7 @@ const ProblemBank: React.FC = () => {
                         <h2 className="text-center text-xl  text-red-500 font-bold">NOTE: These features are experiemental and likely to break.</h2>
                         <h2 className="text-center text-lg font-bold">How to Create Your Worksheet</h2>
                         <ol className="list-inside space-y-2">
-                            <li className="italic">First, add new problems using the "Add problem" button below. Alternatively, you can use Problem Search and select problems you like to be added to a specific problem bank. </li>
+                            <li className="italic">First, add new problems using the "Add problem" button below. Alternatively, you can use <Link className="text-secondary underline" to='/math-app/search'>problem search</Link> and select problems you like to be added to a specific problem bank. </li>
                             <li className="italic">Then, click "Export" once you have all the problems you want. This will export your problems to a word document and to a PDF. Once exported, these documents will show up in
                                 <Link className="text-primary font-bold underline px-2" to='/math-app/documents'>my documents</Link>.</li>
                         </ol>

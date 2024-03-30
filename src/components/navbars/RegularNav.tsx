@@ -36,7 +36,7 @@ const RegularNavbar: React.FC = () => {
                             <Link to="/math-app/bank" className="text-lg mx-3 hover:underline font-mono font-bold">
                                 Problem Banks
                             </Link>
-                            <Link to="/math-app" className="text-lg mx-3 hover:underline font-mono font-bold">
+                            <Link to="/math-app/search" className="text-lg mx-3 hover:underline font-mono font-bold">
                                 Problem Search
                             </Link>
                             <Link to="/math-app/documents" className="text-lg mx-3 hover:underline font-mono font-bold">
@@ -73,7 +73,7 @@ const RegularNavbar: React.FC = () => {
                 <div className="navbar-end hidden md:flex items-center flex-grow">
                     <Link to="/math-app/chat" className="btn btn-ghost">GyosuChat <span className="badge badge-info">New!</span></Link>
                     <Link to="/math-app/bank" className="btn btn-ghost">Problem Banks</Link>
-                    <Link to="/math-app" className="btn btn-ghost">Problem Search</Link>
+                    <Link to="/math-app/search" className="btn btn-ghost">Problem Search</Link>
                     <Link to="/math-app/documents" className="btn btn-ghost">My Documents</Link>
                     <Link to="/faq" className="btn btn-ghost">How To</Link>
                     <Link to="/subscribe" className="btn btn-ghost">Pricing</Link>
