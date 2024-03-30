@@ -5,16 +5,19 @@ export interface GenerateFormData {
 }
 
 export interface TextbookProblemData {
-    problemType: string;
-    chapter: string;
-    section: string;
-    documentType: string;
-    sourceMaterial: string;
+    problemType?: string;
+    chapter?: string;
+    section?: string;
+    documentType?: string;
+    sourceMaterial?: string;
+    userInput: string;
 }
 
 export interface CompetitionData {
-    problemType: string;
-    level: string;
+    problemType?: string;
+    level?: string;
+    sourceMaterial: "competition_math";
+    userInput: string;
 }
 
 export interface ProblemData {
@@ -149,7 +152,7 @@ export interface Chunk {
     type: "chunk";
     content: (Instruction | Problem)[];
     source?: Source;
-    tags: any; //object, will update later
+    tags?: any; //object, will update later
 }
 
 export interface Instruction {

@@ -5,8 +5,19 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useLanguage } from '../../../contexts/useLanguage';
 import { languageNames } from '../../../helpers/language';
 import { Document } from '../../../interfaces';
-import { MathFormData } from './useSubmitMathForm';
 
+export interface MathFormData {
+    id?: number;
+    sourceMaterial: string;
+    chapter?: string;
+    section: string;
+    problemType?: string;
+    userInput: string;
+    upvotes?: number;
+    tips?: number;
+    shared?: boolean
+    documentName?: string;
+}
 interface DocumentData {
     document: Document;
     formData?: MathFormData;
@@ -48,7 +59,7 @@ const useSubmitDocument = (endpoint: string) => {
         }
     );
 
-    const updateDocumentMutation = useMutation<any, Error, DocumentData>(
+    const updateDocumentMutation = useMutation<Document, Error, DocumentData>(
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         async (documentData: DocumentData) => {

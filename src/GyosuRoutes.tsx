@@ -30,10 +30,10 @@ import FAQPage from './pages/FAQPage.tsx';
 import GyosuAIChat from './pages/GyosuAIChat.tsx';
 import GyosuAIChatShare from './pages/GyosuAIChatShare.tsx';
 import LandingPage from './pages/Landing.tsx';
-import MathGenerate from './pages/MathGenerate.tsx';
 import MyProblemBanks from './pages/MyProblemBanks.tsx';
 import PrivacyPolicy from './pages/PrivacyPolicy.tsx';
 import ProblemBank from './pages/ProblemBank.tsx';
+import ProblemSearch from './pages/ProblemSearch.tsx';
 import Terms from './pages/Terms.tsx';
 import UsagePage from './pages/UsagePage.tsx';
 
@@ -61,11 +61,11 @@ export default function GyosuRoutes() {
                     }
                 />
                 <Route
-                    path="/math-app"
+                    path="/math-app/search"
                     element={
                         <>
                             <Navbar />
-                            <MathGenerate />
+                            <ProblemSearch />
                         </>
                     }
                 />

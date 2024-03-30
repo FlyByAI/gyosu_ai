@@ -6,13 +6,13 @@ import { CompetitionData, GenerateFormData } from '../../interfaces';
 import formOptionsJSON from '../../json/competition_math_data.json';
 import Dropdown from '../forms/Dropdown';
 import SubmitButton from '../forms/SubmitButton';
+import MathProblems from './MathProblems';
 
 type CompetitionMathGenerateFormProps = {
-    onSubmit: (data: any) => void;
     setGenerateFormData: (problemData: GenerateFormData) => void;
 };
 
-const CompetitionMathGenerateForm: React.FC<CompetitionMathGenerateFormProps> = ({ onSubmit, setGenerateFormData }) => {
+const CompetitionMathGenerateForm: React.FC<CompetitionMathGenerateFormProps> = ({ setGenerateFormData }) => {
     const formOptionsObj = Object(formOptionsJSON)["competition_math"];
     const [userInput, setUserInput] = useState('');
 
@@ -40,9 +40,11 @@ const CompetitionMathGenerateForm: React.FC<CompetitionMathGenerateFormProps> = 
         const problemData = {
             problemType,
             level,
+            sourceMaterial: "competition_math",
+            userInput,
         };
         setGenerateFormData({ data: problemData });
-    }, [problemType, level, setGenerateFormData]);
+    }, [problemType, level, setGenerateFormData, userInput]);
 
     const handleProblemTypeChange = (newValue: string) => {
         setLevelOptions(formOptionsObj?.problem_types?.[newValue]?.levels || [])
@@ -56,13 +58,12 @@ const CompetitionMathGenerateForm: React.FC<CompetitionMathGenerateFormProps> = 
 
     const handleMathSubmit = async () => {
         if (session) {
-            const formData = {
+            const formData: CompetitionData = {
                 sourceMaterial: "competition_math",
                 problemType,
                 level,
                 userInput: userInput,
-
-            } as CompetitionData;
+            };
             await submitMathForm({ data: formData });
         }
         else {
@@ -71,12 +72,6 @@ const CompetitionMathGenerateForm: React.FC<CompetitionMathGenerateFormProps> = 
             });
         }
     };
-
-    useEffect(() => {
-        if (data) {
-            onSubmit(data);
-        }
-    }, [data, onSubmit]);
 
     return (
         <>
@@ -123,6 +118,15 @@ const CompetitionMathGenerateForm: React.FC<CompetitionMathGenerateFormProps> = 
             {isLoading && (
                 <div className="flex justify-center mt-4">
                     <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12"></div>
+                </div>
+            )}
+
+            {data && data?.length > 0 && (
+                <div className="card rounded-lg p-4 my-4 bg-base-100 shadow-lg">
+                    <div className="text-xl justify-center flex items-center mb-4 italic">Step 3: Add problems to a problem bank, then open the problem bank.</div>
+                    <MathProblems
+                        chunkArray={data.response}
+                    />
                 </div>
             )}
         </>

@@ -7,7 +7,7 @@ import useEnvironment from '../../hooks/useEnvironment';
 import HamburgerWrapper from '../HamburgerWrapper';
 import HamburgerWrapperX from '../HamburgerWrapperX';
 import ManageSubscriptionButton from '../ManageSubscriptionButton';
-import ProblemBankShelf from '../document/ProblemBankShelf';
+import ProblemBankSidebar from '../document/ProblemBankSidebar';
 
 const ProblemSearchNavbar: React.FC = () => {
   const { darkMode } = useDarkMode();
@@ -22,7 +22,7 @@ const ProblemSearchNavbar: React.FC = () => {
         <div className="navbar-start md:hidden">
 
           <HamburgerWrapperX mobileOrDesktop={'mobile'}>
-            <ProblemBankShelf isExporting={false} />
+            <ProblemBankSidebar isExporting={false} />
           </HamburgerWrapperX>
         </div>
 
@@ -82,7 +82,7 @@ const ProblemSearchNavbar: React.FC = () => {
             GyosuChat <span className="badge badge-info">New!</span>
           </Link>
           <Link to="/math-app/bank" className="btn btn-ghost">Problem Banks</Link>
-          <Link to="/math-app" className="btn btn-ghost">Problem Search</Link>
+          <Link to="/math-app/search" className="btn btn-ghost">Problem Search</Link>
           <Link to="/math-app/documents" className="btn btn-ghost">My Documents</Link>
           <Link to="/faq" className="btn btn-ghost">How To</Link>
           <Link to="/subscribe" className="btn btn-ghost">Pricing</Link>

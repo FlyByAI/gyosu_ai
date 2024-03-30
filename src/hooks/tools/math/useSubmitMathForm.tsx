@@ -5,18 +5,6 @@ import { useLanguage } from '../../../contexts/useLanguage';
 import { languageNames } from '../../../helpers/language';
 import { GenerateFormData } from '../../../interfaces';
 
-export interface MathFormData {
-    id?: number;
-    sourceMaterial: string;
-    chapter?: string;
-    section: string;
-    problemType?: string;
-    userInput: string;
-    upvotes?: number;
-    tips?: number;
-    shared?: boolean
-    documentName?: string;
-}
 
 const useSubmitMathForm = (endpoint: string) => {
     const { session } = useClerk();
