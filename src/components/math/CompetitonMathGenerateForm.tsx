@@ -112,7 +112,7 @@ const CompetitionMathGenerateForm: React.FC<CompetitionMathGenerateFormProps> = 
                 />
             </div>
 
-            {error && <p className="text-red-600 mt-4 text-center">Error: {error}</p>}
+            {error && <p className="text-red-600 mt-4 text-center">Error: {error.message}</p>}
             {error && !user?.username && <p className="text-red-600 mt-4 text-center">Note: {"Our tools require you to be signed in."}</p>}
             {isLoading && <p className="dark:text-white">Loading...</p>}
             {isLoading && (
@@ -121,7 +121,7 @@ const CompetitionMathGenerateForm: React.FC<CompetitionMathGenerateFormProps> = 
                 </div>
             )}
 
-            {data && data?.length > 0 && (
+            {data && (
                 <div className="card rounded-lg p-4 my-4 bg-base-100 shadow-lg">
                     <div className="text-xl justify-center flex items-center mb-4 italic">Step 3: Add problems to a problem bank, then open the problem bank.</div>
                     <MathProblems
