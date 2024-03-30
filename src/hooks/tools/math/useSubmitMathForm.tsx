@@ -5,18 +5,19 @@ import { useLanguage } from '../../../contexts/useLanguage';
 import { languageNames } from '../../../helpers/language';
 import { Chunk, GenerateFormData } from '../../../interfaces';
 
+import { UseMutationResult } from '@tanstack/react-query';
+
 interface SubmitMathFormResponse {
     response: Chunk[]
 }
 
 const useSubmitMathForm = (endpoint: string) => {
     const { session } = useClerk();
-
     const { language } = useLanguage();
     const options = { site_language: languageNames[language] };
 
-    const submitMathFormMutation = useMutation(
-        async (formData: GenerateFormData) => {
+    const submitMathFormMutation: UseMutationResult<SubmitMathFormResponse, Error, GenerateFormData, unknown> = useMutation(
+        async (formData: GenerateFormData): Promise<SubmitMathFormResponse> => {
             const token = session ? await session.getToken() : "none";
 
             const response = await fetch(endpoint, {
@@ -29,7 +30,8 @@ const useSubmitMathForm = (endpoint: string) => {
             });
 
             if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+                const errorResponse: Error = await response.json();
+                throw new Error(errorResponse.message || `HTTP error! status: ${response.status}`);
             }
 
             const responseData = await response.json();
