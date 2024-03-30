@@ -75,7 +75,7 @@ const faqs = [
                 <p className="text-base mb-4">Creating and using a problem bank involves the following steps:</p>
 
                 <div className="text-lg font-semibold mb-2">Step 1: Go to Problem Search</div>
-                <p className="text-base mb-4">Navigate to the <Link className="text-secondary underline" to='/math-app'>problem search</Link> section to find the problems you want to include in your problem bank.</p>
+                <p className="text-base mb-4">Navigate to the <Link className="text-secondary underline" to='/math-app/search'>problem search</Link> section to find the problems you want to include in your problem bank.</p>
 
                 <div className="text-lg font-semibold mb-2">Step 2: Search for Problems</div>
                 <p className="text-base mb-4">Use the available filters and search functionalities to find specific problems that align with your objectives.</p>

@@ -42,7 +42,7 @@ const ProblemSearchNavbar: React.FC = () => {
               <Link to="/math-app/bank" className="text-lg mx-3 hover:underline font-mono font-bold">
                 Problem Banks
               </Link>
-              <Link to="/math-app" className="text-lg mx-3 hover:underline font-mono font-bold">
+              <Link to="/math-app/search" className="text-lg mx-3 hover:underline font-mono font-bold">
                 Problem Search
               </Link>
               <Link to="/math-app/documents" className="text-lg mx-3 hover:underline font-mono font-bold">
