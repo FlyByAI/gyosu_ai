@@ -76,7 +76,7 @@ const FixedNavbar: React.FC = () => {
             GyosuChat <span className="badge badge-info">New!</span>
           </Link>
           <Link to="/math-app/bank" className="btn btn-ghost">Problem Banks</Link>
-          <Link to="/math-app" className="btn btn-ghost">Problem Search</Link>
+          <Link to="/math-app/search" className="btn btn-ghost">Problem Search</Link>
           <Link to="/math-app/documents" className="btn btn-ghost">My Documents</Link>
           <Link to="/faq" className="btn btn-ghost">How To</Link>
           <Link to="/subscribe" className="btn btn-ghost">Pricing</Link>

@@ -48,7 +48,7 @@ const useSubmitDocument = (endpoint: string) => {
         }
     );
 
-    const updateDocumentMutation = useMutation<any, Error, DocumentData>(
+    const updateDocumentMutation = useMutation<Document, Error, DocumentData>(
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         async (documentData: DocumentData) => {

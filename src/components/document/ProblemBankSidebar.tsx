@@ -22,7 +22,7 @@ export interface ProblemBankShelfProps {
 }
 
 
-const ProblemBankShelf: React.FC<ProblemBankShelfProps> = ({ isExporting }) => {
+const ProblemBankSidebar: React.FC<ProblemBankShelfProps> = ({ isExporting }) => {
     const { apiUrl } = useEnvironment();
     const location = useLocation();
 
@@ -122,4 +122,4 @@ const ProblemBankShelf: React.FC<ProblemBankShelfProps> = ({ isExporting }) => {
     );
 };
 
-export default ProblemBankShelf;
+export default ProblemBankSidebar;

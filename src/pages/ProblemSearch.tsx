@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import 'tailwindcss/tailwind.css';
-import ProblemBankShelf from '../components/document/ProblemBankShelf';
+import ProblemBankSidebar from '../components/document/ProblemBankSidebar';
 import ChunkManager from '../components/math/ChunkManager';
 import CompetitionMathGenerateForm from '../components/math/CompetitonMathGenerateForm';
 import TextbookGenerateForm from '../components/math/TextbookGenerateForm';
@@ -19,7 +19,7 @@ export function getShowClass(mobileOrDesktop: string) {
     return "block";
 }
 
-const MathGenerate: React.FC = () => {
+const ProblemSearch: React.FC = () => {
 
     const [chunkArray, setChunkArray] = useState<Chunk[]>([]);
 
@@ -57,7 +57,7 @@ const MathGenerate: React.FC = () => {
                 <div className='w-1/4'>
                     <div style={{ position: 'fixed', top: '80px', left: '10px', zIndex: 999 }}> {/* This div contains the sidebar */}
                         <div className={`card bg-base-200 shadow-lg my-4 md:my-0 md:mr-4 p-4 ${getShowClass('desktop')}`}>
-                            <ProblemBankShelf isExporting={false} />
+                            <ProblemBankSidebar isExporting={false} />
                         </div>
                     </div>
                 </div>
@@ -111,5 +111,5 @@ const MathGenerate: React.FC = () => {
     );
 };
 
-export default MathGenerate;
+export default ProblemSearch;
 

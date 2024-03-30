@@ -163,6 +163,10 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
         submitTextWithChunkSimilar({ userInput: userInput, chunkIndex: chunkIndex, problemBankId: problemBankId, })
     }
 
+    const handleSearch = () => {
+        console.log("search for problem", userInput)
+    }
+
 
     const handleAcceptChunkChange = () => {
         if (rerollData) {
@@ -378,12 +382,21 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                         onChange={(e) => setUserInput(e.target.value)} // And setUserInput is the setter
                         className="input input-bordered w-full max-w-lg m-2"
                     />
+
+                    <div className='space-x-2'>
                     <button
-                        className="btn btn-secondary tooltip tooltip-left mr-2"
-                        data-tip="Find a similar problem using a text description."
-                        onClick={handleSimilarSearchText}
+                        className="btn btn-secondary tooltip tooltip-left"
+                        data-tip="Create a latex formatted math problem using your text description."
+                        onClick={() => console.log("upload")}
                     >
-                        Find Similar
+                        Upload
+                    </button>
+                    <button
+                        className="btn btn-secondary tooltip tooltip-left"
+                        data-tip="Create a latex formatted math problem using your text description."
+                        onClick={handleSearch}
+                    >
+                        Search
                     </button>
                     <button
                         className="btn btn-secondary tooltip tooltip-left"
@@ -392,24 +405,34 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                     >
                         Create
                     </button>
+                    </div>
                 </>}
 
                 {id && !submitTextData && !rerollData && chunk.content.length > 0 && <>
                     {/* if a problem exists */}
                     <input
                         type="text"
-                        placeholder="Please make this problem easier."
+                        placeholder="Please make this problem easier or find me another problem like this one."
                         value={userInput} // Assuming userInput is your state variable
                         onChange={(e) => setUserInput(e.target.value)} // And setUserInput is the setter
                         className="input input-bordered w-full max-w-lg m-2"
                     />
-                    <button
-                        className="btn btn-secondary tooltip tooltip-bottom"
-                        data-tip="Send your input."
-                        onClick={handleSubmitText}
-                    >
-                        Change it!
-                    </button>
+                    <div className='space-x-2'>
+                        <button
+                            className="btn btn-secondary tooltip tooltip-bottom"
+                            data-tip="Send your input."
+                            onClick={handleSubmitText}
+                        >
+                            Change it (make a new one)!
+                        </button>
+                        <button
+                            className="btn btn-secondary tooltip tooltip-left mr-2"
+                            data-tip="Find a similar problem using a text description."
+                            onClick={handleSimilarSearchText}
+                        >
+                            Change it(similar)!
+                        </button>
+                    </div>
                 </>}
 
             </div>

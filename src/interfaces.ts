@@ -149,7 +149,7 @@ export interface Chunk {
     type: "chunk";
     content: (Instruction | Problem)[];
     source?: Source;
-    tags: any; //object, will update later
+    tags?: any; //object, will update later
 }
 
 export interface Instruction {
