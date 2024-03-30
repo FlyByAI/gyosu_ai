@@ -8,12 +8,13 @@ import HamburgerWrapper from '../HamburgerWrapper';
 import ManageSubscriptionButton from '../ManageSubscriptionButton';
 
 const RegularNavbar: React.FC = () => {
-    const { darkMode } = useDarkMode();
-    const { apiUrl } = useEnvironment();
+    const { env, apiUrl } = useEnvironment();
     const { subscriptionInfo } = useFetchSubscriptionInfo(`${apiUrl}/user_data/get_subscription_info/`);
 
+    const { SunIcon, MoonIcon, darkMode, setDarkMode } = useDarkMode()
     return (
         <>
+
             <div className='mt-20 md:mt-16'></div>
             <header className="navbar fixed top-0 left-0 z-20 w-full bg-base-100">
                 {/* Mobile view */}
@@ -22,6 +23,11 @@ const RegularNavbar: React.FC = () => {
                 </div>
                 <div className="navbar-center md:hidden">
                     <Link to="/" className="btn btn-ghost normal-case text-xl">Gyosu.ai</Link>
+                    {env == "local" &&
+                        <button onClick={() => setDarkMode(!darkMode)} className='btn btn-ghost'>
+                            {darkMode ? <SunIcon /> : <MoonIcon />}
+                        </button>
+                    }
                 </div>
                 <div className="navbar-end md:hidden">
                     <HamburgerWrapper>
@@ -69,6 +75,11 @@ const RegularNavbar: React.FC = () => {
                 {/* Desktop view */}
                 <div className="navbar-start hidden md:flex">
                     <Link to="/" className="btn btn-ghost normal-case text-xl">Gyosu.ai</Link>
+                    {env == "local" &&
+                        <button onClick={() => setDarkMode(!darkMode)} className='btn btn-ghost'>
+                            {darkMode ? <SunIcon /> : <MoonIcon />}
+                        </button>
+                    }
                 </div>
                 <div className="navbar-end hidden md:flex items-center flex-grow">
                     <Link to="/math-app/chat" className="btn btn-ghost">GyosuChat <span className="badge badge-info">New!</span></Link>

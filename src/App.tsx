@@ -16,7 +16,7 @@ import { notSecretConstants } from './constants/notSecretConstants';
 import { DragProvider } from './contexts/DragContext';
 import { RunTutorialProvider } from './contexts/RunTutorialContext';
 import { ScreenSizeProvider } from './contexts/ScreenSizeContext';
-import { DarkModeProvider } from './contexts/useDarkMode';
+import { useDarkMode } from './contexts/useDarkMode';
 import { LanguageProvider } from './contexts/useLanguage';
 import { ModalProvider } from './contexts/useModal';
 import { SidebarProvider } from './contexts/useSidebarContext';
@@ -35,41 +35,40 @@ function App({ children }: AppProps) {
 
   const clerkKey = env == "production" ? notSecretConstants.clerk.PUBLISHABLE_KEY : notSecretConstants.clerk.PUBLISHABLE_DEV_KEY
 
+  const { darkMode } = useDarkMode()
 
   return (
-    <div className=''>
-      <ClerkProvider
-        navigate={(to) => navigate(to)}
-        publishableKey={clerkKey}
-        allowedRedirectOrigins={["https://gyosu.ai", "https://www.gyosu.ai", /^https:\/\/(?:.*\.)?gyosu\.ai$/]}
-      >
-        <QueryClientProvider client={queryClient}>
-          <RunTutorialProvider>
-          <DarkModeProvider>
-            <ModalProvider>
-              <AppModal modalId={'appModal'} />
-              <SubscribeModal modalId={'subscribe'} />
-              <SidebarProvider>
-                <LanguageProvider>
-                  <ScreenSizeProvider>
-                    <HelmetProvider>
-                      <DragProvider>
-                        <DndProvider backend={HTML5Backend}>
-                          <Toaster />
-                          <Notifications />
-                          {children}
-                        </DndProvider>
-                      </DragProvider>
-                    </HelmetProvider>
-                  </ScreenSizeProvider>
-                </LanguageProvider>
-              </SidebarProvider>
-            </ModalProvider>
-          </DarkModeProvider>
-          </RunTutorialProvider>
-        </QueryClientProvider>
-      </ClerkProvider>
-    </div>
+      <div data-theme={darkMode ? "dark" : "emerald"} className=''>
+        <ClerkProvider
+          navigate={(to) => navigate(to)}
+          publishableKey={clerkKey}
+          allowedRedirectOrigins={["https://gyosu.ai", "https://www.gyosu.ai", /^https:\/\/(?:.*\.)?gyosu\.ai$/]}
+        >
+          <QueryClientProvider client={queryClient}>
+            <RunTutorialProvider>
+              <ModalProvider>
+                <AppModal modalId={'appModal'} />
+                <SubscribeModal modalId={'subscribe'} />
+                <SidebarProvider>
+                  <LanguageProvider>
+                    <ScreenSizeProvider>
+                      <HelmetProvider>
+                        <DragProvider>
+                          <DndProvider backend={HTML5Backend}>
+                            <Toaster />
+                            <Notifications />
+                            {children}
+                          </DndProvider>
+                        </DragProvider>
+                      </HelmetProvider>
+                    </ScreenSizeProvider>
+                  </LanguageProvider>
+                </SidebarProvider>
+              </ModalProvider>
+            </RunTutorialProvider>
+          </QueryClientProvider>
+        </ClerkProvider>
+      </div>
   );
 }
 
