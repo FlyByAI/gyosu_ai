@@ -1,5 +1,5 @@
 import React from 'react';
-import toast, { useToaster } from 'react-hot-toast/headless';
+import toast from 'react-hot-toast/headless';
 import { Link, useLocation } from 'react-router-dom';
 import { useScreenSize } from '../../contexts/ScreenSizeContext';
 import useGetDocuments from '../../hooks/tools/math/useGetDocuments';
@@ -8,7 +8,7 @@ import useEnvironment from '../../hooks/useEnvironment';
 import { CHUNK_TYPE, Chunk, Document, Instruction, Problem } from '../../interfaces';
 import PlusIcon from '../../svg/PlusIcon';
 import SearchIcon from '../../svg/SearchIcon';
-import DocumentItem from './DocumentItem';
+import ProblemBankSidebarItem from './ProblemBankSidebarItem';
 
 
 
@@ -22,14 +22,12 @@ export interface ProblemBankShelfProps {
 }
 
 
-const ProblemBankShelf: React.FC<ProblemBankShelfProps> = ({ isExporting }) => {
+const ProblemBankSidebar: React.FC<ProblemBankShelfProps> = ({ isExporting }) => {
     const { apiUrl } = useEnvironment();
     const location = useLocation();
 
-    const { toasts, handlers } = useToaster();
-
     const endpoint = `${apiUrl}/math_app/school_document/list/`;
-    const { documents, isLoading, error } = useGetDocuments(endpoint);
+    const { documents } = useGetDocuments(endpoint);
     const endpoint2 = `${apiUrl}/math_app/school_document/`;
     const { submitDocument, updateDocument } = useSubmitDocument(endpoint2);
 
@@ -113,7 +111,7 @@ const ProblemBankShelf: React.FC<ProblemBankShelfProps> = ({ isExporting }) => {
                 {documents && [...documents]
                     .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
                     .map((document) => (
-                        <DocumentItem isExporting={isExporting} key={document.id} document={document} onDropChunk={handleDropNode} />
+                        <ProblemBankSidebarItem isExporting={isExporting} key={document.id} document={document} onDropChunk={handleDropNode} />
                     ))
                 }
             </ul>
@@ -122,4 +120,4 @@ const ProblemBankShelf: React.FC<ProblemBankShelfProps> = ({ isExporting }) => {
     );
 };
 
-export default ProblemBankShelf;
+export default ProblemBankSidebar;

@@ -8,9 +8,9 @@ import { GenerateFormData, TextbookProblemData } from '../../interfaces';
 import formOptionsJSON from '../../json/dropdown_data.json';
 import Dropdown from '../forms/Dropdown';
 import SubmitButton from '../forms/SubmitButton';
+import MathProblems from './MathProblems';
 
 type TextbookGenerateFormProps = {
-    onSubmit: (data: any) => void;
     setGenerateFormData: (problemData: GenerateFormData) => void; // Include the type of ProblemData
 };
 
@@ -19,7 +19,7 @@ interface Option {
     value: string;
 }
 
-const TextbookGenerateForm: React.FC<TextbookGenerateFormProps> = ({ onSubmit, setGenerateFormData }) => {
+const TextbookGenerateForm: React.FC<TextbookGenerateFormProps> = ({ setGenerateFormData }) => {
 
     const formOptionsObj = Object(formOptionsJSON);
     const [chapter, setChapter] = useState<string>("");
@@ -74,41 +74,42 @@ const TextbookGenerateForm: React.FC<TextbookGenerateFormProps> = ({ onSubmit, s
             section,
             problemType,
             documentType: "Worksheet",
+            userInput
         };
 
         setGenerateFormData({ data: problemData });
-    }, [sourceMaterial, chapter, section, problemType, setGenerateFormData]);
+    }, [sourceMaterial, chapter, section, problemType, setGenerateFormData, userInput]);
 
     const handleSourceMaterialChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const newSourceMaterial = event.target.value;
         setSourceMaterial(newSourceMaterial);
-    
+
         // Reset chapter, section, and problemType to initial states
         setChapter('');
         setSection('');
         setProblemType('');
-    
+
         // Compute new chapter options based on the newly selected source material
         const newChapterKeys = Object.keys(formOptionsObj[newSourceMaterial]?.chapters || {});
         const newChapterOptions: Option[] = newChapterKeys.map(chapKey => ({
             label: formOptionsObj[newSourceMaterial]?.chapters[chapKey]?.label ?? 'Default Chapter Label',
             value: chapKey
         }));
-    
+
         // Update state, and reset rest
         setChapterOptions(newChapterOptions);
         setSectionOptions([]);
         setProblemTypeOptions([]);
-    
+
     };
 
     const handleChapterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const newChapter = event.target.value;
         setChapter(newChapter);
-    
+
         setSection('');
         setProblemType('');
-    
+
         // Compute new section options based on the new chapter
         const newSectionBasePath = [Object.keys(formOptionsObj)[0], 'chapters', newChapter, 'sections'];
         const newSectionObj = getSafeValue(formOptionsObj, newSectionBasePath, {});
@@ -116,7 +117,7 @@ const TextbookGenerateForm: React.FC<TextbookGenerateFormProps> = ({ onSubmit, s
             label: newSectionObj[sec]?.label ?? 'Default Section Label',
             value: sec
         }));
-    
+
         // Update state, and reset rest
         setSectionOptions(newSectionOptions);
         setProblemTypeOptions([]);
@@ -142,9 +143,6 @@ const TextbookGenerateForm: React.FC<TextbookGenerateFormProps> = ({ onSubmit, s
         // Assuming you have a state for problemTypeOptions, you would update it like this:
         setProblemTypeOptions(newProblemTypeOptions);
     };
-
-    
-    
 
     const handleChangeProblemType = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setProblemType(event.target.value);
@@ -173,12 +171,6 @@ const TextbookGenerateForm: React.FC<TextbookGenerateFormProps> = ({ onSubmit, s
             });
         }
     };
-
-    useEffect(() => {
-        if (data) {
-            onSubmit(data)
-        }
-    }, [data, onSubmit])
 
     return (
         <>
@@ -241,6 +233,15 @@ const TextbookGenerateForm: React.FC<TextbookGenerateFormProps> = ({ onSubmit, s
             {isLoading && (
                 <div className="flex justify-center mt-4">
                     <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12"></div>
+                </div>
+            )}
+
+            {data && (
+                <div className="card rounded-lg p-4 my-4 bg-base-100 shadow-lg">
+                    <div className="text-xl justify-center flex items-center mb-4 italic">Step 3: Add problems to a problem bank.</div>
+                    <MathProblems
+                        chunkArray={data.response}
+                    />
                 </div>
             )}
         </>

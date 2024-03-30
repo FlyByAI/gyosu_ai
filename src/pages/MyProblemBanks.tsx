@@ -1,18 +1,19 @@
 
 import React from 'react';
-import ProblemBankShelf from '../components/document/ProblemBankShelf';
-import DocumentPreview from '../components/forms/DocumentPreview';
-import GridContainer1x1 from '../components/grids/GridContainer1x1';
+import ProblemBankSidebar from '../components/document/ProblemBankSidebar';
+import ProblemBankPreview from '../components/forms/ProblemBankPreview';
 import useGetDocuments from '../hooks/tools/math/useGetDocuments';
 import useSubmitDocument from '../hooks/tools/math/useSubmitDocument';
 import useEnvironment from '../hooks/useEnvironment';
 import { useRequireSignIn } from '../hooks/useRequireSignIn';
 import PlusIcon from '../svg/PlusIcon';
-import { getShowClass } from './MathGenerate';
+import { getShowClass } from './ProblemSearch';
 
 import toast from 'react-hot-toast';
+import GridContainer1x1 from '../components/grids/GridContainer1x1';
 import { Chunk, Document } from '../interfaces';
 const MyProblemBanks: React.FC = () => {
+
 
     useRequireSignIn();
 
@@ -23,7 +24,7 @@ const MyProblemBanks: React.FC = () => {
 
     const { documents, error } = useGetDocuments(endpoint);
 
-    const { submitDocument, deleteDocument } = useSubmitDocument(endpoint2);
+    const { submitDocument, deleteDocument, updateDocument } = useSubmitDocument(endpoint2);
 
     if (error) {
         return <div>Error loading documents: {(error as unknown as Error).message}</div>;
@@ -33,7 +34,7 @@ const MyProblemBanks: React.FC = () => {
             <div className='w-1/4'>
                 <div style={{ position: 'fixed', top: '80px', left: '10px', zIndex: 999 }}> {/* This div contains the sidebar */}
                     <div className={`card bg-base-200 shadow-lg my-4 md:my-0 md:mr-4 p-4 ${getShowClass('desktop')}`}>
-                        <ProblemBankShelf isExporting={false} />
+                        <ProblemBankSidebar isExporting={false} />
                     </div>
                 </div >
             </div>
@@ -98,8 +99,8 @@ const MyProblemBanks: React.FC = () => {
                                 <GridContainer1x1>
                                     {documents?.sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
                                         .map((doc, index) => (
-                                            <DocumentPreview key={index} document={doc} handleDelete={handleDeleteClick} />
-                                    ))}
+                                            <ProblemBankPreview key={index} document={doc} handleDelete={handleDeleteClick} />
+                                        ))}
                                 </GridContainer1x1>
                             </div>
                         </div>

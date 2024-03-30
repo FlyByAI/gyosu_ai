@@ -7,7 +7,7 @@ import useSubmitDocument from '../../hooks/tools/math/useSubmitDocument';
 import useEnvironment from '../../hooks/useEnvironment';
 import { useRequireSignIn } from '../../hooks/useRequireSignIn';
 import { Chunk, Document } from '../../interfaces';
-import DocumentPreview from './DocumentPreview';
+import ProblemBankPreview from './ProblemBankPreview';
 
 interface AddChunkFormProps {
     chunk: Chunk;
@@ -86,7 +86,7 @@ const AddChunkForm: React.FC<AddChunkFormProps> = ({ chunk, preview }) => {
                     </select>
                     {selectedDocument && preview && (
                         <div className="w-full">
-                            <DocumentPreview disabledClick document={selectedDocument} />
+                            <ProblemBankPreview disabledClick document={selectedDocument} />
                         </div>
                     )}
                     <button
