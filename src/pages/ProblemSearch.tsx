@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import 'tailwindcss/tailwind.css';
 import ProblemBankSidebar from '../components/document/ProblemBankSidebar';
-import ChunkManager from '../components/math/ChunkManager';
 import CompetitionMathGenerateForm from '../components/math/CompetitonMathGenerateForm';
+import MathProblems from '../components/math/MathProblems';
 import TextbookGenerateForm from '../components/math/TextbookGenerateForm';
 import { useScreenSize } from '../contexts/ScreenSizeContext';
 import { useRequireSignIn } from '../hooks/useRequireSignIn';
@@ -26,11 +26,6 @@ const ProblemSearch: React.FC = () => {
     const [generateFormData, setGenerateFormData] = useState<GenerateFormData | undefined>(undefined);
 
     const [formType, setFormType] = useState<'Textbook' | 'Competition' | null>();
-
-    const handleSubmit = (data: { response: Chunk[] | string; id?: number }) => {
-        const chunkArray = data.response as Chunk[];
-        setChunkArray(chunkArray);
-    };
 
     useRequireSignIn();
 
@@ -65,7 +60,7 @@ const ProblemSearch: React.FC = () => {
                 <div className="flex-1">
                     {/* Search Section */}
                     <div className="card rounded-lg p-4 my-4 shadow-lg bg-base-200">
-                        <div className="text-left mb-4">
+                        <div className="text-center mb-4">
                             <span className="font-bold text-xl italic">Step 1: Select Problem Source</span>
                         </div>
                         <div className="flex space-x-4 space-y-0 mb-8 mx-4">
@@ -83,13 +78,13 @@ const ProblemSearch: React.FC = () => {
                             </button>
                         </div>
                         {formType && (
-                            <div className="text-left mb-4">
+                            <div className="text-center mb-4">
                                 <span className="font-bold text-xl italic">Step 2: Search for problems using dropdowns</span>
                             </div>
                         )}
                         <div>
-                            {formType === 'Textbook' && <TextbookGenerateForm onSubmit={handleSubmit} setGenerateFormData={setGenerateFormData} />}
-                            {formType === 'Competition' && <CompetitionMathGenerateForm onSubmit={handleSubmit} setGenerateFormData={setGenerateFormData} />}
+                            {formType === 'Textbook' && <TextbookGenerateForm setGenerateFormData={setGenerateFormData} />}
+                            {formType === 'Competition' && <CompetitionMathGenerateForm setGenerateFormData={setGenerateFormData} />}
                         </div>
                     </div>
 
@@ -97,8 +92,7 @@ const ProblemSearch: React.FC = () => {
                     {generateFormData && (
                         <div className="card rounded-lg p-4 my-4 bg-base-100 shadow-lg">
                             {chunkArray?.length > 0 && (
-                                <ChunkManager
-                                    setChunkArray={setChunkArray}
+                                <MathProblems
                                     chunkArray={chunkArray}
                                 />
                             )}

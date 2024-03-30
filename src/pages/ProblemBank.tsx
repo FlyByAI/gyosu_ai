@@ -2,9 +2,9 @@ import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 import useGetDocument from '../hooks/tools/math/useGetDocument';
 
+import { ChunkComponent } from '../components/AST';
 import ContentWrapper from '../components/ContentWrapper';
 import CreateDocxModal from '../components/CreateDocxModal';
-import MathProblem from '../components/math/MathProblem';
 import { useScreenSize } from '../contexts/ScreenSizeContext';
 import { useSidebarContext } from '../contexts/useSidebarContext';
 import useSubmitDocument from '../hooks/tools/math/useSubmitDocument';
@@ -82,7 +82,6 @@ const ProblemBank: React.FC = () => {
         updateDocument({ document: updatedDocument });
     };
 
-
     return (
         <div className='flex'>
 
@@ -108,14 +107,10 @@ const ProblemBank: React.FC = () => {
 
                             document.problemChunks.map((chunk, chunkIndex) => (
                                 <div key={chunkIndex} className='mx-auto mb-4 bg-base-200 card p-4 rounded-lg shadow'>
-                                    <MathProblem
-                                        problemBankId={id}
-                                        insertChunk={insertChunk}
-                                        disableInstructionProblemDrag={true}
+                                    <ChunkComponent
+                                        chunk={chunk}
                                         updateChunk={updateDocumentChunk}
                                         chunkIndex={chunkIndex}
-                                        problem={chunk}
-                                        enableTools={true}
                                     />
                                 </div>
                             )

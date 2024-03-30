@@ -11,6 +11,7 @@ import { useDragContext } from '../contexts/DragContext';
 import { useScreenSize } from '../contexts/ScreenSizeContext';
 import useGetDocument from '../hooks/tools/math/useGetDocument';
 import useSubmitDocument from '../hooks/tools/math/useSubmitDocument';
+import useSubmitMathForm from '../hooks/tools/math/useSubmitMathForm';
 import useSubmitReroll from '../hooks/tools/math/useSubmitReroll';
 import useSubmitTextWithChunk from '../hooks/tools/math/useSubmitTextWithChunk';
 import useSubmitTextWithChunkLatex from '../hooks/tools/math/useSubmitTextWithChunkLatex';
@@ -33,7 +34,7 @@ interface ChunkProps {
     chunk: Chunk;
     edit?: boolean;
     insertChunk?: (chunkIndex: number) => void;
-    updateChunk: (updatedChunk: Chunk, chunkIndex: number) => void;
+    updateChunk?: (updatedChunk: Chunk, chunkIndex: number) => void;
     chunkIndex: number;
     disableInstructionProblemDrag?: boolean;
     problemBankId?: string;
@@ -42,7 +43,7 @@ interface ChunkProps {
 
 export const renderContent = (content: (Text | Math | Table | Image | Subproblems)[]) => {
     return content.map((item, index) => {
-        return renderItem(item);
+        return <div key={index}>{renderItem(item)}</div>
     });
 }
 export const renderItem = (item: Text | Math | Table | Image | Subproblems | Problem | Instruction) => {
@@ -142,7 +143,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                 const updatedChunk = { ...chunk, content: updatedContent };
 
                 // Use the method from props to update the chunk
-                updateChunk(updatedChunk, chunkIndex);
+                updateChunk && updateChunk(updatedChunk, chunkIndex);
             }
         },
     });
@@ -191,6 +192,8 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
         }
     }
 
+    const { isLoading: isLoadingSearch, error, submitMathForm, data } = useSubmitMathForm(`${apiUrl}/math_app/generate/`)
+
     const { submitTextWithChunk, data: submitTextData, reset: resetTextChange, isLoading: isLoadingSubmitText } = useSubmitTextWithChunk(`${apiUrl}/math_app/chat/problem/`)
     const { submitTextWithChunkLatex, data: submitTextLatexData, reset: resetTextLatex, isLoading: isLoadingSubmitTextLatex } = useSubmitTextWithChunkLatex(`${apiUrl}/math_app/chat/problem/`)
     const { submitTextWithChunkSimilar, data: submitTextSimilarData, reset: resetTextSimilar, isLoading: isLoadingSubmitTextSimilar } = useSubmitTextWithChunkSimilar(`${apiUrl}/math_app/chat/problem/`)
@@ -212,18 +215,19 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
 
     const handleSearch = () => {
         console.log("search for problem", userInput)
+        submitMathForm({ userInput: userInput })
     }
 
 
     const handleAcceptChunkChange = () => {
         if (rerollData) {
             const updatedChunk = rerollData.chunks[currentRerollIndex]
-            updateChunk(updatedChunk, chunkIndex)
+            updateChunk && updateChunk(updatedChunk, chunkIndex)
             resetReroll()
         }
         if (submitTextData) {
             const updatedChunk = submitTextData.chunk
-            updateChunk(updatedChunk, chunkIndex)
+            updateChunk && updateChunk(updatedChunk, chunkIndex)
             resetTextChange()
         }
 
@@ -240,11 +244,11 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
         if (submitTextSimilarData) {
             console.log("new similar chunk", submitTextSimilarData)
             if (typeof (submitTextSimilarData.chunk) == "object" && submitTextSimilarData.chunk.content instanceof Array) {
-                updateChunk(submitTextSimilarData.chunk, chunkIndex)
+                updateChunk && updateChunk(submitTextSimilarData.chunk, chunkIndex)
             }
             else if (submitTextSimilarData.chunk instanceof Array) {
                 const newChunk = { content: [...submitTextSimilarData.chunk] } as Chunk
-                updateChunk(newChunk, chunkIndex)
+                updateChunk && updateChunk(newChunk, chunkIndex)
             }
             else {
                 console.log("chunk content is not a string or an array, chunk:", submitTextSimilarData.chunk, typeof (submitTextSimilarData.chunk.content))
@@ -259,7 +263,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
             } as Problem
             const chunk: Chunk = { content: [problem], type: "chunk", tags: {}, ...submitTextLatexData.chunk }
             console.log("new chunk!", chunk)
-            updateChunk(chunk, chunkIndex)
+            updateChunk && updateChunk(chunk, chunkIndex)
             resetTextLatex()
         }
     }, [submitTextData, rerollData, submitTextSimilarData, submitTextLatexData, updateChunk, chunkIndex, resetTextSimilar, resetTextLatex, chunk])
@@ -467,7 +471,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
 interface InstructionProps {
     parentChunk: Chunk;
     parentChunkIndex: number;
-    updateChunk: (updatedChunk: Chunk, chunkIndex: number) => void;
+    updateChunk?: (updatedChunk: Chunk, chunkIndex: number) => void;
 
     instruction: Instruction;
     instructionIndex: number;
@@ -517,7 +521,7 @@ const InstructionComponent: React.FC<InstructionProps> = ({ debug, parentChunk, 
             const filteredContent = markedContent.filter(contentItem => !contentItem.isDuplicate);
 
             const updatedChunk = { ...parentChunk, content: filteredContent };
-            updateChunk(updatedChunk, parentChunkIndex);
+            updateChunk && updateChunk(updatedChunk, parentChunkIndex);
         }
 
     });
@@ -538,7 +542,7 @@ const InstructionComponent: React.FC<InstructionProps> = ({ debug, parentChunk, 
 interface ProblemProps {
     parentChunk: Chunk;
     parentChunkIndex: number;
-    updateChunk: (updatedChunk: Chunk, chunkIndex: number) => void;
+    updateChunk?: (updatedChunk: Chunk, chunkIndex: number) => void;
 
     problem: Problem;
     problemIndex: number;
@@ -587,7 +591,7 @@ const ProblemComponent: React.FC<ProblemProps> = ({ parentChunk, parentChunkInde
             const filteredContent = markedContent.filter(contentItem => !contentItem.isDuplicate);
 
             const updatedChunk = { ...parentChunk, content: filteredContent };
-            updateChunk(updatedChunk, parentChunkIndex);
+            updateChunk && updateChunk(updatedChunk, parentChunkIndex);
         }
     });
 
