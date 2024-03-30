@@ -1,24 +1,23 @@
 import { useClerk } from '@clerk/clerk-react';
+import { useMutation } from '@tanstack/react-query';
 import humps from 'humps';
-import { useState } from 'react';
 import { useLanguage } from '../../../contexts/useLanguage';
 import { languageNames } from '../../../helpers/language';
-import { GenerateFormData } from '../../../interfaces';
+import { Chunk, GenerateFormData } from '../../../interfaces';
 
+import { UseMutationResult } from '@tanstack/react-query';
+
+interface SubmitMathFormResponse {
+    response: Chunk[]
+}
 
 const useSubmitMathForm = (endpoint: string) => {
     const { session } = useClerk();
-    const [isLoading, setLoading] = useState<boolean>(false);
-    const [error, setError] = useState<string | null>(null);
-    const [data, setData] = useState<any | null>(null);
-
     const { language } = useLanguage();
     const options = { site_language: languageNames[language] };
 
-    const submitMathForm = async (formData: GenerateFormData) => {
-        setLoading(true);
-        setError(null);
-        try {
+    const submitMathFormMutation: UseMutationResult<SubmitMathFormResponse, Error, GenerateFormData, unknown> = useMutation(
+        async (formData: GenerateFormData): Promise<SubmitMathFormResponse> => {
             const token = session ? await session.getToken() : "none";
 
             const response = await fetch(endpoint, {
@@ -31,20 +30,22 @@ const useSubmitMathForm = (endpoint: string) => {
             });
 
             if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+                const errorResponse: Error = await response.json();
+                throw new Error(errorResponse.message || `HTTP error! status: ${response.status}`);
             }
 
-            const responseData = await response.json().then((json) => humps.camelizeKeys(json));
-            setData(responseData);
-
-            setLoading(false);
-        } catch (err: any) {
-            setError(err.message);
-            setLoading(false);
+            const responseData = await response.json();
+            return humps.camelizeKeys(responseData) as SubmitMathFormResponse;
         }
-    };
+    );
 
-    return { submitMathForm, isLoading, error, data };
+    return {
+        submitMathForm: submitMathFormMutation.mutate,
+        isLoading: submitMathFormMutation.isLoading,
+        error: submitMathFormMutation.error,
+        data: submitMathFormMutation.data,
+        reset: submitMathFormMutation.reset,
+    };
 };
 
 export default useSubmitMathForm;

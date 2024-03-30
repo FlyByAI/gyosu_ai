@@ -25,13 +25,13 @@ interface ChunkProps {
     updateChunk?: (updatedChunk: Chunk, chunkIndex: number) => void;
     chunkIndex: number;
     disableInstructionProblemDrag?: boolean;
-    problemBankId?: string;
 }
 
-export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunkIndex, disableInstructionProblemDrag, problemBankId }) => {
+export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunkIndex, disableInstructionProblemDrag }) => {
     const { setDragState } = useDragContext();
 
     const [currentRerollIndex, setCurrentRerollIndex] = useState(0);
+    const [currentSearchResponseIndex, setCurrentSearchResponseIndex] = useState(0);
 
     const { apiUrl } = useEnvironment();
 
@@ -110,7 +110,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
 
     const handleReroll = () => {
         if (!rerollData) {
-            submitReroll({ chunk: chunk, action: "reroll", chunkIndex: chunkIndex, problemBankId: problemBankId })
+            submitReroll({ chunk: chunk, action: "reroll", chunkIndex: chunkIndex, problemBankId: id })
         }
         else {
             // loop 
@@ -125,30 +125,46 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
         }
     }
 
-    const { isLoading: isLoadingSearch, error, submitMathForm, data: dataSearch } = useSubmitMathForm(`${apiUrl}/math_app/generate/`)
+    const { isLoading: isLoadingSearch, error, submitMathForm, data: searchData, reset: resetSearchData } = useSubmitMathForm(`${apiUrl}/math_app/generate/`)
 
     const { submitTextWithChunk, data: submitTextData, reset: resetTextChange, isLoading: isLoadingSubmitText } = useSubmitTextWithChunk(`${apiUrl}/math_app/chat/problem/`)
     const { submitTextWithChunkLatex, data: submitTextLatexData, reset: resetTextLatex, isLoading: isLoadingSubmitTextLatex } = useSubmitTextWithChunkLatex(`${apiUrl}/math_app/chat/problem/`)
     const { submitTextWithChunkSimilar, data: submitTextSimilarData, reset: resetTextSimilar, isLoading: isLoadingSubmitTextSimilar } = useSubmitTextWithChunkSimilar(`${apiUrl}/math_app/chat/problem/`)
 
     const handleSubmitText = () => {
-        submitTextWithChunk({ chunk: chunk, userInput: userInput, chunkIndex: chunkIndex, problemBankId: problemBankId })
+        submitTextWithChunk({ chunk: chunk, userInput: userInput, chunkIndex: chunkIndex, problemBankId: id })
     }
 
     const handleTextToLatex = () => {
         console.log("text to latex", userInput)
-        submitTextWithChunkLatex({ userInput: userInput, chunkIndex: chunkIndex, problemBankId: problemBankId })
+        submitTextWithChunkLatex({ userInput: userInput, chunkIndex: chunkIndex, problemBankId: id })
 
     }
 
     const handleSimilarSearchText = () => {
         console.log("find similar problems from text", userInput)
-        submitTextWithChunkSimilar({ userInput: userInput, chunkIndex: chunkIndex, problemBankId: problemBankId, })
+        submitTextWithChunkSimilar({ userInput: userInput, chunkIndex: chunkIndex, problemBankId: id })
     }
 
     const handleSearch = () => {
         console.log("search for problem", userInput)
-        submitMathForm({ data: { sourceMaterial: "competition_math", userInput: userInput } })
+        if (!searchData) {
+            console.log("searching")
+            submitMathForm({ data: { sourceMaterial: "competition_math", userInput: userInput } })
+        }
+        else {
+            // loop 
+            console.log("looping", currentSearchResponseIndex, searchData.response.length)
+            console.log(searchData?.response[currentSearchResponseIndex])
+            setCurrentSearchResponseIndex((prev) => {
+                if (prev === searchData.response.length - 1) {
+                    return 0
+                }
+                else {
+                    return prev + 1
+                }
+            })
+        }
     }
 
     const handleAcceptChunkChange = () => {
@@ -161,6 +177,11 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
             const updatedChunk = submitTextData.chunk
             updateChunk && updateChunk(updatedChunk, chunkIndex)
             resetTextChange()
+        }
+        if (searchData) {
+            const updatedChunk = searchData.response[currentSearchResponseIndex]
+            updateChunk && updateChunk(updatedChunk, chunkIndex)
+            resetSearchData()
         }
     }
 
@@ -197,10 +218,10 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
             updateChunk && updateChunk(chunk, chunkIndex)
             resetTextLatex()
         }
-        if (dataSearch) {
-            console.log(dataSearch)
+        if (searchData) {
+            console.log(searchData)
         }
-    }, [submitTextData, rerollData, submitTextSimilarData, submitTextLatexData, updateChunk, chunkIndex, resetTextSimilar, resetTextLatex, chunk, dataSearch])
+    }, [submitTextData, rerollData, submitTextSimilarData, submitTextLatexData, updateChunk, chunkIndex, resetTextSimilar, resetTextLatex, chunk, searchData])
 
     return (
         <>
@@ -284,6 +305,29 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
 
                 }
 
+                <div>
+                    Search Result:
+                    {searchData?.response[currentSearchResponseIndex].content.map((item: any, index: any) => {
+                        const searchResponseElement = (() => {
+                            switch (item.type) {
+                                case 'instruction':
+                                    return <InstructionComponent chunkIndex={chunkIndex} instructionIndex={index} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} instruction={item} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
+                                case 'problem':
+                                    return <ProblemComponent chunkIndex={chunkIndex} problemIndex={index} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} problem={item} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
+                                default:
+                                    return <div>None</div>;
+                            }
+                        })();
+
+                        return (
+                            <div key={`${item.type}-${index}-${chunk.content.length}`}>
+                                {searchResponseElement}
+                            </div>
+                        );
+                    })}
+                </div>
+
+
                 {chunkIndex == submitTextData?.chunkIndex &&
                     <div>
                         Text changed:
@@ -310,7 +354,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
 
 
 
-                {id && (submitTextData || rerollData) && <>
+                {id && (submitTextData || rerollData || searchData) && <>
                     <button
                         className="btn btn-warning tooltip tooltip-bottom"
                         data-tip="Reject this change."

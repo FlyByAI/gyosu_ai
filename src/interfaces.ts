@@ -2,6 +2,7 @@ import { IChatMessage } from "./pages/GyosuAIChat";
 
 export interface GenerateFormData {
     data: TextbookProblemData | CompetitionData;
+    chunkIndex?: number
 }
 
 export interface TextbookProblemData {

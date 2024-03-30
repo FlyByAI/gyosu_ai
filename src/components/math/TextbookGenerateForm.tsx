@@ -227,7 +227,7 @@ const TextbookGenerateForm: React.FC<TextbookGenerateFormProps> = ({ setGenerate
                     className="btn mt-4 w-full lg:w-1/2"
                 />
             </div>
-            {error && <p className="text-error mt-4 text-center">Error: {error}</p>}
+            {error && <p className="text-error mt-4 text-center">Error: {error.message}</p>}
             {error && !user?.user?.username && <p className="text-error mt-4 text-center">Note: Our tools require you to be signed in.</p>}
             {isLoading && <p className="text-base-content">Loading...</p>}
             {isLoading && (
