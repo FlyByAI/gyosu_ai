@@ -19,7 +19,7 @@ interface DocumentItemProps {
     isExporting: boolean;
 }
 
-const DocumentItem: React.FC<DocumentItemProps> = ({ document, onDropChunk, isExporting }) => {
+const ProblemBankSidebarItem: React.FC<DocumentItemProps> = ({ document, onDropChunk, isExporting }) => {
     const navigate = useNavigate();
     const { apiUrl } = useEnvironment();
     const endpoint2 = `${apiUrl}/math_app/school_document/`;
@@ -172,4 +172,4 @@ const DocumentItem: React.FC<DocumentItemProps> = ({ document, onDropChunk, isEx
     );
 };
 
-export default DocumentItem;
+export default ProblemBankSidebarItem;
