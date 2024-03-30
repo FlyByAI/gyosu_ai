@@ -74,10 +74,11 @@ const TextbookGenerateForm: React.FC<TextbookGenerateFormProps> = ({ setGenerate
             section,
             problemType,
             documentType: "Worksheet",
+            userInput
         };
 
         setGenerateFormData({ data: problemData });
-    }, [sourceMaterial, chapter, section, problemType, setGenerateFormData]);
+    }, [sourceMaterial, chapter, section, problemType, setGenerateFormData, userInput]);
 
     const handleSourceMaterialChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const newSourceMaterial = event.target.value;

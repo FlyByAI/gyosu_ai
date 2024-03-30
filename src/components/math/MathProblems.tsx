@@ -1,6 +1,6 @@
 import React from 'react';
 import { Chunk } from '../../interfaces';
-import { ChunkComponent } from '../AST';
+import { ChunkComponent } from '../ast/ChunkComponent';
 
 interface ChunkManagerProps {
     chunkArray: Chunk[];

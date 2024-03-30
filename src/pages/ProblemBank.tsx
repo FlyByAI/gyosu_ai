@@ -2,9 +2,9 @@ import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 import useGetDocument from '../hooks/tools/math/useGetDocument';
 
-import { ChunkComponent } from '../components/AST';
 import ContentWrapper from '../components/ContentWrapper';
 import CreateDocxModal from '../components/CreateDocxModal';
+import { ChunkComponent } from '../components/ast/ChunkComponent';
 import { useScreenSize } from '../contexts/ScreenSizeContext';
 import { useSidebarContext } from '../contexts/useSidebarContext';
 import useSubmitDocument from '../hooks/tools/math/useSubmitDocument';

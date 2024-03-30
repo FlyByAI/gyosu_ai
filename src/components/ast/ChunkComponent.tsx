@@ -1,35 +1,23 @@
 import 'katex/dist/katex.min.css';
 import React, { useEffect, useState } from 'react';
 import { DropTargetMonitor, useDrag, useDrop } from 'react-dnd';
-import ReactMarkdown from 'react-markdown';
 import { useParams } from 'react-router-dom';
 import { GridLoader } from 'react-spinners';
-import rehypeKatex from 'rehype-katex';
-import remarkGfm from 'remark-gfm';
-import remarkMath from 'remark-math';
-import { useDragContext } from '../contexts/DragContext';
-import { useScreenSize } from '../contexts/ScreenSizeContext';
-import useGetDocument from '../hooks/tools/math/useGetDocument';
-import useSubmitDocument from '../hooks/tools/math/useSubmitDocument';
-import useSubmitMathForm from '../hooks/tools/math/useSubmitMathForm';
-import useSubmitReroll from '../hooks/tools/math/useSubmitReroll';
-import useSubmitTextWithChunk from '../hooks/tools/math/useSubmitTextWithChunk';
-import useSubmitTextWithChunkLatex from '../hooks/tools/math/useSubmitTextWithChunkLatex';
-import useSubmitTextWithChunkSimilar from '../hooks/tools/math/useSubmitTextWithChunkSimilar';
-import useEnvironment from '../hooks/useEnvironment';
-import { CHUNK_DRAG_TYPE, Chunk, INSTRUCTION_DRAG_TYPE, INSTRUCTION_TYPE, Image, Instruction, Math, PROBLEM_DRAG_TYPE, PROBLEM_TYPE, Problem, Subproblem, Subproblems, Table, Text } from '../interfaces';
-import AddChunkModal from './AddChunkModal';
+import { useDragContext } from '../../contexts/DragContext';
+import { useScreenSize } from '../../contexts/ScreenSizeContext';
+import useGetDocument from '../../hooks/tools/math/useGetDocument';
+import useSubmitDocument from '../../hooks/tools/math/useSubmitDocument';
+import useSubmitMathForm from '../../hooks/tools/math/useSubmitMathForm';
+import useSubmitReroll from '../../hooks/tools/math/useSubmitReroll';
+import useSubmitTextWithChunk from '../../hooks/tools/math/useSubmitTextWithChunk';
+import useSubmitTextWithChunkLatex from '../../hooks/tools/math/useSubmitTextWithChunkLatex';
+import useSubmitTextWithChunkSimilar from '../../hooks/tools/math/useSubmitTextWithChunkSimilar';
+import useEnvironment from '../../hooks/useEnvironment';
+import { CHUNK_DRAG_TYPE, Chunk, INSTRUCTION_DRAG_TYPE, INSTRUCTION_TYPE, Instruction, PROBLEM_DRAG_TYPE, PROBLEM_TYPE, Problem } from '../../interfaces';
+import AddChunkModal from '../AddChunkModal';
+import { InstructionComponent } from './InstructionComponent';
+import { ProblemComponent } from './ProblemComponent';
 
-
-function replaceSingleBackslashes(string: string) {
-    // This regex matches a single backslash followed by any letter,
-    // but not if the backslash is already doubled.
-    const str = string.replace(/(?<!\\)\\([a-zA-Z])/g, String.raw`\\$1`);
-    if (str.includes("\theta")) {
-        return str.replace("\t", "\\t")
-    }
-    return str
-}
 interface ChunkProps {
     chunk: Chunk;
     edit?: boolean;
@@ -40,59 +28,6 @@ interface ChunkProps {
     problemBankId?: string;
 }
 
-
-export const renderContent = (content: (Text | Math | Table | Image | Subproblems)[]) => {
-    return content.map((item, index) => {
-        return <div key={index}>{renderItem(item)}</div>
-    });
-}
-export const renderItem = (item: Text | Math | Table | Image | Subproblems | Problem | Instruction) => {
-    switch (item.type) {
-        case 'text':
-            return (
-                <div
-                    className={'text-xs md:text-lg z-10  border-2 border-transparent border-dashed hover:border-2 p-1 m-1 group-hover:border-2 group-hover:border-dashed'}
-                >
-                    {item.value}
-                </div>
-            );
-        case 'math':
-            return (
-                <ReactMarkdown
-                    className={"text-xs md:text-lg z-10  border-gray-100 border-2 border-transparent border-dashed hover:border-2 p-1 m-1 group-hover:border-2 group-hover:border-dashed"}
-                    remarkPlugins={[remarkGfm, remarkMath]}
-                    rehypePlugins={[rehypeKatex]}
-                >
-
-                    {String.raw`$${item.value}$`.replace("?", "\\text{?}")}
-                </ReactMarkdown>
-            );
-        case 'table':
-            return (
-                <ReactMarkdown
-                    className={"text-xs md:text-lg z-10  border-gray-100 border-2 border-transparent border-dashed hover:border-2 p-1 m-1 group-hover:border-2 group-hover:border-dashed"}
-                    remarkPlugins={[remarkGfm, remarkMath]}
-                    rehypePlugins={[rehypeKatex]}
-                >
-                    {String.raw`${item.value}`}
-                </ReactMarkdown>
-            );
-        case 'image':
-            //todo: get better descriptions added to the ASTs
-            // console.log("image", item)
-            return (
-                <img
-                    src={item.value}
-                    alt="Description"
-                    className="text-xs md:text-lg z-10 p-1 m-1 border-2 border-transparent border-dashed hover:border-2 group-hover:border-2 group-hover:border-dashed"
-                />
-            );
-        case 'subproblems':
-            return <SubproblemsComponent subproblems={item} />;
-        default:
-            return null;
-    }
-}
 export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunkIndex, disableInstructionProblemDrag, problemBankId }) => {
     const { setDragState } = useDragContext();
 
@@ -169,8 +104,6 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
 
     };
 
-    const [isOverflowOpen, setIsOverflowOpen] = useState(false);
-
     const { isDesktop } = useScreenSize();
 
     const { submitReroll, data: rerollData, reset: resetReroll } = useSubmitReroll(`${apiUrl}/math_app/reroll/`)
@@ -192,7 +125,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
         }
     }
 
-    const { isLoading: isLoadingSearch, error, submitMathForm, data } = useSubmitMathForm(`${apiUrl}/math_app/generate/`)
+    const { isLoading: isLoadingSearch, error, submitMathForm, data: dataSearch } = useSubmitMathForm(`${apiUrl}/math_app/generate/`)
 
     const { submitTextWithChunk, data: submitTextData, reset: resetTextChange, isLoading: isLoadingSubmitText } = useSubmitTextWithChunk(`${apiUrl}/math_app/chat/problem/`)
     const { submitTextWithChunkLatex, data: submitTextLatexData, reset: resetTextLatex, isLoading: isLoadingSubmitTextLatex } = useSubmitTextWithChunkLatex(`${apiUrl}/math_app/chat/problem/`)
@@ -215,9 +148,8 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
 
     const handleSearch = () => {
         console.log("search for problem", userInput)
-        submitMathForm({ userInput: userInput })
+        submitMathForm({ data: { sourceMaterial: "competition_math", userInput: userInput } })
     }
-
 
     const handleAcceptChunkChange = () => {
         if (rerollData) {
@@ -230,7 +162,6 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
             updateChunk && updateChunk(updatedChunk, chunkIndex)
             resetTextChange()
         }
-
     }
 
     useEffect(() => {
@@ -266,7 +197,10 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
             updateChunk && updateChunk(chunk, chunkIndex)
             resetTextLatex()
         }
-    }, [submitTextData, rerollData, submitTextSimilarData, submitTextLatexData, updateChunk, chunkIndex, resetTextSimilar, resetTextLatex, chunk])
+        if (dataSearch) {
+            console.log(dataSearch)
+        }
+    }, [submitTextData, rerollData, submitTextSimilarData, submitTextLatexData, updateChunk, chunkIndex, resetTextSimilar, resetTextLatex, chunk, dataSearch])
 
     return (
         <>
@@ -304,7 +238,6 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                             Delete
                         </button>
                     )}
-
                 </div>
 
                 {chunk?.content?.map((item, index) => {
@@ -466,170 +399,3 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
     );
 
 };
-
-
-interface InstructionProps {
-    parentChunk: Chunk;
-    parentChunkIndex: number;
-    updateChunk?: (updatedChunk: Chunk, chunkIndex: number) => void;
-
-    instruction: Instruction;
-    instructionIndex: number;
-    edit?: boolean;
-    onInstructionHover: (hovered: boolean) => void; // Function to change the parent's hover state
-    disableInstructionProblemDrag?: boolean; //used to disable drag and drop for instructions and problems when on the search
-
-    chunkIndex: number;
-    debug?: boolean;
-}
-
-const InstructionComponent: React.FC<InstructionProps> = ({ debug, parentChunk, parentChunkIndex, updateChunk, instruction, instructionIndex, disableInstructionProblemDrag }) => {
-    const { setDragState } = useDragContext();
-
-    const [, ref] = useDrag({
-        type: INSTRUCTION_DRAG_TYPE,
-        item: () => {
-            setDragState({ isDragging: true, dragType: INSTRUCTION_DRAG_TYPE });
-            return { ...instruction, content: instruction.content } as Instruction;
-        },
-        end: () => {
-            setDragState({ isDragging: false, dragType: null });
-        },
-    });
-
-    const [, drop] = useDrop({
-        accept: [INSTRUCTION_DRAG_TYPE, PROBLEM_DRAG_TYPE],
-        hover: () => {
-            console.log('hover problem')
-        },
-        drop: (item: Instruction | Problem) => {
-            const updatedContent = [...parentChunk.content];
-
-            const targetIndex = instructionIndex !== undefined ? instructionIndex : updatedContent.length;
-            updatedContent.splice(targetIndex, 0, item);
-
-            const markedContent = updatedContent.map((contentItem, index) => ({
-                ...contentItem,
-                isDuplicate:
-                    ('instructionId' in contentItem && 'instructionId' in item)
-                        ? contentItem.instructionId === item.instructionId && index !== targetIndex
-                        : ('problemId' in contentItem && 'problemId' in item)
-                            ? contentItem.problemId === item.problemId && index !== targetIndex
-                            : false
-            }));
-
-            const filteredContent = markedContent.filter(contentItem => !contentItem.isDuplicate);
-
-            const updatedChunk = { ...parentChunk, content: filteredContent };
-            updateChunk && updateChunk(updatedChunk, parentChunkIndex);
-        }
-
-    });
-
-    if (debug) { console.log(instruction.content) }
-
-    return (
-        <div
-            ref={(node) => disableInstructionProblemDrag ? ref(drop(node)) : node}
-            className="flex group flex-row flex-wrap cursor-pointer"
-        >
-            {renderContent(instruction.content)}
-        </div>
-    );
-};
-
-
-interface ProblemProps {
-    parentChunk: Chunk;
-    parentChunkIndex: number;
-    updateChunk?: (updatedChunk: Chunk, chunkIndex: number) => void;
-
-    problem: Problem;
-    problemIndex: number;
-    edit?: boolean;
-    onInstructionHover: (hovered: boolean) => void; // Function to change the parent's hover state
-
-    disableInstructionProblemDrag?: boolean; //used to disable drag and drop for instructions and problems when on the search
-    chunkIndex: number;
-}
-
-const ProblemComponent: React.FC<ProblemProps> = ({ parentChunk, parentChunkIndex, updateChunk, problem, problemIndex, disableInstructionProblemDrag }) => {
-    const { setDragState } = useDragContext();
-
-    const [, ref] = useDrag({
-        type: PROBLEM_DRAG_TYPE,
-        item: () => {
-            setDragState({ isDragging: true, dragType: PROBLEM_DRAG_TYPE });
-            return { ...problem, content: problem.content } as Problem;
-        },
-        end: () => {
-            setDragState({ isDragging: false, dragType: null });
-        },
-    });
-
-    const [, drop] = useDrop({
-        accept: [INSTRUCTION_DRAG_TYPE, PROBLEM_DRAG_TYPE],
-        hover: () => {
-            console.log('hover instruction')
-        },
-        drop: (item: Instruction | Problem) => {
-            const updatedContent = [...parentChunk.content];
-
-            const targetIndex = problemIndex !== undefined ? problemIndex : updatedContent.length;
-            updatedContent.splice(targetIndex, 0, item);
-
-            const markedContent = updatedContent.map((contentItem, index) => ({
-                ...contentItem,
-                isDuplicate:
-                    ('instructionId' in contentItem && 'instructionId' in item)
-                        ? contentItem.instructionId === item.instructionId && index !== targetIndex
-                        : ('problemId' in contentItem && 'problemId' in item)
-                            ? contentItem.problemId === item.problemId && index !== targetIndex
-                            : false
-            }));
-
-            const filteredContent = markedContent.filter(contentItem => !contentItem.isDuplicate);
-
-            const updatedChunk = { ...parentChunk, content: filteredContent };
-            updateChunk && updateChunk(updatedChunk, parentChunkIndex);
-        }
-    });
-
-    return (
-        <div
-            ref={(node) => disableInstructionProblemDrag ? ref(drop(node)) : node}
-            className="flex group flex-row flex-wrap cursor-pointer">
-            {renderContent(problem.content)}
-        </div>
-    );
-};
-
-interface SubproblemsProps {
-    subproblems: Subproblems;
-}
-
-export const SubproblemsComponent: React.FC<SubproblemsProps> = ({ subproblems }) => {
-    return (
-        <div className="flex flex-col">
-            {subproblems.content.map((subproblem, index) => (
-                <SubproblemComponent key={index} subproblem={subproblem} />
-            ))}
-        </div>
-    );
-};
-
-interface SubproblemProps {
-    subproblem: Subproblem
-}
-
-const SubproblemComponent: React.FC<{ subproblem: Subproblem }> = ({ subproblem }: SubproblemProps) => {
-    return (
-        <div className="flex flex-col items-center text-xs md:text-lg z-10 p-1 m-1 border-2 border-transparent border-dashed hover:border-2 group-hover:border-2 group-hover:border-dashed">
-            <div className="mb-2 font-bold">{subproblem.label}</div>
-            {renderContent(subproblem.content)}
-        </div>
-    );
-};
-
-export default SubproblemComponent;
-

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { renderContent } from '../../helpers/AstRender';
 import useSubmitDocument from '../../hooks/tools/math/useSubmitDocument';
 import useEnvironment from '../../hooks/useEnvironment';
 import { Document } from '../../interfaces';
 import TrashIcon from '../../svg/TrashIcon';
-import { renderContent } from '../AST';
 import EditTitle from '../document/EditTitle';
 
 interface DocumentPreviewProps {

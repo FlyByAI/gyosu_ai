@@ -40,9 +40,11 @@ const CompetitionMathGenerateForm: React.FC<CompetitionMathGenerateFormProps> = 
         const problemData = {
             problemType,
             level,
+            sourceMaterial: "competition_math",
+            userInput,
         };
         setGenerateFormData({ data: problemData });
-    }, [problemType, level, setGenerateFormData]);
+    }, [problemType, level, setGenerateFormData, userInput]);
 
     const handleProblemTypeChange = (newValue: string) => {
         setLevelOptions(formOptionsObj?.problem_types?.[newValue]?.levels || [])
@@ -56,13 +58,12 @@ const CompetitionMathGenerateForm: React.FC<CompetitionMathGenerateFormProps> = 
 
     const handleMathSubmit = async () => {
         if (session) {
-            const formData = {
+            const formData: CompetitionData = {
                 sourceMaterial: "competition_math",
                 problemType,
                 level,
                 userInput: userInput,
-
-            } as CompetitionData;
+            };
             await submitMathForm({ data: formData });
         }
         else {
