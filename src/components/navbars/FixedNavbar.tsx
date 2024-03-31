@@ -14,7 +14,7 @@ const FixedNavbar: React.FC = () => {
 
   return (
     <>
-      <div className='mt-20 md:mt-16'></div>
+      <div className='mt-16'></div>
       <header className="navbar fixed top-0 left-0 z-20 w-full bg-base-100">
         {/* Mobile view */}
         <div className="navbar-start md:hidden">
