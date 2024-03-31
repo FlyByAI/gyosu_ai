@@ -1,20 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { renderContent } from '../../helpers/AstRender';
 import useSubmitDocument from '../../hooks/tools/math/useSubmitDocument';
 import useEnvironment from '../../hooks/useEnvironment';
 import { Document } from '../../interfaces';
-import TrashIcon from '../../svg/TrashIcon';
-import EditTitle from '../document/EditTitle';
 
 interface DocumentPreviewProps {
     document: Document;
     disabledClick?: boolean;
-    handleDelete?: (document: Document) => void;
 }
 
-const ProblemBankPreview: React.FC<DocumentPreviewProps> = ({ document, disabledClick, handleDelete}) => {
-    const [isHovering, setIsHovering] = useState(false);
+const ProblemBankPreview: React.FC<DocumentPreviewProps> = ({ document, disabledClick}) => {
 
     const navigate = useNavigate();
 
@@ -26,28 +22,12 @@ const ProblemBankPreview: React.FC<DocumentPreviewProps> = ({ document, disabled
 
     return (
         <div
-            className={`card w-3/4 mx-auto max-h-64 overflow-y-scroll bg-base-100 shadow-xl ${disabledClick ? '' : 'cursor-pointer'}`}
-            onClick={() => !disabledClick && navigate(`/math-app/bank/${document.id}`)}
+            className={`card w-full mx-auto max-h-64 overflow-y-scroll bg-base-100 shadow-xl ${disabledClick ? '' : 'cursor-pointer'}`}
+            
         >
             <div className='card-header'>
-                <EditTitle title={document?.title} onUpdateTitle={(title) => updateDocument({ document: { ...document, title: title } })}/>
-                {handleDelete && (
-                    <div className="card-actions justify-end">
-                        <button
-                            className="btn btn-error btn-sm tooltip tooltip-left"
-                            data-tip="Delete"
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                handleDelete(document);
-                            }}
-                        >
-                            <TrashIcon />
-                        </button>
-                    </div>
-                )}
             </div>
             <div className="card-body">
-                <h2 className="card-title">{document.title}</h2>
                 {document.problemChunks && document.problemChunks.length > 0 ? (
                     document.problemChunks.map((chunk, index) => (
                         <div key={index} className="mb-4">

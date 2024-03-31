@@ -33,7 +33,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
     const [currentRerollIndex, setCurrentRerollIndex] = useState(0);
     const [currentSearchResponseIndex, setCurrentSearchResponseIndex] = useState(0);
 
-    const { apiUrl } = useEnvironment();
+    const { env, apiUrl } = useEnvironment();
 
     const endpoint2 = `${apiUrl}/math_app/school_document/`;
     const { isLoading, updateDocument } = useSubmitDocument(endpoint2);
@@ -125,11 +125,11 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
         }
     }
 
-    const { isLoading: isLoadingSearch, error, submitMathForm, data: searchData, reset: resetSearchData } = useSubmitMathForm(`${apiUrl}/math_app/generate/`)
+    const { submitMathForm, data: searchData, reset: resetSearchData, isLoading: isLoadingSearch, error: errorSearch } = useSubmitMathForm(`${apiUrl}/math_app/generate/`)
 
-    const { submitTextWithChunk, data: submitTextData, reset: resetTextChange, isLoading: isLoadingSubmitText } = useSubmitTextWithChunk(`${apiUrl}/math_app/chat/problem/`)
-    const { submitTextWithChunkLatex, data: submitTextLatexData, reset: resetTextLatex, isLoading: isLoadingSubmitTextLatex } = useSubmitTextWithChunkLatex(`${apiUrl}/math_app/chat/problem/`)
-    const { submitTextWithChunkSimilar, data: submitTextSimilarData, reset: resetTextSimilar, isLoading: isLoadingSubmitTextSimilar } = useSubmitTextWithChunkSimilar(`${apiUrl}/math_app/chat/problem/`)
+    const { submitTextWithChunk, data: submitTextData, reset: resetTextChange, isLoading: isLoadingSubmitText, error: errorText } = useSubmitTextWithChunk(`${apiUrl}/math_app/chat/problem/`)
+    const { submitTextWithChunkLatex, data: submitTextLatexData, reset: resetTextLatex, isLoading: isLoadingSubmitTextLatex, error: errorTextLatex } = useSubmitTextWithChunkLatex(`${apiUrl}/math_app/chat/problem/`)
+    const { submitTextWithChunkSimilar, data: submitTextSimilarData, reset: resetTextSimilar, isLoading: isLoadingSubmitTextSimilar, error: errorTextSimilar } = useSubmitTextWithChunkSimilar(`${apiUrl}/math_app/chat/problem/`)
 
     const handleSubmitText = () => {
         submitTextWithChunk({ chunk: chunk, userInput: userInput, chunkIndex: chunkIndex, problemBankId: id })
@@ -195,15 +195,14 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
         }
         if (submitTextSimilarData) {
             console.log("new similar chunk", submitTextSimilarData)
-            if (typeof (submitTextSimilarData.chunk) == "object" && submitTextSimilarData.chunk.content instanceof Array) {
-                updateChunk && updateChunk(submitTextSimilarData.chunk, chunkIndex)
-            }
-            else if (submitTextSimilarData.chunk instanceof Array) {
+
+            if (submitTextSimilarData.chunk instanceof Array) {
                 const newChunk = { content: [...submitTextSimilarData.chunk] } as Chunk
                 updateChunk && updateChunk(newChunk, chunkIndex)
+                console.log("condition 2")
             }
             else {
-                console.log("chunk content is not a string or an array, chunk:", submitTextSimilarData.chunk, typeof (submitTextSimilarData.chunk.content))
+                console.log("chunk content is not expected type, chunk:", submitTextSimilarData.chunk, typeof (submitTextSimilarData.chunk.content))
             }
             resetTextSimilar()
         }
@@ -233,7 +232,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                 title={!id ? "Click and drag to a problem bank." : "Click to select this problem."}
             >
                 <div className="absolute top-0 right-0 flex flex-row gap-2">
-                    {(isLoadingSubmitText || isLoadingSubmitTextLatex || isLoadingSubmitTextSimilar) && <GridLoader color="#4A90E2" size={4} margin={4} speedMultiplier={.75} className='mr-2' />}
+                    {(isLoadingSubmitText || isLoadingSubmitTextLatex || isLoadingSubmitTextSimilar || isLoadingSearch) && <GridLoader color="#4A90E2" size={4} margin={4} speedMultiplier={.75} className='mr-2' />}
 
                     {!id && <AddChunkModal chunk={chunk} modalId={'addChunkModal' + chunk.chunkId} enabled={false} />}
 
@@ -352,7 +351,38 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                             })}
                     </div>}
 
+                {chunkIndex == submitTextSimilarData?.chunkIndex &&
+                    <div>
+                        Text changed:
+                        {
+                            submitTextSimilarData?.chunk.content?.map((changedItem, changedIndex) => {
+                                const element = (() => {
+                                    switch (changedItem.type) {
+                                        case 'instruction':
+                                            return <InstructionComponent chunkIndex={chunkIndex} instructionIndex={changedIndex} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} instruction={changedItem} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
+                                        case 'problem':
+                                            return <ProblemComponent chunkIndex={chunkIndex} problemIndex={changedIndex} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} problem={changedItem} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
+                                        default:
+                                            return <div>None</div>;
+                                    }
+                                })();
 
+                                return (
+                                    <div key={`${changedItem.type}-${changedIndex}-${chunk.content.length}`}>
+                                        {chunkIndex == submitTextSimilarData?.chunkIndex && element}
+                                    </div>
+                                );
+                            })}
+                    </div>}
+
+                {( errorText || errorTextSimilar || errorTextLatex || errorSearch ) &&
+                <div className="text-white text-center mt-2">
+                    Error:
+                    {errorText && errorText.message}
+                    {errorTextSimilar && errorTextSimilar.message}
+                    {errorTextLatex && errorTextLatex.message}
+                    {errorSearch && errorSearch.message}
+                </div>}
 
                 {id && (submitTextData || rerollData || searchData) && <>
                     <button
@@ -410,7 +440,6 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                 </>}
 
                 {id && !submitTextData && !rerollData && chunk.content.length > 0 && <>
-                    {/* if a problem exists */}
                     <input
                         type="text"
                         placeholder="Please make this problem easier or find me another problem like this one."
@@ -419,21 +448,21 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                         className="input input-bordered w-full max-w-lg m-2"
                     />
                     <div className='space-x-2'>
-                        <button
+                        {env == "local" && <button
                             className="btn btn-secondary tooltip tooltip-bottom"
-                            data-tip="Send your input."
+                            data-tip={env == "local" ? "This is a dev only at the moment. " : "Send your input."}
                             onClick={handleSubmitText}
                             disabled={userInput.length == 0}
                         >
                             Change it (make a new one)!
-                        </button>
+                        </button>}
                         <button
                             className="btn btn-secondary tooltip tooltip-left mr-2"
                             data-tip="Find a similar problem using a text description."
                             onClick={handleSimilarSearchText}
                             disabled={userInput.length == 0}
                         >
-                            Change it(similar)!
+                            Change it!
                         </button>
                     </div>
                 </>}

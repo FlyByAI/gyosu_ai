@@ -1,7 +1,6 @@
 
 import React from 'react';
 import ProblemBankSidebar from '../components/document/ProblemBankSidebar';
-import ProblemBankPreview from '../components/forms/ProblemBankPreview';
 import useGetDocuments from '../hooks/tools/math/useGetDocuments';
 import useSubmitDocument from '../hooks/tools/math/useSubmitDocument';
 import useEnvironment from '../hooks/useEnvironment';
@@ -10,11 +9,14 @@ import PlusIcon from '../svg/PlusIcon';
 import { getShowClass } from './ProblemSearch';
 
 import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
+import EditTitle from '../components/document/EditTitle';
+import ProblemBankPreview from '../components/forms/ProblemBankPreview';
 import GridContainer1x1 from '../components/grids/GridContainer1x1';
 import { Chunk, Document } from '../interfaces';
+import TrashIcon from '../svg/TrashIcon';
 const MyProblemBanks: React.FC = () => {
-
-
+    const navigate = useNavigate();
     useRequireSignIn();
 
     const { apiUrl } = useEnvironment();
@@ -40,13 +42,6 @@ const MyProblemBanks: React.FC = () => {
             </div>
         )
     }
-
-    // const handleEditClick = (e: React.MouseEvent) => {
-    //     e.stopPropagation();
-    //     setTitle(document?.title || '');
-    //     setIsEditing(true);
-    //     setIsOverflowOpen(false);
-    // };
 
     const handleDeleteClick = (document: Document) => {
         if (document) {
@@ -74,6 +69,7 @@ const MyProblemBanks: React.FC = () => {
 
     };
 
+
     return (
         <div>
             {/* {showBankElement()} */}
@@ -84,25 +80,52 @@ const MyProblemBanks: React.FC = () => {
             <div className="w-full" >
                 <div className="flex flex-row justify-center mt-4 mx-4">
                     {/* DaisyUI Accordion */}
-                    <div className="accordion w-3/4" tabIndex={0}>
-                        <div className="accordion-item">
-                            <div className="accordion-title">
-                                <div className="flex items-center justify-center w-full">
-                                    My Problem Banks
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                                    </svg>
-                                </div>
+                    <div className="w-3/4" tabIndex={0}>
+                        <div className="">
+                            <div className="flex items-center justify-center w-full">
+                                My Problem Banks
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                                </svg>
                             </div>
-                            <div className="accordion-content">
-                                {/* Content of the Accordion */}
+                            {/* Content of the Accordion */}
+                            <div className='accordion'>
                                 <GridContainer1x1>
                                     {documents?.sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
                                         .map((doc, index) => (
-                                            <ProblemBankPreview key={index} document={doc} handleDelete={handleDeleteClick} />
+                                            <>
+                                                <div className="flex flex-row justify-between space-x-4">
+                                                    <EditTitle title={doc?.title} onUpdateTitle={() => updateDocument({ document: { ...doc, title: doc.title } })} />
+                                                    <div className='flex flex-row space-x-4'>
+                                                        <button className="btn btn-primary" onClick={() => navigate(`/math-app/bank/${doc.id}`)}>View</button>
+                                                        <button
+                                                            className="btn btn-error tooltip tooltip-left"
+                                                            data-tip="Delete"
+                                                            onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                handleDeleteClick(doc);
+                                                            }}
+                                                        >
+                                                            <TrashIcon />
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <div className="collapse collapse-arrow join-item border border-base-300" key={index}>
+                                                    <input type="radio" name="my-accordion-4" id={`accordion-${index}`} defaultChecked={index === 0} />
+                                                    <label htmlFor={`accordion-${index}`} className="collapse-title text-xl font-medium flex flex-row justify-between">
+                                                        {/* <h3 className="text-lg font-medium truncate">{doc.title}</h3> */}
+
+                                                        {doc?.problemChunks?.length || 0} problems
+                                                    </label>
+                                                    <div className="collapse-content">
+                                                        <ProblemBankPreview document={doc} />
+                                                    </div>
+                                                </div>
+                                            </>
                                         ))}
                                 </GridContainer1x1>
                             </div>
+
                         </div>
                     </div>
                 </div>
