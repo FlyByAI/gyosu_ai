@@ -226,8 +226,8 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                 ref={(node) => ref(drop(node))}
                 onMouseEnter={() => !isHovered && setIsHovered(true)}
                 onMouseLeave={() => isHovered && setIsHovered(false)}
-                className={`border relative p-2 w-full transition-all duration-300 ease-in-out ${isHovered ? "border-base-content border-dashed" : "border-transparent"}`}
-                title={!id ? "Click and drag to a problem bank." : "Click to select this problem."}
+                className={`tooltip border relative p-2 w-full transition-all duration-300 ease-in-out ${isHovered ? "border-base-content border-dashed" : "border-transparent"}`}
+                data-tip={!id ? "Click and drag to a problem bank." : null}
             >
                 <div className="absolute top-0 right-0 flex flex-row gap-2">
                     {(isLoadingSubmitText || isLoadingSubmitTextLatex || isLoadingSubmitTextSimilar || isLoadingSearch) && <GridLoader color="#4A90E2" size={4} margin={4} speedMultiplier={.75} className='mr-2' />}
@@ -257,6 +257,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                         </button>
                     )}
                 </div>
+                <div className='p-4'></div>
 
                 {chunk?.content?.map((item, index) => {
                     const element = (() => {

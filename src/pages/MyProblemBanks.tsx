@@ -12,7 +12,6 @@ import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import EditTitle from '../components/document/EditTitle';
 import ProblemBankPreview from '../components/forms/ProblemBankPreview';
-import GridContainer1x1 from '../components/grids/GridContainer1x1';
 import { Chunk, Document } from '../interfaces';
 import TrashIcon from '../svg/TrashIcon';
 const MyProblemBanks: React.FC = () => {
@@ -71,11 +70,11 @@ const MyProblemBanks: React.FC = () => {
 
 
     return (
-        <div>
+        <div className="py-4">
             {/* {showBankElement()} */}
 
-            <button onClick={handleAddDocument} className="btn btn-secondary w-full rounded-lg flex items-center justify-center gap-2 py-2 text-sm md:text-lg ">
-                Create<PlusIcon className="w-5 h-5" />
+            <button onClick={handleAddDocument} className="btn btn-secondary w-1/3 mx-auto rounded-lg flex items-center justify-center gap-2 py-2 text-sm md:text-lg ">
+                Create new<PlusIcon className="w-5 h-5" />
             </button>
             <div className="w-full" >
                 <div className="flex flex-row justify-center mt-4 mx-4">
@@ -89,41 +88,39 @@ const MyProblemBanks: React.FC = () => {
                                 </svg>
                             </div>
                             {/* Content of the Accordion */}
-                            <div className='accordion'>
-                                <GridContainer1x1>
-                                    {documents?.sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
-                                        .map((doc, index) => (
-                                            <>
-                                                <div className="flex flex-row justify-between">
-                                                    <EditTitle title={doc?.title} onUpdateTitle={(title) => updateDocument({ document: { ...doc, title: title} })} />
-                                                    <div className='flex flex-row space-x-4'>
-                                                        <button className="btn btn-primary" onClick={() => navigate(`/math-app/bank/${doc.id}`)}>View</button>
-                                                        <button
-                                                            className="btn btn-error tooltip tooltip-left"
-                                                            data-tip="Delete"
-                                                            onClick={(e) => {
-                                                                e.stopPropagation();
-                                                                handleDeleteClick(doc);
-                                                            }}
-                                                        >
-                                                            <TrashIcon />
-                                                        </button>
-                                                    </div>
+                            <div className='accordion space-y-4'>
+                                {documents?.sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
+                                    .map((doc, index) => (
+                                        <>
+                                            <div className="flex flex-row justify-between">
+                                                <EditTitle title={doc?.title} onUpdateTitle={(title) => updateDocument({ document: { ...doc, title: title } })} />
+                                                <div className='flex flex-row ms-4'>
+                                                    <button className="btn btn-primary tooltip" data-tip="View this problem bank." onClick={() => navigate(`/math-app/bank/${doc.id}`)}>View</button>
+                                                    <button
+                                                        className="btn btn-error tooltip tooltip-left ms-4"
+                                                        data-tip="Delete this problem bank."
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            handleDeleteClick(doc);
+                                                        }}
+                                                    >
+                                                        <TrashIcon />
+                                                    </button>
                                                 </div>
-                                                <div className="collapse collapse-arrow join-item border border-base-300" key={index}>
-                                                    <input type="radio" name="my-accordion-4" id={`accordion-${index}`} defaultChecked={index === 0} />
-                                                    <label htmlFor={`accordion-${index}`} className="collapse-title text-xl font-medium flex flex-row justify-between">
-                                                        {/* <h3 className="text-lg font-medium truncate">{doc.title}</h3> */}
+                                            </div>
+                                            <div className="collapse collapse-arrow join-item border border-base-300" key={index}>
+                                                <input type="radio" name="my-accordion-4" id={`accordion-${index}`} defaultChecked={index === 0} />
+                                                <label htmlFor={`accordion-${index}`} className="collapse-title text-xl font-medium flex flex-row justify-between">
+                                                    {/* <h3 className="text-lg font-medium truncate">{doc.title}</h3> */}
 
-                                                        {doc?.problemChunks?.length || 0} problems
-                                                    </label>
-                                                    <div className="collapse-content">
-                                                        <ProblemBankPreview document={doc} />
-                                                    </div>
+                                                    {doc?.problemChunks?.length || 0} problems
+                                                </label>
+                                                <div className="collapse-content">
+                                                    <ProblemBankPreview document={doc} />
                                                 </div>
-                                            </>
-                                        ))}
-                                </GridContainer1x1>
+                                            </div>
+                                        </>
+                                    ))}
                             </div>
 
                         </div>

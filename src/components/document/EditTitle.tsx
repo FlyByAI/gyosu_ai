@@ -53,7 +53,7 @@ const EditTitle: React.FC<EditTitleProps> = ({ title, onUpdateTitle, onEditingDo
             ) : (
                 <div className="flex justify-between items-center w-full">
                     <h3 className="text-lg font-medium truncate">{title}</h3>
-                    <button onClick={toggleEdit} className="btn btn-ghost btn-xs">
+                    <button onClick={toggleEdit} className="btn btn-primary tooltip" data-tip="Rename this problem bank.">
                         <EditIcon />
                     </button>
                 </div>
