@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import EditIcon from '../../svg/Edit';
 
 interface EditTitleProps {
@@ -30,11 +30,16 @@ const EditTitle: React.FC<EditTitleProps> = ({ title, onUpdateTitle, onEditingDo
     const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
             handleBlur();
+            onUpdateTitle(editedTitle);
         }
     };
 
+    useEffect(() => {
+        setEditedTitle(title)
+    }, [title])
+
     return (
-        <>
+        <div className='flex-grow'>
             {isEditing ? (
                 <input
                     type="text"
@@ -46,14 +51,14 @@ const EditTitle: React.FC<EditTitleProps> = ({ title, onUpdateTitle, onEditingDo
                     className="input input-bordered input-sm w-full font-medium"
                 />
             ) : (
-                <div className="flex justify-between items-center">
+                <div className="flex justify-between items-center w-full">
                     <h3 className="text-lg font-medium truncate">{title}</h3>
                     <button onClick={toggleEdit} className="btn btn-ghost btn-xs">
                         <EditIcon />
                     </button>
                 </div>
             )}
-        </>
+        </div>
     );
 };
 

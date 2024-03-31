@@ -20,7 +20,6 @@ const ProblemSearchNavbar: React.FC = () => {
       <header className="navbar fixed top-0 left-0 z-20 w-full bg-base-100">
         {/* Mobile view */}
         <div className="navbar-start md:hidden">
-
           <HamburgerWrapperX mobileOrDesktop={'mobile'}>
             <ProblemBankSidebar isExporting={false} />
           </HamburgerWrapperX>

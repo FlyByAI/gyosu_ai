@@ -80,7 +80,7 @@ const MyProblemBanks: React.FC = () => {
             <div className="w-full" >
                 <div className="flex flex-row justify-center mt-4 mx-4">
                     {/* DaisyUI Accordion */}
-                    <div className="w-3/4" tabIndex={0}>
+                    <div className="w-full md:w-3/4" tabIndex={0}>
                         <div className="">
                             <div className="flex items-center justify-center w-full">
                                 My Problem Banks
@@ -94,8 +94,8 @@ const MyProblemBanks: React.FC = () => {
                                     {documents?.sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
                                         .map((doc, index) => (
                                             <>
-                                                <div className="flex flex-row justify-between space-x-4">
-                                                    <EditTitle title={doc?.title} onUpdateTitle={() => updateDocument({ document: { ...doc, title: doc.title } })} />
+                                                <div className="flex flex-row justify-between">
+                                                    <EditTitle title={doc?.title} onUpdateTitle={(title) => updateDocument({ document: { ...doc, title: title} })} />
                                                     <div className='flex flex-row space-x-4'>
                                                         <button className="btn btn-primary" onClick={() => navigate(`/math-app/bank/${doc.id}`)}>View</button>
                                                         <button

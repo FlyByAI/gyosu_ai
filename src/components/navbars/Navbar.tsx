@@ -10,7 +10,7 @@ const Navbar: React.FC = () => {
   switch (true) { // Switch on true to allow for conditional checks
     case location.pathname.includes('math-app/chat'):
       return <ChatNavbar />;
-    case location.pathname == '/math-app':
+    case location.pathname == '/math-app/search':
       return <ProblemSearchNavbar />
     case location.pathname.includes('/math-app'):
       return <FixedNavbar />;

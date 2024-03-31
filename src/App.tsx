@@ -35,7 +35,7 @@ function App({ children }: AppProps) {
   const clerkKey = env == "production" ? notSecretConstants.clerk.PUBLISHABLE_KEY : notSecretConstants.clerk.PUBLISHABLE_DEV_KEY
 
   return (
-      <div data-theme={"emerald"} className='bg-base-100'>
+      <div data-theme={"emerald"}>
         <ClerkProvider
           navigate={(to) => navigate(to)}
           publishableKey={clerkKey}
