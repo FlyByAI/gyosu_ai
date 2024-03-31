@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
+import useEnvironment from '../hooks/useEnvironment';
 
 
 interface DarkModeContextValue {
@@ -23,8 +24,9 @@ export const useDarkMode = () => {
 };
 
 export const DarkModeProvider = ({ children }: DarkModeProviderProps) => {
+    const {env} = useEnvironment();
     const [darkMode, setDarkMode] = useState(() => {
-        const savedMode = localStorage.getItem('darkMode');
+        const savedMode = env == "local" ? localStorage.getItem('darkMode') : "false";
         return savedMode ? JSON.parse(savedMode) : true;
     });
 
