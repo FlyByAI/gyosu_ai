@@ -47,7 +47,7 @@ const ProblemSearch: React.FC = () => {
 
     return (
         <>
-            <div className="flex flex-col md:flex-row w-5/6">
+            <div className="flex flex-col md:flex-row w-5/6 min-h-screen flex-grow">
                 {/* Always visible Problem Bank Shelf on the side for larger screens, toggle-able or hidden on smaller screens */}
                 <div className='w-1/4'>
                     <div style={{ position: 'fixed', top: '80px', left: '10px', zIndex: 999 }}> {/* This div contains the sidebar */}

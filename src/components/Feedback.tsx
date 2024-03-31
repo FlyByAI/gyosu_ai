@@ -53,12 +53,12 @@ const Feedback: React.FC<FeedbackProps> = ({ feedbackLabel, data, responseQuesti
     return (
         <div className='w-max'>
             <button onClick={handleThumbUpClick} className="my-2 mx-1 tooltip" data-tip="Like">
-                <div className={`pe-1 dark:text-gray-200`}>
+                <div className={`pe-1`}>
                     <ThumbsUpSvg rating={rating || ""} />
                 </div>
             </button>
             <button onClick={handleThumbDownClick} className="my-2 mx-1 tooltip">
-                <div className={`pe-1 dark:text-gray-200`} data-tip="Dislike">
+                <div className={`pe-1`} data-tip="Dislike">
                     <ThumbsDownSvg rating={rating || ""} />
                 </div>
             </button>

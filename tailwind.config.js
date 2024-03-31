@@ -3,7 +3,7 @@ export default {
   darkMode: "class",
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   daisyui: {
-    themes: ["emerald", "dark"],
+    themes: ["emerald", "dark", "cupcake"],
   },
   theme: {
     extend: {

@@ -16,7 +16,6 @@ import { notSecretConstants } from './constants/notSecretConstants';
 import { DragProvider } from './contexts/DragContext';
 import { RunTutorialProvider } from './contexts/RunTutorialContext';
 import { ScreenSizeProvider } from './contexts/ScreenSizeContext';
-import { useDarkMode } from './contexts/useDarkMode';
 import { LanguageProvider } from './contexts/useLanguage';
 import { ModalProvider } from './contexts/useModal';
 import { SidebarProvider } from './contexts/useSidebarContext';
@@ -35,10 +34,8 @@ function App({ children }: AppProps) {
 
   const clerkKey = env == "production" ? notSecretConstants.clerk.PUBLISHABLE_KEY : notSecretConstants.clerk.PUBLISHABLE_DEV_KEY
 
-  const { darkMode } = useDarkMode()
-
   return (
-      <div data-theme={darkMode ? "dark" : "emerald"} className=''>
+      <div data-theme={"emerald"}>
         <ClerkProvider
           navigate={(to) => navigate(to)}
           publishableKey={clerkKey}
