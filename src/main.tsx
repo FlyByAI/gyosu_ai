@@ -11,14 +11,17 @@ import {
 
 
 import GyosuRoutes from './GyosuRoutes.tsx'
+import { DarkModeProvider } from './contexts/useDarkMode.tsx'
 
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <BrowserRouter>
-      <App>
-        <GyosuRoutes />
-      </App>
+      <DarkModeProvider>
+        <App>
+          <GyosuRoutes />
+        </App>
+      </DarkModeProvider>
     </BrowserRouter>
   </React.StrictMode>,
 )
