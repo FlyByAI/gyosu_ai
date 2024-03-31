@@ -23,8 +23,8 @@ const AddChunkModal: React.FC<AddChunkModalProps> = ({ chunk, modalId, variant }
         <>
             <button
                 onClick={handleOpenClick}
-                className={variant == "button" ? `btn btn-primary z-10 rounded-md` : ` btn btn-primary flex-row flex w-max`}
-                data-tip='Add'
+                className={variant == "button" ? `btn btn-primary z-10 rounded-md tooltip` : ` btn btn-primary flex-row flex w-max tooltip`}
+                data-tip='Add this problem to a problem bank.'
             >
                 <PlusIcon />
             </button>
