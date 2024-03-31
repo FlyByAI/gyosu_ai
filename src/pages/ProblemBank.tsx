@@ -124,7 +124,7 @@ const ProblemBank: React.FC = () => {
                         {
                             <button className='btn btn-primary'
                                 onClick={() => insertChunk(document.problemChunks ? document.problemChunks.length : 0)}
-                            > Add new chunk</button>
+                            > Add new problem</button>
                         }
                     </div>
                 </div>

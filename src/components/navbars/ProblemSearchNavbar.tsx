@@ -10,9 +10,9 @@ import ManageSubscriptionButton from '../ManageSubscriptionButton';
 import ProblemBankSidebar from '../document/ProblemBankSidebar';
 
 const ProblemSearchNavbar: React.FC = () => {
-  const { darkMode } = useDarkMode();
-  const { apiUrl } = useEnvironment();
+  const { env, apiUrl } = useEnvironment();
   const { subscriptionInfo } = useFetchSubscriptionInfo(`${apiUrl}/user_data/get_subscription_info/`);
+  const { SunIcon, MoonIcon, darkMode, setDarkMode } = useDarkMode()
 
   return (
     <>
@@ -28,6 +28,11 @@ const ProblemSearchNavbar: React.FC = () => {
 
         <div className="navbar-center md:hidden">
           <Link to="/" className="btn btn-ghost normal-case text-xl">Gyosu.ai</Link>
+          {env == "local" && 
+          <button onClick={() => setDarkMode(!darkMode)} className='btn btn-ghost'>
+            {darkMode ? <SunIcon /> : <MoonIcon />}
+            </button>
+          }
         </div>
         <div className="navbar-end md:hidden">
           <HamburgerWrapper>
@@ -76,6 +81,11 @@ const ProblemSearchNavbar: React.FC = () => {
         {/* Desktop view */}
         <div className="navbar-start hidden md:flex">
           <Link to="/" className="btn btn-ghost normal-case text-xl">Gyosu.ai</Link>
+          {env == "local" && 
+          <button onClick={() => setDarkMode(!darkMode)} className='btn btn-ghost'>
+            {darkMode ? <SunIcon /> : <MoonIcon />}
+            </button>
+          }
         </div>
         <div className="navbar-end hidden md:flex items-center flex-grow">
           <Link to="/math-app/chat" className="btn btn-ghost">
