@@ -89,7 +89,7 @@ const ProblemSearch: React.FC = () => {
                     </div>
 
                     {/* Results Display */}
-                    {generateFormData && (
+                    {chunkArray?.length > 0 && (
                         <div className="card rounded-lg p-4 my-4 bg-base-100 shadow-lg">
                             {chunkArray?.length > 0 && (
                                 <MathProblems

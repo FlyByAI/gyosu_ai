@@ -126,7 +126,6 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
     }
 
     const { submitMathForm, data: searchData, reset: resetSearchData, isLoading: isLoadingSearch, error: errorSearch } = useSubmitMathForm(`${apiUrl}/math_app/generate/`)
-
     const { submitTextWithChunk, data: submitTextData, reset: resetTextChange, isLoading: isLoadingSubmitText, error: errorText } = useSubmitTextWithChunk(`${apiUrl}/math_app/chat/problem/`)
     const { submitTextWithChunkLatex, data: submitTextLatexData, reset: resetTextLatex, isLoading: isLoadingSubmitTextLatex, error: errorTextLatex } = useSubmitTextWithChunkLatex(`${apiUrl}/math_app/chat/problem/`)
     const { submitTextWithChunkSimilar, data: submitTextSimilarData, reset: resetTextSimilar, isLoading: isLoadingSubmitTextSimilar, error: errorTextSimilar } = useSubmitTextWithChunkSimilar(`${apiUrl}/math_app/chat/problem/`)
@@ -153,7 +152,6 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
             submitMathForm({ data: { sourceMaterial: "competition_math", userInput: userInput } })
         }
         else {
-            // loop 
             console.log("looping", currentSearchResponseIndex, searchData.response.length)
             console.log(searchData?.response[currentSearchResponseIndex])
             setCurrentSearchResponseIndex((prev) => {
@@ -305,7 +303,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                 }
 
                 <div>
-                    Search Result:
+                    {searchData?.response && searchData?.response.length > 0 && <div>Search Results:</div>}
                     {searchData?.response[currentSearchResponseIndex].content.map((item: any, index: any) => {
                         const searchResponseElement = (() => {
                             switch (item.type) {

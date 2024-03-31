@@ -1,8 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import { renderContent } from '../../helpers/AstRender';
-import useSubmitDocument from '../../hooks/tools/math/useSubmitDocument';
-import useEnvironment from '../../hooks/useEnvironment';
 import { Document } from '../../interfaces';
 
 interface DocumentPreviewProps {
@@ -10,20 +7,12 @@ interface DocumentPreviewProps {
     disabledClick?: boolean;
 }
 
-const ProblemBankPreview: React.FC<DocumentPreviewProps> = ({ document, disabledClick}) => {
-
-    const navigate = useNavigate();
-
-    const { apiUrl } = useEnvironment();
-    const endpoint2 = `${apiUrl}/math_app/school_document/`;
-    const {  updateDocument } = useSubmitDocument(endpoint2);
-
-    
+const ProblemBankPreview: React.FC<DocumentPreviewProps> = ({ document, disabledClick }) => {
 
     return (
         <div
             className={`card w-full mx-auto max-h-64 overflow-y-scroll bg-base-100 shadow-xl ${disabledClick ? '' : 'cursor-pointer'}`}
-            
+
         >
             <div className='card-header'>
             </div>
