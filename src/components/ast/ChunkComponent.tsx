@@ -6,6 +6,7 @@ import { GridLoader } from 'react-spinners';
 import { useDragContext } from '../../contexts/DragContext';
 import { useScreenSize } from '../../contexts/ScreenSizeContext';
 import useGetDocument from '../../hooks/tools/math/useGetDocument';
+import useImageUpload from '../../hooks/tools/math/useImageUpload';
 import useSubmitDocument from '../../hooks/tools/math/useSubmitDocument';
 import useSubmitMathForm from '../../hooks/tools/math/useSubmitMathForm';
 import useSubmitReroll from '../../hooks/tools/math/useSubmitReroll';
@@ -15,6 +16,7 @@ import useSubmitTextWithChunkSimilar from '../../hooks/tools/math/useSubmitTextW
 import useEnvironment from '../../hooks/useEnvironment';
 import { CHUNK_DRAG_TYPE, Chunk, INSTRUCTION_DRAG_TYPE, INSTRUCTION_TYPE, Instruction, PROBLEM_DRAG_TYPE, PROBLEM_TYPE, Problem } from '../../interfaces';
 import AddChunkModal from '../AddChunkModal';
+import ImageUploader from '../ImageUploader';
 import { InstructionComponent } from './InstructionComponent';
 import { ProblemComponent } from './ProblemComponent';
 
@@ -129,6 +131,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
     const { submitTextWithChunk, data: submitTextData, reset: resetTextChange, isLoading: isLoadingSubmitText, error: errorText } = useSubmitTextWithChunk(`${apiUrl}/math_app/chat/problem/`)
     const { submitTextWithChunkLatex, data: submitTextLatexData, reset: resetTextLatex, isLoading: isLoadingSubmitTextLatex, error: errorTextLatex } = useSubmitTextWithChunkLatex(`${apiUrl}/math_app/chat/problem/`)
     const { submitTextWithChunkSimilar, data: submitTextSimilarData, reset: resetTextSimilar, isLoading: isLoadingSubmitTextSimilar, error: errorTextSimilar } = useSubmitTextWithChunkSimilar(`${apiUrl}/math_app/chat/problem/`)
+    const { uploadImage, data: submitImageData, reset: resetImage, isLoading: isLoadingSubmitImage, error: errorImage } = useImageUpload(`${apiUrl}/math_app/chat/image/`)
 
     const handleSubmitText = () => {
         submitTextWithChunk({ chunk: chunk, userInput: userInput, chunkIndex: chunkIndex, problemBankId: id })
@@ -184,6 +187,39 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
     }
 
     useEffect(() => {
+
+        if (submitImageData) {
+            console.log("image uploaded", submitImageData)
+            const instructions = { type: "instruction", content: [{ type: "text", value: submitImageData.instructions }] } as Instruction
+            const problems = submitImageData.problems
+
+            console.log("instructions", instructions, typeof(instructions))
+            console.log("problems", problems, typeof(problems))
+
+            if (typeof (problems) == "string") {
+                //@ts-ignore
+                const escapedProblems: string = problems.replace(/\\(?!\\)/g, '\\\\');
+
+                const problemsStringArr = JSON.parse(escapedProblems)
+                console.log("problemsStringArr", problemsStringArr)
+                const problemsArr = problemsStringArr.map((problem: string) => {
+                    return { type: "problem", content: [{ type: "math", value: problem }] } as Problem
+                })
+
+                const newChunk: Chunk = { type: "chunk", content: [instructions, ...problemsArr] }
+
+                console.log(newChunk)
+                updateChunk && updateChunk(newChunk, chunkIndex)
+                resetImage()
+
+            }
+            else {
+                console.log("unexpected type from image upload", typeof(problems))
+            }
+
+            // updateChunk && updateChunk(submitImageData.chunk, chunkIndex)
+            // resetImage()
+        }
         if (submitTextData) {
             console.log("new text changed chunk", submitTextData)
             console.log("old chunk", chunk)
@@ -218,7 +254,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
         if (searchData) {
             console.log(searchData)
         }
-    }, [submitTextData, rerollData, submitTextSimilarData, submitTextLatexData, updateChunk, chunkIndex, resetTextSimilar, resetTextLatex, chunk, searchData])
+    }, [submitTextData, rerollData, submitTextSimilarData, submitTextLatexData, updateChunk, chunkIndex, resetTextSimilar, resetTextLatex, chunk, searchData, submitImageData])
 
     return (
         <>
@@ -374,14 +410,14 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                             })}
                     </div>}
 
-                {( errorText || errorTextSimilar || errorTextLatex || errorSearch ) &&
-                <div className="text-white text-center mt-2">
-                    Error:
-                    {errorText && errorText.message}
-                    {errorTextSimilar && errorTextSimilar.message}
-                    {errorTextLatex && errorTextLatex.message}
-                    {errorSearch && errorSearch.message}
-                </div>}
+                {(errorText || errorTextSimilar || errorTextLatex || errorSearch) &&
+                    <div className="text-white text-center mt-2">
+                        Error:
+                        {errorText && errorText.message}
+                        {errorTextSimilar && errorTextSimilar.message}
+                        {errorTextLatex && errorTextLatex.message}
+                        {errorSearch && errorSearch.message}
+                    </div>}
 
                 {id && (submitTextData || rerollData || searchData) && <>
                     <button
@@ -414,6 +450,12 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                     />
 
                     <div className='space-x-2'>
+                        <ImageUploader onFileUpload={function (imageFile: File): void {
+                            console.log("imageFile uploaded", imageFile)
+                            uploadImage({ image: imageFile })
+
+
+                        }} />
                         <button
                             className="btn btn-secondary tooltip tooltip-left"
                             data-tip="Create a latex formatted math problem using your text description."
