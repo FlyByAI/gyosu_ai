@@ -193,8 +193,8 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
             const instructions = { type: "instruction", content: [{ type: "text", value: submitImageData.instructions }] } as Instruction
             const problems = submitImageData.problems
 
-            console.log("instructions", instructions, typeof(instructions))
-            console.log("problems", problems, typeof(problems))
+            console.log("instructions", instructions, typeof (instructions))
+            console.log("problems", problems, typeof (problems))
 
             if (typeof (problems) == "string") {
                 //@ts-ignore
@@ -214,7 +214,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
 
             }
             else {
-                console.log("unexpected type from image upload", typeof(problems))
+                console.log("unexpected type from image upload", typeof (problems))
             }
 
             // updateChunk && updateChunk(submitImageData.chunk, chunkIndex)
@@ -450,19 +450,19 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                     />
 
                     <div className='space-x-2'>
-                        <ImageUploader onFileUpload={function (imageFile: File): void {
-                            console.log("imageFile uploaded", imageFile)
-                            uploadImage({ image: imageFile })
-
-
-                        }} />
-                        <button
+                        {/* <button
                             className="btn btn-secondary tooltip tooltip-left"
-                            data-tip="Create a latex formatted math problem using your text description."
                             onClick={() => console.log("upload")}
-                        >
-                            Upload
-                        </button>
+                        > */}
+                            <ImageUploader
+                                onFileUpload={function (imageFile: File): void {
+                                console.log("imageFile uploaded", imageFile)
+                                uploadImage({ image: imageFile })
+
+                            }} />
+
+                            {/* Upload */}
+                        {/* </button> */}
                         <button
                             className="btn btn-secondary tooltip tooltip-left"
                             data-tip="Create a latex formatted math problem using your text description."

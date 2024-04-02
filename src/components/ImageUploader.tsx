@@ -16,11 +16,12 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ onFileUpload }) => {
 
   return (
     <div {...getRootProps()} className="p-4 border-dashed border-2 border-gray-300 text-center cursor-pointer">
+      <label>Upload Image</label>
       <input {...getInputProps()} />
       {
         isDragActive ?
           <p>Drop the image here ...</p> :
-          <p>Drag 'n' drop an image here, or click to select one</p>
+          <p>Drag 'n' drop an image here, or click to select one to upload</p>
       }
     </div>
   );
