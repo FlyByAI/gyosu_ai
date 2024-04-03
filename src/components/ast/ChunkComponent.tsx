@@ -6,6 +6,7 @@ import { GridLoader } from 'react-spinners';
 import { useDragContext } from '../../contexts/DragContext';
 import { useScreenSize } from '../../contexts/ScreenSizeContext';
 import useGetDocument from '../../hooks/tools/math/useGetDocument';
+import useSubmitChunk from '../../hooks/tools/math/useSubmitChunk';
 import useSubmitDocument from '../../hooks/tools/math/useSubmitDocument';
 import useSubmitMathForm from '../../hooks/tools/math/useSubmitMathForm';
 import useSubmitReroll from '../../hooks/tools/math/useSubmitReroll';
@@ -190,36 +191,6 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
     }
 
     useEffect(() => {
-
-        if (submitImageData) {
-            console.log("image uploaded", submitImageData)
-            const instructions = { type: "instruction", content: [{ type: "text", value: submitImageData.instructions }] } as Instruction
-            const problems = submitImageData.problems
-
-            console.log("instructions", instructions, typeof (instructions))
-            console.log("problems", problems, typeof (problems))
-
-            if (typeof (problems) == "string") {
-                const problemsStringArr = JSON.parse(problems)
-                console.log("problemsStringArr", problemsStringArr)
-                const problemsArr = problemsStringArr.map((problem: string) => {
-                    return { type: "problem", content: [{ type: "math", value: problem }] } as Problem
-                })
-
-                const newChunk: Chunk = { type: "chunk", content: [instructions, ...problemsArr] }
-
-                console.log(newChunk)
-                updateChunk && updateChunk(newChunk, chunkIndex)
-                resetImage()
-
-            }
-            else {
-                console.log("unexpected type from image upload", typeof (problems))
-            }
-
-            // updateChunk && updateChunk(submitImageData.chunk, chunkIndex)
-            // resetImage()
-        }
         if (submitTextData) {
             console.log("new text changed chunk", submitTextData)
             console.log("old chunk", chunk)
@@ -278,7 +249,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
             console.log(submitTextStepByStepData)
         }
 
-    }, [submitTextData, rerollData, submitTextSimilarData, submitTextLatexData, updateChunk, chunkIndex, resetTextSimilar, resetTextLatex, chunk, searchData, submitImageData, resetImage, submitTextStepByStepData, resetTextStepByStep])
+    }, [submitTextData, rerollData, submitTextSimilarData, submitTextLatexData, updateChunk, chunkIndex, resetTextSimilar, resetTextLatex, chunk, searchData, submitTextStepByStepData, resetTextStepByStep])
 
     return (
         <>
