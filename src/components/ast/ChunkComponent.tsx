@@ -13,7 +13,7 @@ import useSubmitTextWithChunk from '../../hooks/tools/math/useSubmitTextWithChun
 import useSubmitTextWithChunkLatex from '../../hooks/tools/math/useSubmitTextWithChunkLatex';
 import useSubmitTextWithChunkSimilar from '../../hooks/tools/math/useSubmitTextWithChunkSimilar';
 import useEnvironment from '../../hooks/useEnvironment';
-import { CHUNK_DRAG_TYPE, Chunk, INSTRUCTION_DRAG_TYPE, INSTRUCTION_TYPE, Instruction, PROBLEM_DRAG_TYPE, PROBLEM_TYPE, Problem } from '../../interfaces';
+import { CHUNK_DRAG_TYPE, Chunk, INSTRUCTION_DRAG_TYPE, INSTRUCTION_TYPE, Instruction, PROBLEM_DRAG_TYPE, PROBLEM_TYPE, Problem, isText } from '../../interfaces';
 import AddChunkModal from '../AddChunkModal';
 import { InstructionComponent } from './InstructionComponent';
 import { ProblemComponent } from './ProblemComponent';
@@ -129,6 +129,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
     const { submitTextWithChunk, data: submitTextData, reset: resetTextChange, isLoading: isLoadingSubmitText, error: errorText } = useSubmitTextWithChunk(`${apiUrl}/math_app/chat/problem/`)
     const { submitTextWithChunkLatex, data: submitTextLatexData, reset: resetTextLatex, isLoading: isLoadingSubmitTextLatex, error: errorTextLatex } = useSubmitTextWithChunkLatex(`${apiUrl}/math_app/chat/problem/`)
     const { submitTextWithChunkSimilar, data: submitTextSimilarData, reset: resetTextSimilar, isLoading: isLoadingSubmitTextSimilar, error: errorTextSimilar } = useSubmitTextWithChunkSimilar(`${apiUrl}/math_app/chat/problem/`)
+    const { submitChunk: submitTextStepByStep, data: submitTextStepByStepData, reset: resetTextStepByStep, isLoading: isLoadingSubmitTextStepByStep, error: errorTextStepByStep } = useSubmitChunk(`${apiUrl}/math_app/chat/problem/`, "step_by_step/")
 
     const handleSubmitText = () => {
         submitTextWithChunk({ chunk: chunk, userInput: userInput, chunkIndex: chunkIndex, problemBankId: id })
@@ -143,6 +144,11 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
     const handleSimilarSearchText = () => {
         console.log("find similar problems from text", userInput)
         submitTextWithChunkSimilar({ userInput: userInput, chunkIndex: chunkIndex, problemBankId: id })
+    }
+
+    const handleStepByStep = () => {
+        console.log("find similar problems from text", userInput)
+        submitTextStepByStep({ userInput: userInput, chunk: chunk })
     }
 
     const handleSearch = () => {
@@ -184,6 +190,36 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
     }
 
     useEffect(() => {
+
+        if (submitImageData) {
+            console.log("image uploaded", submitImageData)
+            const instructions = { type: "instruction", content: [{ type: "text", value: submitImageData.instructions }] } as Instruction
+            const problems = submitImageData.problems
+
+            console.log("instructions", instructions, typeof (instructions))
+            console.log("problems", problems, typeof (problems))
+
+            if (typeof (problems) == "string") {
+                const problemsStringArr = JSON.parse(problems)
+                console.log("problemsStringArr", problemsStringArr)
+                const problemsArr = problemsStringArr.map((problem: string) => {
+                    return { type: "problem", content: [{ type: "math", value: problem }] } as Problem
+                })
+
+                const newChunk: Chunk = { type: "chunk", content: [instructions, ...problemsArr] }
+
+                console.log(newChunk)
+                updateChunk && updateChunk(newChunk, chunkIndex)
+                resetImage()
+
+            }
+            else {
+                console.log("unexpected type from image upload", typeof (problems))
+            }
+
+            // updateChunk && updateChunk(submitImageData.chunk, chunkIndex)
+            // resetImage()
+        }
         if (submitTextData) {
             console.log("new text changed chunk", submitTextData)
             console.log("old chunk", chunk)
@@ -218,7 +254,31 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
         if (searchData) {
             console.log(searchData)
         }
-    }, [submitTextData, rerollData, submitTextSimilarData, submitTextLatexData, updateChunk, chunkIndex, resetTextSimilar, resetTextLatex, chunk, searchData])
+        if (submitTextStepByStepData) {
+            if (typeof (submitTextStepByStepData.text) == "string") {
+                const chunk: Chunk = {
+                    type: "chunk", content: [{
+                        type: "text",
+                        value: submitTextStepByStepData.text
+                    }]
+                }
+                updateChunk && updateChunk(chunk, chunkIndex)
+                resetTextStepByStep();
+            }
+            else if (submitTextStepByStepData && isText(submitTextStepByStepData.text)) {
+                const chunk: Chunk = {
+                    type: "chunk", content: [submitTextStepByStepData.text]
+                }
+                updateChunk && updateChunk(chunk, chunkIndex)
+                resetTextStepByStep();
+            }
+            else
+                console.log("unexpected type from step by step", submitTextStepByStepData.text, "type", typeof (submitTextStepByStepData.text))
+
+            console.log(submitTextStepByStepData)
+        }
+        
+    }, [submitTextData, rerollData, submitTextSimilarData, submitTextLatexData, updateChunk, chunkIndex, resetTextSimilar, resetTextLatex, chunk, searchData, submitImageData, resetImage, submitTextStepByStepData, resetTextStepByStep])
 
     return (
         <>
@@ -230,7 +290,14 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                 data-tip={!id ? "Click and drag to a problem bank." : null}
             >
                 <div className="absolute top-0 right-0 flex flex-row gap-2">
-                    {(isLoadingSubmitText || isLoadingSubmitTextLatex || isLoadingSubmitTextSimilar || isLoadingSearch) && <GridLoader color="#4A90E2" size={4} margin={4} speedMultiplier={.75} className='mr-2' />}
+                    {(
+                        isLoadingSubmitText
+                        || isLoadingSubmitTextLatex
+                        || isLoadingSubmitTextSimilar
+                        || isLoadingSearch
+                        || isLoadingSubmitImage
+                        || isLoadingSubmitTextStepByStep
+                    ) && <GridLoader color="#4A90E2" size={4} margin={4} speedMultiplier={.75} className='mr-2' />}
 
                     {!id && <AddChunkModal chunk={chunk} modalId={'addChunkModal' + chunk.chunkId} enabled={false} />}
 
@@ -374,14 +441,15 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                             })}
                     </div>}
 
-                {( errorText || errorTextSimilar || errorTextLatex || errorSearch ) &&
-                <div className="text-white text-center mt-2">
-                    Error:
-                    {errorText && errorText.message}
-                    {errorTextSimilar && errorTextSimilar.message}
-                    {errorTextLatex && errorTextLatex.message}
-                    {errorSearch && errorSearch.message}
-                </div>}
+                {(errorText || errorTextSimilar || errorTextLatex || errorSearch || errorTextStepByStep) &&
+                    <div className="text-white text-center mt-2">
+                        Error:
+                        {errorText && errorText.message}
+                        {errorTextSimilar && errorTextSimilar.message}
+                        {errorTextLatex && errorTextLatex.message}
+                        {errorSearch && errorSearch.message}
+                        {errorTextStepByStep && errorTextStepByStep.message}
+                    </div>}
 
                 {id && (submitTextData || rerollData || searchData) && <>
                     <button
@@ -413,7 +481,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                         className="input input-bordered w-full max-w-lg m-2"
                     />
 
-                    <div className='space-x-2'>
+                    <div className='space-x-2'>     
                         <button
                             className="btn btn-secondary tooltip tooltip-left"
                             data-tip="Create a latex formatted math problem using your text description."
