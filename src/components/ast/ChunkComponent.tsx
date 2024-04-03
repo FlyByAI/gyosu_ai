@@ -407,7 +407,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                     <div>Create a new problem</div>
                     <input
                         type="text"
-                        placeholder="Easy Derivitive, or y=mx+b."
+                        placeholder="Easy Derivative, or y=mx+b."
                         value={userInput} // Assuming userInput is your state variable
                         onChange={(e) => setUserInput(e.target.value)} // And setUserInput is the setter
                         className="input input-bordered w-full max-w-lg m-2"
