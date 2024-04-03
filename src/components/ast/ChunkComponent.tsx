@@ -277,7 +277,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
 
             console.log(submitTextStepByStepData)
         }
-        
+
     }, [submitTextData, rerollData, submitTextSimilarData, submitTextLatexData, updateChunk, chunkIndex, resetTextSimilar, resetTextLatex, chunk, searchData, submitImageData, resetImage, submitTextStepByStepData, resetTextStepByStep])
 
     return (
@@ -295,7 +295,6 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                         || isLoadingSubmitTextLatex
                         || isLoadingSubmitTextSimilar
                         || isLoadingSearch
-                        || isLoadingSubmitImage
                         || isLoadingSubmitTextStepByStep
                     ) && <GridLoader color="#4A90E2" size={4} margin={4} speedMultiplier={.75} className='mr-2' />}
 
@@ -481,7 +480,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                         className="input input-bordered w-full max-w-lg m-2"
                     />
 
-                    <div className='space-x-2'>     
+                    <div className='space-x-2'>
                         <button
                             className="btn btn-secondary tooltip tooltip-left"
                             data-tip="Create a latex formatted math problem using your text description."
@@ -531,6 +530,15 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                         >
                             Change it!
                         </button>
+                        {env == "local" && //not allowed by wolfram in prod/test yet
+                            <button
+                                className="btn btn-secondary tooltip tooltip-left mr-2"
+                                data-tip="Find a similar problem using a text description."
+                                onClick={handleStepByStep}
+                            >
+                                Step-by-step
+                            </button>
+                        }
                     </div>
                 </>}
 
