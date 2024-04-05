@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 import { GridLoader } from 'react-spinners';
 import { useDragContext } from '../../contexts/DragContext';
 import { useScreenSize } from '../../contexts/ScreenSizeContext';
+import { renderItem } from '../../helpers/AstRender';
 import useGetDocument from '../../hooks/tools/math/useGetDocument';
 import useSubmitChunk from '../../hooks/tools/math/useSubmitChunk';
 import useSubmitDocument from '../../hooks/tools/math/useSubmitDocument';
@@ -229,20 +230,20 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
         }
         if (submitTextStepByStepData) {
             if (typeof (submitTextStepByStepData.text) == "string") {
-                const chunk: Chunk = {
+                const newChunk: Chunk = {
                     type: "chunk", content: [{
                         type: "text",
                         value: submitTextStepByStepData.text
-                    }]
+                    }, ...chunk.content]
                 }
-                updateChunk && updateChunk(chunk, chunkIndex)
+                updateChunk && updateChunk(newChunk, chunkIndex)
                 resetTextStepByStep();
             }
             else if (submitTextStepByStepData && isText(submitTextStepByStepData.text)) {
-                const chunk: Chunk = {
-                    type: "chunk", content: [submitTextStepByStepData.text]
+                const newChunk: Chunk = {
+                    type: "chunk", content: [submitTextStepByStepData.text, ...chunk.content]
                 }
-                updateChunk && updateChunk(chunk, chunkIndex)
+                updateChunk && updateChunk(newChunk, chunkIndex)
                 resetTextStepByStep();
             }
             else
@@ -305,6 +306,8 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                                 return <InstructionComponent chunkIndex={chunkIndex} instructionIndex={index} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} instruction={item} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
                             case 'problem':
                                 return <ProblemComponent chunkIndex={chunkIndex} problemIndex={index} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} problem={item} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
+                            case 'text':
+                                return renderItem(item)
                             default:
                                 return null;
                         }
@@ -414,8 +417,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                     </div>}
 
                 {(errorText || errorTextSimilar || errorTextLatex || errorSearch || errorTextStepByStep) &&
-                    <div className="text-white text-center mt-2">
-                        Error:
+                    <div className="text-error text-center mt-2">
                         {errorText && errorText.message}
                         {errorTextSimilar && errorTextSimilar.message}
                         {errorTextLatex && errorTextLatex.message}
