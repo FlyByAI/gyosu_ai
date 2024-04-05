@@ -7,7 +7,7 @@ import { Image, Instruction, Math, Problem, Subproblems, Table, Text } from '../
 
 
 export const renderContent = (content: (Text | Math | Table | Image | Subproblems)[]) => {
-    return content.map((item, index) => {
+    return content?.map((item, index) => {
         return <div key={index}>{renderItem(item)}</div>
     });
 }
