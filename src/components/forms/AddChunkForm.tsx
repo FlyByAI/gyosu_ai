@@ -86,7 +86,7 @@ const AddChunkForm: React.FC<AddChunkFormProps> = ({ chunk, preview }) => {
                     </select>
                     {selectedDocument && preview && (
                         <div className="w-full">
-                            <ProblemBankPreview disabledClick document={selectedDocument} />
+                            <ProblemBankPreview document={selectedDocument} />
                         </div>
                     )}
                     <button

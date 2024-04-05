@@ -1,18 +1,20 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { renderContent } from '../../helpers/AstRender';
 import { Document } from '../../interfaces';
 
 interface DocumentPreviewProps {
     document: Document;
-    disabledClick?: boolean;
 }
 
-const ProblemBankPreview: React.FC<DocumentPreviewProps> = ({ document, disabledClick }) => {
+const ProblemBankPreview: React.FC<DocumentPreviewProps> = ({ document }) => {
 
+    const navigate = useNavigate();
+    
     return (
         <div
-            className={`card w-full mx-auto max-h-64 overflow-y-scroll bg-base-100 shadow-xl ${disabledClick ? '' : 'cursor-pointer'}`}
-
+            className={`card w-full mx-auto max-h-64 overflow-y-scroll bg-base-100 shadow-xl`}
+            onClick={() => navigate(`/math-app/bank/${document.id}`)}
         >
             <div className='card-header'>
             </div>
