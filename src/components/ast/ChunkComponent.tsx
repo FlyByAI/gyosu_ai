@@ -17,6 +17,8 @@ import useSubmitTextWithChunkLatex from '../../hooks/tools/math/useSubmitTextWit
 import useSubmitTextWithChunkSimilar from '../../hooks/tools/math/useSubmitTextWithChunkSimilar';
 import useEnvironment from '../../hooks/useEnvironment';
 import { CHUNK_DRAG_TYPE, Chunk, INSTRUCTION_DRAG_TYPE, INSTRUCTION_TYPE, Instruction, PROBLEM_DRAG_TYPE, PROBLEM_TYPE, Problem, isText } from '../../interfaces';
+import ArrowLeft from '../../svg/ArrowLeftIcon';
+import ArrowRight from '../../svg/ArrowRightIcon';
 import AddChunkModal from '../AddChunkModal';
 import ImageUploader from '../ImageUploader';
 import { InstructionComponent } from './InstructionComponent';
@@ -29,6 +31,20 @@ interface ChunkProps {
     updateChunk?: (updatedChunk: Chunk, chunkIndex: number) => void;
     chunkIndex: number;
     disableInstructionProblemDrag?: boolean;
+}
+
+type Direction = 'up' | 'down';
+
+export function calculateNewIndex(currentIndex: number, length: number, direction: Direction): number {
+    if (length <= 1) return 0; // If there's only one item or none, always return 0
+
+    if (direction === 'up') {
+        // If going up, increment the index, and wrap around to 0 if at the end
+        return (currentIndex + 1) % length;
+    } else {
+        // If going down, decrement the index, and wrap around to the last item if at the beginning
+        return (currentIndex - 1 + length) % length;
+    }
 }
 
 export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunkIndex, disableInstructionProblemDrag }) => {
@@ -354,51 +370,61 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                 })}
 
                 {chunkIndex == rerollData?.chunkIndex &&
-                    <div>
-                        Rerolled Chunk:
-                        {rerollData?.chunks[currentRerollIndex].content.map((rerolledItem, rerollIndex) => {
-                            const rerollElement = (() => {
-                                switch (rerolledItem.type) {
-                                    case 'instruction':
-                                        return <InstructionComponent chunkIndex={chunkIndex} instructionIndex={rerollIndex} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} instruction={rerolledItem} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
-                                    case 'problem':
-                                        return <ProblemComponent chunkIndex={chunkIndex} problemIndex={rerollIndex} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} problem={rerolledItem} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
-                                    default:
-                                        return <div>None</div>;
-                                }
-                            })();
-
-                            return (
-                                <div key={`${rerolledItem.type}-${rerollIndex}-${chunk.content.length}`}>
-                                    {chunkIndex == rerollData?.chunkIndex && rerollElement}
-                                </div>
-                            );
-                        })}
+                    <div className='flex justify-items-between'>
+                        <button className='w-1/12 mx-auto btn btn-primary' onClick={() => setCurrentRerollIndex(calculateNewIndex(currentRerollIndex, rerollData.chunks.length, 'down'))}><ArrowLeft /></button>
+                        <button className='w-1/12 mx-auto btn btn-primary' onClick={() => setCurrentRerollIndex(calculateNewIndex(currentRerollIndex, rerollData.chunks.length, 'up'))}><ArrowRight /></button>
                     </div>
-
                 }
 
-                <div>
-                    {searchData?.response && searchData?.response.length > 0 && <div>Search Results:</div>}
-                    {searchData?.response[currentSearchResponseIndex].content.map((item: any, index: any) => {
-                        const searchResponseElement = (() => {
-                            switch (item.type) {
-                                case 'instruction':
-                                    return <InstructionComponent chunkIndex={chunkIndex} instructionIndex={index} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} instruction={item} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
-                                case 'problem':
-                                    return <ProblemComponent chunkIndex={chunkIndex} problemIndex={index} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} problem={item} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
-                                default:
-                                    return <div>None</div>;
-                            }
-                        })();
 
-                        return (
+                {rerollData?.chunks[currentRerollIndex].content?.map((rerolledItem, rerollIndex) => {
+                    const rerollElement = (() => {
+                        switch (rerolledItem.type) {
+                            case 'instruction':
+                                return <InstructionComponent chunkIndex={chunkIndex} instructionIndex={rerollIndex} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} instruction={rerolledItem} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
+                            case 'problem':
+                                return <ProblemComponent chunkIndex={chunkIndex} problemIndex={rerollIndex} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} problem={rerolledItem} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
+                            default:
+                                return <div>None</div>;
+                        }
+                    })();
+
+                    return (
+                        <div>
+                            <div key={`${rerolledItem.type}-${rerollIndex}-${chunk.content.length}`}>
+                                {chunkIndex == rerollData?.chunkIndex && rerollElement}
+                            </div>
+                        </div>
+                    );
+                })}
+
+
+                {searchData &&
+                    <div className='flex justify-items-between'>
+                        <button className="w-1/12 mx-auto btn btn-primary" onClick={() => setCurrentSearchResponseIndex(calculateNewIndex(currentSearchResponseIndex, searchData?.response.length, 'down'))}><ArrowLeft /></button>
+                        <button className="w-1/12 mx-auto btn btn-primary" onClick={() => setCurrentSearchResponseIndex(calculateNewIndex(currentSearchResponseIndex, searchData?.response.length, 'up'))}><ArrowRight /></button>
+                    </div>
+                }
+                {searchData?.response[currentSearchResponseIndex].content?.map((item: any, index: any) => {
+                    const searchResponseElement = (() => {
+                        switch (item.type) {
+                            case 'instruction':
+                                return <InstructionComponent chunkIndex={chunkIndex} instructionIndex={index} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} instruction={item} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
+                            case 'problem':
+                                return <ProblemComponent chunkIndex={chunkIndex} problemIndex={index} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} problem={item} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
+                            default:
+                                return <div>None</div>;
+                        }
+                    })();
+
+                    return (
+                        <div>
                             <div key={`${item.type}-${index}-${chunk.content.length}`}>
                                 {searchResponseElement}
                             </div>
-                        );
-                    })}
-                </div>
+                        </div>
+                    );
+                })}
 
 
                 {chunkIndex == submitTextData?.chunkIndex &&
@@ -463,7 +489,11 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                     <button
                         className="btn btn-warning tooltip tooltip-bottom"
                         data-tip="Reject this change."
-                        onClick={() => resetTextChange()}
+                        onClick={() => {
+                            submitTextData && resetTextChange()
+                            rerollData && resetReroll()
+                            searchData && resetSearchData()
+                        }}
                     >
                         Reject
                     </button>
@@ -478,7 +508,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
 
 
 
-                {id && chunk.content.length == 0 && <>
+                {id && chunk.content.length == 0 && !searchData && <>
                     {/* if a problem does not yet exist */}
                     <div>Create a new problem</div>
                     <input
@@ -494,14 +524,14 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                             className="btn btn-secondary tooltip tooltip-left"
                             onClick={() => console.log("upload")}
                         > */}
-                            <ImageUploader
-                                onFileUpload={function (imageFile: File): void {
+                        <ImageUploader
+                            onFileUpload={function (imageFile: File): void {
                                 console.log("imageFile uploaded", imageFile)
                                 uploadImage({ image: imageFile })
 
                             }} />
 
-                            {/* Upload */}
+                        {/* Upload */}
                         {/* </button> */}
                         <button
                             className="btn btn-secondary tooltip tooltip-left"
