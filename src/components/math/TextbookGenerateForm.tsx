@@ -181,7 +181,6 @@ const TextbookGenerateForm: React.FC<TextbookGenerateFormProps> = ({ setGenerate
                     </label>
                     <input
                         type="text"
-                        required
                         value={userInput}
                         onChange={(e) => setUserInput(e.target.value)}
                         className="input input-bordered w-full"
@@ -222,7 +221,7 @@ const TextbookGenerateForm: React.FC<TextbookGenerateFormProps> = ({ setGenerate
                 />}
                 <SubmitButton
                     handleClick={handleMathSubmit}
-                    disabled={isLoading || userInput === ''}
+                    disabled={isLoading}
                     buttonText={"Search"}
                     className="btn mt-4 w-full lg:w-1/2"
                 />
