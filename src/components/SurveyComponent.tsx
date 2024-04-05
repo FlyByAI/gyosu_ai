@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import useSubmitSurvey from '../hooks/tools/math/useSubmitSurvey';
+import useEnvironment from '../hooks/useEnvironment';
 import DaisyModal from './DaisyModal';
-
 interface Option {
     id: string;
     text: string;
@@ -18,7 +19,7 @@ interface Survey {
     questions: Question[];
 }
 
-interface DetailedResponse {
+export interface DetailedResponse {
     question: {
         id: string;
         type: 'text' | 'radio' | 'checkbox';
@@ -30,7 +31,6 @@ interface DetailedResponse {
 
 interface SurveyComponentProps {
     survey?: Survey;
-    onSubmit: (surveyId: string, responses: DetailedResponse[]) => void;
 }
 
 interface ResponsesState {
@@ -68,8 +68,12 @@ const testSurvey = {
     ],
 };
 
-const SurveyComponent: React.FC<SurveyComponentProps> = ({ survey = testSurvey, onSubmit }) => {
+const SurveyComponent: React.FC<SurveyComponentProps> = ({ survey = testSurvey }) => {
     const [responses, setResponses] = useState<ResponsesState>({});
+
+    const { apiUrl } = useEnvironment();
+
+    const { submitSurvey, data } = useSubmitSurvey(`${apiUrl}/math_app/feedback/problem/`)
 
     const [surveySubmitted, setSurveySubmitted] = useState<boolean>(() => {
         return localStorage.getItem(`survey_submitted_${survey.id}`) === 'true';
@@ -133,12 +137,16 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({ survey = testSurvey, 
             answer: responses[question.id] as string | string[],
         }));
 
-
-        onSubmit(survey.id, detailedResponses);
-        // localStorage.setItem(`survey_submitted_${survey.id}`, 'true');
+        submitSurvey({ surveyId: survey.id, responses: detailedResponses })
         setSurveySubmitted(true);
-        console.log("setting")
+
     };
+
+    useEffect(() => {
+        data && console.log(data);
+        console.log("should set survey submitted on success here once development finished")
+        // setSurveySubmitted(true);
+    })
 
     useEffect(() => {
         if (surveySubmitted) {
