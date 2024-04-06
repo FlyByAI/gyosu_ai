@@ -32,10 +32,10 @@ const survey: Survey= {
             type: 'checkbox',
             text: 'What would you most like to be able to do with AI?',
             options: [
-                { id: 'teacher', text: 'Create documents for teaching.' },
-                { id: 'tutor', text: 'Search for problems for my subject.' },
-                { id: 'parent', text: 'Create custom problems more easily.' },
-                { id: 'student', text: 'Grade student work.' },
+                { id: 'create-docs', text: 'Create documents for teaching.' },
+                { id: 'search-for-problems', text: 'Search for problems for my subject.' },
+                { id: 'create-custom-problems', text: 'Create custom problems more easily.' },
+                { id: 'grade', text: 'Grade student work.' },
                 { id: 'other', text: 'Other.' },
             ],
         }
