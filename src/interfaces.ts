@@ -11,7 +11,7 @@ export interface TextbookProblemData {
     section?: string;
     documentType?: string;
     sourceMaterial?: string;
-    userInput: string;
+    userInput?: string;
 }
 
 export interface CompetitionData {
