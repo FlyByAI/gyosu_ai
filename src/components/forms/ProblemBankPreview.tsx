@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { renderContent } from '../../helpers/AstRender';
+import { renderContent, renderItem } from '../../helpers/AstRender';
 import { Document } from '../../interfaces';
 
 interface DocumentPreviewProps {
@@ -22,9 +22,18 @@ const ProblemBankPreview: React.FC<DocumentPreviewProps> = ({ document }) => {
                 {document.problemChunks && document.problemChunks.length > 0 ? (
                     document.problemChunks.map((chunk, index) => (
                         <div key={index} className="mb-4">
-                            {chunk.content.map((contentItem, contentIndex) => (
-                                <div key={contentIndex}>{renderContent(contentItem.content)}</div>
-                            ))}
+                            {chunk.content.map((contentItem, contentIndex) => {
+                                switch (contentItem.type) {
+                                    case 'instruction':
+                                        return(<div key={contentIndex}>{renderContent(contentItem.content)}</div>)
+                                    case 'problem':
+                                        return(<div key={contentIndex}>{renderContent(contentItem.content)}</div>)
+                                    case 'text':
+                                        return renderItem(contentItem)
+                                    default:
+                                        return null;
+                                }
+                            })}
                         </div>
                     ))
                 ) : (
