@@ -1,3 +1,4 @@
+import { useClerk } from '@clerk/clerk-react';
 import React, { useEffect, useState } from 'react';
 import useSubmitSurvey from '../hooks/tools/math/useSubmitSurvey';
 import useEnvironment from '../hooks/useEnvironment';
@@ -14,7 +15,7 @@ interface Question {
     options?: Option[];
 }
 
-interface Survey {
+export interface Survey {
     id: string;
     questions: Question[];
 }
@@ -31,6 +32,7 @@ export interface DetailedResponse {
 
 interface SurveyComponentProps {
     survey?: Survey;
+    introText?: string;
 }
 
 interface ResponsesState {
@@ -38,42 +40,53 @@ interface ResponsesState {
 }
 
 const testSurvey = {
-    id: 'testSurvey',
+    id: 'testSurvey2',
     questions: [
         {
             id: '1',
             type: 'text',
-            text: 'What did you come here for?',
+            text: 'What subject do you teach?',
         },
         {
             id: '2',
             type: 'radio',
-            text: 'What subject do you teach?',
+            text: 'How did you hear about us?',
             options: [
-                { id: 'red', text: 'Red' },
-                { id: 'blue', text: 'Blue' },
-                { id: 'green', text: 'Green' },
+                { id: 'teacher', text: 'another teacher' },
+                { id: 'google', text: 'google search' },
+                { id: 'tiktok-gyosuai', text: 'tiktok - gyosu.ai' },
+                { id: 'tiktok-teach2ai', text: 'tiktok - teach2AI' },
+                { id: 'other', text: 'other' },
             ],
         },
         {
             id: '3',
-            type: 'checkbox',
-            text: 'What are your favorite foods?',
+            type: 'radio',
+            text: 'What type of document are you most eager to create for class?',
             options: [
-                { id: 'pizza', text: 'Pizza' },
-                { id: 'tacos', text: 'Tacos' },
-                { id: 'ice-cream', text: 'Ice Cream' },
+                { id: 'worksheet', text: 'worksheet' },
+                { id: 'homework', text: 'homework' },
+                { id: 'lesson plans', text: 'lesson plan' },
+                { id: 'quiz-or-test', text: 'quiz/test' },
             ],
         },
+        {
+            id: '4',
+            type: 'text',
+            text: 'What type of document are you most eager to create for class?',
+        }
     ],
 };
 
-const SurveyComponent: React.FC<SurveyComponentProps> = ({ survey = testSurvey }) => {
+const SurveyComponent: React.FC<SurveyComponentProps> = ({ introText = "", survey = testSurvey }) => {
+
     const [responses, setResponses] = useState<ResponsesState>({});
 
     const { apiUrl } = useEnvironment();
 
-    const { submitSurvey, data } = useSubmitSurvey(`${apiUrl}/math_app/survey/`)
+    const { user } = useClerk();
+
+    const { submitSurvey, data } = useSubmitSurvey(`${apiUrl}/math_app/feedback/survey/`)
 
     const [surveySubmitted, setSurveySubmitted] = useState<boolean>(() => {
         return localStorage.getItem(`survey_submitted_${survey.id}`) === 'true';
@@ -154,11 +167,13 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({ survey = testSurvey }
         }
     }, [surveySubmitted, survey.id]);
 
-    if (!surveySubmitted) {
+    if (!surveySubmitted && user?.id) {
 
         return (
             <DaisyModal canCloseBeforeSubmit={false} openDefault>
-                <form onSubmit={handleSubmit} className="survey">
+                <h2 className='text-lg font-bold mb-4'>{introText}</h2>
+                <hr className="mb-4" />
+                <form onSubmit={handleSubmit} className="survey space-y-2">
                     {survey.questions.map((question) => (
                         <div key={question.id} className="question">
                             <p>{question.text}</p>
@@ -166,39 +181,39 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({ survey = testSurvey }
                                 <input
                                     type="text"
                                     onChange={(e) => handleInputChange(question.id, e.target.value)}
-                                    className="input input-bordered w-full max-w-xs"
+                                    className="input input-bordered w-full"
                                 />
                             )}
                             {question.type === 'radio' && question.options?.map((option) => (
                                 <div key={option.id} className="form-control">
-                                    <label className="label cursor-pointer">
+                                    <label className="flex space-x-4 items-center my-2">
                                         <input
                                             type="radio"
                                             name={question.id}
-                                            className="radio radio-primary"
+                                            className="radio radio-secondary"
                                             onChange={() => handleInputChange(question.id, option.id)}
                                             checked={responses[question.id] === option.id}
                                         />
-                                        <span className="label-text">{option.text}</span>
+                                        <span className="">{option.text}</span>
                                     </label>
                                 </div>
                             ))}
                             {question.type === 'checkbox' && question.options?.map((option) => (
                                 <div key={option.id} className="form-control">
-                                    <label className="label cursor-pointer">
+                                    <label className="flex space-x-4 items-center my-2">
                                         <input
                                             type="checkbox"
-                                            className="checkbox checkbox-primary"
+                                            className="checkbox checkbox-secondary"
                                             onChange={(e) => handleOptionChange(question.id, option.id, e.target.checked)}
                                             checked={(responses[question.id] as string[])?.includes(option.id)}
                                         />
-                                        <span className="label-text">{option.text}</span>
+                                        <span className="">{option.text}</span>
                                     </label>
                                 </div>
                             ))}
                         </div>
                     ))}
-                    <button type="submit" className="btn btn-primary" disabled={!canSubmit()}>
+                    <button type="submit" className="btn btn-primary mx-auto w-full mt-2" disabled={!canSubmit()}>
                         Submit
                     </button>
                 </form>

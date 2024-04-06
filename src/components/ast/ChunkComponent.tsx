@@ -372,9 +372,12 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                 })}
 
                 {chunkIndex == rerollData?.chunkIndex &&
-                    <div className='flex justify-items-between'>
-                        <button className='w-1/12 mx-auto btn btn-primary' onClick={() => setCurrentRerollIndex(calculateNewIndex(currentRerollIndex, rerollData.chunks.length, 'down'))}><ArrowLeft /></button>
-                        <button className='w-1/12 mx-auto btn btn-primary' onClick={() => setCurrentRerollIndex(calculateNewIndex(currentRerollIndex, rerollData.chunks.length, 'up'))}><ArrowRight /></button>
+                    <div>
+                        <div className='flex justify-items-between'>
+                        <button className='w-1/12 mx-auto btn btn-secondary' onClick={() => setCurrentRerollIndex(calculateNewIndex(currentRerollIndex, rerollData.chunks.length, 'down'))}><ArrowLeft /></button>
+                        <button className='w-1/12 mx-auto btn btn-secondary' onClick={() => setCurrentRerollIndex(calculateNewIndex(currentRerollIndex, rerollData.chunks.length, 'up'))}><ArrowRight /></button>
+                        </div>
+                        New problem:
                     </div>
                 }
 
@@ -403,8 +406,8 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
 
                 {searchData &&
                     <div className='flex justify-items-between'>
-                        <button className="w-1/12 mx-auto btn btn-primary" onClick={() => setCurrentSearchResponseIndex(calculateNewIndex(currentSearchResponseIndex, searchData?.response.length, 'down'))}><ArrowLeft /></button>
-                        <button className="w-1/12 mx-auto btn btn-primary" onClick={() => setCurrentSearchResponseIndex(calculateNewIndex(currentSearchResponseIndex, searchData?.response.length, 'up'))}><ArrowRight /></button>
+                        <button className="w-1/12 mx-auto btn btn-secondary" onClick={() => setCurrentSearchResponseIndex(calculateNewIndex(currentSearchResponseIndex, searchData?.response.length, 'down'))}><ArrowLeft /></button>
+                        <button className="w-1/12 mx-auto btn btn-secondary" onClick={() => setCurrentSearchResponseIndex(calculateNewIndex(currentSearchResponseIndex, searchData?.response.length, 'up'))}><ArrowRight /></button>
                     </div>
                 }
                 {searchData?.response[currentSearchResponseIndex].content?.map((item: any, index: any) => {
@@ -489,7 +492,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
 
                 {id && (submitTextData || rerollData || searchData) && <>
                     <button
-                        className="btn btn-warning tooltip tooltip-bottom"
+                        className="btn btn-warning tooltip tooltip-bottom mr-4"
                         data-tip="Reject this change."
                         onClick={() => {
                             submitTextData && resetTextChange()
@@ -500,7 +503,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                         Reject
                     </button>
                     <button
-                        className="btn btn-secondary tooltip tooltip-bottom"
+                        className="btn btn-primary tooltip tooltip-bottom"
                         data-tip="Accept this change."
                         onClick={handleAcceptChunkChange}
                     >

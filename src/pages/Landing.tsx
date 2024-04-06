@@ -2,7 +2,6 @@ import { useClerk } from '@clerk/clerk-react';
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import LoopingText from '../components/LoopingText';
-import SurveyComponent from '../components/SurveyComponent';
 import ArrowRightMore from '../svg/ArrowRightMore';
 import DocxSVG from '../svg/DocxSVG';
 import PdfSVG from '../svg/PdfSVG';
@@ -48,7 +47,6 @@ const LandingPage: React.FC = () => {
 
     return (
         <div>
-            <SurveyComponent onSubmit={(s, responseObj) => console.log("survey submit", s, responseObj)} />
             <section className="h-full flex flex-col md:flex-row bg-blue-100 items-center" style={{ backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover' }}>
                 <img className="w-1/2 pt-4 md:pt-0 md:w-1/3 md:mx-0" src="/png/teacher1.png" alt="Teacher illustration with open book" />
                 <div className="ml-0 md:ml-20 w-full md:w-2/3 text-center md:text-left text-3xl md:text-5xl p-4">
