@@ -6,6 +6,7 @@ interface SubscriptionInfo {
     active_trial: boolean;
     has_activated_trial: boolean;
     time_left_in_trial?: number;
+    chat_documents_created: number;
 }
 
 const fetchSubscriptionInfo = async (endpoint: string, token: string | null) => {

@@ -12,6 +12,7 @@ import './App.css';
 import AppModal from './components/AppModal';
 import Notifications from './components/Notifications';
 import SubscribeModal from './components/SubscribeModal';
+import Surveys from './components/Surveys';
 import { notSecretConstants } from './constants/notSecretConstants';
 import { DragProvider } from './contexts/DragContext';
 import { RunTutorialProvider } from './contexts/RunTutorialContext';
@@ -35,37 +36,38 @@ function App({ children }: AppProps) {
   const clerkKey = env == "production" ? notSecretConstants.clerk.PUBLISHABLE_KEY : notSecretConstants.clerk.PUBLISHABLE_DEV_KEY
 
   return (
-      <div data-theme={"emerald"}>
-        <ClerkProvider
-          navigate={(to) => navigate(to)}
-          publishableKey={clerkKey}
-          allowedRedirectOrigins={["https://gyosu.ai", "https://www.gyosu.ai", /^https:\/\/(?:.*\.)?gyosu\.ai$/]}
-        >
-          <QueryClientProvider client={queryClient}>
-            <RunTutorialProvider>
-              <ModalProvider>
-                <AppModal modalId={'appModal'} />
-                <SubscribeModal modalId={'subscribe'} />
-                <SidebarProvider>
-                  <LanguageProvider>
-                    <ScreenSizeProvider>
-                      <HelmetProvider>
-                        <DragProvider>
-                          <DndProvider backend={HTML5Backend}>
-                            <Toaster />
-                            <Notifications />
-                            {children}
-                          </DndProvider>
-                        </DragProvider>
-                      </HelmetProvider>
-                    </ScreenSizeProvider>
-                  </LanguageProvider>
-                </SidebarProvider>
-              </ModalProvider>
-            </RunTutorialProvider>
-          </QueryClientProvider>
-        </ClerkProvider>
-      </div>
+    <div data-theme={"emerald"}>
+      <ClerkProvider
+        navigate={(to) => navigate(to)}
+        publishableKey={clerkKey}
+        allowedRedirectOrigins={["https://gyosu.ai", "https://www.gyosu.ai", /^https:\/\/(?:.*\.)?gyosu\.ai$/]}
+      >
+        <QueryClientProvider client={queryClient}>
+          <RunTutorialProvider>
+            <ModalProvider>
+              <AppModal modalId={'appModal'} />
+              <SubscribeModal modalId={'subscribe'} />
+              <SidebarProvider>
+                <LanguageProvider>
+                  <ScreenSizeProvider>
+                    <HelmetProvider>
+                      <DragProvider>
+                        <DndProvider backend={HTML5Backend}>
+                          <Surveys />
+                          <Toaster />
+                          <Notifications />
+                          {children}
+                        </DndProvider>
+                      </DragProvider>
+                    </HelmetProvider>
+                  </ScreenSizeProvider>
+                </LanguageProvider>
+              </SidebarProvider>
+            </ModalProvider>
+          </RunTutorialProvider>
+        </QueryClientProvider>
+      </ClerkProvider>
+    </div>
   );
 }
 

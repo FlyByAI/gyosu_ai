@@ -11,7 +11,7 @@ export interface TextbookProblemData {
     section?: string;
     documentType?: string;
     sourceMaterial?: string;
-    userInput: string;
+    userInput?: string;
 }
 
 export interface CompetitionData {
@@ -151,9 +151,10 @@ export interface Chunk {
     mongoChunkId?: string;
     chunkId?: string;
     type: "chunk";
-    content: (Instruction | Problem)[];
+    content: (Instruction | Problem | Text)[];
     source?: Source;
     tags?: any; //object, will update later
+
 }
 
 export interface Instruction {
@@ -182,6 +183,10 @@ export interface Text {
     type: "text";
     value: string;
 }
+
+export function isText(data: any): data is Text {
+    return data && typeof data.id === 'string' && typeof data.content === 'string';
+  }
 
 export interface Math {
     type: "math";

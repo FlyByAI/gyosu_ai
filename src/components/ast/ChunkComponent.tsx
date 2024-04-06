@@ -5,7 +5,10 @@ import { useParams } from 'react-router-dom';
 import { GridLoader } from 'react-spinners';
 import { useDragContext } from '../../contexts/DragContext';
 import { useScreenSize } from '../../contexts/ScreenSizeContext';
+import { renderItem } from '../../helpers/AstRender';
 import useGetDocument from '../../hooks/tools/math/useGetDocument';
+import useImageUpload from '../../hooks/tools/math/useImageUpload';
+import useSubmitChunk from '../../hooks/tools/math/useSubmitChunk';
 import useSubmitDocument from '../../hooks/tools/math/useSubmitDocument';
 import useSubmitMathForm from '../../hooks/tools/math/useSubmitMathForm';
 import useSubmitReroll from '../../hooks/tools/math/useSubmitReroll';
@@ -13,8 +16,11 @@ import useSubmitTextWithChunk from '../../hooks/tools/math/useSubmitTextWithChun
 import useSubmitTextWithChunkLatex from '../../hooks/tools/math/useSubmitTextWithChunkLatex';
 import useSubmitTextWithChunkSimilar from '../../hooks/tools/math/useSubmitTextWithChunkSimilar';
 import useEnvironment from '../../hooks/useEnvironment';
-import { CHUNK_DRAG_TYPE, Chunk, INSTRUCTION_DRAG_TYPE, INSTRUCTION_TYPE, Instruction, PROBLEM_DRAG_TYPE, PROBLEM_TYPE, Problem } from '../../interfaces';
+import { CHUNK_DRAG_TYPE, Chunk, INSTRUCTION_DRAG_TYPE, INSTRUCTION_TYPE, Instruction, PROBLEM_DRAG_TYPE, PROBLEM_TYPE, Problem, isText } from '../../interfaces';
+import ArrowLeft from '../../svg/ArrowLeftIcon';
+import ArrowRight from '../../svg/ArrowRightIcon';
 import AddChunkModal from '../AddChunkModal';
+import ImageUploader from '../ImageUploader';
 import { InstructionComponent } from './InstructionComponent';
 import { ProblemComponent } from './ProblemComponent';
 
@@ -27,6 +33,20 @@ interface ChunkProps {
     disableInstructionProblemDrag?: boolean;
 }
 
+type Direction = 'up' | 'down';
+
+export function calculateNewIndex(currentIndex: number, length: number, direction: Direction): number {
+    if (length <= 1) return 0; // If there's only one item or none, always return 0
+
+    if (direction === 'up') {
+        // If going up, increment the index, and wrap around to 0 if at the end
+        return (currentIndex + 1) % length;
+    } else {
+        // If going down, decrement the index, and wrap around to the last item if at the beginning
+        return (currentIndex - 1 + length) % length;
+    }
+}
+
 export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunkIndex, disableInstructionProblemDrag }) => {
     const { setDragState } = useDragContext();
 
@@ -36,6 +56,8 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
     const { env, apiUrl } = useEnvironment();
 
     const endpoint2 = `${apiUrl}/math_app/school_document/`;
+    const wolframEndpoint = `${apiUrl}/math_app/wolfram/`;
+
     const { isLoading, updateDocument } = useSubmitDocument(endpoint2);
 
     const [isHovered, setIsHovered] = useState(false);
@@ -106,7 +128,6 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
 
     const { isDesktop } = useScreenSize();
 
-    const { submitReroll, data: rerollData, reset: resetReroll } = useSubmitReroll(`${apiUrl}/math_app/reroll/`)
 
     const handleReroll = () => {
         if (!rerollData) {
@@ -125,10 +146,13 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
         }
     }
 
+    const { submitReroll, data: rerollData, reset: resetReroll, isLoading: isLoadingReroll } = useSubmitReroll(`${apiUrl}/math_app/reroll/`)
     const { submitMathForm, data: searchData, reset: resetSearchData, isLoading: isLoadingSearch, error: errorSearch } = useSubmitMathForm(`${apiUrl}/math_app/generate/`)
     const { submitTextWithChunk, data: submitTextData, reset: resetTextChange, isLoading: isLoadingSubmitText, error: errorText } = useSubmitTextWithChunk(`${apiUrl}/math_app/chat/problem/`)
     const { submitTextWithChunkLatex, data: submitTextLatexData, reset: resetTextLatex, isLoading: isLoadingSubmitTextLatex, error: errorTextLatex } = useSubmitTextWithChunkLatex(`${apiUrl}/math_app/chat/problem/`)
     const { submitTextWithChunkSimilar, data: submitTextSimilarData, reset: resetTextSimilar, isLoading: isLoadingSubmitTextSimilar, error: errorTextSimilar } = useSubmitTextWithChunkSimilar(`${apiUrl}/math_app/chat/problem/`)
+    const { uploadImage, data: submitImageData, reset: resetImage, isLoading: isLoadingSubmitImage, error: errorImage } = useImageUpload(`${apiUrl}/math_app/chat/image/`)
+    const { submitChunk: submitTextStepByStep, data: submitTextStepByStepData, reset: resetTextStepByStep, isLoading: isLoadingSubmitTextStepByStep, error: errorTextStepByStep } = useSubmitChunk(wolframEndpoint, "step_by_step/")
 
     const handleSubmitText = () => {
         submitTextWithChunk({ chunk: chunk, userInput: userInput, chunkIndex: chunkIndex, problemBankId: id })
@@ -143,6 +167,11 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
     const handleSimilarSearchText = () => {
         console.log("find similar problems from text", userInput)
         submitTextWithChunkSimilar({ userInput: userInput, chunkIndex: chunkIndex, problemBankId: id })
+    }
+
+    const handleStepByStep = () => {
+        console.log("find similar problems from text", userInput)
+        submitTextStepByStep({ userInput: userInput, chunk: chunk })
     }
 
     const handleSearch = () => {
@@ -184,6 +213,36 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
     }
 
     useEffect(() => {
+
+        if (submitImageData) {
+            console.log("image uploaded", submitImageData)
+            const instructions = { type: "instruction", content: [{ type: "text", value: submitImageData.instructions }] } as Instruction
+            const problems = submitImageData.problems
+
+            console.log("instructions", instructions, typeof (instructions))
+            console.log("problems", problems, typeof (problems))
+
+            if (typeof (problems) == "string") {
+                const problemsStringArr = JSON.parse(problems)
+                console.log("problemsStringArr", problemsStringArr)
+                const problemsArr = problemsStringArr.map((problem: string) => {
+                    return { type: "problem", content: [{ type: "math", value: problem }] } as Problem
+                })
+
+                const newChunk: Chunk = { type: "chunk", content: [instructions, ...problemsArr] }
+
+                console.log(newChunk)
+                updateChunk && updateChunk(newChunk, chunkIndex)
+                resetImage()
+
+            }
+            else {
+                console.log("unexpected type from image upload", typeof (problems))
+            }
+
+            // updateChunk && updateChunk(submitImageData.chunk, chunkIndex)
+            // resetImage()
+        }
         if (submitTextData) {
             console.log("new text changed chunk", submitTextData)
             console.log("old chunk", chunk)
@@ -218,7 +277,31 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
         if (searchData) {
             console.log(searchData)
         }
-    }, [submitTextData, rerollData, submitTextSimilarData, submitTextLatexData, updateChunk, chunkIndex, resetTextSimilar, resetTextLatex, chunk, searchData])
+        if (submitTextStepByStepData) {
+            if (typeof (submitTextStepByStepData.text) == "string") {
+                const newChunk: Chunk = {
+                    type: "chunk", content: [{
+                        type: "text",
+                        value: submitTextStepByStepData.text
+                    }, ...chunk.content]
+                }
+                updateChunk && updateChunk(newChunk, chunkIndex)
+                resetTextStepByStep();
+            }
+            else if (submitTextStepByStepData && isText(submitTextStepByStepData.text)) {
+                const newChunk: Chunk = {
+                    type: "chunk", content: [submitTextStepByStepData.text, ...chunk.content]
+                }
+                updateChunk && updateChunk(newChunk, chunkIndex)
+                resetTextStepByStep();
+            }
+            else
+                console.log("unexpected type from step by step", submitTextStepByStepData.text, "type", typeof (submitTextStepByStepData.text))
+
+            console.log(submitTextStepByStepData)
+        }
+
+    }, [submitTextData, rerollData, submitTextSimilarData, submitTextLatexData, updateChunk, chunkIndex, resetTextSimilar, resetTextLatex, chunk, searchData, submitTextStepByStepData, resetTextStepByStep, submitImageData, resetImage])
 
     return (
         <>
@@ -230,7 +313,15 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                 data-tip={!id ? "Click and drag to a problem bank." : null}
             >
                 <div className="absolute top-0 right-0 flex flex-row gap-2">
-                    {(isLoadingSubmitText || isLoadingSubmitTextLatex || isLoadingSubmitTextSimilar || isLoadingSearch) && <GridLoader color="#4A90E2" size={4} margin={4} speedMultiplier={.75} className='mr-2' />}
+                    {(
+                        isLoadingSubmitText
+                        || isLoadingSubmitTextLatex
+                        || isLoadingSubmitTextSimilar
+                        || isLoadingSearch
+                        || isLoadingReroll
+                        || isLoadingSubmitTextStepByStep
+                        || isLoadingSubmitImage
+                    ) && <GridLoader color="#4A90E2" size={4} margin={4} speedMultiplier={.75} className='mr-2' />}
 
                     {!id && <AddChunkModal chunk={chunk} modalId={'addChunkModal' + chunk.chunkId} enabled={false} />}
 
@@ -266,6 +357,8 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                                 return <InstructionComponent chunkIndex={chunkIndex} instructionIndex={index} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} instruction={item} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
                             case 'problem':
                                 return <ProblemComponent chunkIndex={chunkIndex} problemIndex={index} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} problem={item} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
+                            case 'text':
+                                return renderItem(item)
                             default:
                                 return null;
                         }
@@ -280,50 +373,63 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
 
                 {chunkIndex == rerollData?.chunkIndex &&
                     <div>
-                        Rerolled Chunk:
-                        {rerollData?.chunks[currentRerollIndex].content.map((rerolledItem, rerollIndex) => {
-                            const rerollElement = (() => {
-                                switch (rerolledItem.type) {
-                                    case 'instruction':
-                                        return <InstructionComponent chunkIndex={chunkIndex} instructionIndex={rerollIndex} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} instruction={rerolledItem} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
-                                    case 'problem':
-                                        return <ProblemComponent chunkIndex={chunkIndex} problemIndex={rerollIndex} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} problem={rerolledItem} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
-                                    default:
-                                        return <div>None</div>;
-                                }
-                            })();
-
-                            return (
-                                <div key={`${rerolledItem.type}-${rerollIndex}-${chunk.content.length}`}>
-                                    {chunkIndex == rerollData?.chunkIndex && rerollElement}
-                                </div>
-                            );
-                        })}
+                        <div className='flex justify-items-between'>
+                        <button className='w-1/12 mx-auto btn btn-secondary' onClick={() => setCurrentRerollIndex(calculateNewIndex(currentRerollIndex, rerollData.chunks.length, 'down'))}><ArrowLeft /></button>
+                        <button className='w-1/12 mx-auto btn btn-secondary' onClick={() => setCurrentRerollIndex(calculateNewIndex(currentRerollIndex, rerollData.chunks.length, 'up'))}><ArrowRight /></button>
+                        </div>
+                        New problem:
                     </div>
-
                 }
 
-                <div>
-                    {searchData?.response && searchData?.response.length > 0 && <div>Search Results:</div>}
-                    {searchData?.response[currentSearchResponseIndex].content.map((item: any, index: any) => {
-                        const searchResponseElement = (() => {
-                            switch (item.type) {
-                                case 'instruction':
-                                    return <InstructionComponent chunkIndex={chunkIndex} instructionIndex={index} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} instruction={item} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
-                                case 'problem':
-                                    return <ProblemComponent chunkIndex={chunkIndex} problemIndex={index} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} problem={item} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
-                                default:
-                                    return <div>None</div>;
-                            }
-                        })();
 
-                        return (
+                {rerollData?.chunks[currentRerollIndex].content?.map((rerolledItem, rerollIndex) => {
+                    const rerollElement = (() => {
+                        switch (rerolledItem.type) {
+                            case 'instruction':
+                                return <InstructionComponent chunkIndex={chunkIndex} instructionIndex={rerollIndex} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} instruction={rerolledItem} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
+                            case 'problem':
+                                return <ProblemComponent chunkIndex={chunkIndex} problemIndex={rerollIndex} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} problem={rerolledItem} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
+                            default:
+                                return <div>None</div>;
+                        }
+                    })();
+
+                    return (
+                        <div>
+                            <div key={`${rerolledItem.type}-${rerollIndex}-${chunk.content.length}`}>
+                                {chunkIndex == rerollData?.chunkIndex && rerollElement}
+                            </div>
+                        </div>
+                    );
+                })}
+
+
+                {searchData &&
+                    <div className='flex justify-items-between'>
+                        <button className="w-1/12 mx-auto btn btn-secondary" onClick={() => setCurrentSearchResponseIndex(calculateNewIndex(currentSearchResponseIndex, searchData?.response.length, 'down'))}><ArrowLeft /></button>
+                        <button className="w-1/12 mx-auto btn btn-secondary" onClick={() => setCurrentSearchResponseIndex(calculateNewIndex(currentSearchResponseIndex, searchData?.response.length, 'up'))}><ArrowRight /></button>
+                    </div>
+                }
+                {searchData?.response[currentSearchResponseIndex].content?.map((item: any, index: any) => {
+                    const searchResponseElement = (() => {
+                        switch (item.type) {
+                            case 'instruction':
+                                return <InstructionComponent chunkIndex={chunkIndex} instructionIndex={index} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} instruction={item} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
+                            case 'problem':
+                                return <ProblemComponent chunkIndex={chunkIndex} problemIndex={index} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} problem={item} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
+                            default:
+                                return <div>None</div>;
+                        }
+                    })();
+
+                    return (
+                        <div>
                             <div key={`${item.type}-${index}-${chunk.content.length}`}>
                                 {searchResponseElement}
                             </div>
-                        );
-                    })}
-                </div>
+                        </div>
+                    );
+                })}
 
 
                 {chunkIndex == submitTextData?.chunkIndex &&
@@ -374,25 +480,30 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                             })}
                     </div>}
 
-                {( errorText || errorTextSimilar || errorTextLatex || errorSearch ) &&
-                <div className="text-white text-center mt-2">
-                    Error:
-                    {errorText && errorText.message}
-                    {errorTextSimilar && errorTextSimilar.message}
-                    {errorTextLatex && errorTextLatex.message}
-                    {errorSearch && errorSearch.message}
-                </div>}
+                {(errorText || errorTextSimilar || errorTextLatex || errorSearch || errorTextStepByStep) &&
+                    <div className="text-error text-center mt-2">
+                        {errorText && errorText.message}
+                        {errorTextSimilar && errorTextSimilar.message}
+                        {errorTextLatex && errorTextLatex.message}
+                        {errorSearch && errorSearch.message}
+                        {errorTextStepByStep && errorTextStepByStep.message}
+                        {errorImage && errorImage.message}
+                    </div>}
 
                 {id && (submitTextData || rerollData || searchData) && <>
                     <button
-                        className="btn btn-warning tooltip tooltip-bottom"
+                        className="btn btn-warning tooltip tooltip-bottom mr-4"
                         data-tip="Reject this change."
-                        onClick={() => resetTextChange()}
+                        onClick={() => {
+                            submitTextData && resetTextChange()
+                            rerollData && resetReroll()
+                            searchData && resetSearchData()
+                        }}
                     >
                         Reject
                     </button>
                     <button
-                        className="btn btn-secondary tooltip tooltip-bottom"
+                        className="btn btn-primary tooltip tooltip-bottom"
                         data-tip="Accept this change."
                         onClick={handleAcceptChunkChange}
                     >
@@ -402,7 +513,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
 
 
 
-                {id && chunk.content.length == 0 && <>
+                {id && chunk.content.length == 0 && !searchData && <>
                     {/* if a problem does not yet exist */}
                     <div>Create a new problem</div>
                     <input
@@ -414,13 +525,19 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                     />
 
                     <div className='space-x-2'>
-                        <button
+                        {/* <button
                             className="btn btn-secondary tooltip tooltip-left"
-                            data-tip="Create a latex formatted math problem using your text description."
                             onClick={() => console.log("upload")}
-                        >
-                            Upload
-                        </button>
+                        > */}
+                        <ImageUploader
+                            onFileUpload={function (imageFile: File): void {
+                                console.log("imageFile uploaded", imageFile)
+                                uploadImage({ image: imageFile })
+
+                            }} />
+
+                        {/* Upload */}
+                        {/* </button> */}
                         <button
                             className="btn btn-secondary tooltip tooltip-left"
                             data-tip="Create a latex formatted math problem using your text description."
@@ -463,6 +580,15 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                         >
                             Change it!
                         </button>
+                        {env == "local" && //not allowed by wolfram in prod/test yet
+                            <button
+                                className="btn btn-secondary tooltip tooltip-left mr-2"
+                                data-tip="Find a similar problem using a text description."
+                                onClick={handleStepByStep}
+                            >
+                                Step-by-step
+                            </button>
+                        }
                     </div>
                 </>}
 
