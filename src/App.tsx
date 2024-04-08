@@ -10,6 +10,7 @@ import { Toaster } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import './App.css';
 import AppModal from './components/AppModal';
+import LogRocketComponent from './components/LogRocketComponent';
 import Notifications from './components/Notifications';
 import SubscribeModal from './components/SubscribeModal';
 import Surveys from './components/Surveys';
@@ -53,6 +54,7 @@ function App({ children }: AppProps) {
                     <HelmetProvider>
                       <DragProvider>
                         <DndProvider backend={HTML5Backend}>
+                          <LogRocketComponent/>
                           <Surveys />
                           <Toaster />
                           <Notifications />

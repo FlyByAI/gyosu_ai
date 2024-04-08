@@ -8,5 +8,6 @@ export const notSecretConstants = {
    "clerk": {
       "PUBLISHABLE_KEY": "pk_live_Y2xlcmsuZ3lvc3UuYWkk",
       "PUBLISHABLE_DEV_KEY": "pk_test_Y2F1c2FsLWJ1bm55LTQ0LmNsZXJrLmFjY291bnRzLmRldiQ",
-   }
+   },
+   "logRocket": "ad1xk4/gyosu",
 }
