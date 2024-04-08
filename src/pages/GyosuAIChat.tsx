@@ -379,10 +379,9 @@ const GyosuAIChat = () => {
                         <ChatTutorial startStreaming={startStreaming} updateTextbox={setUserInput} />
                         {actions && (
                             <div className="text-center text-sm p-1">
-                                Time elapsed on current action: {timeElapsed} seconds
+                                Action: {actions}, time elapsed: {timeElapsed} seconds
                             </div>
                         )}
-                        {/* Other components unchanged */}
 
                         {!isAutoScrollEnabled &&
                             <div className="absolute left-1/2 bottom-36 z-40 p-2 chat-action-container flex flex-row items-center border-primary rounded text-primary-content transform -translate-x-1/2">
