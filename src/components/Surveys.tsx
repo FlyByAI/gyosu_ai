@@ -47,10 +47,9 @@ const survey: Survey= {
 
 const Surveys: React.FC = () => {
 
-    // const { apiUrl } = useEnvironment();
-    // const { subscriptionInfo } = useFetchSubscriptionInfo(`${apiUrl}/user_data/get_subscription_info/`);
-  
-    return <SurveyComponent introText="Help us improve your experience." survey={survey} />;
+    return <>
+        <SurveyComponent introText="Help us improve your experience." survey={survey} />
+    </>;
 };
 
 export default Surveys;
