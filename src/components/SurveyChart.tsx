@@ -2,6 +2,7 @@ import {
     BarElement,
     CategoryScale,
     Chart as ChartJS,
+    ChartOptions,
     Legend,
     LinearScale,
     Title,
@@ -54,7 +55,7 @@ const SurveyChart: React.FC<SurveyChartProps> = ({ questionId, answers }) => {
         ],
     };
 
-    const chartOptions = {
+    const chartOptions: ChartOptions<"bar"> = {
         scales: { y: { beginAtZero: true } },
         plugins: {
             legend: {
@@ -67,6 +68,7 @@ const SurveyChart: React.FC<SurveyChartProps> = ({ questionId, answers }) => {
     return (
         <div>
             <h3>Question ID {questionId}:</h3>
+            
             <Bar data={chartData} options={chartOptions} />
         </div>
     );
