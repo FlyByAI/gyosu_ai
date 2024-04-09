@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import SurveyResults from '../components/SurveyResults';
 import useUsageData, { ChatStats } from '../hooks/usageStats/useUsageData';
 import useEnvironment from '../hooks/useEnvironment';
 
@@ -18,7 +19,9 @@ const UsagePage: React.FC = () => {
     if (error) return <div>Error: {error.message}</div>;
 
     return (
-        <div className='text-white'>
+        <div className='text-default'>
+            <h1 className='text-2xl'>Survey Results for Survey 1:</h1>
+            <SurveyResults surveyId="survey1"/>
             <h1 className='text-2xl'>Chat Usage Data:</h1>
             {usageData && (
                 <div>
