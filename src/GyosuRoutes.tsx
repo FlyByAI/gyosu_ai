@@ -211,9 +211,7 @@ export default function GyosuRoutes() {
                     element={
                         <>
                             <Navbar />
-                            <ContentWrapper>
-                                <Pricing />
-                            </ContentWrapper>
+                            <Pricing />
                         </>
                     }
                 />

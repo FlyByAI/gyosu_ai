@@ -1,21 +1,21 @@
 import CheckmarkIcon from '../svg/CheckmarkIcon';
+import ManageSubscriptionButton from './ManageSubscriptionButton';
 import { SubscribePaidButton } from './SubscribeButton';
 
 const Pricing = () => {
 
     return (
-        <div className='text-base-content'>
-            <section id="pricing" className="flex flex-col items-center w-full my-8 p-4">
+            <section id="pricing" className="max-w-7xl mx-auto text-center">
                 <div className='grid md:grid-cols-3 w-full'>
-
                     {/* Free Tier */}
-                    <div className="card bg-base-200 shadow-xl p-6 mx-2">
+                    <div className="card bg-secondary-content shadow-none p-6 me-2">
                         <div className="card-body text-left">
                             <h2 className="card-title text-center">Free Tier</h2>
                             <div className="list-inside space-y-2 mt-4">
                                 <p>For teachers testing out Gyosu.</p>
                                 <div className="w-full flex items-center pr-2"><div><CheckmarkIcon /></div><div>GyosuChat Assistant</div></div>
                                 <div className="w-full flex items-center pr-2"><div><CheckmarkIcon /></div><div>10 message limit per week</div></div>
+                                <div className="w-full flex items-center pr-2"><div><CheckmarkIcon /></div><div>1 document export per week</div></div>
                                 <div className="w-full flex items-center pr-2"><div><CheckmarkIcon /></div><div>Full access to problem database</div></div>
                             </div>
                         </div>
@@ -29,6 +29,7 @@ const Pricing = () => {
                                 <p>For innovative teachers using Gyosu regularly.</p>
                                 <div className="w-full flex items-center pr-2"><div><CheckmarkIcon /></div><div>GyosuChat Assistant</div></div>
                                 <div className="w-full flex items-center pr-2"><div><CheckmarkIcon /></div><div>100 message limit per day</div></div>
+                                <div className="w-full flex items-center pr-2"><div><CheckmarkIcon /></div><div>unlimited document exports</div></div>
                                 <div className="w-full flex items-center pr-2"><div><CheckmarkIcon /></div><div>Full access to problem database</div></div>
                                 <div className="w-full flex items-center pr-2"><div><CheckmarkIcon /></div><div>Save Documents to profile</div></div>
                                 <div className="w-full flex items-center pr-2"><div><CheckmarkIcon /></div><div>Community Document Library - Coming Soon!</div></div>
@@ -38,12 +39,13 @@ const Pricing = () => {
                                 <p>Use code <b>GYOSU50</b> to get 50% off monthly rate.</p>
                                 <p>Cancel anytime.</p>
                             </div>
-                            <SubscribePaidButton />
+                        <SubscribePaidButton />
+                        <ManageSubscriptionButton/>
                         </div>
                     </div>
 
                     {/* Custom School Package */}
-                    <div className="card bg-base-200 shadow-xl p-6 mx-2">
+                    <div className="card bg-base-200 shadow-xl p-6 ms-2">
                         <div className="card-body text-left">
                             <h2 className="card-title text-center">Custom School Package</h2>
                             <div className="list-inside space-y-2 mt-4">
@@ -63,8 +65,6 @@ const Pricing = () => {
 
                 </div>
             </section>
-        </div>
-
 
     );
 };

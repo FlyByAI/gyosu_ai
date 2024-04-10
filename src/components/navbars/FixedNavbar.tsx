@@ -5,7 +5,6 @@ import { useDarkMode } from '../../contexts/useDarkMode';
 import useFetchSubscriptionInfo from '../../hooks/subscription/useFetchSubscriptionInfo';
 import useEnvironment from '../../hooks/useEnvironment';
 import HamburgerWrapper from '../HamburgerWrapper';
-import ManageSubscriptionButton from '../ManageSubscriptionButton';
 
 const FixedNavbar: React.FC = () => {
   const { env, apiUrl } = useEnvironment();
@@ -53,8 +52,6 @@ const FixedNavbar: React.FC = () => {
               <Link to="/subscribe" className="text-lg mx-3 mt-2 hover:underline font-mono font-bold">
                 Pricing
               </Link>
-              <ManageSubscriptionButton />
-
               <SignedOut>
                 <div className='btn btn-primary'
                   onClick={(e) => {
@@ -92,7 +89,6 @@ const FixedNavbar: React.FC = () => {
           <Link to="/subscribe" className="btn btn-ghost">Pricing</Link>
           <SignedIn>
             <UserButton afterSignOutUrl={window.location.href} />
-            {subscriptionInfo?.has_valid_subscription && <ManageSubscriptionButton />}
           </SignedIn>
           <SignedOut>
             <div className='btn btn-primary'

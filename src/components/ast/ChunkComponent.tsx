@@ -404,13 +404,16 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                 })}
 
 
-                {searchData &&
+                {searchData && searchData?.response.length > 0 &&
                     <div className='flex justify-items-between'>
                         <button className="w-1/12 mx-auto btn btn-secondary" onClick={() => setCurrentSearchResponseIndex(calculateNewIndex(currentSearchResponseIndex, searchData?.response.length, 'down'))}><ArrowLeft /></button>
                         <button className="w-1/12 mx-auto btn btn-secondary" onClick={() => setCurrentSearchResponseIndex(calculateNewIndex(currentSearchResponseIndex, searchData?.response.length, 'up'))}><ArrowRight /></button>
                     </div>
                 }
-                {searchData?.response[currentSearchResponseIndex].content?.map((item: any, index: any) => {
+                {searchData?.response && searchData?.response.length == 0 && 
+                    <div>No results, please try another query</div>
+                }
+                {searchData?.response && searchData?.response.length > 0 && searchData?.response[currentSearchResponseIndex].content?.map((item: any, index: any) => {
                     const searchResponseElement = (() => {
                         switch (item.type) {
                             case 'instruction':
