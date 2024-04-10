@@ -17,9 +17,10 @@ interface ProblemProps {
 
     disableInstructionProblemDrag?: boolean; //used to disable drag and drop for instructions and problems when on the search
     chunkIndex: number;
+    debug?: boolean;
 }
 
-export const ProblemComponent: React.FC<ProblemProps> = ({ parentChunk, parentChunkIndex, updateChunk, problem, problemIndex, disableInstructionProblemDrag }) => {
+export const ProblemComponent: React.FC<ProblemProps> = ({ debug, parentChunk, parentChunkIndex, updateChunk, problem, problemIndex, disableInstructionProblemDrag }) => {
     const { setDragState } = useDragContext();
 
     const [, ref] = useDrag({
@@ -65,7 +66,7 @@ export const ProblemComponent: React.FC<ProblemProps> = ({ parentChunk, parentCh
         <div
             ref={(node) => disableInstructionProblemDrag ? ref(drop(node)) : node}
             className="flex group flex-row flex-wrap cursor-pointer">
-            {renderContent(problem.content)}
+            {renderContent(problem.content, debug)}
         </div>
     );
 };

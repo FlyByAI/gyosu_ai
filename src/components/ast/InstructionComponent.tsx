@@ -72,7 +72,7 @@ export const InstructionComponent: React.FC<InstructionProps> = ({ debug, parent
             ref={(node) => disableInstructionProblemDrag ? ref(drop(node)) : node}
             className="flex group flex-row flex-wrap cursor-pointer"
         >
-            {renderContent(instruction.content)}
+            {renderContent(instruction.content, debug)}
         </div>
     );
 };
