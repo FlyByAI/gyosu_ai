@@ -5,7 +5,6 @@ import { useDarkMode } from '../../contexts/useDarkMode';
 import useFetchSubscriptionInfo from '../../hooks/subscription/useFetchSubscriptionInfo';
 import useEnvironment from '../../hooks/useEnvironment';
 import HamburgerWrapper from '../HamburgerWrapper';
-import ManageSubscriptionButton from '../ManageSubscriptionButton';
 
 const RegularNavbar: React.FC = () => {
     const { env, apiUrl } = useEnvironment();
@@ -54,7 +53,6 @@ const RegularNavbar: React.FC = () => {
                             <Link to="/subscribe" className="text-lg mx-3 mt-2 hover:underline font-mono font-bold">
                                 Pricing
                             </Link>
-                            <ManageSubscriptionButton />
                             {/* <DeleteAllChatsButton /> */}
                         </nav>
                     </HamburgerWrapper>
@@ -90,7 +88,6 @@ const RegularNavbar: React.FC = () => {
                     <Link to="/subscribe" className="btn btn-ghost">Pricing</Link>
                     <SignedIn>
                         <UserButton afterSignOutUrl={window.location.href} />
-                        {subscriptionInfo?.has_valid_subscription && <ManageSubscriptionButton />}
                     </SignedIn>
                     <SignedOut>
                         <div className='btn btn-primary'

@@ -6,7 +6,6 @@ import useFetchSubscriptionInfo from '../../hooks/subscription/useFetchSubscript
 import useEnvironment from '../../hooks/useEnvironment';
 import HamburgerWrapper from '../HamburgerWrapper';
 import HamburgerWrapperX from '../HamburgerWrapperX';
-import ManageSubscriptionButton from '../ManageSubscriptionButton';
 import ProblemBankSidebar from '../document/ProblemBankSidebar';
 
 const ProblemSearchNavbar: React.FC = () => {
@@ -58,8 +57,6 @@ const ProblemSearchNavbar: React.FC = () => {
               <Link to="/subscribe" className="text-lg mx-3 mt-2 hover:underline font-mono font-bold">
                 Pricing
               </Link>
-              <ManageSubscriptionButton />
-
               <SignedOut>
                 <div className='btn btn-primary'
                   onClick={(e) => {
@@ -97,7 +94,6 @@ const ProblemSearchNavbar: React.FC = () => {
           <Link to="/subscribe" className="btn btn-ghost">Pricing</Link>
           <SignedIn>
             <UserButton afterSignOutUrl={window.location.href} />
-            {subscriptionInfo?.has_valid_subscription && <ManageSubscriptionButton />}
           </SignedIn>
           <SignedOut>
             <div className='btn btn-primary'

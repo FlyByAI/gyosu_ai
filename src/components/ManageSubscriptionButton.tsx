@@ -15,6 +15,8 @@ const ManageSubscriptionButton: React.FC = () => {
         if (manageSubLink) {
             window.location.replace(manageSubLink);
         }
+        else
+            console.log("no link provided")
     };
 
     const { subscriptionInfo, isLoading } = useFetchSubscriptionInfo(`${apiUrl}/user_data/get_subscription_info/`);
@@ -23,9 +25,9 @@ const ManageSubscriptionButton: React.FC = () => {
         subscriptionInfo?.has_valid_subscription ?
             <div
                 onClick={redirectToPortal}
-                className="rounded h-auto w-32 flex items-center justify-center cursor-pointer transition-colors hover:bg-gray-800"
+                className="rounded flex h-auto items-center justify-center cursor-pointer"
             >
-                <p>Manage Subscription</p>
+                <button className='btn btn-secondary w-full'>Manage Subscription</button>
             </div>
             : null
     );

@@ -7,7 +7,6 @@ import useEnvironment from '../../hooks/useEnvironment';
 import NewChatIcon from '../../svg/NewChatIcon';
 import ChatSessionSidebar from '../ChatSessionSidebar';
 import HamburgerWrapperX from '../HamburgerWrapperX';
-import ManageSubscriptionButton from '../ManageSubscriptionButton';
 
 const ChatNavbar: React.FC = () => {
   const { SunIcon, MoonIcon, darkMode, setDarkMode } = useDarkMode()
@@ -64,7 +63,6 @@ const ChatNavbar: React.FC = () => {
 
           <SignedIn>
             <UserButton afterSignOutUrl={window.location.href} />
-            {subscriptionInfo?.has_valid_subscription && <ManageSubscriptionButton />}
           </SignedIn>
           <SignedOut>
             <div className='btn btn-primary'
