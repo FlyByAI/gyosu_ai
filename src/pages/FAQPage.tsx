@@ -49,19 +49,35 @@ const faqs = [
         question: 'What books does GyosuChat have available?',
         answer: (
             <>
-                <p>Currently, GyosuChat is focused towards Math teachers.</p>
+                <p>Currently, GyosuChat is focused towards Math teachers but we have 21 textbooks total.</p>
                 <p>We have the following books available, which were open-sourced and provided through <a href="https://openstax.org/subjects/math">OpenStax</a>: </p>
                 <br></br>
+                <b>Math:</b>
                 <ul className="list-disc pl-5">
-                    <li>College Algebra 2e</li>
-                    <li>Calculus Volume 2</li>
+                    <li>Contemporary Mathematics</li>
                     <li>Pre-Algebra 2e</li>
                     <li>Algebra and Trigonometry 2e</li>
-                    <li>Calculus Volume 1</li>
-                    <li>Calculus Volume 3</li>
-                    <li>Intermediate Algebra 2e</li>
-                    <li>Precalculus 2e</li>
                     <li>Elementary Algebra 2e</li>
+                    <li>Intermediate Algebra 2e</li>
+                    <li>College Algebra 2e</li>
+                    <li>Precalculus 2e</li>
+                    <li>Calculus Volume 1</li>
+                    <li>Calculus Volume 2</li>
+                    <li>Calculus Volume 3</li>
+                    <li>Introductory Statistics 2e</li>
+                </ul>
+                <b>Other subjects:</b>
+                
+                <ul className="list-disc pl-5">
+                    <li>Biology 2e</li>
+                    <li>High School Physics</li>
+                    <li>Chemistry 2e</li>
+                    <li>Organic Chemistry</li>
+                    <li>Anatomy and Physiology 2e</li>
+                    <li>Introduction to Philosophy</li>
+                    <li>Principles of Economics 3e</li>
+                    <li>Principles of Microeconomics 3e</li>
+                    <li>Principles of Macroeconomics 3e</li>
                 </ul>
                 <br></br>
                 <p>In the future, we plan to expand our library out to other topics. </p>
@@ -75,7 +91,7 @@ const faqs = [
                 <p className="text-base mb-4">Creating and using a problem bank involves the following steps:</p>
 
                 <div className="text-lg font-semibold mb-2">Step 1: Go to Problem Search</div>
-                <p className="text-base mb-4">Navigate to the <Link className="text-secondary underline" to='/math-app/search'>problem search</Link> section to find the problems you want to include in your problem bank.</p>
+                <p className="text-base mb-4">Navigate to the <Link className="text-secondary underline" to='/math-app/bank'>problem search</Link> section to find the problems you want to include in your problem bank.</p>
 
                 <div className="text-lg font-semibold mb-2">Step 2: Search for Problems</div>
                 <p className="text-base mb-4">Use the available filters and search functionalities to find specific problems that align with your objectives.</p>

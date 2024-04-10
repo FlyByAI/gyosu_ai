@@ -7,7 +7,6 @@ import useSubmitDocument from '../../hooks/tools/math/useSubmitDocument';
 import useEnvironment from '../../hooks/useEnvironment';
 import ChevronLeft from '../../svg/ChevronLeft';
 import HamburgerWrapper from '../HamburgerWrapper';
-import ManageSubscriptionButton from '../ManageSubscriptionButton';
 
 const DocumentToolbarNav: React.FC = () => {
     const { darkMode } = useDarkMode();
@@ -63,7 +62,6 @@ const DocumentToolbarNav: React.FC = () => {
                             {darkMode ? <UserButton afterSignOutUrl={window.location.href} /> : <UserButton afterSignOutUrl="http://localhost:5173/" />}
                             <HamburgerWrapper>
                                 {/* <LanguageDropdown /> */}
-                                <ManageSubscriptionButton />
                             </HamburgerWrapper>
                         </SignedIn>
                         <SignedOut>

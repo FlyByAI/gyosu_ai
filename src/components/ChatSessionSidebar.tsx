@@ -8,7 +8,6 @@ import NewChatIcon from '../svg/NewChatIcon';
 import ShareIcon from '../svg/Share';
 import TrashIcon from '../svg/TrashIcon';
 import DeleteAllChatsButton from './DeleteAllChatsButton';
-import ManageSubscriptionButton from './ManageSubscriptionButton';
 import OverflowMenuPortal from './OverflowMenuPortal';
 
 type SectionLabels = {
@@ -212,9 +211,6 @@ const ChatSessionSidebar: React.FC = () => {
             </div>
             <hr className='my-2 border-black' />
             <div className="user-profile flex flex-col gap-2">
-                <div className='text-xs' >
-                    <ManageSubscriptionButton />
-                </div>
                 <div className='text-xs' >
                     <DeleteAllChatsButton />
                 </div>
