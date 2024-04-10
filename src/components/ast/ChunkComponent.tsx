@@ -354,9 +354,9 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                     const element = (() => {
                         switch (item.type) {
                             case 'instruction':
-                                return <InstructionComponent chunkIndex={chunkIndex} instructionIndex={index} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} instruction={item} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
+                                return <InstructionComponent debug={env == "local"} chunkIndex={chunkIndex} instructionIndex={index} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} instruction={item} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
                             case 'problem':
-                                return <ProblemComponent chunkIndex={chunkIndex} problemIndex={index} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} problem={item} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
+                                return <ProblemComponent debug={env == "local"} chunkIndex={chunkIndex} problemIndex={index} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} problem={item} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
                             case 'text':
                                 return renderItem(item)
                             default:
@@ -374,8 +374,8 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                 {chunkIndex == rerollData?.chunkIndex &&
                     <div>
                         <div className='flex justify-items-between'>
-                        <button className='w-1/12 mx-auto btn btn-secondary' onClick={() => setCurrentRerollIndex(calculateNewIndex(currentRerollIndex, rerollData.chunks.length, 'down'))}><ArrowLeft /></button>
-                        <button className='w-1/12 mx-auto btn btn-secondary' onClick={() => setCurrentRerollIndex(calculateNewIndex(currentRerollIndex, rerollData.chunks.length, 'up'))}><ArrowRight /></button>
+                            <button className='w-1/12 mx-auto btn btn-secondary' onClick={() => setCurrentRerollIndex(calculateNewIndex(currentRerollIndex, rerollData.chunks.length, 'down'))}><ArrowLeft /></button>
+                            <button className='w-1/12 mx-auto btn btn-secondary' onClick={() => setCurrentRerollIndex(calculateNewIndex(currentRerollIndex, rerollData.chunks.length, 'up'))}><ArrowRight /></button>
                         </div>
                         New problem:
                     </div>
@@ -386,9 +386,9 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                     const rerollElement = (() => {
                         switch (rerolledItem.type) {
                             case 'instruction':
-                                return <InstructionComponent chunkIndex={chunkIndex} instructionIndex={rerollIndex} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} instruction={rerolledItem} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
+                                return <InstructionComponent debug={env == "local"} chunkIndex={chunkIndex} instructionIndex={rerollIndex} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} instruction={rerolledItem} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
                             case 'problem':
-                                return <ProblemComponent chunkIndex={chunkIndex} problemIndex={rerollIndex} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} problem={rerolledItem} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
+                                return <ProblemComponent debug={env == "local"} chunkIndex={chunkIndex} problemIndex={rerollIndex} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} problem={rerolledItem} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
                             default:
                                 return <div>None</div>;
                         }
@@ -410,16 +410,16 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                         <button className="w-1/12 mx-auto btn btn-secondary" onClick={() => setCurrentSearchResponseIndex(calculateNewIndex(currentSearchResponseIndex, searchData?.response.length, 'up'))}><ArrowRight /></button>
                     </div>
                 }
-                {searchData?.response && searchData?.response.length == 0 && 
+                {searchData?.response && searchData?.response.length == 0 &&
                     <div>No results, please try another query</div>
                 }
                 {searchData?.response && searchData?.response.length > 0 && searchData?.response[currentSearchResponseIndex].content?.map((item: any, index: any) => {
                     const searchResponseElement = (() => {
                         switch (item.type) {
                             case 'instruction':
-                                return <InstructionComponent chunkIndex={chunkIndex} instructionIndex={index} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} instruction={item} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
+                                return <InstructionComponent debug={env == "local"} chunkIndex={chunkIndex} instructionIndex={index} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} instruction={item} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
                             case 'problem':
-                                return <ProblemComponent chunkIndex={chunkIndex} problemIndex={index} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} problem={item} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
+                                return <ProblemComponent debug={env == "local"} chunkIndex={chunkIndex} problemIndex={index} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} problem={item} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
                             default:
                                 return <div>None</div>;
                         }
@@ -443,9 +443,9 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                                 const rerollElement = (() => {
                                     switch (changedItem.type) {
                                         case 'instruction':
-                                            return <InstructionComponent chunkIndex={chunkIndex} instructionIndex={changedIndex} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} instruction={changedItem} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
+                                            return <InstructionComponent debug={env == "local"} chunkIndex={chunkIndex} instructionIndex={changedIndex} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} instruction={changedItem} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
                                         case 'problem':
-                                            return <ProblemComponent chunkIndex={chunkIndex} problemIndex={changedIndex} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} problem={changedItem} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
+                                            return <ProblemComponent debug={env == "local"} chunkIndex={chunkIndex} problemIndex={changedIndex} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} problem={changedItem} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
                                         default:
                                             return <div>None</div>;
                                     }
@@ -467,9 +467,9 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                                 const element = (() => {
                                     switch (changedItem.type) {
                                         case 'instruction':
-                                            return <InstructionComponent chunkIndex={chunkIndex} instructionIndex={changedIndex} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} instruction={changedItem} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
+                                            return <InstructionComponent debug={env == "local"} chunkIndex={chunkIndex} instructionIndex={changedIndex} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} instruction={changedItem} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
                                         case 'problem':
-                                            return <ProblemComponent chunkIndex={chunkIndex} problemIndex={changedIndex} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} problem={changedItem} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
+                                            return <ProblemComponent debug={env == "local"} chunkIndex={chunkIndex} problemIndex={changedIndex} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} problem={changedItem} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
                                         default:
                                             return <div>None</div>;
                                     }
@@ -543,7 +543,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                         {/* </button> */}
                         <button
                             className="btn btn-secondary tooltip tooltip-left"
-                            data-tip="Create a latex formatted math problem using your text description."
+                            data-tip="Find a math problem using your text description."
                             onClick={handleSearch}
                         >
                             Search
@@ -553,6 +553,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                             data-tip="Create a latex formatted math problem using your text description."
                             onClick={handleTextToLatex}
                         >
+                            
                             Create
                         </button>
                     </div>
