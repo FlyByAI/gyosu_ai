@@ -32,6 +32,7 @@ interface ChunkProps {
     updateChunk?: (updatedChunk: Chunk, chunkIndex: number) => void;
     chunkIndex: number;
     disableInstructionProblemDrag?: boolean;
+    landingPageDemo? : boolean; //only used for landing page
 }
 
 type Direction = 'up' | 'down';
@@ -48,7 +49,7 @@ export function calculateNewIndex(currentIndex: number, length: number, directio
     }
 }
 
-export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunkIndex, disableInstructionProblemDrag }) => {
+export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunkIndex, disableInstructionProblemDrag, landingPageDemo }) => {
     const { setDragState } = useDragContext();
 
     const [currentRerollIndex, setCurrentRerollIndex] = useState(0);
@@ -304,6 +305,12 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
 
     }, [submitTextData, rerollData, submitTextSimilarData, submitTextLatexData, updateChunk, chunkIndex, resetTextSimilar, resetTextLatex, chunk, searchData, submitTextStepByStepData, resetTextStepByStep, submitImageData, resetImage])
 
+    console.log("start")
+    console.log(landingPageDemo == true || (id && chunk.content.length == 0 && !searchData) )
+    console.log(landingPageDemo == true)
+    console.log((id && chunk.content.length == 0 && !searchData) )
+    console.log("end")
+
     return (
         <>
             <div
@@ -311,7 +318,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                 onMouseEnter={() => !isHovered && setIsHovered(true)}
                 onMouseLeave={() => isHovered && setIsHovered(false)}
                 className={`${!id && "tooltip"} border relative p-2 w-full transition-all duration-300 ease-in-out ${isHovered ? "border-base-content border-dashed" : "border-transparent"}`}
-                data-tip={!id ? "Click and drag to a problem bank." : undefined}
+                data-tip={(!id && !landingPageDemo) ? "Click and drag to a problem bank." : undefined}
             >
                 <div className="absolute top-0 right-0 flex flex-row gap-2">
                     {(
@@ -324,7 +331,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                         || isLoadingSubmitImage
                     ) && <GridLoader color="#4A90E2" size={4} margin={4} speedMultiplier={.75} className='mr-2' />}
 
-                    {!id && <AddChunkModal chunk={chunk} modalId={'addChunkModal' + chunk.chunkId} enabled={false} />}
+                    {!landingPageDemo && !id && <AddChunkModal chunk={chunk} modalId={'addChunkModal' + chunk.chunkId} enabled={false} />}
 
                     {id && chunk.tags && Object.keys(chunk.tags).length > 0 && (
                         <button
@@ -516,11 +523,9 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                     </button>
                 </>}
 
-
-
-                {id && chunk.content.length == 0 && !searchData && <>
+                {(landingPageDemo || (id && chunk.content.length == 0 && !searchData)) && <>
                     {/* if a problem does not yet exist */}
-                    <div>Create a new problem</div>
+                    <div>Create a new problem here by typing some text.</div>
                     <input
                         type="text"
                         placeholder="Easy Derivative, or y=mx+b."
@@ -535,7 +540,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                             onClick={() => console.log("upload")}
                         > */}
 
-                        {env == "local" &&
+                        {!landingPageDemo && env == "local" &&
                             <ImageUploader
                                 onFileUpload={function (imageFile: File): void {
                                     console.log("imageFile uploaded", imageFile)
@@ -546,13 +551,13 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
 
                         {/* Upload */}
                         {/* </button> */}
-                        <button
+                        {!landingPageDemo && <button
                             className="btn btn-secondary tooltip tooltip-left"
                             data-tip="Find a math problem using your text description."
                             onClick={handleSearch}
                         >
                             Search
-                        </button>
+                        </button>}
                         <button
                             className="btn btn-secondary tooltip tooltip-left"
                             data-tip="Create a latex formatted math problem using your text description."
