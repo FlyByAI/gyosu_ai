@@ -2,6 +2,7 @@ import { useClerk } from '@clerk/clerk-react';
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import LoopingText from '../components/LoopingText';
+import DemoChunkComponent from '../components/ast/DemoChunkComponent';
 import ArrowRightMore from '../svg/ArrowRightMore';
 import DocxSVG from '../svg/DocxSVG';
 import PdfSVG from '../svg/PdfSVG';
@@ -77,7 +78,13 @@ const LandingPage: React.FC = () => {
                     </form>
                 </div>
             </section>
-            <section className="h-full bg-white justify-center py-8 text-gray-700 flex flex-col items-center" style={{ backgroundPosition: 'center', backgroundRepeat: 'repeat', backgroundSize: 'cover' }}>
+            <section className="h-full bg-white py-8" >
+                <h1 className='font-bold w-full text-center text-3xl md:text-5xl mb-4'>
+                    Create problems from text input. Try it!
+                </h1>
+                <DemoChunkComponent />
+            </section>
+            <section className="h-full bg-blue-100 justify-center py-8 text-gray-700 flex flex-col items-center" style={{ backgroundPosition: 'center', backgroundRepeat: 'repeat', backgroundSize: 'cover' }}>
                 <h1 className='font-bold w-full text-center text-3xl md:text-5xl mb-4'>
                     Improving access to high-quality,
                 </h1>
@@ -89,22 +96,22 @@ const LandingPage: React.FC = () => {
                 </div> */}
 
                 <div className='flex flex-col md:flex-row space-x-0 space-y-16 md:space-x-8 md:space-y-0 w-4/5 h-full'>
-                    <div className="w-full xl:w-1/4 text-gray-800 max-w-lg p-4 bg-green-100 flex flex-col items-center rounded-3xl">
+                    <div className="w-full xl:w-1/4 text-gray-800 max-w-lg p-4 bg-white flex flex-col items-center rounded-3xl">
                         <img className="w-1/4 sm:w-1/4 h-auto m-6" src="/png/time.png" alt="Time Illustration" />
                         <div className="text-center text-2xl font-bold mb-4">Quality of Life</div>
                         <div className='text-left text-lg'>Spend more time teaching, not preparing to teach.</div>
                     </div>
-                    <div className="w-full xl:w-1/4 text-gray-800 max-w-lg p-4 bg-green-100 flex flex-col items-center rounded-3xl">
+                    <div className="w-full xl:w-1/4 text-gray-800 max-w-lg p-4 bg-white flex flex-col items-center rounded-3xl">
                         <img className="w-1/4 sm:w-1/4 h-auto m-6" src="/png/pencilwrench.png" alt="Customization Illustration" />
                         <div className="text-center text-2xl font-bold mb-4">Effective Teaching</div>
                         <div className='text-left text-lg'>Teach to the student, not the standard.</div>
                     </div>
-                    <div className="w-full xl:w-1/4 text-gray-800 max-w-lg p-4 bg-green-100 flex flex-col items-center rounded-3xl">
+                    <div className="w-full xl:w-1/4 text-gray-800 max-w-lg p-4 bg-white flex flex-col items-center rounded-3xl">
                         <img className="w-1/4 sm:w-1/4 h-auto m-6" src="/png/ai.png" alt="AI Illustration" />
                         <div className="text-center text-2xl font-bold mb-4">Verifiable AI</div>
                         <div className="text-left text-lg">Verify quality with ease. Documents link directly to textbook sources.</div>
                     </div>
-                    <div className="w-full xl:w-1/4 text-gray-800 max-w-lg p-4 bg-green-100 flex flex-col items-center rounded-3xl">
+                    <div className="w-full xl:w-1/4 text-gray-800 max-w-lg p-4 bg-white flex flex-col items-center rounded-3xl">
                         <div className='flex m-4 w-1/2'>
                             <PdfSVG height="100%" color="#cc1510" className='bg-white py-1 rounded-md mb-2 mr-4' />
                             <DocxSVG height="100%" color="#0167b3" className='bg-white py-1 rounded-md mb-2' />
@@ -114,7 +121,7 @@ const LandingPage: React.FC = () => {
                     </div>
                 </div>
             </section>
-            <section className="py-10 h-full bg-blue-100 justify-center text-gray-700 flex flex-col md:flex-row items-center">
+            <section className="py-10 h-full bg-white justify-center text-gray-700 flex flex-col md:flex-row items-center">
                 <div className='w-full md:w-1/2 text-2xl md:text-5xl flex flex-col items-center md:ms-4'>
                     <h1 className="font-bold mb-4">22,000+ Problems, 21 textbooks</h1>
                     <p className="text-center text-lg">High quality problems sourced directly from math textbooks you can trust.</p>
@@ -127,10 +134,10 @@ const LandingPage: React.FC = () => {
                     </div>
                 </div>
             </section>
-            <section className="flex flex-col items-center text-gray-700 bg-base-100 py-10">
+            <section className="flex flex-col items-center text-gray-700 bg-blue-100 py-10">
                 <div className="text-center mb-4">
-                    <h1 className="font-bold text-2xl md:text-5xl mb-4">Customized Classroom Materials</h1>
-                    <p className="text-lg md:text-xl">Created by you in seconds.</p>
+                    <h1 className="font-bold text-2xl md:text-5xl mb-4">Customized Content - Quickly, and Easily</h1>
+                    <p className="text-lg md:text-xl">This document was created with 3 responses and less than 3 minutes!</p>
                 </div>
 
                 {/* <div className="flex flex-wrap justify-center w-full h-1/2 space-x-10">
@@ -214,7 +221,7 @@ const LandingPage: React.FC = () => {
 
             </section>
 
-            <section className="p-10 h-full flex items-center bg-blue-100" style={{ backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover' }}>
+            <section className="p-10 h-full flex items-center bg-white" style={{ backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover' }}>
                 <div className="w-3/4 text-3xl">
                     <h1 className="font-bold" ><LoopingText variant='typed' textArray={['Innovative', 'Impactful', 'Customized']} /></h1><h1>Education</h1>
                     <h1 className="font-bold"></h1>
