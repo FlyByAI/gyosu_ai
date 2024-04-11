@@ -12,7 +12,7 @@ const survey: Survey= {
             options: [
                 { id: 'teacher', text: 'another teacher' },
                 { id: 'google', text: 'google' },
-                { id: 'tiktok-gyosuai', text: 'tiktok' },
+                { id: 'tiktok', text: 'tiktok' },
                 { id: 'other', text: 'other' },
             ],
         },

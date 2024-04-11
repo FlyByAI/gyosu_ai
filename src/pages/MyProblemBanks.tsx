@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ProblemBankSidebar from '../components/document/ProblemBankSidebar';
 import useGetDocuments from '../hooks/tools/math/useGetDocuments';
 import useSubmitDocument from '../hooks/tools/math/useSubmitDocument';
@@ -25,7 +25,19 @@ const MyProblemBanks: React.FC = () => {
 
     const { documents, error } = useGetDocuments(endpoint);
 
-    const { submitDocument, deleteDocument, updateDocument } = useSubmitDocument(endpoint2);
+    // track for navigate so we can go to a bank when it is first created.
+    const [createdNewDocument, setCreatedNewDocument] = useState(false);
+
+    const { data, submitDocument, deleteDocument, updateDocument } = useSubmitDocument(endpoint2);
+
+
+    useEffect(() => {
+        if (data?.id && createdNewDocument) {
+            console.log(data.id)
+            navigate(`/math-app/bank/${data.id}`);
+            console.log('navigated to new bank')
+        }
+    }, [createdNewDocument, data, navigate])
 
     if (error) {
         return <div>Error loading documents: {(error as unknown as Error).message}</div>;
@@ -65,8 +77,10 @@ const MyProblemBanks: React.FC = () => {
 
         await submitDocument({ document: newDocument });
         toast('Created new problem bank...')
-
+        setCreatedNewDocument(true);
     };
+
+    
 
 
     return (
