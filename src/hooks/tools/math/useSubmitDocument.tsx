@@ -34,6 +34,7 @@ const useSubmitDocument = (endpoint: string) => {
     const submitDocumentMutation = useMutation<any, Error, DocumentData>(
         async (documentData: DocumentData) => {
             const token = session ? await session.getToken() : 'none';
+
             const payload = humps.decamelizeKeys({ document: documentData.document, ...documentData.formData, ...options });
             const response = await fetch(endpoint, {
                 method: 'POST',
@@ -52,7 +53,7 @@ const useSubmitDocument = (endpoint: string) => {
             return humps.camelizeKeys(responseData) as MathFormData;
         },
         {
-            onSuccess: () => {
+            onSuccess: (_, context) => {
                 // Invalidate 'documents' query when submitting a new document
                 queryClient.invalidateQueries(['documents']);
             },
