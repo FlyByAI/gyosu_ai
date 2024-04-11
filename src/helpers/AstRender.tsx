@@ -17,7 +17,7 @@ export const renderItem = (item: Text | Math | Table | Image | Subproblems | Pro
         case 'text':
             return (
                 <div
-                    className={'tooltip text-xs md:text-lg z-10  border-2 border-transparent border-dashed hover:border-2 p-1 m-1 group-hover:border-2 group-hover:border-dashed'}
+                    className={`${debug && "tooltip"} text-xs md:text-lg z-10  border-2 border-transparent border-dashed hover:border-2 p-1 m-1 group-hover:border-2 group-hover:border-dashed`}
                     data-tip={debug ? "text" : undefined}
                 >
                     {item.value}
@@ -29,8 +29,8 @@ export const renderItem = (item: Text | Math | Table | Image | Subproblems | Pro
                     data-tip={debug ? "math" : undefined}
                     className='tooltip'
                 >
-                    <ReactMarkdown  
-                        className={"text-xs md:text-lg z-10  border-gray-100 border-2 border-transparent border-dashed hover:border-2 p-1 m-1 group-hover:border-2 group-hover:border-dashed"}
+                    <ReactMarkdown
+                        className={`${debug && "tooltip"} text-xs md:text-lg z-10  border-gray-100 border-2 border-transparent border-dashed hover:border-2 p-1 m-1 group-hover:border-2 group-hover:border-dashed`}
                         remarkPlugins={[remarkGfm, remarkMath]}
                         rehypePlugins={[rehypeKatex]}
                         
@@ -44,7 +44,7 @@ export const renderItem = (item: Text | Math | Table | Image | Subproblems | Pro
             return (
                 <div
                     data-tip={debug ? "table" : undefined}
-                    className='tooltip'>
+                    className={`${debug && "tooltip"} `}>
                     <ReactMarkdown
                         className={"text-xs md:text-lg z-10  border-gray-100 border-2 border-transparent border-dashed hover:border-2 p-1 m-1 group-hover:border-2 group-hover:border-dashed"}
                         remarkPlugins={[remarkGfm, remarkMath]}
@@ -63,7 +63,7 @@ export const renderItem = (item: Text | Math | Table | Image | Subproblems | Pro
                     data-tip={debug ? "image" : undefined}
                     src={item.value}
                     alt="Description"
-                    className="text-xs md:text-lg z-10 p-1 m-1 border-2 border-transparent border-dashed hover:border-2 group-hover:border-2 group-hover:border-dashed"
+                    className={`${debug && "tooltip"} text-xs md:text-lg z-10 p-1 m-1 border-2 border-transparent border-dashed hover:border-2 group-hover:border-2 group-hover:border-dashed`}
                 />
             );
         case 'subproblems':

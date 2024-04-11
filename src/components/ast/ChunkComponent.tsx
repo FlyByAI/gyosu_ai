@@ -19,6 +19,7 @@ import useEnvironment from '../../hooks/useEnvironment';
 import { CHUNK_DRAG_TYPE, Chunk, INSTRUCTION_DRAG_TYPE, INSTRUCTION_TYPE, Instruction, PROBLEM_DRAG_TYPE, PROBLEM_TYPE, Problem, isText } from '../../interfaces';
 import ArrowLeft from '../../svg/ArrowLeftIcon';
 import ArrowRight from '../../svg/ArrowRightIcon';
+import TrashIcon from '../../svg/TrashIcon';
 import AddChunkModal from '../AddChunkModal';
 import ImageUploader from '../ImageUploader';
 import { InstructionComponent } from './InstructionComponent';
@@ -309,8 +310,8 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                 ref={(node) => ref(drop(node))}
                 onMouseEnter={() => !isHovered && setIsHovered(true)}
                 onMouseLeave={() => isHovered && setIsHovered(false)}
-                className={`tooltip border relative p-2 w-full transition-all duration-300 ease-in-out ${isHovered ? "border-base-content border-dashed" : "border-transparent"}`}
-                data-tip={!id ? "Click and drag to a problem bank." : null}
+                className={`${!id && "tooltip"} border relative p-2 w-full transition-all duration-300 ease-in-out ${isHovered ? "border-base-content border-dashed" : "border-transparent"}`}
+                data-tip={!id ? "Click and drag to a problem bank." : undefined}
             >
                 <div className="absolute top-0 right-0 flex flex-row gap-2">
                     {(
@@ -341,10 +342,11 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                                 e.stopPropagation();
                                 deleteChunk(chunkIndex);
                             }}
-                            className="btn btn-error tooltip tooltip-bottom"
+                            disabled={isLoading}
+                            className="btn hover:bg-red-200 tooltip tooltip-bottom"
                             data-tip="Delete this problem from bank."
                         >
-                            Delete
+                            <TrashIcon/>
                         </button>
                     )}
                 </div>
@@ -532,12 +534,15 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                             className="btn btn-secondary tooltip tooltip-left"
                             onClick={() => console.log("upload")}
                         > */}
-                        <ImageUploader
-                            onFileUpload={function (imageFile: File): void {
-                                console.log("imageFile uploaded", imageFile)
-                                uploadImage({ image: imageFile })
 
-                            }} />
+                        {env == "local" &&
+                            <ImageUploader
+                                onFileUpload={function (imageFile: File): void {
+                                    console.log("imageFile uploaded", imageFile)
+                                    uploadImage({ image: imageFile })
+
+                                }} />
+                        }
 
                         {/* Upload */}
                         {/* </button> */}
@@ -553,7 +558,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                             data-tip="Create a latex formatted math problem using your text description."
                             onClick={handleTextToLatex}
                         >
-                            
+
                             Create
                         </button>
                     </div>
