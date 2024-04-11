@@ -19,6 +19,7 @@ import useEnvironment from '../../hooks/useEnvironment';
 import { CHUNK_DRAG_TYPE, Chunk, INSTRUCTION_DRAG_TYPE, INSTRUCTION_TYPE, Instruction, PROBLEM_DRAG_TYPE, PROBLEM_TYPE, Problem, isText } from '../../interfaces';
 import ArrowLeft from '../../svg/ArrowLeftIcon';
 import ArrowRight from '../../svg/ArrowRightIcon';
+import TrashIcon from '../../svg/TrashIcon';
 import AddChunkModal from '../AddChunkModal';
 import ImageUploader from '../ImageUploader';
 import { InstructionComponent } from './InstructionComponent';
@@ -342,10 +343,10 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                                 deleteChunk(chunkIndex);
                             }}
                             disabled={isLoading}
-                            className="btn btn-error tooltip tooltip-bottom"
+                            className="btn hover:bg-red-200 tooltip tooltip-bottom"
                             data-tip="Delete this problem from bank."
                         >
-                            Delete
+                            <TrashIcon/>
                         </button>
                     )}
                 </div>

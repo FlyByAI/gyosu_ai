@@ -72,7 +72,7 @@ const MyProblemBanks: React.FC = () => {
             lastModifiedBy: '',
             createdAt: new Date().toISOString(),
             updatedAt: new Date().toISOString(),
-            problemChunks: [] as Chunk[],
+            problemChunks: [{ type: "chunk", content: [] }] as Chunk[],
         };
 
         await submitDocument({ document: newDocument });
