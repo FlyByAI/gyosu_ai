@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 import useGetDocument from '../hooks/tools/math/useGetDocument';
 
+import { GridLoader } from 'react-spinners';
 import ContentWrapper from '../components/ContentWrapper';
 import CreateDocxModal from '../components/CreateDocxModal';
 import { ChunkComponent } from '../components/ast/ChunkComponent';
@@ -9,7 +10,10 @@ import { useScreenSize } from '../contexts/ScreenSizeContext';
 import { useSidebarContext } from '../contexts/useSidebarContext';
 import useSubmitDocument from '../hooks/tools/math/useSubmitDocument';
 import useEnvironment from '../hooks/useEnvironment';
-import { Chunk } from '../interfaces';
+import { Chunk, Document } from '../interfaces';
+import ChevronDown from '../svg/ChevronDown';
+import ChevronUp from '../svg/ChevronUp';
+import PlusIcon from '../svg/PlusIcon';
 
 const ProblemBank: React.FC = () => {
     const { id } = useParams();
@@ -17,28 +21,12 @@ const ProblemBank: React.FC = () => {
     const { isLoading, error, document } = useGetDocument(`${apiUrl}/math_app/school_document/`, Number(id));
 
     const endpoint2 = `${apiUrl}/math_app/school_document/`;
-    const { updateDocument } = useSubmitDocument(endpoint2);
+    const { error: updateError, updateDocument, isLoading: isLoadingSubmit } = useSubmitDocument(endpoint2);
 
     const { activeChunkIndices } = useSidebarContext();
 
     const { isDesktop } = useScreenSize();
 
-    if (isLoading) {
-        return <div className="text-white">Loading...</div>;
-    }
-
-    if (error) {
-        return (
-            <div className='flex'>
-                <div className="text-white text-center mt-2">
-                    Error: {error.message}
-                </div>
-                <div className="text-white text-center mt-4">
-                    Document not found.
-                </div>
-            </div>
-        );
-    }
 
     if (!document) {
         return <div className="text-white">No document found</div>;
@@ -82,6 +70,55 @@ const ProblemBank: React.FC = () => {
         updateDocument({ document: updatedDocument });
     };
 
+    function moveChunk(document: Document, chunkIndex: number, direction: 'up' | 'down'): void {
+        if (!document.problemChunks || document.problemChunks.length <= 1) {
+          return;
+        }
+      
+        const newIndex = direction === 'up' ? chunkIndex - 1 : chunkIndex + 1;
+      
+        // Make sure newIndex is within bounds
+        if (newIndex < 0 || newIndex >= document.problemChunks.length) {
+          return; // No operation if moving out of bounds
+        }
+      
+        const newProblemChunks = document.problemChunks.map((chunk, index) => {
+          if (index === chunkIndex && document.problemChunks) {
+            return { ...document.problemChunks[newIndex] }; // Swap current chunk with the target
+          } else if (index === newIndex && document.problemChunks) {
+            return { ...document.problemChunks[chunkIndex] }; // Swap target chunk with the current
+          }
+          return chunk; // No changes for other chunks
+        });
+      
+        const updatedDocument = {
+          ...document,
+          problemChunks: newProblemChunks,
+        };
+      
+        updateDocument({ document: updatedDocument });
+      }
+      
+
+    if (isLoading) {
+        return <div className="text-white">Loading...</div>;
+    }
+
+    if (error) {
+        return (
+            <div className='flex'>
+                <div className="text-white text-center mt-2">
+                    Error: {error.message}
+                </div>
+                <div className="text-white text-center mt-4">
+                    Document not found.
+                </div>
+            </div>
+        );
+    }
+
+
+
     return (
         <div className='flex'>
 
@@ -98,34 +135,57 @@ const ProblemBank: React.FC = () => {
                         </ol>
 
 
-                        {document.problemChunks && document?.problemChunks?.length > 0 && <div className="text-center my-4">
-                            Try
-                            <Link to="/math-app" className="text-primary font-bold underline px-2">searching</Link>for some new problems here.
-                        </div>}
 
-                        {document.problemChunks && document?.problemChunks?.length > 0 ?
+                        <div className="text-center my-4">
+                            Try <Link to="/math-app" className="text-primary font-bold underline px-2">searching</Link>for some new problems here.
+                        </div>
+                        <div className='shadow-xl space-y-4 p-4 bg-base-300 rounded'>
 
-                            document.problemChunks.map((chunk, chunkIndex) => (
-                                <div key={chunkIndex} className='mx-auto mb-4 bg-base-200 card p-4 rounded-lg shadow'>
-                                    <ChunkComponent
-                                        chunk={chunk}
-                                        updateChunk={updateDocumentChunk}
-                                        chunkIndex={chunkIndex}
-                                    />
-                                </div>
-                            )
-                            ) : (
-                                <div className="text-center my-4">
-                                    You don't have any problems in this bank yet. Try
-                                    <Link to="/math-app" className="text-primary font-bold underline px-2">searching</Link> for some.
-                                </div>
-                            )}
+                            {isLoadingSubmit ?
+                                <GridLoader color="#4A90E2" size={4} margin={6} speedMultiplier={1} className='mr-2' />
+                                :
+                                <button className='btn btn-primary tooltip'
+                                    data-tip="Add new problem to this bank."
+                                    disabled={isLoadingSubmit}
+                                    onClick={() => insertChunk(0)}
+                                >
 
-                        {
-                            <button className='btn btn-primary'
-                                onClick={() => insertChunk(document.problemChunks ? document.problemChunks.length : 0)}
-                            > Add new problem</button>
-                        }
+                                    <PlusIcon />
+                                </button>}
+                            {document.problemChunks && document?.problemChunks?.length > 0 &&
+
+                                document.problemChunks.map((chunk, chunkIndex) => (
+                                    <div key={chunkIndex} className='mx-auto mb-4 bg-base-200 card p-4 rounded-lg shadow'>
+                                        {chunkIndex > 0 &&
+                                            <button className="btn" onClick={() => moveChunk(document, chunkIndex, "up")}><ChevronUp /></button>
+                                        }
+                                        <ChunkComponent
+                                            chunk={chunk}
+                                            updateChunk={updateDocumentChunk}
+                                            chunkIndex={chunkIndex}
+                                        />
+                                        {document.problemChunks && chunkIndex < document.problemChunks.length - 1 &&
+                                            <button className="btn" onClick={() => moveChunk(document, chunkIndex, "down")}><ChevronDown /></button>
+                                        }
+                                    </div>
+                                )
+                                )}
+
+                            {document.problemChunks && document?.problemChunks?.length > 0 &&
+                                (isLoadingSubmit ?
+                                    <GridLoader color="#4A90E2" size={4} margin={6} speedMultiplier={1} className='mr-2' />
+                                    :
+                                    <button className='btn btn-primary tooltip'
+                                        data-tip="Add new problem to this bank."
+                                        disabled={isLoadingSubmit}
+                                        onClick={() => insertChunk(document.problemChunks ? document.problemChunks.length : 0)}
+                                    >
+
+                                        <PlusIcon />
+                                    </button>)
+                            }
+                        </div>
+                        {updateError && <div className="text-red-500">{updateError.message}</div>}
                     </div>
                 </div>
             </ContentWrapper>
