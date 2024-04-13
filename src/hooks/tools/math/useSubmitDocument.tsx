@@ -53,7 +53,7 @@ const useSubmitDocument = (endpoint: string) => {
             return humps.camelizeKeys(responseData) as MathFormData;
         },
         {
-            onSuccess: (_, context) => {
+            onSuccess: () => {
                 // Invalidate 'documents' query when submitting a new document
                 queryClient.invalidateQueries(['documents']);
             },
