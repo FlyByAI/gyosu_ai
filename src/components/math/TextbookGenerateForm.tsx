@@ -1,17 +1,13 @@
-import { useClerk, useUser } from '@clerk/clerk-react';
 import React, { useEffect, useState } from 'react';
 import 'tailwindcss/tailwind.css';
-import useSubmitMathForm from '../../hooks/tools/math/useSubmitMathForm';
-import useEnvironment from '../../hooks/useEnvironment';
 import { useRequireSignIn } from '../../hooks/useRequireSignIn';
 import { GenerateFormData, TextbookProblemData } from '../../interfaces';
 import formOptionsJSON from '../../json/dropdown_data.json';
 import Dropdown from '../forms/Dropdown';
-import SubmitButton from '../forms/SubmitButton';
-import MathProblems from './MathProblems';
 
 type TextbookGenerateFormProps = {
     setGenerateFormData: (problemData: GenerateFormData) => void; // Include the type of ProblemData
+    userInput: string;
 };
 
 interface Option {
@@ -19,7 +15,7 @@ interface Option {
     value: string;
 }
 
-const TextbookGenerateForm: React.FC<TextbookGenerateFormProps> = ({ setGenerateFormData }) => {
+const TextbookGenerateForm: React.FC<TextbookGenerateFormProps> = ({ setGenerateFormData, userInput }) => {
 
     const formOptionsObj = Object(formOptionsJSON);
     const [chapter, setChapter] = useState<string>("");
@@ -57,15 +53,6 @@ const TextbookGenerateForm: React.FC<TextbookGenerateFormProps> = ({ setGenerate
     const [problemTypeOptions, setProblemTypeOptions] = useState(initialProblemTypeOptions);
     const [chapterOptions, setChapterOptions] = useState<Option[]>([]);
     const [sectionOptions, setSectionOptions] = useState<Option[]>([]);
-
-
-    const user = useUser();
-
-    const { session, openSignIn } = useClerk();
-
-    const [userInput, setUserInput] = useState('');
-    const { apiUrl } = useEnvironment();
-    const { isLoading, error, submitMathForm, data } = useSubmitMathForm(`${apiUrl}/math_app/generate/`)
 
     useEffect(() => {
         const problemData: TextbookProblemData = {
@@ -152,48 +139,16 @@ const TextbookGenerateForm: React.FC<TextbookGenerateFormProps> = ({ setGenerate
     useRequireSignIn();
 
 
-    const handleMathSubmit = async () => {
-        if (session) {
-            const formData = {
-                chapter: chapter,
-                section: section,
-                problemType: problemType,
-                sourceMaterial: sourceMaterial,
-                documentType: "worksheet",
-                userInput: userInput,
-            } as TextbookProblemData;
-
-            await submitMathForm({ data: formData });
-        }
-        else {
-            openSignIn({
-                afterSignInUrl: window.location.href
-            });
-        }
-    };
-
     return (
         <>
-            <div className="flex flex-col justify-center items-center w-full p-4">
-                <div className="form-control w-full max-w-xs mb-4">
-                    <label className="label">
-                        <span className="label-text">Search for math problems</span>
-                    </label>
-                    <input
-                        type="text"
-                        value={userInput}
-                        onChange={(e) => setUserInput(e.target.value)}
-                        className="input input-bordered w-full"
-                        placeholder="sin and cos, fractions, etc. "
-                    />
-                </div>
+            <div className="flex flex-col justify-center items-center">
                 <Dropdown
                     showSelected={true}
                     label="Textbook (optional)"
                     options={sourceMaterialOptions}
                     value={sourceMaterial}
                     handleChange={handleSourceMaterialChange}
-                    className="w-full max-w-xs"
+                    className="w-full"
                 />
                 {sourceMaterial && <Dropdown
                     showSelected={true}
@@ -201,7 +156,7 @@ const TextbookGenerateForm: React.FC<TextbookGenerateFormProps> = ({ setGenerate
                     options={chapterOptions}
                     value={chapter}
                     handleChange={handleChapterChange}
-                    className="w-full max-w-xs mt-2"
+                    className="w-full mt-2"
                 />}
                 {chapter && <Dropdown
                     showSelected={true}
@@ -209,7 +164,7 @@ const TextbookGenerateForm: React.FC<TextbookGenerateFormProps> = ({ setGenerate
                     options={sectionOptions}
                     value={section}
                     handleChange={handleSectionChange}
-                    className="w-full max-w-xs mt-2"
+                    className="w-full mt-2"
                 />}
                 {section && <Dropdown
                     showSelected={true}
@@ -217,32 +172,16 @@ const TextbookGenerateForm: React.FC<TextbookGenerateFormProps> = ({ setGenerate
                     options={problemTypeOptions}
                     value={problemType}
                     handleChange={handleChangeProblemType}
-                    className="w-full max-w-xs mt-2"
+                    className="w-full mt-2"
                 />}
-                <SubmitButton
+                {/* <SubmitButton
                     handleClick={handleMathSubmit}
                     disabled={isLoading}
                     buttonText={"Search"}
                     className="btn mt-4 w-full lg:w-1/2"
-                />
+                /> */}
             </div>
-            {error && <p className="text-error mt-4 text-center">Error: {error.message}</p>}
-            {error && !user?.user?.username && <p className="text-error mt-4 text-center">Note: Our tools require you to be signed in.</p>}
-            {isLoading && <p className="text-base-content">Loading...</p>}
-            {isLoading && (
-                <div className="flex justify-center mt-4">
-                    <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12"></div>
-                </div>
-            )}
-
-            {data && (
-                <div className="card rounded-lg p-4 my-4 bg-base-100 shadow-lg">
-                    <div className="text-xl justify-center flex items-center mb-4 italic">Step 3: Add problems to a problem bank.</div>
-                    <MathProblems
-                        chunkArray={data.response}
-                    />
-                </div>
-            )}
+            
         </>
     );
 };
