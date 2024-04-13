@@ -6,10 +6,9 @@ import Dropdown from '../forms/Dropdown';
 type CompetitionMathGenerateFormProps = {
     setGenerateFormData: (problemData: GenerateFormData) => void;
     userInput: string;
-    handleMathSubmit: () => void;
 };
 
-const CompetitionMathGenerateForm: React.FC<CompetitionMathGenerateFormProps> = ({ setGenerateFormData, userInput, handleMathSubmit }) => {
+const CompetitionMathGenerateForm: React.FC<CompetitionMathGenerateFormProps> = ({ setGenerateFormData, userInput }) => {
     const formOptionsObj = Object(formOptionsJSON)["competition_math"];
 
     const [problemType, setProblemType] = useState<string>("");

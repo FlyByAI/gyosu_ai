@@ -8,7 +8,6 @@ import Dropdown from '../forms/Dropdown';
 type TextbookGenerateFormProps = {
     setGenerateFormData: (problemData: GenerateFormData) => void; // Include the type of ProblemData
     userInput: string;
-    handleMathSubmit: () => void;
 };
 
 interface Option {
@@ -16,7 +15,7 @@ interface Option {
     value: string;
 }
 
-const TextbookGenerateForm: React.FC<TextbookGenerateFormProps> = ({ setGenerateFormData, userInput, handleMathSubmit }) => {
+const TextbookGenerateForm: React.FC<TextbookGenerateFormProps> = ({ setGenerateFormData, userInput }) => {
 
     const formOptionsObj = Object(formOptionsJSON);
     const [chapter, setChapter] = useState<string>("");

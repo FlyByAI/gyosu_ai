@@ -111,8 +111,8 @@ const ProblemSearch: React.FC = () => {
                             </button>
                         </div>
 
-                        {formType === 'Textbook' && <TextbookGenerateForm setGenerateFormData={setGenerateFormData} userInput={userInput} handleMathSubmit={handleMathSubmit} />}
-                        {formType === 'Competition' && <CompetitionMathGenerateForm setGenerateFormData={setGenerateFormData} userInput={userInput} handleMathSubmit={handleMathSubmit} />}
+                        {formType === 'Textbook' && <TextbookGenerateForm setGenerateFormData={setGenerateFormData} userInput={userInput} />}
+                        {formType === 'Competition' && <CompetitionMathGenerateForm setGenerateFormData={setGenerateFormData} userInput={userInput} />}
                         <SubmitButton
                             buttonText={"Search"}
                             handleClick={handleMathSubmit}
