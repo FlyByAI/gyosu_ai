@@ -44,7 +44,7 @@ const Dropdown: React.FC<DropdownProps> = ({
         onChange={handleChange}
         disabled={disabled}
         value={value}
-        className="select select-bordered w-full max-w-xs"
+        className="select select-bordered w-full"
       >
         <option key={0} value={""}>{"None"}</option>
         {renderOptions()}
