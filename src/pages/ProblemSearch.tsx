@@ -55,9 +55,18 @@ const ProblemSearch: React.FC = () => {
         }
     }, [chunkArray]);
 
+    useEffect(() => {
+        if (userInput != '' && generateFormData?.data?.userInput != userInput) {
+            setGenerateFormData({ data: { ...generateFormData?.data, userInput: userInput } })
+        }
+    }, [generateFormData?.data, userInput])
+
     const handleMathSubmit = async () => {
         if (session && generateFormData) {
             await submitMathForm({ data: generateFormData.data });
+        }
+        else if (session && !generateFormData && userInput == "") {
+            await submitMathForm({ data: { userInput } });
         }
         else {
             openSignIn({
