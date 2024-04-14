@@ -541,10 +541,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                     />
 
                     <div className='space-x-2'>
-                        {/* <button
-                            className="btn btn-secondary tooltip tooltip-left"
-                            onClick={() => console.log("upload")}
-                        > */}
+                        
 
                         {!landingPageDemo && env == "local" &&
                             <ImageUploader
@@ -555,7 +552,6 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                                 }} />
                         }
 
-                        {/* Upload */}
                         {/* </button> */}
                         {!landingPageDemo && <button
                             className="btn btn-secondary tooltip tooltip-left"
