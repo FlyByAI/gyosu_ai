@@ -21,7 +21,7 @@ const useStreamedResponse = (endpoint: string, headers: any) => {
     const { session } = useClerk();
     const queryClient = useQueryClient();
 
-    const { currentModal, modalContent, openModal, closeModal } = useModal();
+    const { openModal } = useModal();
 
     const modalComponentContent = () => (<div className="rounded-lg bg-gray-100 mx-auto max-w-2xl">
         <div className="p-4">

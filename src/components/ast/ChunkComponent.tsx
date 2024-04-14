@@ -4,7 +4,6 @@ import { DropTargetMonitor, useDrag, useDrop } from 'react-dnd';
 import { useParams } from 'react-router-dom';
 import { GridLoader } from 'react-spinners';
 import { useDragContext } from '../../contexts/DragContext';
-import { useScreenSize } from '../../contexts/ScreenSizeContext';
 import { renderItem } from '../../helpers/AstRender';
 import useGetDocument from '../../hooks/tools/math/useGetDocument';
 import useImageUpload from '../../hooks/tools/math/useImageUpload';
@@ -128,7 +127,6 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
 
     };
 
-    const { isDesktop } = useScreenSize();
 
 
     const handleReroll = () => {
@@ -180,7 +178,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
         console.log("search for problem", userInput)
         if (!searchData) {
             console.log("searching")
-            submitMathForm({ data: { sourceMaterial: "competition_math", userInput: userInput } })
+            submitMathForm({ data: { userInput: userInput } })
         }
         else {
             console.log("looping", currentSearchResponseIndex, searchData.response.length)
@@ -397,7 +395,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                 }
 
 
-                {rerollData?.chunks[currentRerollIndex].content?.map((rerolledItem, rerollIndex) => {
+                {rerollData?.chunks[currentRerollIndex]?.content?.map((rerolledItem, rerollIndex) => {
                     const rerollElement = (() => {
                         switch (rerolledItem.type) {
                             case 'instruction':
@@ -428,7 +426,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                 {searchData?.response && searchData?.response.length == 0 &&
                     <div>No results, please try another query</div>
                 }
-                {searchData?.response && searchData?.response.length > 0 && searchData?.response[currentSearchResponseIndex].content?.map((item: any, index: any) => {
+                {searchData?.response && searchData?.response.length > 0 && searchData?.response[currentSearchResponseIndex]?.content?.map((item: any, index: any) => {
                     const searchResponseElement = (() => {
                         switch (item.type) {
                             case 'instruction':
@@ -442,7 +440,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
 
                     return (
                         <div>
-                            <div key={`${item.type}-${index}-${chunk.content.length}`}>
+                            <div key={`${item.type}-${index}-${chunk.content?.length}`}>
                                 {searchResponseElement}
                             </div>
                         </div>
@@ -541,10 +539,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                     />
 
                     <div className='space-x-2'>
-                        {/* <button
-                            className="btn btn-secondary tooltip tooltip-left"
-                            onClick={() => console.log("upload")}
-                        > */}
+                        
 
                         {!landingPageDemo && env == "local" &&
                             <ImageUploader
@@ -555,7 +550,6 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                                 }} />
                         }
 
-                        {/* Upload */}
                         {/* </button> */}
                         {!landingPageDemo && <button
                             className="btn btn-secondary tooltip tooltip-left"

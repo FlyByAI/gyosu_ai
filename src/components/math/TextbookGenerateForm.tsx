@@ -35,18 +35,6 @@ const TextbookGenerateForm: React.FC<TextbookGenerateFormProps> = ({ setGenerate
 
     const initialProblemTypeOptions = getSafeValue(formOptionsObj, [Object.keys(formOptionsObj)[0], 'chapters', chapter, 'sections', section, 'problem_types'], []);
 
-    const sectionBasePath = [Object.keys(formOptionsObj)[0], 'chapters', chapter, 'sections'];
-    const sectionObj = getSafeValue(formOptionsObj, sectionBasePath, {});
-    const initialSectionOptions = Object.keys(sectionObj).map(sec => ({
-        label: sectionObj[sec]?.label ?? 'Default Section Label',
-        value: sec
-    }));
-
-    const chaptersObj = getSafeValue(formOptionsObj, [Object.keys(formOptionsObj)[0], 'chapters'], {});
-    const initialChapterOptions = Object.keys(chaptersObj).map(chap => ({
-        label: chaptersObj[chap]?.label ?? 'Default Chapter Label',
-        value: chap
-    }));
 
     // useState hooks
     const [sourceMaterialOptions, setSourceMaterialOptions] = useState(initialSourceMaterialOptions);

@@ -7,7 +7,6 @@ import React, { useEffect, useState } from 'react';
 import { useDrop } from 'react-dnd';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDragContext } from "../../contexts/DragContext";
-import { useScreenSize } from "../../contexts/ScreenSizeContext";
 import useGetDocument from '../../hooks/tools/math/useGetDocument';
 import useSubmitDocument from '../../hooks/tools/math/useSubmitDocument';
 import useEnvironment from '../../hooks/useEnvironment';
@@ -127,7 +126,6 @@ const ProblemBankSidebarItem: React.FC<DocumentItemProps> = ({ document, onDropC
 
     const [isOverflowOpen, setIsOverflowOpen] = useState(false);
 
-    const { isDesktop } = useScreenSize();
 
     return (
         <>

@@ -2,15 +2,13 @@ import { SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/clerk-reac
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useDarkMode } from '../../contexts/useDarkMode';
-import useFetchSubscriptionInfo from '../../hooks/subscription/useFetchSubscriptionInfo';
 import useEnvironment from '../../hooks/useEnvironment';
 import HamburgerWrapper from '../HamburgerWrapper';
 import HamburgerWrapperX from '../HamburgerWrapperX';
 import ProblemBankSidebar from '../document/ProblemBankSidebar';
 
 const ProblemSearchNavbar: React.FC = () => {
-  const { env, apiUrl } = useEnvironment();
-  const { subscriptionInfo } = useFetchSubscriptionInfo(`${apiUrl}/user_data/get_subscription_info/`);
+  const { env } = useEnvironment();
   const { SunIcon, MoonIcon, darkMode, setDarkMode } = useDarkMode()
 
   return (

@@ -18,7 +18,7 @@ interface ToolBadgeProps {
     hidden?: boolean;
 }
 
-const ToolBadge: React.FC<ToolBadgeProps> = ({ chunk, instruction, problem, insertChunk, updateChunk, chunkIndex, hidden }) => {
+const ToolBadge: React.FC<ToolBadgeProps> = ({ chunk, instruction, problem, updateChunk, chunkIndex, hidden }) => {
 
     const { apiUrl } = useEnvironment();
 
@@ -58,12 +58,7 @@ const ToolBadge: React.FC<ToolBadgeProps> = ({ chunk, instruction, problem, inse
     };
 
 
-    const handleAdd = () => {
-        console.log("add", payload);
-        insertChunk && insertChunk(chunkIndex)
-    }
-
-    const { openModal, closeModal, currentModal } = useModal();
+    const { openModal, closeModal } = useModal();
 
     const handleCloseModal = () => {
         closeModal();

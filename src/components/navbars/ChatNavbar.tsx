@@ -2,7 +2,6 @@ import { SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/clerk-reac
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDarkMode } from '../../contexts/useDarkMode';
-import useFetchSubscriptionInfo from '../../hooks/subscription/useFetchSubscriptionInfo';
 import useEnvironment from '../../hooks/useEnvironment';
 import NewChatIcon from '../../svg/NewChatIcon';
 import ChatSessionSidebar from '../ChatSessionSidebar';
@@ -10,8 +9,7 @@ import HamburgerWrapperX from '../HamburgerWrapperX';
 
 const ChatNavbar: React.FC = () => {
   const { SunIcon, MoonIcon, darkMode, setDarkMode } = useDarkMode()
-  const { env, apiUrl } = useEnvironment();
-  const { subscriptionInfo } = useFetchSubscriptionInfo(`${apiUrl}/user_data/get_subscription_info/`);
+  const { env } = useEnvironment();
   const navigate = useNavigate();
 
   const navigateToNewChat = () => {
