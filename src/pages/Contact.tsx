@@ -1,5 +1,3 @@
-import App from "../App";
-import Navbar from "../components/navbars/Navbar";
 
 export default function Home() {
     return (

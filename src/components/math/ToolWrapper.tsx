@@ -1,11 +1,6 @@
-import { useState, useEffect, useRef } from 'react';
-import ToolBadge from './ToolBadge';
+import { useEffect, useRef, useState } from 'react';
 import { Chunk, Instruction, Problem } from '../../interfaces';
-import useGetDocument from '../../hooks/tools/math/useGetDocument';
-import { useParams } from 'react-router-dom';
-import { useModal } from '../../contexts/useModal';
 import AppModal from '../AppModal';
-import FeedbackForm from '../forms/FeedbackForm';
 
 interface ToolWrapperProps {
     children: React.ReactNode;

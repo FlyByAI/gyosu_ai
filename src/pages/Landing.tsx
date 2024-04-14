@@ -1,5 +1,5 @@
 import { useClerk } from '@clerk/clerk-react';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import LoopingText from '../components/LoopingText';
 import DemoChunkComponent from '../components/ast/DemoChunkComponent';
@@ -9,7 +9,6 @@ import PdfSVG from '../svg/PdfSVG';
 
 const LandingPage: React.FC = () => {
 
-    const [inputText, setInputText] = useState('');
     const { session, openSignIn } = useClerk();
     const navigate = useNavigate();
 
@@ -24,25 +23,11 @@ const LandingPage: React.FC = () => {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (!session) {
-            localStorage.setItem('userMessage', inputText);
             openSignIn({
                 afterSignInUrl: window.location.href
             });
         } else {
-            navigate('/math-app/chat', { state: { text: inputText } });
-        }
-    };
-
-    const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-        if (e.key === 'Enter') {
-            if (!session) {
-                localStorage.setItem('userMessage', inputText);
-                openSignIn({
-                    afterSignInUrl: window.location.href
-                });
-            } else {
-                navigate('/math-app/chat', { state: { text: inputText } });
-            }
+            navigate('/math-app/chat');
         }
     };
 

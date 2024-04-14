@@ -6,7 +6,6 @@ import SubmitButton from '../components/forms/SubmitButton';
 import CompetitionMathGenerateForm from '../components/math/CompetitonMathGenerateForm';
 import MathProblems from '../components/math/MathProblems';
 import TextbookGenerateForm from '../components/math/TextbookGenerateForm';
-import { useScreenSize } from '../contexts/ScreenSizeContext';
 import useSubmitMathForm from '../hooks/tools/math/useSubmitMathForm';
 import useEnvironment from '../hooks/useEnvironment';
 import { useRequireSignIn } from '../hooks/useRequireSignIn';
@@ -42,7 +41,6 @@ const ProblemSearch: React.FC = () => {
     const { session, openSignIn } = useClerk();
     const user = useUser();
 
-    const { isDesktop } = useScreenSize();
 
     const myRef = useRef<HTMLDivElement | null>(null);
 

@@ -1,5 +1,4 @@
 import React from 'react';
-import { useScreenSize } from '../contexts/ScreenSizeContext';
 import { useModal } from '../contexts/useModal';
 import { Document, EmptyDocument } from '../interfaces';
 import CreateDocxForm from './forms/CreateDocsForm';
@@ -16,7 +15,6 @@ const CreateDocxModal: React.FC<CreateDocxModalProps> = ({ document, modalId }) 
             openModal(modalId, <CreateDocxForm document={document} />);
     };
 
-    const { isDesktop } = useScreenSize();
 
     return (
         <div>

@@ -92,14 +92,15 @@ const Documents: React.FC = () => {
                                                                 </span>
                                                             </div>
                                                         )}
-                                                        {doc.blobName && (
+                                                        {/* doesn't work */}
+                                                        {/* {doc.blobName && (
                                                             <div onClick={() => handleDocumentClick(doc.blobName, "answer_key")}>
                                                                 <span className="card cursor-pointer">
                                                                     <PdfSVG height="80px" width="80px" color="#ebb305" className='bg-white py-1 rounded-md mb-2' />
                                                                     Answer Key
                                                                 </span>
                                                             </div>
-                                                        )}
+                                                        )} */}
                                                     </div>
                                                 </div>
                                             </li>

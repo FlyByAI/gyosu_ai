@@ -1,39 +1,11 @@
 import { SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/clerk-react';
 import React from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useDarkMode } from '../../contexts/useDarkMode';
-import useGetDocument from '../../hooks/tools/math/useGetDocument';
-import useSubmitDocument from '../../hooks/tools/math/useSubmitDocument';
-import useEnvironment from '../../hooks/useEnvironment';
 import ChevronLeft from '../../svg/ChevronLeft';
 
 const DocumentToolbarNav: React.FC = () => {
     const { darkMode } = useDarkMode();
-    const toolbarHeight = "70";
-
-    const { id } = useParams();
-    const { apiUrl } = useEnvironment();
-    const { document } = useGetDocument(`${apiUrl}/math_app/school_document/`, Number(id));
-    const { deleteDocument, isDeleting, shareDocument } = useSubmitDocument(`${apiUrl}/math_app/school_document/`);
-
-    const handleDeleteClick = () => {
-        if (document) {
-            const confirmDelete = window.confirm('Are you sure you want to delete this document? This action cannot be undone.');
-            if (confirmDelete) {
-                deleteDocument(document);
-            }
-        }
-
-    };
-
-    const handleShare = () => {
-        if (document && document.id) {
-            shareDocument({ id: document.id, shared: !document.shared })
-        }
-        else {
-            console.log('Error sharing document')
-        }
-    }
 
     return (
         <>
