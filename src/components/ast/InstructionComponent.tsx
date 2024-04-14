@@ -65,8 +65,6 @@ export const InstructionComponent: React.FC<InstructionProps> = ({ debug, parent
 
     });
 
-    if (debug) { console.log(instruction.content) }
-
     return (
         <div
             ref={(node) => disableInstructionProblemDrag ? ref(drop(node)) : node}

@@ -31,7 +31,7 @@ interface ChunkProps {
     updateChunk?: (updatedChunk: Chunk, chunkIndex: number) => void;
     chunkIndex: number;
     disableInstructionProblemDrag?: boolean;
-    landingPageDemo? : boolean; //only used for landing page
+    landingPageDemo?: boolean; //only used for landing page
 }
 
 type Direction = 'up' | 'down';
@@ -205,6 +205,11 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
             updateChunk && updateChunk(updatedChunk, chunkIndex)
             resetTextChange()
         }
+        if (submitTextSimilarData) {
+            const updatedChunk = submitTextSimilarData.chunk
+            updateChunk && updateChunk(updatedChunk, chunkIndex)
+            resetTextSimilar()
+        }
         if (searchData) {
             const updatedChunk = searchData.response[currentSearchResponseIndex]
             updateChunk && updateChunk(updatedChunk, chunkIndex)
@@ -252,20 +257,11 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
         }
         if (submitTextSimilarData) {
             console.log("new similar chunk", submitTextSimilarData)
-
-            if (submitTextSimilarData.chunk instanceof Array) {
-                const newChunk = { content: [...submitTextSimilarData.chunk] } as Chunk
-                updateChunk && updateChunk(newChunk, chunkIndex)
-                console.log("condition 2")
-            }
-            else {
-                console.log("chunk content is not expected type, chunk:", submitTextSimilarData.chunk, typeof (submitTextSimilarData.chunk.content))
-            }
-            resetTextSimilar()
+            
         }
         if (submitTextLatexData) {
             console.log("new problem from text_to_latex", submitTextLatexData)
-            
+
             const instruction = {
                 type: "instruction",
                 content: [{ type: "text", value: submitTextLatexData.instruction }]
@@ -309,11 +305,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
 
     }, [submitTextData, rerollData, submitTextSimilarData, submitTextLatexData, updateChunk, chunkIndex, resetTextSimilar, resetTextLatex, chunk, searchData, submitTextStepByStepData, resetTextStepByStep, submitImageData, resetImage])
 
-    console.log("start")
-    console.log(landingPageDemo == true || (id && chunk.content.length == 0 && !searchData) )
-    console.log(landingPageDemo == true)
-    console.log((id && chunk.content.length == 0 && !searchData) )
-    console.log("end")
+
 
     return (
         <>
@@ -337,15 +329,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
 
                     {!landingPageDemo && !id && <AddChunkModal chunk={chunk} modalId={'addChunkModal' + chunk.chunkId} enabled={false} />}
 
-                    {id && chunk.tags && Object.keys(chunk.tags).length > 0 && (
-                        <button
-                            className="btn btn-secondary tooltip tooltip-bottom"
-                            data-tip="Add problem to problem bank."
-                            onClick={handleReroll}
-                        >
-                            Reroll
-                        </button>
-                    )}
+
 
                     {id && (
                         <button
@@ -357,7 +341,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                             className="btn hover:bg-red-200 tooltip tooltip-bottom"
                             data-tip="Delete this problem from bank."
                         >
-                            <TrashIcon/>
+                            <TrashIcon />
                         </button>
                     )}
                 </div>
@@ -388,6 +372,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                     <div>
                         <div className='flex justify-items-between'>
                             <button className='w-1/12 mx-auto btn btn-secondary' onClick={() => setCurrentRerollIndex(calculateNewIndex(currentRerollIndex, rerollData.chunks.length, 'down'))}><ArrowLeft /></button>
+                            Use arrows to switch between ({rerollData?.chunks.length}) results
                             <button className='w-1/12 mx-auto btn btn-secondary' onClick={() => setCurrentRerollIndex(calculateNewIndex(currentRerollIndex, rerollData.chunks.length, 'up'))}><ArrowRight /></button>
                         </div>
                         New problem:
@@ -418,9 +403,10 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
 
 
                 {searchData && searchData?.response.length > 0 &&
-                    <div className='flex justify-items-between'>
-                        <button className="w-1/12 mx-auto btn btn-secondary" onClick={() => setCurrentSearchResponseIndex(calculateNewIndex(currentSearchResponseIndex, searchData?.response.length, 'down'))}><ArrowLeft /></button>
-                        <button className="w-1/12 mx-auto btn btn-secondary" onClick={() => setCurrentSearchResponseIndex(calculateNewIndex(currentSearchResponseIndex, searchData?.response.length, 'up'))}><ArrowRight /></button>
+                    <div className='flex justify-items-between text-lg'>
+                        <button className="w-1/12 mx-auto btn btn-secondary tooltip" data-tip="View previous result." onClick={() => setCurrentSearchResponseIndex(calculateNewIndex(currentSearchResponseIndex, searchData?.response.length, 'down'))}><ArrowLeft /></button>
+                        Use arrows to switch between ({searchData?.response.length}) results
+                        <button className="w-1/12 mx-auto btn btn-secondary tooltip" data-tip="View next result." onClick={() => setCurrentSearchResponseIndex(calculateNewIndex(currentSearchResponseIndex, searchData?.response.length, 'up'))}><ArrowRight /></button>
                     </div>
                 }
                 {searchData?.response && searchData?.response.length == 0 &&
@@ -453,8 +439,9 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                         Text changed:
                         {
                             submitTextData?.chunk.content?.map((changedItem, changedIndex) => {
-                                const rerollElement = (() => {
+                                const element = (() => {
                                     switch (changedItem.type) {
+                                        
                                         case 'instruction':
                                             return <InstructionComponent debug={env == "local"} chunkIndex={chunkIndex} instructionIndex={changedIndex} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} instruction={changedItem} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
                                         case 'problem':
@@ -466,7 +453,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
 
                                 return (
                                     <div key={`${changedItem.type}-${changedIndex}-${chunk.content.length}`}>
-                                        {chunkIndex == submitTextData?.chunkIndex && rerollElement}
+                                        {chunkIndex == submitTextData?.chunkIndex && element}
                                     </div>
                                 );
                             })}
@@ -474,11 +461,12 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
 
                 {chunkIndex == submitTextSimilarData?.chunkIndex &&
                     <div>
-                        Text changed:
+                        Text2 changed:
                         {
                             submitTextSimilarData?.chunk.content?.map((changedItem, changedIndex) => {
-                                const element = (() => {
+                                const element2 = (() => {
                                     switch (changedItem.type) {
+                                        
                                         case 'instruction':
                                             return <InstructionComponent debug={env == "local"} chunkIndex={chunkIndex} instructionIndex={changedIndex} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} instruction={changedItem} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
                                         case 'problem':
@@ -490,7 +478,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
 
                                 return (
                                     <div key={`${changedItem.type}-${changedIndex}-${chunk.content.length}`}>
-                                        {chunkIndex == submitTextSimilarData?.chunkIndex && element}
+                                        {chunkIndex == submitTextSimilarData?.chunkIndex && element2}
                                     </div>
                                 );
                             })}
@@ -506,12 +494,13 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                         {errorImage && errorImage.message}
                     </div>}
 
-                {id && (submitTextData || rerollData || searchData) && <>
+                {id && (submitTextData || rerollData || searchData || submitTextSimilarData) && <>
                     <button
                         className="btn btn-warning tooltip tooltip-bottom mr-4"
                         data-tip="Reject this change."
                         onClick={() => {
                             submitTextData && resetTextChange()
+                            submitTextSimilarData && resetTextSimilar()
                             rerollData && resetReroll()
                             searchData && resetSearchData()
                         }}
@@ -539,7 +528,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                     />
 
                     <div className='space-x-2'>
-                        
+
 
                         {!landingPageDemo && env == "local" &&
                             <ImageUploader
@@ -578,6 +567,15 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                         className="input input-bordered w-full max-w-lg m-2"
                     />
                     <div className='space-x-2'>
+                        {id && chunk.tags && Object.keys(chunk.tags).length > 0 && (
+                            <button
+                                className="btn btn-secondary tooltip tooltip-bottom"
+                                data-tip="Find similar problems."
+                                onClick={handleReroll}
+                            >
+                                Reroll
+                            </button>
+                        )}
                         {env == "local" && <button
                             className="btn btn-secondary tooltip tooltip-bottom"
                             data-tip={env == "local" ? "This is a dev only at the moment. " : "Send your input."}
