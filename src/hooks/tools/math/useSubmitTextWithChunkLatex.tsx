@@ -8,10 +8,11 @@ import { Chunk } from '../../../interfaces';
 interface SubmitTextWithChunkResponse {
     chunk?: Chunk;
     latex?: string;
+    instruction?: string;
     chunkIndex?: number;
 }
 
-const useSubmitTextWithChunk = (endpoint: string) => {
+const useSubmitTextWithChunkLatex = (endpoint: string) => {
     const { session } = useClerk();
     const { language } = useLanguage();
     const options = { site_language: languageNames[language] };
@@ -50,4 +51,4 @@ const useSubmitTextWithChunk = (endpoint: string) => {
     };
 };
 
-export default useSubmitTextWithChunk;
+export default useSubmitTextWithChunkLatex;

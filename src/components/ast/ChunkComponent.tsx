@@ -64,7 +64,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
 
     const [isHovered, setIsHovered] = useState(false);
 
-    const [userInput, setUserInput] = useState("")
+    const [userInput, setUserInput] = useState(landingPageDemo ? "integral from 0 to 2 x^2" : "")
 
     const [, ref] = useDrag({
         type: CHUNK_DRAG_TYPE,
@@ -267,11 +267,17 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
         }
         if (submitTextLatexData) {
             console.log("new problem from text_to_latex", submitTextLatexData)
+            
+            const instruction = {
+                type: "instruction",
+                content: [{ type: "text", value: submitTextLatexData.instruction }]
+            } as Instruction
+
             const problem = {
                 type: "problem",
                 content: [{ type: "math", value: submitTextLatexData.latex }]
             } as Problem
-            const chunk: Chunk = { content: [problem], type: "chunk", tags: {}, ...submitTextLatexData.chunk }
+            const chunk: Chunk = { content: [instruction, problem], type: "chunk", tags: {}, ...submitTextLatexData.chunk }
             console.log("new chunk!", chunk)
             updateChunk && updateChunk(chunk, chunkIndex)
             resetTextLatex()
@@ -525,10 +531,10 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
 
                 {(landingPageDemo || (id && chunk.content.length == 0 && !searchData)) && <>
                     {/* if a problem does not yet exist */}
-                    <div>Create a new problem here by typing some text.</div>
+                    <div className='mx-8'>Create a new formatted problem here by typing some text.</div>
                     <input
                         type="text"
-                        placeholder="Easy Derivative, or y=mx+b."
+                        placeholder="integral from 0 to 2 x^2, y=mx+b, f(g(x))"
                         value={userInput} // Assuming userInput is your state variable
                         onChange={(e) => setUserInput(e.target.value)} // And setUserInput is the setter
                         className="input input-bordered w-full max-w-lg m-2"

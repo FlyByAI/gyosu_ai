@@ -12,7 +12,7 @@ export const renderContent = (content: (Text | Math | Table | Image | Subproblem
         return <div key={index}>{renderItem(item, debug)}</div>
     });
 }
-export const renderItem = (item: Text | Math | Table | Image | Subproblems | Problem | Instruction, debug=false) => {
+export const renderItem = (item: Text | Math | Table | Image | Subproblems | Problem | Instruction, debug = false) => {
     switch (item.type) {
         case 'text':
             return (
@@ -20,7 +20,14 @@ export const renderItem = (item: Text | Math | Table | Image | Subproblems | Pro
                     className={`${debug && "tooltip"} text-xs md:text-lg z-10  border-2 border-transparent border-dashed hover:border-2 p-1 m-1 group-hover:border-2 group-hover:border-dashed`}
                     data-tip={debug ? "text" : undefined}
                 >
-                    {item.value}
+                    <ReactMarkdown
+                        className={`${debug && "tooltip"} text-xs md:text-lg z-10  border-gray-100 border-2 border-transparent border-dashed hover:border-2 p-1 m-1 group-hover:border-2 group-hover:border-dashed`}
+                        remarkPlugins={[remarkGfm, remarkMath]}
+                        rehypePlugins={[rehypeKatex]}
+
+                    >
+                        {item.value}
+                    </ReactMarkdown>
                 </div>
             );
         case 'math':
@@ -33,7 +40,7 @@ export const renderItem = (item: Text | Math | Table | Image | Subproblems | Pro
                         className={`${debug && "tooltip"} text-xs md:text-lg z-10  border-gray-100 border-2 border-transparent border-dashed hover:border-2 p-1 m-1 group-hover:border-2 group-hover:border-dashed`}
                         remarkPlugins={[remarkGfm, remarkMath]}
                         rehypePlugins={[rehypeKatex]}
-                        
+
                     >
 
                         {String.raw`$${item.value}$`.replace("?", "\\text{?}").replace("\\[", "$$").replace("\\]", "$$").replace("\\(", "$").replace("\\)", "$")}
@@ -53,7 +60,7 @@ export const renderItem = (item: Text | Math | Table | Image | Subproblems | Pro
                         {String.raw`${item.value}`}
                     </ReactMarkdown>
                 </div>
-                    
+
             );
         case 'image':
             //todo: get better alt descriptions added to the image ASTs
