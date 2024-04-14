@@ -1,4 +1,3 @@
-import 'flag-icon-css/css/flag-icons.min.css';
 import { useState } from "react";
 import { useLanguage } from "../contexts/useLanguage";
 import { languageNames } from "../helpers/language";
@@ -8,7 +7,7 @@ interface LanguageDropdownProps {
 }
 
 const LanguageDropdown = ({ className }: LanguageDropdownProps) => {
-    const { language, setLanguage } = useLanguage();
+    const { setLanguage } = useLanguage();
     const [showOptions, setShowOptions] = useState(false);
 
     const handleLanguageChange = (lang: string) => {

@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
 import 'katex/dist/katex.min.css';
-import { InlineMath, BlockMath } from 'react-katex';
+import React, { useState } from 'react';
+import { InlineMath } from 'react-katex';
 
 const MathInput: React.FC = () => {
     const [input, setInput] = useState('c = \\pm\\sqrt{a^2 + b^2}');
