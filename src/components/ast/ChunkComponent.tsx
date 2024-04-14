@@ -555,7 +555,6 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                                 }} />
                         }
 
-                        {/* Upload */}
                         {/* </button> */}
                         {!landingPageDemo && <button
                             className="btn btn-secondary tooltip tooltip-left"
