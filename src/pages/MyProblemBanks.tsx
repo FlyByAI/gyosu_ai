@@ -80,63 +80,71 @@ const MyProblemBanks: React.FC = () => {
         setCreatedNewDocument(true);
     };
 
-    
+
 
 
     return (
         <div className="py-4">
             {/* {showBankElement()} */}
-
-            <button onClick={handleAddDocument} className="btn btn-secondary w-1/3 mx-auto rounded-lg flex items-center justify-center gap-2 py-2 text-sm md:text-lg ">
-                Create new<PlusIcon className="w-5 h-5" />
+            <div className="text-3xl font-semibold text-center my-4">
+                Manage your Problem Banks
+                <p className="text-2xl text-gray-600 mt-4">Select a bank to view or create a new one. Here, you can organize and access all your problem sets easily.</p>
+            </div>
+            <button onClick={handleAddDocument} className="btn btn-secondary w-1/3 mx-auto rounded-lg flex items-center justify-center gap-2 py-2 my-8 text-lg md:text-xl">
+                Create new problem bank<PlusIcon className="w-7 h-7" />
             </button>
             <div className="w-full" >
                 <div className="flex flex-row justify-center mt-4 mx-4">
                     {/* DaisyUI Accordion */}
                     <div className="w-full md:w-3/4" tabIndex={0}>
-                        <div className="">
-                            <div className="flex items-center justify-center w-full">
-                                My Problem Banks
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                                </svg>
-                            </div>
-                            {/* Content of the Accordion */}
-                            <div className='accordion space-y-4'>
-                                {documents?.sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
-                                    .map((doc, index) => (
-                                        <>
-                                            <div className="flex flex-row justify-between">
-                                                <EditTitle title={doc?.title} onUpdateTitle={(title) => updateDocument({ document: { ...doc, title: title } })} />
-                                                <div className='flex flex-row ms-4'>
-                                                    <button className="btn btn-primary tooltip" data-tip="View this problem bank." onClick={() => navigate(`/math-app/bank/${doc.id}`)}>View</button>
-                                                    <button
-                                                        className="btn btn-error tooltip tooltip-left ms-4"
-                                                        data-tip="Delete this problem bank."
-                                                        onClick={(e) => {
-                                                            e.stopPropagation();
-                                                            handleDeleteClick(doc);
-                                                        }}
-                                                    >
-                                                        <TrashIcon />
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <div className="collapse collapse-arrow join-item border border-base-300" key={index}>
-                                                <input type="radio" name="my-accordion-4" id={`accordion-${index}`} defaultChecked={index === 0} />
-                                                <label htmlFor={`accordion-${index}`} className="collapse-title text-xl font-medium flex flex-row justify-between">
-                                                    {/* <h3 className="text-lg font-medium truncate">{doc.title}</h3> */}
+                        <div className="flex items-center justify-center w-full text-xl">
+                            Problem Banks
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </div>
 
-                                                    {doc?.problemChunks?.length || 0} problems
-                                                </label>
-                                                <div className="collapse-content">
+                        {/* Content of the Accordion */}
+                        <div className='accordion space-y-4'>
+                            {documents?.sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
+                                .map((doc, index) => (
+                                    <>
+                                        <div className="flex flex-row justify-between">
+                                            <EditTitle title={doc?.title} onUpdateTitle={(title) => updateDocument({ document: { ...doc, title: title } })} />
+                                            <div className='flex flex-row ms-4'>
+                                                <button className="btn btn-primary tooltip" data-tip="View this problem bank." onClick={() => navigate(`/math-app/bank/${doc.id}`)}>View</button>
+                                                <button
+                                                    className="btn btn-error tooltip tooltip-left ms-4"
+                                                    data-tip="Delete this problem bank."
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        handleDeleteClick(doc);
+                                                    }}
+                                                >
+                                                    <TrashIcon />
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div className="collapse collapse-arrow join-item border border-base-300"
+                                            key={index}>
+                                            <input type="radio" name="my-accordion-4" id={`accordion-${index}`} defaultChecked={index === 0} />
+                                            <label htmlFor={`accordion-${index}`} className="collapse-title text-xl font-medium flex flex-row justify-between">
+                                                {/* <h3 className="text-lg font-medium truncate">{doc.title}</h3> */}
+
+                                                {doc?.problemChunks?.length || 0} problems
+                                            </label>
+                                            <div className="collapse-content relative group">
+                                                <div
+                                                    className="tooltip w-full text-left hover:border-2 hover:border-secondary"
+                                                    data-tip="Click to view"
+                                                >
                                                     <ProblemBankPreview document={doc} />
                                                 </div>
                                             </div>
-                                        </>
-                                    ))}
-                            </div>
 
+                                        </div>
+                                    </>
+                                ))}
                         </div>
                     </div>
                 </div>
