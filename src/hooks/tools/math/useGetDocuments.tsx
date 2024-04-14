@@ -1,7 +1,6 @@
 import { useClerk } from '@clerk/clerk-react';
 import { useQuery } from '@tanstack/react-query';
 import humps from 'humps';
-import { useRef } from 'react';
 import { Document } from '../../../interfaces';
 
 const fetchDocuments = async (endpoint: string, token: string | null) => {
@@ -22,7 +21,6 @@ const fetchDocuments = async (endpoint: string, token: string | null) => {
 
 const useGetDocuments = (endpoint: string) => {
     const { session } = useClerk();
-    const lastSessionRef = useRef(session);
 
     const query = useQuery<Document[], Error>(['documents', endpoint], async () => {
         const token = session ? await session.getToken() : 'none';

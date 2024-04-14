@@ -6,7 +6,6 @@ import toast from 'react-hot-toast';
 import ContentWrapper from '../components/ContentWrapper';
 import CreateDocxModal from '../components/CreateDocxModal';
 import { ChunkComponent } from '../components/ast/ChunkComponent';
-import { useScreenSize } from '../contexts/ScreenSizeContext';
 import { useSidebarContext } from '../contexts/useSidebarContext';
 import useSubmitDocument from '../hooks/tools/math/useSubmitDocument';
 import useEnvironment from '../hooks/useEnvironment';
@@ -25,7 +24,6 @@ const ProblemBank: React.FC = () => {
 
     const { activeChunkIndices } = useSidebarContext();
 
-    const { isDesktop } = useScreenSize();
 
 
     const insertChunk = useCallback((index: number) => {

@@ -4,7 +4,6 @@ import { DropTargetMonitor, useDrag, useDrop } from 'react-dnd';
 import { useParams } from 'react-router-dom';
 import { GridLoader } from 'react-spinners';
 import { useDragContext } from '../../contexts/DragContext';
-import { useScreenSize } from '../../contexts/ScreenSizeContext';
 import { renderItem } from '../../helpers/AstRender';
 import useGetDocument from '../../hooks/tools/math/useGetDocument';
 import useImageUpload from '../../hooks/tools/math/useImageUpload';
@@ -128,7 +127,6 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
 
     };
 
-    const { isDesktop } = useScreenSize();
 
 
     const handleReroll = () => {
