@@ -53,7 +53,7 @@ const OverflowMenu: React.FC<OverflowMenuProps> = ({ children, variant, type = "
         <div className="relative hover:bg-base-300" ref={menuRef}>
             {isOpen && (
                 <div
-                    className={`p-2 text-black z-30 absolute ${variant === "top" ? "-top-12" : "top-0"} right-0 flex flex-row-reverse items-center rounded-lg`}
+                    className={`p-2 z-50 absolute ${variant === "top" ? "-top-12" : "top-0"} right-0 flex flex-row-reverse items-center rounded-lg`}
                 >
                     {renderMenuContent()}
                 </div>
