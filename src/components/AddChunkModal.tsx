@@ -30,7 +30,7 @@ const AddChunkModal: React.FC<AddChunkModalProps> = ({ chunk, modalId, variant }
             </button>
 
             {currentModal === modalId && (
-                <div className="fixed inset-0 flex items-center justify-center z-50 text-white">
+                <div className="fixed inset-0 flex items-center justify-center z-50">
                     <div className="bg-base-100 p-2 rounded shadow-lg w-5/6 md:w-3/4 max-w-2xl">
                         <div className="p-4 rounded shadow-lg">
                             <AddChunkForm chunk={chunk} />

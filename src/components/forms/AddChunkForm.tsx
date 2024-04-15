@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast/headless';
 import { useScreenSize } from '../../contexts/ScreenSizeContext';
 import { useModal } from '../../contexts/useModal';
@@ -25,9 +25,17 @@ const AddChunkForm: React.FC<AddChunkFormProps> = ({ chunk, preview }) => {
     const endpoint = `${apiUrl}/math_app/school_document/list/`;
     const { documents, error } = useGetDocuments(endpoint);
     const endpoint2 = `${apiUrl}/math_app/school_document/`;
-    const { updateDocument, submitDocument } = useSubmitDocument(endpoint2);
+    const { updateDocument, submitDocument, data: submitDocumentData } = useSubmitDocument(endpoint2);
 
     const selectedDocument = documents?.find((doc) => doc.id === selectedBank);
+
+    useEffect(() => {
+        console.log(submitDocumentData)
+        if (submitDocumentData) {
+            toast('Problem bank created successfully');
+            setSelectedBank(submitDocumentData.id);
+        }
+    }, [submitDocumentData])
 
     const handleDocumentClick = async () => {
         if (selectedBank !== null) {
@@ -64,16 +72,17 @@ const AddChunkForm: React.FC<AddChunkFormProps> = ({ chunk, preview }) => {
 
     };
 
+    
+
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const { isDesktop } = useScreenSize();
 
     return (
         <div className="max-w-4xl mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
-                
                 {/* Add to Existing Problem Bank */}
                 <div className="flex flex-col items-center justify-start space-y-4">
-                    <label className="text-white self-start mb-1">Add To Existing Problem Bank:</label>
+                    <label className="self-start mb-1">Add To Existing Problem Bank:</label>
                     <select
                         className="select select-bordered w-full"
                         value={selectedBank || ''}

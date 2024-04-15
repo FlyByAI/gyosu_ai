@@ -128,17 +128,16 @@ const ProblemBankSidebarItem: React.FC<DocumentItemProps> = ({ document, onDropC
 
 
     return (
-        <>
             <li ref={dropRef}
                 className={`${id === document.id ? "bg-primary" : "bg-base-200"} p-2 rounded-lg overflow-hidden relative cursor-pointer border border-base-300 hover:border-primary transition-all duration-300 ${getDropStyle()} ${getDragStyle()}`}
                 onClick={handleClick}
             >
-                <div className="absolute top-2 right-2 flex space-x-2 z-20">
+                <div className="absolute top-2 right-2 flex space-x-2">
                     <OverflowMenu variant="bottom" isOpen={isOverflowOpen} setIsOpen={setIsOverflowOpen}>
-                        <button onClick={handleEditClick} className="btn tooltip tooltip-left" data-tip="Edit">
+                        <button onClick={handleEditClick} className="btn tooltip tooltip-left hover:bg-green-100" data-tip="Edit">
                             <EditIcon />
                         </button>
-                        <button onClick={handleDeleteClick} className="btn tooltip tooltip-left" data-tip="Delete">
+                        <button onClick={handleDeleteClick} className="btn tooltip tooltip-right hover:bg-red-100" data-tip="Delete">
                             <TrashIcon />
                         </button>
                     </OverflowMenu>
@@ -165,8 +164,6 @@ const ProblemBankSidebarItem: React.FC<DocumentItemProps> = ({ document, onDropC
                     </div>
                 </div>
             </li>
-
-        </>
     );
 };
 
