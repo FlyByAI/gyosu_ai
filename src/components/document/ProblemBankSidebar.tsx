@@ -88,13 +88,8 @@ const ProblemBankSidebar: React.FC<ProblemBankShelfProps> = ({ isExporting }) =>
 
     };
 
-
-    const createButtonClass = documents && documents.length > 0
-        ? "spacing-x-2 items-center justify-center w-full bg-blue-500 hover:bg-blue-700 h-10 p-2 rounded-md text-white font-extrabold flex-row flex"
-        : "spacing-x-2 items-center justify-center w-full bg-green-500 hover:bg-green-700 h-10 p-4 rounded-md text-white font-extrabold text-lg flex-row flex";
-
     return (<>
-        <div className="z-10 flex flex-col w-full bg-base-200 p-4 top-[80px] md:top-[144px] h-[calc(100vh_-_80px)] md:h-[calc(100vh_-_144px)]">
+        <div className="flex flex-col w-full bg-base-200 p-4 h-[calc(100vh_-_80px)] md:h-[calc(100vh_-_144px)]">
             <div className="flex flex-col items-center mb-4">
                 {location.pathname !== '/math-app' && (
                     <Link to="/math-app" className="btn btn-primary w-full rounded-lg font-bold flex items-center justify-center gap-2 py-2 text-sm md:text-lg">

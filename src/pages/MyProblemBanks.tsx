@@ -1,12 +1,10 @@
 
 import React, { useEffect, useState } from 'react';
-import ProblemBankSidebar from '../components/document/ProblemBankSidebar';
 import useGetDocuments from '../hooks/tools/math/useGetDocuments';
 import useSubmitDocument from '../hooks/tools/math/useSubmitDocument';
 import useEnvironment from '../hooks/useEnvironment';
 import { useRequireSignIn } from '../hooks/useRequireSignIn';
 import PlusIcon from '../svg/PlusIcon';
-import { getShowClass } from './ProblemSearch';
 
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
@@ -42,17 +40,6 @@ const MyProblemBanks: React.FC = () => {
     if (error) {
         return <div>Error loading documents: {(error as unknown as Error).message}</div>;
     }
-    const showBankElement = () => {
-        return (
-            <div className='w-1/4'>
-                <div style={{ position: 'fixed', top: '80px', left: '10px', zIndex: 999 }}> {/* This div contains the sidebar */}
-                    <div className={`card bg-base-200 shadow-lg my-4 md:my-0 md:mr-4 p-4 ${getShowClass('desktop')}`}>
-                        <ProblemBankSidebar isExporting={false} />
-                    </div>
-                </div >
-            </div>
-        )
-    }
 
     const handleDeleteClick = (document: Document) => {
         if (document) {
@@ -79,8 +66,6 @@ const MyProblemBanks: React.FC = () => {
         toast('Created new problem bank...')
         setCreatedNewDocument(true);
     };
-
-
 
 
     return (
