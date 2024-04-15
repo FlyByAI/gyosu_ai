@@ -40,11 +40,6 @@ const ChatTutorial = ({ startStreaming, updateTextbox}: ChatTutorialProps) => {
             placement: 'right' as const,
         },
         {
-            target: '.hamburger-menu',
-            content: 'Use this menu to navigate to different parts of the application, including viewing any exported documents created by the agent.',
-            placement: 'right' as const,
-        },
-        {
             target: '.share-button',
             content: 'Share a copy of this chat session with another user.',
             placement: 'left' as const,
