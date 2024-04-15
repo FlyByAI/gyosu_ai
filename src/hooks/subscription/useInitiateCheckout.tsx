@@ -1,5 +1,6 @@
 import { useClerk } from '@clerk/clerk-react';
-import { loadStripe } from '@stripe/stripe-js';
+import { StripeError, loadStripe } from '@stripe/stripe-js';
+
 import { useState } from 'react';
 import { notSecretConstants } from '../../constants/notSecretConstants';
 import useEnvironment from '../useEnvironment';
@@ -13,10 +14,15 @@ interface IInitiateOptions {
     coupon?: string;
 }
 
-const useInitiateCheckout = (endpoint: string) => {
+const useInitiateCheckout = (endpoint: string): {
+    initiateCheckout: (options: IInitiateOptions) => Promise<void>;
+    isLoading: boolean;
+    error: Error | null;
+    data: ICheckoutResponse | null;
+} => {
     const { session } = useClerk();
     const [isLoading, setLoading] = useState<boolean>(false);
-    const [error, setError] = useState<string | null>(null);
+    const [error, setError] = useState<Error | null>(null);
     const [data, setData] = useState<ICheckoutResponse | null>(null);
 
     const { env } = useEnvironment();
@@ -38,21 +44,21 @@ const useInitiateCheckout = (endpoint: string) => {
             const response = await fetch(endpoint, {
                 method: 'POST',
                 headers: {
-                    'Authorization': 'Bearer ' + token,
+                    'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(requestBody)
             });
 
             if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.statusText} ${response.status}`);
+                const errorResponse: Error | StripeError = await response.json();  // Fetch error message if any
+                throw new Error(errorResponse.message || `HTTP error! Status: ${response.statusText} ${response.status}`);
             }
 
-            const sessionData = await response.json() as ICheckoutResponse;
+            const sessionData: ICheckoutResponse = await response.json();
             setData(sessionData);
 
             const stripe = await stripePromise;
-
             const result = await stripe?.redirectToCheckout({
                 sessionId: sessionData.sessionId,
             });
@@ -62,8 +68,8 @@ const useInitiateCheckout = (endpoint: string) => {
             }
 
             setLoading(false);
-        } catch (err: any) {
-            setError(err.message);
+        } catch (err) {
+            setError(err instanceof Error ? err : new Error('An unknown error occurred'));
             setLoading(false);
         }
     };

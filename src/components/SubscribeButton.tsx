@@ -2,6 +2,7 @@ import React, { FormEvent } from 'react';
 
 import { useClerk } from '@clerk/clerk-react';
 import { Link } from 'react-router-dom';
+import { GridLoader } from 'react-spinners';
 import useInitiateCheckout from '../hooks/subscription/useInitiateCheckout';
 import useEnvironment from '../hooks/useEnvironment';
 
@@ -120,7 +121,7 @@ const SubscribePaidButton = ({ className }: { className?: string }) => {
     const { session, openSignIn } = useClerk();
 
     const { apiUrl } = useEnvironment();
-    const { initiateCheckout } = useInitiateCheckout(`${apiUrl}/stripe/create-checkout-session/paid/`)
+    const { initiateCheckout, error, isLoading } = useInitiateCheckout(`${apiUrl}/stripe/create-checkout-session/paid/`)
 
     const handleCheckout = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -137,22 +138,33 @@ const SubscribePaidButton = ({ className }: { className?: string }) => {
     };
 
     return (
-        <form onSubmit={handleCheckout} className={"flex flex-col items-center " + className}>
-            <div className="form-control w-full mt-4">
-                <input
-                    type="text"
-                    name="coupon"
-                    placeholder="Enter coupon"
-                    className="input input-bordered"
-                />
+        <>
+            <form onSubmit={handleCheckout} className={"flex flex-col items-center " + className}>
+                <div className="form-control w-full mt-4">
+                    <input
+                        type="text"
+                        name="coupon"
+                        placeholder="Enter coupon"
+                        className="input input-bordered"
+                    />
+                </div>
+                <button
+                    type="submit"
+                    className="btn btn-primary mt-4 w-full"
+                >
+                    Subscribe
+                </button>
+            </form>
+            {isLoading &&
+                <div>
+                    <GridLoader color="#4A90E2" size={4} margin={4} speedMultiplier={.75} className='mr-2' />
+                    <p>Thank you for your support! Preparing your checkout session.</p>
+                </div>
+            }
+            <div>
+                {error && <p className="text-red-500">{error.message}</p>}
             </div>
-            <button
-                type="submit"
-                className="btn btn-primary mt-4 w-full"
-            >
-                Subscribe
-            </button>
-        </form>
+        </>
 
     );
 };
