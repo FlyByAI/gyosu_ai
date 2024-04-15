@@ -299,7 +299,7 @@ const GyosuAIChat = () => {
                                     className="btn btn-circle btn-ghost"
                                 >
 
-                                    {isDesktop && <div data-tip="Share this chat session with a friend!" data-for='shareChatSession' className='tooltip tooltip-left'>
+                                    {isDesktop && <div data-tip="Share this chat session with a friend!" data-for='shareChatSession' className='share-button tooltip tooltip-left'>
                                         <ShareIcon width="32" height="32" />
                                     </div>}
                                 </button>
@@ -308,7 +308,7 @@ const GyosuAIChat = () => {
                                         disabled={!sessionId}
                                         className="btn btn-circle btn-ghost"
                                     >
-                                        {isDesktop && <div data-tip="View the artifacts you've created for this session!" data-for='chatArtifactsButton' className='tooltip tooltip-left'>
+                                        {isDesktop && <div data-tip="View the artifacts you've created for this session!" data-for='chatArtifactsButton' className='artifact-button tooltip tooltip-left'>
                                             <OutlineIcon width="32" height="32" />
                                         </div>}
                                     </button>
@@ -317,7 +317,7 @@ const GyosuAIChat = () => {
                                     <button onClick={() => setRunTutorial(true)}
                                         className="btn btn-circle btn-ghost"
                                     >
-                                        {isDesktop && <div data-tip="Show chat tutorial!" data-for='tutorialButton' className='tooltip tooltip-left'>
+                                        {isDesktop && <div data-tip="Show chat tutorial!" data-for='tutorialButton' id="start-tutorial-button" className='tooltip tooltip-left'>
                                             <QuestionIcon width="32" height="32" />
                                         </div>}
                                     </button>
@@ -399,12 +399,12 @@ const GyosuAIChat = () => {
                             value={userInput}
                             onChange={handleInputChange}
                             onKeyDown={handleKeyPress}
-                            className="textarea textarea-bordered flex-grow mx-2 h-16"
+                            className="text-input textarea textarea-bordered flex-grow mx-2 h-16"
                             rows={1}
                         />
                         <button
                             type="submit"
-                            className="btn btn-primary rounded-lg w-20 h-16 px-4 py-2 mr-2 disabled:btn-disabled"
+                            className="send-button btn btn-primary rounded-lg w-20 h-16 px-4 py-2 mr-2 disabled:btn-disabled"
                             disabled={isLoading}
                         >
                             Send
