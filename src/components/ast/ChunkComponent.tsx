@@ -518,7 +518,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
 
                 {(landingPageDemo || (id && chunk.content.length == 0 && !searchData)) && <>
                     {/* if a problem does not yet exist */}
-                    {!landingPageDemo && <div className='mx-8'>Create: Create a new formatted problem here by typing some text and hitting create.</div>}
+                    {!landingPageDemo && <div className='mx-8'>Search or create a problem here!</div>}
                     <div className='mx-8'>Describe what you are looking for in a few words.</div>
                     <input
                         type="text"
@@ -543,14 +543,14 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                         {/* </button> */}
                         <button
                             className="btn btn-secondary tooltip tooltip-left"
-                            data-tip="Find a math problem using your text description."
+                            data-tip="Find a math problem using your text description. Try: word problem, unit circle, fractions multiplication."
                             onClick={handleSearch}
                         >
                             Search
                         </button>
                         {!landingPageDemo && <button
                             className="btn btn-secondary tooltip tooltip-left"
-                            data-tip="Create a latex formatted math problem using your text description."
+                            data-tip="Create a latex formatted math problem using your text description. Try: integral x^2."
                             onClick={handleTextToLatex}
                         >
 
