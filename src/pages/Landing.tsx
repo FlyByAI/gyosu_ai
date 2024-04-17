@@ -65,8 +65,11 @@ const LandingPage: React.FC = () => {
             </section>
             <section className="h-full bg-white py-8" >
                 <h1 className='font-bold w-full text-center text-3xl md:text-5xl mb-4'>
-                    Create problems from text input. Try it!
+                    Search our exercise problems using simple descriptions. Try it!
                 </h1>
+                <p className='italic w-full text-center text-2xl mb-4 text-slate-500 '>
+                    For example: "word problems, fractions"
+                </p>
                 <DemoChunkComponent />
             </section>
             <section className="h-full bg-blue-100 justify-center py-8 text-gray-700 flex flex-col items-center" style={{ backgroundPosition: 'center', backgroundRepeat: 'repeat', backgroundSize: 'cover' }}>

@@ -63,7 +63,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
 
     const [isHovered, setIsHovered] = useState(false);
 
-    const [userInput, setUserInput] = useState(landingPageDemo ? "integral from 0 to 2 x^2" : "")
+    const [userInput, setUserInput] = useState(landingPageDemo ? "word problems, fractions" : "")
 
     const [, ref] = useDrag({
         type: CHUNK_DRAG_TYPE,
@@ -494,7 +494,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                         {errorImage && errorImage.message}
                     </div>}
 
-                {id && (submitTextData || rerollData || searchData || submitTextSimilarData) && <>
+                {landingPageDemo || (id && (submitTextData || rerollData || searchData || submitTextSimilarData)) && <>
                     <button
                         className="btn btn-warning tooltip tooltip-bottom mr-4"
                         data-tip="Reject this change."
@@ -518,10 +518,11 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
 
                 {(landingPageDemo || (id && chunk.content.length == 0 && !searchData)) && <>
                     {/* if a problem does not yet exist */}
-                    <div className='mx-8'>Create a new formatted problem here by typing some text.</div>
+                    {!landingPageDemo && <div className='mx-8'>Search or create a problem here!</div>}
+                    <div className='mx-8'>Describe what you are looking for in a few words.</div>
                     <input
                         type="text"
-                        placeholder="integral from 0 to 2 x^2, y=mx+b, f(g(x))"
+                        placeholder="Describe a math problem in text (ex: x^2 + 1), or search for a problem."
                         value={userInput} // Assuming userInput is your state variable
                         onChange={(e) => setUserInput(e.target.value)} // And setUserInput is the setter
                         className="input input-bordered w-full max-w-lg m-2"
@@ -540,21 +541,21 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                         }
 
                         {/* </button> */}
-                        {!landingPageDemo && <button
+                        <button
                             className="btn btn-secondary tooltip tooltip-left"
-                            data-tip="Find a math problem using your text description."
+                            data-tip="Find a math problem using your text description. Try: word problem, unit circle, fractions multiplication."
                             onClick={handleSearch}
                         >
                             Search
-                        </button>}
-                        <button
+                        </button>
+                        {!landingPageDemo && <button
                             className="btn btn-secondary tooltip tooltip-left"
-                            data-tip="Create a latex formatted math problem using your text description."
+                            data-tip="Create a latex formatted math problem using your text description. Try: integral x^2."
                             onClick={handleTextToLatex}
                         >
 
                             Create
-                        </button>
+                        </button>}
                     </div>
                 </>}
 
