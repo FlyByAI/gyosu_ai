@@ -22,7 +22,7 @@ const useSubmitTextWithChunkLatex = (endpoint: string) => {
             const token = session ? await session.getToken() : "none";
             const body = humps.decamelizeKeys({ userInput, problemBankId, ...options });
 
-            const response = await fetch(endpoint + "text_to_latex/", {
+            const response = await fetch(endpoint, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
