@@ -175,23 +175,8 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
     }
 
     const handleSearch = () => {
-        console.log("search for problem", userInput)
-        if (!searchData) {
-            console.log("searching")
-            submitMathForm({ data: { userInput: userInput } })
-        }
-        else {
-            console.log("looping", currentSearchResponseIndex, searchData.response.length)
-            console.log(searchData?.response[currentSearchResponseIndex])
-            setCurrentSearchResponseIndex((prev) => {
-                if (prev === searchData.response.length - 1) {
-                    return 0
-                }
-                else {
-                    return prev + 1
-                }
-            })
-        }
+        console.log("searching")
+        submitMathForm({ data: { userInput: userInput } })
     }
 
     const handleAcceptChunkChange = () => {
