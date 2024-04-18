@@ -14,20 +14,18 @@ export const renderContent = (content: (Text | Math | Table | Image | Subproblem
 }
 
 const escapeDollarSigns = (text: string): string => {
-    // This regex matches a dollar sign followed by digits, but only if the dollar sign
-    // is either at the start of the string or preceded by a non-word character (like a space or punctuation).
-    // It ensures that the dollar sign used in expressions like $12 is escaped, but not in LaTeX like $x+y$
-    return text.replace(/(^|\W)\$(?=\d+)/g, '$1\\$');
-  };
+    return text.replace(/(?<!\$)\$(?=\d+\b(?!\$))/g, '\\$');
 
+  };
+  
   const testCases = [
     "It costs $20 to enter.",
     "The formula $2x+1$ when x = 5 is 11.",
-    "The integral of $x^2$ from $0$ to $2$ is $\frac{2^3}{3} - \frac{0^3}{3}$.",
+    "The integral of $x^2$ from $0$ to $2$ is $\\frac{2^3}{3} - \\frac{0^3}{3}$.",
     "You owe me $100.",
     "$1000 is a lot of money.",
     "He said, \"$100 is not much.\"",
-    "What is the value of $x$ if $2x + $10 = $50?"
+    "What is the value of $x$ if $2x + $10 = $50?$"
   ];
   
   // Apply the escape function to each test case
