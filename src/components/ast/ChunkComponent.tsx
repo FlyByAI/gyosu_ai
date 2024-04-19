@@ -148,9 +148,9 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
 
     const { submitReroll, data: rerollData, reset: resetReroll, isLoading: isLoadingReroll } = useSubmitReroll(`${apiUrl}/math_app/reroll/`)
     const { submitMathForm, data: searchData, reset: resetSearchData, isLoading: isLoadingSearch, error: errorSearch } = useSubmitMathForm(`${apiUrl}/math_app/generate/`)
-    const { submitTextWithChunk, data: submitTextData, reset: resetTextChange, isLoading: isLoadingSubmitText, error: errorText } = useSubmitTextWithChunk(`${apiUrl}/math_app/chat/problem/`)
-    const { submitTextWithChunkLatex, data: submitTextLatexData, reset: resetTextLatex, isLoading: isLoadingSubmitTextLatex, error: errorTextLatex } = useSubmitTextWithChunkLatex(`${apiUrl}/math_app/chat/problem/`)
-    const { submitTextWithChunkSimilar, data: submitTextSimilarData, reset: resetTextSimilar, isLoading: isLoadingSubmitTextSimilar, error: errorTextSimilar } = useSubmitTextWithChunkSimilar(`${apiUrl}/math_app/chat/problem/`)
+    const { submitTextWithChunk, data: submitTextData, reset: resetTextChange, isLoading: isLoadingSubmitText, error: errorText } = useSubmitTextWithChunk(`${apiUrl}/math_app/chat/problem/agent/`)
+    const { submitTextWithChunkLatex, data: submitTextLatexData, reset: resetTextLatex, isLoading: isLoadingSubmitTextLatex, error: errorTextLatex } = useSubmitTextWithChunkLatex(`${apiUrl}/math_app/chat/problem/text_to_latex/`)
+    const { submitTextWithChunkSimilar, data: submitTextSimilarData, reset: resetTextSimilar, isLoading: isLoadingSubmitTextSimilar, error: errorTextSimilar } = useSubmitTextWithChunkSimilar(`${apiUrl}/math_app/chat/problem/similar/`)
     const { uploadImage, data: submitImageData, reset: resetImage, isLoading: isLoadingSubmitImage, error: errorImage } = useImageUpload(`${apiUrl}/math_app/chat/image/`)
     const { submitChunk: submitTextStepByStep, data: submitTextStepByStepData, reset: resetTextStepByStep, isLoading: isLoadingSubmitTextStepByStep, error: errorTextStepByStep } = useSubmitChunk(wolframEndpoint, "step_by_step/")
 
@@ -568,7 +568,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                             onClick={handleSubmitText}
                             disabled={userInput.length == 0}
                         >
-                            Change it (make a new one)!
+                            Change it (call agent)!
                         </button>}
                         <button
                             className="btn btn-secondary tooltip tooltip-left mr-2"
@@ -576,7 +576,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                             onClick={handleSimilarSearchText}
                             disabled={userInput.length == 0}
                         >
-                            Change it!
+                            Change it! (find similar problem)
                         </button>
                         {env == "local" && //not allowed by wolfram in prod/test yet
                             <button
