@@ -157,13 +157,9 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({ introText = "", surve
 
     useEffect(() => {
         data && console.log(data);
-        setSurveySubmitted(true);
     }, [data])
 
     useEffect(() => {
-        // survey 1 is done now. 
-        localStorage.setItem(`survey_submitted_${"survey1"}`, 'true');
-
         if (surveySubmitted) {
             localStorage.setItem(`survey_submitted_${survey.id}`, 'true');
         }

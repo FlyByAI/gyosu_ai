@@ -42,13 +42,39 @@ const survey: Survey= {
     ],
 };
 
+const survey2: Survey= {
+    id: 'survey2',
+    questions: [
+        {
+            id: '1',
+            type: 'radio',
+            text: 'Which feature is your preferred feature within GyosuAI?',
+            options: [
+                { id: 'gyosu-chat-agent', text: 'An AI agent that makes documents for me.' },
+                { id: 'problem-bank', text: 'An easy way to make custom math problems myself.' },
+                { id: 'other', text: 'Something else.' },
+            ],
+        },
+        {
+            id: '2',
+            type: 'text',
+            text: 'What are you trying to do on GyosuAI?',
+        },
+        {
+            id: '3',
+            type: 'text',
+            text: 'Anything else you would like the GyosuAI team to know?',
+        }
+    ],
+};
+
 
 
 
 const Surveys: React.FC = () => {
 
     return <>
-        <SurveyComponent introText="Help us improve your experience." survey={survey} />
+        <SurveyComponent introText="Help us improve your experience." survey={survey2} />
     </>;
 };
 
