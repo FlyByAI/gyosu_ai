@@ -562,21 +562,21 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                                 Reroll
                             </button>
                         )}
-                        {env == "local" && <button
+                        <button
                             className="btn btn-secondary tooltip tooltip-bottom"
                             data-tip={env == "local" ? "This is a dev only at the moment. " : "Send your input."}
                             onClick={handleSubmitText}
                             disabled={userInput.length == 0}
                         >
-                            Change it (call agent)!
-                        </button>}
+                            Change it!
+                        </button>
                         <button
                             className="btn btn-secondary tooltip tooltip-left mr-2"
                             data-tip="Find a similar problem using a text description."
                             onClick={handleSimilarSearchText}
                             disabled={userInput.length == 0}
                         >
-                            Change it! (find similar problem)
+                            Show me similar problems
                         </button>
                         {env == "local" && //not allowed by wolfram in prod/test yet
                             <button
