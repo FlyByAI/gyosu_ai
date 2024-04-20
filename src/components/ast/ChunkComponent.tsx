@@ -148,7 +148,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
 
     const { submitReroll, data: rerollData, reset: resetReroll, isLoading: isLoadingReroll } = useSubmitReroll(`${apiUrl}/math_app/reroll/`)
     const { submitMathForm, data: searchData, reset: resetSearchData, isLoading: isLoadingSearch, error: errorSearch } = useSubmitMathForm(`${apiUrl}/math_app/generate/`)
-    const { submitTextWithChunk, data: submitTextData, reset: resetTextChange, isLoading: isLoadingSubmitText, error: errorText } = useSubmitTextWithChunk(`${apiUrl}/math_app/chat/problem/agent/`)
+    const { submitTextWithChunk, data: submitTextData, reset: resetTextChange, isLoading: isLoadingSubmitText, error: errorText } = useSubmitTextWithChunk(`${apiUrl}/math_app/chat/problem/function_calling/`)
     const { submitTextWithChunkLatex, data: submitTextLatexData, reset: resetTextLatex, isLoading: isLoadingSubmitTextLatex, error: errorTextLatex } = useSubmitTextWithChunkLatex(`${apiUrl}/math_app/chat/problem/text_to_latex/`)
     const { submitTextWithChunkSimilar, data: submitTextSimilarData, reset: resetTextSimilar, isLoading: isLoadingSubmitTextSimilar, error: errorTextSimilar } = useSubmitTextWithChunkSimilar(`${apiUrl}/math_app/chat/problem/similar/`)
     const { uploadImage, data: submitImageData, reset: resetImage, isLoading: isLoadingSubmitImage, error: errorImage } = useImageUpload(`${apiUrl}/math_app/chat/image/`)
@@ -562,21 +562,21 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                                 Reroll
                             </button>
                         )}
-                        {env == "local" && <button
+                        <button
                             className="btn btn-secondary tooltip tooltip-bottom"
                             data-tip={env == "local" ? "This is a dev only at the moment. " : "Send your input."}
                             onClick={handleSubmitText}
                             disabled={userInput.length == 0}
                         >
-                            Change it (call agent)!
-                        </button>}
+                            Change it!
+                        </button>
                         <button
                             className="btn btn-secondary tooltip tooltip-left mr-2"
                             data-tip="Find a similar problem using a text description."
                             onClick={handleSimilarSearchText}
                             disabled={userInput.length == 0}
                         >
-                            Change it! (find similar problem)
+                            Show me similar problems
                         </button>
                         {env == "local" && //not allowed by wolfram in prod/test yet
                             <button
