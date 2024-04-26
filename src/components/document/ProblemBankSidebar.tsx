@@ -23,12 +23,12 @@ export interface ProblemBankShelfProps {
 
 
 const ProblemBankSidebar: React.FC<ProblemBankShelfProps> = ({ isExporting }) => {
-    const { apiUrl } = useEnvironment();
+    const { mathAppApiUrl } = useEnvironment();
     const location = useLocation();
 
-    const endpoint = `${apiUrl}/math_app/school_document/list/`;
+    const endpoint = `${mathAppApiUrl}/school_document/list/`;
     const { documents } = useGetDocuments(endpoint);
-    const endpoint2 = `${apiUrl}/math_app/school_document/`;
+    const endpoint2 = `${mathAppApiUrl}/school_document/`;
     const { submitDocument, updateDocument } = useSubmitDocument(endpoint2);
 
     const { isDesktop } = useScreenSize();

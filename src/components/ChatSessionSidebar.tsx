@@ -53,8 +53,8 @@ const categorizeChatsByDate = (chats: ChatSession[]) => {
 
 
 const ChatSessionSidebar: React.FC = () => {
-    const { apiUrl } = useEnvironment();
-    const chatSessionsEndpoint = `${apiUrl}/math_app/chat/`;
+    const { mathAppApiUrl } = useEnvironment();
+    const chatSessionsEndpoint = `${mathAppApiUrl}/chat/`;
 
     const navigate = useNavigate();
 
@@ -159,7 +159,7 @@ const ChatSessionSidebar: React.FC = () => {
                                     <button onClick={() => handleEditClick(chat.sessionId, chat.chatTitle)}
                                         className="btn btn-xs btn-success text-base-100 w-full"
                                     >
-                                        <EditIcon/> Rename
+                                        <EditIcon /> Rename
                                     </button>
                                 </div>
                                 <div className="tooltip" data-tip="Share">

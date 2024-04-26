@@ -19,12 +19,12 @@ const ContentPlayGroundStreamed = () => {
         additionalDetails: ''
     } as PlaygroundFormData);
 
-    const { apiUrl } = useEnvironment();
+    const { mathAppApiUrl } = useEnvironment();
 
-    const endpoint = `${apiUrl}/math_app/school_document/list/`;
+    const endpoint = `${mathAppApiUrl}/school_document/list/`;
     const { documents, error } = useGetDocuments(endpoint);
 
-    const playgroundEndpoint = `${apiUrl}/math_app/playground/stream/`;
+    const playgroundEndpoint = `${mathAppApiUrl}/playground/stream/`;
 
     const [formError, setFormError] = useState<string | null>(null);
 

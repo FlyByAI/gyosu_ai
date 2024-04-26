@@ -82,11 +82,11 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({ introText = "", surve
 
     const [responses, setResponses] = useState<ResponsesState>({});
 
-    const { apiUrl } = useEnvironment();
+    const { mathAppApiUrl } = useEnvironment();
 
     const { user } = useClerk();
 
-    const { submitSurvey, data } = useSubmitSurvey(`${apiUrl}/math_app/feedback/survey/`)
+    const { submitSurvey, data } = useSubmitSurvey(`${mathAppApiUrl}/feedback/survey/`)
 
     const [surveySubmitted, setSurveySubmitted] = useState<boolean>(() => {
         return localStorage.getItem(`survey_submitted_${survey.id}`) === 'true';

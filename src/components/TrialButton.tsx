@@ -7,7 +7,6 @@ import useEnvironment from '../hooks/useEnvironment';
 
 const TrialButton = ({ className }: { className: string }) => {
     const { apiUrl } = useEnvironment();
-
     const { trialActivated, activateTrial } = useActivateTrial(`${apiUrl}/stripe/activate-trial/`)
     const { subscriptionInfo, isLoading } = useFetchSubscriptionInfo(`${apiUrl}/user_data/get_subscription_info/`)
     return (<>

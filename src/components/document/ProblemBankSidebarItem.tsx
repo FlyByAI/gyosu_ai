@@ -20,17 +20,17 @@ interface DocumentItemProps {
 
 const ProblemBankSidebarItem: React.FC<DocumentItemProps> = ({ document, onDropChunk, isExporting }) => {
     const navigate = useNavigate();
-    const { apiUrl } = useEnvironment();
-    const endpoint2 = `${apiUrl}/math_app/school_document/`;
+    const { mathAppApiUrl } = useEnvironment();
+    const endpoint2 = `${mathAppApiUrl}/school_document/`;
     const { updateDocument } = useSubmitDocument(endpoint2);
     const { id } = useParams();
 
     const [isEditing, setIsEditing] = useState(false);
     const [title, setTitle] = useState('');
 
-    const { document: fetchedDocument } = useGetDocument(`${apiUrl}/math_app/school_document/`, Number(id));
+    const { document: fetchedDocument } = useGetDocument(`${mathAppApiUrl}/school_document/`, Number(id));
 
-    const { deleteDocument, isDeleting, shareDocument } = useSubmitDocument(`${apiUrl}/math_app/school_document/`);
+    const { deleteDocument, isDeleting, shareDocument } = useSubmitDocument(`${mathAppApiUrl}/school_document/`);
 
     useEffect(() => {
         setTitle(fetchedDocument?.title || '');
@@ -128,42 +128,42 @@ const ProblemBankSidebarItem: React.FC<DocumentItemProps> = ({ document, onDropC
 
 
     return (
-            <li ref={dropRef}
-                className={`${id === document.id ? "bg-primary" : "bg-base-200"} p-2 rounded-lg overflow-hidden relative cursor-pointer border border-base-300 hover:border-primary transition-all duration-300 ${getDropStyle()} ${getDragStyle()}`}
-                onClick={handleClick}
-            >
-                <div className="absolute top-2 right-2 flex space-x-2">
-                    <OverflowMenu variant="bottom" isOpen={isOverflowOpen} setIsOpen={setIsOverflowOpen}>
-                        <button onClick={handleEditClick} className="btn tooltip tooltip-left hover:bg-green-100" data-tip="Edit">
-                            <EditIcon />
-                        </button>
-                        <button onClick={handleDeleteClick} className="btn tooltip tooltip-right hover:bg-red-100" data-tip="Delete">
-                            <TrashIcon />
-                        </button>
-                    </OverflowMenu>
+        <li ref={dropRef}
+            className={`${id === document.id ? "bg-primary" : "bg-base-200"} p-2 rounded-lg overflow-hidden relative cursor-pointer border border-base-300 hover:border-primary transition-all duration-300 ${getDropStyle()} ${getDragStyle()}`}
+            onClick={handleClick}
+        >
+            <div className="absolute top-2 right-2 flex space-x-2">
+                <OverflowMenu variant="bottom" isOpen={isOverflowOpen} setIsOpen={setIsOverflowOpen}>
+                    <button onClick={handleEditClick} className="btn tooltip tooltip-left hover:bg-green-100" data-tip="Edit">
+                        <EditIcon />
+                    </button>
+                    <button onClick={handleDeleteClick} className="btn tooltip tooltip-right hover:bg-red-100" data-tip="Delete">
+                        <TrashIcon />
+                    </button>
+                </OverflowMenu>
+            </div>
+            <div className="flex flex-col h-full justify-between">
+                <div className="flex-1">
+                    {isEditing ? (
+                        <input
+                            type="text"
+                            value={title}
+                            onClick={(e) => e.stopPropagation()} // Prevent li click event
+                            onChange={handleTitleChange}
+                            onBlur={handleTitleBlur}
+                            onKeyDown={handleKeyDown}
+                            autoFocus
+                            className="input input-bordered input-sm w-full font-medium"
+                        />
+                    ) : (
+                        <h3 className="text-lg font-medium truncate">{document.title}</h3>
+                    )}
                 </div>
-                <div className="flex flex-col h-full justify-between">
-                    <div className="flex-1">
-                        {isEditing ? (
-                            <input
-                                type="text"
-                                value={title}
-                                onClick={(e) => e.stopPropagation()} // Prevent li click event
-                                onChange={handleTitleChange}
-                                onBlur={handleTitleBlur}
-                                onKeyDown={handleKeyDown}
-                                autoFocus
-                                className="input input-bordered input-sm w-full font-medium"
-                            />
-                        ) : (
-                            <h3 className="text-lg font-medium truncate">{document.title}</h3>
-                        )}
-                    </div>
-                    <div className="mt-2">
-                        <span className={`badge font-medium`}>{document.problemChunks?.length || "No"} Problems</span>
-                    </div>
+                <div className="mt-2">
+                    <span className={`badge font-medium`}>{document.problemChunks?.length || "No"} Problems</span>
                 </div>
-            </li>
+            </div>
+        </li>
     );
 };
 

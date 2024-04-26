@@ -37,9 +37,9 @@ interface SurveyResultsProps {
 
 const SurveyResults: React.FC<SurveyResultsProps> = ({ surveyId }) => {
 
-    const { apiUrl } = useEnvironment();
+    const { mathAppApiUrl } = useEnvironment();
 
-    const { surveyResults } = useFetchSurveyResults(`${apiUrl}/math_app/feedback/survey/`, surveyId)
+    const { surveyResults } = useFetchSurveyResults(`${mathAppApiUrl}/feedback/survey/`, surveyId)
 
     const countResponses = (surveyResponses: SurveyResponse[]) => {
         const counts: Record<string, Record<string, number>> = {};

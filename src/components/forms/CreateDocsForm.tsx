@@ -12,8 +12,8 @@ interface CreateDocsFormProps {
 }
 
 const CreateDocxForm: React.FC<CreateDocsFormProps> = ({ document }) => {
-    const { apiUrl } = useEnvironment();
-    const { createDocx, isLoading, error } = useCreateDocx(`${apiUrl}/math_app/generate_docx/`);
+    const { mathAppApiUrl } = useEnvironment();
+    const { createDocx, isLoading, error } = useCreateDocx(`${mathAppApiUrl}/generate_docx/`);
     const { id } = useParams();
 
     const [downloadLinks, setDownloadLinks] = useState<{ docxUrl: string; pdfUrl: string; fileName: string, answerKeyUrl?: string; } | null>(null);

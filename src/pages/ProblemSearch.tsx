@@ -32,8 +32,8 @@ const ProblemSearch: React.FC = () => {
 
     const [formType, setFormType] = useState<'Textbook' | 'Competition' | null>(null);
 
-    const { apiUrl } = useEnvironment();
-    const { isLoading, error, submitMathForm, data } = useSubmitMathForm(`${apiUrl}/math_app/generate/`)
+    const { mathAppApiUrl } = useEnvironment();
+    const { isLoading, error, submitMathForm, data } = useSubmitMathForm(`${mathAppApiUrl}/generate/`)
 
 
     useRequireSignIn();

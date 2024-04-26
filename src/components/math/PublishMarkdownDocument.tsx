@@ -14,8 +14,8 @@ interface PublishMarkdownDocumentProps {
 }
 
 const PublishMarkdownDocument: React.FC<PublishMarkdownDocumentProps> = ({ markdown, saved, setSaved, formData, documentId, setDocumentId }) => {
-    const { apiUrl } = useEnvironment();
-    const { isLoading, error, data } = useSubmitDocument(`${apiUrl}/math_app/document/save/`);
+    const { mathAppApiUrl } = useEnvironment();
+    const { isLoading, error, data } = useSubmitDocument(`${mathAppApiUrl}/document/save/`);
 
     useEffect(() => {
         setSaved(false);

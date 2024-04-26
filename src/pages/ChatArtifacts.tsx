@@ -14,8 +14,8 @@ export interface SelectedSectionObject {
 
 const ChatArtifacts = () => {
 
-    const { apiUrl } = useEnvironment();
-    const chatEndpoint = `${apiUrl}/math_app/chat/`;
+    const { mathAppApiUrl } = useEnvironment();
+    const chatEndpoint = `${mathAppApiUrl}/chat/`;
 
     const { sessionId } = useParams();
 
@@ -32,7 +32,7 @@ const ChatArtifacts = () => {
             {chatSessionArtifacts && Object.keys(chatSessionArtifacts).map((key) => (
                 <ul key={key} className="text-white">
                     <Accordion
-                        title={`${key}: ${chatSessionArtifacts[key as keyof typeof chatSessionArtifacts] ? typeof(chatSessionArtifacts[key as keyof typeof chatSessionArtifacts]): 'empty'
+                        title={`${key}: ${chatSessionArtifacts[key as keyof typeof chatSessionArtifacts] ? typeof (chatSessionArtifacts[key as keyof typeof chatSessionArtifacts]) : 'empty'
                             }`}
                         children={
                             <>

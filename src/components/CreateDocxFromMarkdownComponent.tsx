@@ -11,8 +11,8 @@ interface CreateDocsFromMarkdownComponentProps {
 }
 
 const CreateDocsFromMarkdownComponent = ({ markdown }: CreateDocsFromMarkdownComponentProps) => {
-    const { apiUrl } = useEnvironment();
-    const { createDocx, isLoading, error } = useCreateDocxFromMarkdown(`${apiUrl}/math_app/convert_markdown/`);
+    const { mathAppApiUrl } = useEnvironment();
+    const { createDocx, isLoading, error } = useCreateDocxFromMarkdown(`${mathAppApiUrl}/convert_markdown/`);
 
     const [downloadLinks, setDownloadLinks] = useState<{ docxUrl: string; pdfUrl: string; fileName: string, answerKeyUrl?: string; } | null>(null);
 

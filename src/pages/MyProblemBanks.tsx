@@ -16,10 +16,10 @@ const MyProblemBanks: React.FC = () => {
     const navigate = useNavigate();
     useRequireSignIn();
 
-    const { apiUrl } = useEnvironment();
-    const endpoint = `${apiUrl}/math_app/school_document/list/`;
+    const { mathAppApiUrl } = useEnvironment();
+    const endpoint = `${mathAppApiUrl}/school_document/list/`;
 
-    const endpoint2 = `${apiUrl}/math_app/school_document/`;
+    const endpoint2 = `${mathAppApiUrl}/school_document/`;
 
     const { documents, error } = useGetDocuments(endpoint);
 

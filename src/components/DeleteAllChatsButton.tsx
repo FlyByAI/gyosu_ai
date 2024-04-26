@@ -2,8 +2,8 @@ import useChatSessions from "../hooks/tools/math/useChatSessions";
 import useEnvironment from "../hooks/useEnvironment";
 
 const DeleteAllChatsButton = () => {
-    const { apiUrl } = useEnvironment();
-    const chatSessionsEndpoint = `${apiUrl}/math_app/chat/`;
+    const { mathAppApiUrl } = useEnvironment();
+    const chatSessionsEndpoint = `${mathAppApiUrl}/chat/`;
 
     const { deleteAllChatSessions } = useChatSessions(chatSessionsEndpoint);
 

@@ -16,10 +16,10 @@ import PlusIcon from '../svg/PlusIcon';
 
 const ProblemBank: React.FC = () => {
     const { id } = useParams();
-    const { apiUrl } = useEnvironment();
-    const { isLoading, error, document } = useGetDocument(`${apiUrl}/math_app/school_document/`, Number(id));
+    const { mathAppApiUrl } = useEnvironment();
+    const { isLoading, error, document } = useGetDocument(`${mathAppApiUrl}/school_document/`, Number(id));
 
-    const endpoint2 = `${apiUrl}/math_app/school_document/`;
+    const endpoint2 = `${mathAppApiUrl}/school_document/`;
     const { error: updateError, updateDocument, isLoading: isLoadingSubmit } = useSubmitDocument(endpoint2);
 
     const { activeChunkIndices } = useSidebarContext();

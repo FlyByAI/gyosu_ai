@@ -20,9 +20,9 @@ interface ToolBadgeProps {
 
 const ToolBadge: React.FC<ToolBadgeProps> = ({ chunk, instruction, problem, updateChunk, chunkIndex, hidden }) => {
 
-    const { apiUrl } = useEnvironment();
+    const { mathAppApiUrl } = useEnvironment();
 
-    const { submitFeedback } = useSubmitFeedback(`${apiUrl}/math_app/feedback/problem/`)
+    const { submitFeedback } = useSubmitFeedback(`${mathAppApiUrl}/feedback/problem/`)
 
     const payload: ChunkInstructionProblem = {
         chunkId: chunk.id,

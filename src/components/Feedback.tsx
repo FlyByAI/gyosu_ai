@@ -14,9 +14,9 @@ interface FeedbackProps {
 
 const Feedback: React.FC<FeedbackProps> = ({ feedbackLabel, data, responseQuestions }) => {
 
-    const { apiUrl } = useEnvironment();
+    const { mathAppApiUrl } = useEnvironment();
 
-    const { submitFeedback } = useSubmitFeedback(`${apiUrl}/math_app/feedback/problem/`)
+    const { submitFeedback } = useSubmitFeedback(`${mathAppApiUrl}/feedback/problem/`)
     const [rating, setRating] = useState<Rating>("");
     const { openModal, closeModal } = useModal();
 

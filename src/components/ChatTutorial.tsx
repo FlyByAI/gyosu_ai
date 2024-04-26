@@ -11,7 +11,7 @@ interface ChatTutorialProps {
     startStreaming: (bodyContent: StartStreamingPayload) => Promise<() => void>
     updateTextbox: (text: string) => void;
 }
-const ChatTutorial = ({ startStreaming, updateTextbox}: ChatTutorialProps) => {
+const ChatTutorial = ({ startStreaming, updateTextbox }: ChatTutorialProps) => {
     const [run, setRun] = useState(false);
 
     const { runTutorial, setRunTutorial } = useRunTutorial();
@@ -28,7 +28,7 @@ const ChatTutorial = ({ startStreaming, updateTextbox}: ChatTutorialProps) => {
     }, [runTutorial, sessionId]);
 
     const [steps, setSteps] = useState([
-       
+
         {
             target: '.chat-sidebar',
             content: 'This sidebar contains your previous chat sessions. You can revisit them anytime.',
@@ -71,7 +71,7 @@ const ChatTutorial = ({ startStreaming, updateTextbox}: ChatTutorialProps) => {
     const handleJoyrideCallback = (data: CallBackProps) => {
         const { status, action, index } = data;
         const finishedStatuses: string[] = [STATUS.FINISHED, STATUS.SKIPPED];
-    
+
         // Check if the tutorial has been finished or skipped
         if (finishedStatuses.includes(status)) {
             setRun(false);
@@ -85,38 +85,38 @@ const ChatTutorial = ({ startStreaming, updateTextbox}: ChatTutorialProps) => {
             updateTextbox('What textbooks are available for 5th grade math?');
         }
     };
-    
 
-    const { apiUrl } = useEnvironment();
-    const chatEndpoint = `${apiUrl}/math_app/chat/`;
-    const {chatSession, isLoading} = useChatSessions(chatEndpoint, sessionId);
+
+    const { mathAppApiUrl } = useEnvironment();
+    const chatEndpoint = `${mathAppApiUrl}/chat/`;
+    const { chatSession, isLoading } = useChatSessions(chatEndpoint, sessionId);
 
     const startTutorialStream = () => {
         const newMessage: IChatMessage = { role: 'user', content: 'I am using the chat tutorial, please help me get started creating content for my classroom. ' };
 
-            const payload = {
-                newMessage: newMessage,
-                messages: chatSession?.messageHistory.concat(newMessage) || [newMessage],
-                sessionId: sessionId,
-            };
+        const payload = {
+            newMessage: newMessage,
+            messages: chatSession?.messageHistory.concat(newMessage) || [newMessage],
+            sessionId: sessionId,
+        };
 
-            startStreaming(payload);
+        startStreaming(payload);
     }
 
     const handleStartTutorial = () => {
         if (!sessionId) {
             setRunTutorial(true);
             startTutorialStream();
-            setShowStartButton(false); 
+            setShowStartButton(false);
         }
         else {
             setRun(true);
-            setShowStartButton(false); 
+            setShowStartButton(false);
         }
     }
 
     useEffect(() => {
-        if(chatSession && chatSession?.messageHistory.length !== 0) {
+        if (chatSession && chatSession?.messageHistory.length !== 0) {
             setShowStartButton(false);
         }
     }, [chatSession, chatSession?.messageHistory.length, sessionId])
@@ -140,7 +140,7 @@ const ChatTutorial = ({ startStreaming, updateTextbox}: ChatTutorialProps) => {
                 callback={handleJoyrideCallback}
                 showProgress
                 showSkipButton
-                disableOverlayClose={true} 
+                disableOverlayClose={true}
                 disableCloseOnEsc={true}
                 styles={{
                     options: {
@@ -148,7 +148,7 @@ const ChatTutorial = ({ startStreaming, updateTextbox}: ChatTutorialProps) => {
                     },
                 }}
             />
-        </div> 
+        </div>
     );
 };
 

@@ -35,8 +35,8 @@ const GyosuAIChat = () => {
     const actionTimerRef = useRef(null);
 
     const [userInput, setUserInput] = useState('');
-    const { apiUrl } = useEnvironment();
-    const chatEndpoint = `${apiUrl}/math_app/chat/`;
+    const { mathAppApiUrl } = useEnvironment();
+    const chatEndpoint = `${mathAppApiUrl}/chat/`;
     const { user } = useClerk();
     const username = user?.firstName ? user.firstName : "User";
     const navigate = useNavigate();

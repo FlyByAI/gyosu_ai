@@ -21,10 +21,10 @@ const AddChunkForm: React.FC<AddChunkFormProps> = ({ chunk, preview }) => {
 
     useRequireSignIn();
 
-    const { apiUrl } = useEnvironment();
-    const endpoint = `${apiUrl}/math_app/school_document/list/`;
+    const { mathAppApiUrl } = useEnvironment();
+    const endpoint = `${mathAppApiUrl}/school_document/list/`;
     const { documents, error } = useGetDocuments(endpoint);
-    const endpoint2 = `${apiUrl}/math_app/school_document/`;
+    const endpoint2 = `${mathAppApiUrl}/school_document/`;
     const { updateDocument, submitDocument, data: submitDocumentData } = useSubmitDocument(endpoint2);
 
     const selectedDocument = documents?.find((doc) => doc.id === selectedBank);
@@ -72,7 +72,7 @@ const AddChunkForm: React.FC<AddChunkFormProps> = ({ chunk, preview }) => {
 
     };
 
-    
+
 
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const { isDesktop } = useScreenSize();

@@ -7,8 +7,8 @@ import { ChunkComponent } from './ChunkComponent';
 
 const DocumentManager: React.FC = () => {
     const { id } = useParams();
-    const { apiUrl } = useEnvironment();
-    const endpoint = `${apiUrl}/math_app/school_document/`;
+    const { mathAppApiUrl } = useEnvironment();
+    const endpoint = `${mathAppApiUrl}/school_document/`;
 
     const defaultProblem: Problem = {
         type: 'problem',

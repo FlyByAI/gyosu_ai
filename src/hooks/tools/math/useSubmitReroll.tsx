@@ -14,7 +14,7 @@ interface SubmitRerollParams {
     problemBankId?: string;
 }
 
-interface SubmitRerollResponse {
+export interface SubmitRerollResponse {
     chunks: Chunk[]
     chunkIndex?: number
 }

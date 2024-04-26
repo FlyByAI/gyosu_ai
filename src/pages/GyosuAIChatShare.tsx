@@ -10,15 +10,15 @@ import { useRequireSignIn } from '../hooks/useRequireSignIn';
 const GyosuAIChatShare = () => {
     //note: there is a redirect in acceptShareChatSession 
 
-    const { apiUrl } = useEnvironment();
-    const { acceptShareChatSession } = useChatSessions(`${apiUrl}/math_app/chat/`);
+    const { mathAppApiUrl } = useEnvironment();
+    const { acceptShareChatSession } = useChatSessions(`${mathAppApiUrl}/chat/`);
     const { token } = useParams();
-    const {session} = useClerk();
+    const { session } = useClerk();
 
     useRequireSignIn();
 
     useEffect(() => {
-        if (token && session){
+        if (token && session) {
             acceptShareChatSession(token)
         }
     }, [acceptShareChatSession, session, token])
