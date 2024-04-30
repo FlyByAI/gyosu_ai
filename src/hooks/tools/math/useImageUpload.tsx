@@ -3,6 +3,7 @@ import { UseMutationResult, useMutation } from '@tanstack/react-query';
 import humps from 'humps';
 import { useLanguage } from '../../../contexts/useLanguage';
 import { languageNames } from '../../../helpers/language';
+import fetchInterceptor from '../../../helpers/fetchInterceptor';
 
 interface ImageUploadResponse {
   response: string;
@@ -41,7 +42,7 @@ const useImageUpload = (endpoint: string) => {
       form.append('file_type', fileType); // Append MIME type
       form.append('site_language', siteLanguage);
 
-      const response = await fetch(endpoint, {
+      const response = await fetchInterceptor(endpoint, {
         method: 'POST',
         headers: {
           // 'Content-Type': 'multipart/form-data' will be set automatically

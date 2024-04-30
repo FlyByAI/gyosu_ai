@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { IFeedbackData } from '../interfaces';
 import humps from 'humps';
+import fetchInterceptor from '../helpers/fetchInterceptor';
 
 
 
@@ -18,7 +19,7 @@ const useSubmitFeedback = (endpoint: string) => {
         const feedbackDataWithChapSec = { ...feedbackData };
 
         try {
-            const response = await fetch(endpoint, {
+            const response = await fetchInterceptor(endpoint, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

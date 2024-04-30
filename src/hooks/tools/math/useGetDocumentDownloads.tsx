@@ -2,9 +2,10 @@ import { useClerk } from '@clerk/clerk-react';
 import { useQuery } from '@tanstack/react-query';
 import humps from 'humps';
 import { DocumentDownload } from '../../../pages/Documents';
+import fetchInterceptor from '../../../helpers/fetchInterceptor';
 
 const fetchDocumentDownloads = async (endpoint: string, token: string | null) => {
-    const response = await fetch(`${endpoint}`, {
+    const response = await fetchInterceptor(`${endpoint}`, {
         method: 'GET',
         headers: {
             'Authorization': token ? `Bearer ${token}` : '',

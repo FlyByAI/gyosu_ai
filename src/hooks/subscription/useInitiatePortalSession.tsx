@@ -2,6 +2,7 @@
 import { useClerk } from '@clerk/clerk-react';
 import humps from 'humps';
 import { useCallback, useState } from 'react';
+import fetchInterceptor from '../../helpers/fetchInterceptor';
 
 interface IPortalSessionResponse {
     url: string;
@@ -21,7 +22,7 @@ export default function useInitiatePortalSession() {
             const token = session ? await session.getToken() : "none";
             const currentURL = window.location.href;
 
-            const response = await fetch(`${apiUrl}/stripe/create-portal-session/`, {
+            const response = await fetchInterceptor(`${apiUrl}/stripe/create-portal-session/`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,

@@ -1,5 +1,6 @@
 import { useClerk } from '@clerk/clerk-react';
 import { useQuery } from '@tanstack/react-query';
+import fetchInterceptor from '../../helpers/fetchInterceptor';
 
 interface SubscriptionInfo {
     has_valid_subscription: boolean;
@@ -10,7 +11,7 @@ interface SubscriptionInfo {
 }
 
 const fetchSubscriptionInfo = async (endpoint: string, token: string | null) => {
-    const response = await fetch(endpoint, {
+    const response = await fetchInterceptor(endpoint, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',

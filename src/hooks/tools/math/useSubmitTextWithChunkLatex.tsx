@@ -4,6 +4,7 @@ import humps from 'humps';
 import { useLanguage } from '../../../contexts/useLanguage';
 import { languageNames } from '../../../helpers/language';
 import { Chunk } from '../../../interfaces';
+import fetchInterceptor from '../../../helpers/fetchInterceptor';
 
 interface SubmitTextWithChunkResponse {
     chunk?: Chunk;
@@ -22,7 +23,7 @@ const useSubmitTextWithChunkLatex = (endpoint: string) => {
             const token = session ? await session.getToken() : "none";
             const body = humps.decamelizeKeys({ userInput, problemBankId, ...options });
 
-            const response = await fetch(endpoint, {
+            const response = await fetchInterceptor(endpoint, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

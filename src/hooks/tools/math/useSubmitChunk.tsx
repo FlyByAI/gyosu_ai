@@ -4,6 +4,7 @@ import humps from 'humps';
 import { useLanguage } from '../../../contexts/useLanguage';
 import { languageNames } from '../../../helpers/language';
 import { Chunk } from '../../../interfaces';
+import fetchInterceptor from '../../../helpers/fetchInterceptor';
 
 
 interface SubmitTextWithTextResponse {
@@ -21,7 +22,7 @@ const useSubmitChunk = (endpoint: string, route: string) => {
             const token = session ? await session.getToken() : "none";
             const body = humps.decamelizeKeys({ userInput, chunk, ...options });
 
-            const response = await fetch(endpoint + `${route}`, {
+            const response = await fetchInterceptor(endpoint + `${route}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

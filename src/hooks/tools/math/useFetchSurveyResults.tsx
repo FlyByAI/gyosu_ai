@@ -1,6 +1,7 @@
 import { useClerk } from '@clerk/clerk-react';
 import { useQuery } from '@tanstack/react-query';
 import humps from 'humps';
+import fetchInterceptor from '../../../helpers/fetchInterceptor';
 
 interface SurveyResult {
     _id: string; // MongoDB ObjectId represented as a string
@@ -30,7 +31,7 @@ const useFetchSurveyResults = (endpoint: string, surveyId: string) => {
     const getSurveyResults = async (): Promise<SurveyResult[]> => {
         const token = session ? await session.getToken() : 'none';
 
-        const response = await fetch(endpoint + `${surveyId}/`, {
+        const response = await fetchInterceptor(endpoint + `${surveyId}/`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`,

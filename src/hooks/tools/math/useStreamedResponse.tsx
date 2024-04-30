@@ -5,6 +5,7 @@ import { useCallback, useState } from 'react';
 import { useModal } from '../../../contexts/useModal';
 import { IChatMessage } from '../../../pages/GyosuAIChat';
 import { ChatSession } from "./useChatSessions";
+import fetchInterceptor from '../../../helpers/fetchInterceptor';
 
 
 export interface StartStreamingPayload {
@@ -63,7 +64,7 @@ const useStreamedResponse = (endpoint: string, headers: any) => {
         const fetchData = async () => {
             try {
                 setLoading(true);
-                const response = await fetch(endpoint, {
+                const response = await fetchInterceptor(endpoint, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
