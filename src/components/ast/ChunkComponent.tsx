@@ -23,6 +23,7 @@ import AddChunkModal from '../AddChunkModal';
 import ImageUploader from '../ImageUploader';
 import { InstructionComponent } from './InstructionComponent';
 import { ProblemComponent } from './ProblemComponent';
+import { useClerk, useUser } from '@clerk/clerk-react';
 
 interface ChunkProps {
     chunk: Chunk;
@@ -64,6 +65,9 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
     const [isHovered, setIsHovered] = useState(false);
 
     const [userInput, setUserInput] = useState(landingPageDemo ? "word problems, fractions" : "")
+
+    const { user } = useUser();
+    const { openSignIn } = useClerk();
 
     const [, ref] = useDrag({
         type: CHUNK_DRAG_TYPE,
@@ -174,9 +178,18 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
         submitTextStepByStep({ userInput: userInput, chunk: chunk })
     }
 
+    
     const handleSearch = () => {
         console.log("searching")
-        submitMathForm({ data: { userInput: userInput } })
+        if (!user) {
+            openSignIn({
+                afterSignInUrl: window.location.href
+            });
+            return;
+        }
+        else {
+            submitMathForm({ data: { userInput: userInput } })
+        }
     }
 
     const handleAcceptChunkChange = () => {
@@ -242,7 +255,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
         }
         if (submitTextSimilarData) {
             console.log("new similar chunk", submitTextSimilarData)
-            
+
         }
         if (submitTextLatexData) {
             console.log("new problem from text_to_latex", submitTextLatexData)
@@ -426,7 +439,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                             submitTextData?.chunk.content?.map((changedItem, changedIndex) => {
                                 const element = (() => {
                                     switch (changedItem.type) {
-                                        
+
                                         case 'instruction':
                                             return <InstructionComponent debug={env == "local"} chunkIndex={chunkIndex} instructionIndex={changedIndex} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} instruction={changedItem} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
                                         case 'problem':
@@ -451,7 +464,7 @@ export const ChunkComponent: React.FC<ChunkProps> = ({ chunk, updateChunk, chunk
                             submitTextSimilarData?.chunk.content?.map((changedItem, changedIndex) => {
                                 const element2 = (() => {
                                     switch (changedItem.type) {
-                                        
+
                                         case 'instruction':
                                             return <InstructionComponent debug={env == "local"} chunkIndex={chunkIndex} instructionIndex={changedIndex} parentChunk={chunk} parentChunkIndex={chunkIndex} updateChunk={updateChunk} instruction={changedItem} onInstructionHover={setIsHovered} disableInstructionProblemDrag={disableInstructionProblemDrag} />;
                                         case 'problem':
