@@ -4,6 +4,7 @@ import humps from "humps";
 import { useMutation } from "@tanstack/react-query";
 import { useLanguage } from "../../contexts/useLanguage";
 import { languageNames } from "../../helpers/language";
+import fetchInterceptor from "../../helpers/fetchInterceptor";
 
 interface SubmitChunkSidebarParams {
     tone: string;
@@ -31,7 +32,7 @@ const useSubmitChunkSidebarForm = (endpoint: string) => {
             const token = session ? await session.getToken() : "none";
             const body = humps.decamelizeKeys({ ...formParams, ...options });
 
-            const response = await fetch(endpoint, {
+            const response = await fetchInterceptor(endpoint, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

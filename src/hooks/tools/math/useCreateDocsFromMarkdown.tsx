@@ -1,6 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { useClerk } from '@clerk/clerk-react';
 import humps from 'humps';
+import fetchInterceptor from '../../../helpers/fetchInterceptor';
 
 interface MutationResponse {
     docxUrl: string;
@@ -24,7 +25,7 @@ const useCreateDocxFromMarkdown = (endpoint = 'api/markdown_to_docx/') => {
             const token = session ? await session.getToken() : 'none';
             const payload = humps.decamelizeKeys({ markdown });
 
-            const response = await fetch(endpoint, {
+            const response = await fetchInterceptor(endpoint, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

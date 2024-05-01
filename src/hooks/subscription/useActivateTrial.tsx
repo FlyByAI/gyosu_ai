@@ -1,5 +1,6 @@
 import { useClerk } from '@clerk/clerk-react';
 import { useState } from 'react';
+import fetchInterceptor from '../../helpers/fetchInterceptor';
 
 const useActivateTrial = (endpoint: string) => {
     const { session } = useClerk();
@@ -14,7 +15,7 @@ const useActivateTrial = (endpoint: string) => {
         try {
             const token = session ? await session.getToken() : "none";
 
-            const response = await fetch(endpoint, {
+            const response = await fetchInterceptor(endpoint, {
                 method: 'POST', // Assuming you want to use POST for this endpoint
                 headers: {
                     'Content-Type': 'application/json',

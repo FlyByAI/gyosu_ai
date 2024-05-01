@@ -8,6 +8,9 @@ import { useModal } from '../../../contexts/useModal';
 import { SelectedSectionObject } from '../../../pages/ChatArtifacts';
 import { IChatMessage } from '../../../pages/GyosuAIChat';
 
+import axios from "../../../helpers/fetchInterceptor" 
+import fetchInterceptor from '../../../helpers/fetchInterceptor';
+
 export interface ChatSession {
     sessionId: string;
     userId: number;
@@ -26,7 +29,7 @@ export interface ChatArtifacts {
 
 
 const fetchChatSessions = async (endpoint: string, token: string | null) => {
-    const response = await fetch(endpoint, {
+    const response = await fetchInterceptor(endpoint, {
         method: 'GET',
         headers: {
             'Authorization': token ? `Bearer ${token}` : '',
@@ -42,7 +45,7 @@ const fetchChatSessions = async (endpoint: string, token: string | null) => {
 };
 
 const fetchChatSession = async (endpoint: string, sessionId: string, token: string | null) => {
-    const response = await fetch(`${endpoint}${sessionId}/`, {
+    const response = await fetchInterceptor(`${endpoint}${sessionId}/`, {
         method: 'GET',
         headers: {
             'Authorization': token ? `Bearer ${token}` : '',
@@ -58,7 +61,7 @@ const fetchChatSession = async (endpoint: string, sessionId: string, token: stri
 };
 
 const fetchArtifacts = async (endpoint: string, sessionId: string, token: string | null) => {
-    const response = await fetch(`${endpoint}artifacts/${sessionId}/`, {
+    const response = await fetchInterceptor(`${endpoint}artifacts/${sessionId}/`, {
         method: 'GET',
         headers: {
             'Authorization': token ? `Bearer ${token}` : '',
@@ -119,7 +122,7 @@ const useChatSessions = (endpoint: string, sessionId?: string) => {
     const shareChatSessionMutation = useMutation(
         async (sessionId: string) => {
             const token = session ? await session.getToken() : 'none';
-            const response = await fetch(`${endpoint}share/`, {
+            const response = await fetchInterceptor(`${endpoint}share/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -155,7 +158,7 @@ const useChatSessions = (endpoint: string, sessionId?: string) => {
             const sessionToken = session ? await session.getToken() : 'none';
 
             console.log("got token", sessionToken)
-            const response = await fetch(`${endpoint}share/${token}/`, {
+            const response = await fetchInterceptor(`${endpoint}share/${token}/`, {
                 method: 'GET',
                 headers: {
                     'Authorization': sessionToken ? `Bearer ${sessionToken}` : '',
@@ -195,7 +198,7 @@ const useChatSessions = (endpoint: string, sessionId?: string) => {
         async ({ sessionId, chatTitle }) => {
             const token = session ? await session.getToken() : 'none';
             const body = humps.decamelizeKeys({ chatTitle });
-            const response = await fetch(`${endpoint}${sessionId}/`, {
+            const response = await fetchInterceptor(`${endpoint}${sessionId}/`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
@@ -227,7 +230,7 @@ const useChatSessions = (endpoint: string, sessionId?: string) => {
     const deleteChatSessionMutation = useMutation(
         async (sessionId: string) => {
             const token = session ? await session.getToken() : 'none';
-            await fetch(`${endpoint}${sessionId}/`, {
+            await fetchInterceptor(`${endpoint}${sessionId}/`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
@@ -252,7 +255,7 @@ const useChatSessions = (endpoint: string, sessionId?: string) => {
     const deleteAllChatSessionsMutation = useMutation(
         async () => {
             const token = session ? await session.getToken() : 'none';
-            await fetch(`${endpoint}delete_all/`, {
+            await fetchInterceptor(`${endpoint}delete_all/`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',

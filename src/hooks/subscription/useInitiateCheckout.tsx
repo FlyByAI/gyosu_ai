@@ -4,6 +4,7 @@ import { StripeError, loadStripe } from '@stripe/stripe-js';
 import { useState } from 'react';
 import { notSecretConstants } from '../../constants/notSecretConstants';
 import useEnvironment from '../useEnvironment';
+import fetchInterceptor from '../../helpers/fetchInterceptor';
 
 interface ICheckoutResponse {
     message: string;
@@ -41,7 +42,7 @@ const useInitiateCheckout = (endpoint: string): {
                 ...options
             };
 
-            const response = await fetch(endpoint, {
+            const response = await fetchInterceptor(endpoint, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,

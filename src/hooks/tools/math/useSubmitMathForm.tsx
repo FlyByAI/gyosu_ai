@@ -6,6 +6,7 @@ import { languageNames } from '../../../helpers/language';
 import { Chunk, GenerateFormData } from '../../../interfaces';
 
 import { UseMutationResult } from '@tanstack/react-query';
+import fetchInterceptor from '../../../helpers/fetchInterceptor';
 
 interface SubmitMathFormResponse {
     response: Chunk[]
@@ -20,7 +21,7 @@ const useSubmitMathForm = (endpoint: string) => {
         async (formData: GenerateFormData): Promise<SubmitMathFormResponse> => {
             const token = session ? await session.getToken() : "none";
 
-            const response = await fetch(endpoint, {
+            const response = await fetchInterceptor(endpoint, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

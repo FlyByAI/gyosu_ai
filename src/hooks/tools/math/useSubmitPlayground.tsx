@@ -3,6 +3,7 @@ import humps from 'humps';
 import { useState } from 'react';
 import { useLanguage } from '../../../contexts/useLanguage';
 import { languageNames } from '../../../helpers/language';
+import fetchInterceptor from '../../../helpers/fetchInterceptor';
 
 export interface PlaygroundFormData {
     textbook: string;
@@ -29,7 +30,7 @@ const useSubmitPlayground = (endpoint: string) => {
         try {
             const token = session ? await session.getToken() : "none";
 
-            const response = await fetch(endpoint, {
+            const response = await fetchInterceptor(endpoint, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

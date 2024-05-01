@@ -2,6 +2,7 @@ import { useClerk } from '@clerk/clerk-react';
 import { useQuery } from '@tanstack/react-query';
 import humps from 'humps';
 import toast from 'react-hot-toast';
+import fetchInterceptor from '../../helpers/fetchInterceptor';
 
 interface ChatUser {
     username: string;
@@ -26,7 +27,7 @@ interface ChatUser {
   }
 
 const fetchChatUsageData = async (endpoint: string, token: string | null) => {
-    const response = await fetch(endpoint, {
+    const response = await fetchInterceptor(endpoint, {
         method: 'GET',
         headers: {
             'Authorization': token ? `Bearer ${token}` : '',

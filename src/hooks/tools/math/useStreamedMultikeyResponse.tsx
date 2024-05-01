@@ -1,6 +1,7 @@
 import { useClerk } from '@clerk/clerk-react';
 import humps from 'humps';
 import { useCallback, useEffect, useState } from 'react';
+import fetchInterceptor from '../../../helpers/fetchInterceptor';
 
 interface StreamedData {
     [key: string]: string;
@@ -29,7 +30,7 @@ const useStreamedMultikeyResponse = (endpoint: string, headers: any) => {
             setData({});
             try {
                 setLoading(true);
-                const response = await fetch(endpoint, {
+                const response = await fetchInterceptor(endpoint, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
