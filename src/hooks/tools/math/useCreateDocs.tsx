@@ -4,6 +4,7 @@ import { useLanguage } from '../../../contexts/useLanguage';
 import { Chunk } from '../../../interfaces';
 import { languageNames } from '../../../helpers/language';
 import { useMutation } from '@tanstack/react-query';
+import fetchInterceptor from '../../../helpers/fetchInterceptor';
 
 export type DocxAction = "worksheet" | "quiz" | "exam" | "answer";
 
@@ -34,7 +35,7 @@ const useCreateDocx = (endpoint = 'api/math_app/generate_docx/') => {
         async ({ action, chunks, title, persona, theme }) => {
             const token = session ? await session.getToken() : 'none';
             const payload = humps.decamelizeKeys({ action, chunks, title, persona, theme, ...options });
-            const response = await fetch(endpoint, {
+            const response = await fetchInterceptor(endpoint, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

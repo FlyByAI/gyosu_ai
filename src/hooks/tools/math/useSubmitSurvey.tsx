@@ -2,6 +2,7 @@ import { useClerk } from '@clerk/clerk-react';
 import { useMutation } from '@tanstack/react-query';
 import humps from 'humps';
 import { DetailedResponse } from '../../../components/SurveyComponent';
+import fetchInterceptor from '../../../helpers/fetchInterceptor';
 
 interface SurveyResponse {
     surveyId: string;
@@ -32,7 +33,7 @@ const useSubmitSurvey = (endpoint: string): {
             const token = session ? await session.getToken() : "none";
             const body = humps.decamelizeKeys(data);
 
-            const response = await fetch(endpoint, {
+            const response = await fetchInterceptor(endpoint, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

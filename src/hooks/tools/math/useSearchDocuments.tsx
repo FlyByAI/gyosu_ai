@@ -4,6 +4,7 @@ import { useClerk } from '@clerk/clerk-react';
 import { useMutation } from '@tanstack/react-query';
 import { useLanguage } from '../../../contexts/useLanguage';
 import { languageNames } from '../../../helpers/language';
+import fetchInterceptor from '../../../helpers/fetchInterceptor';
 
 export interface SearchFormData {
     sourceMaterial: string;
@@ -22,7 +23,7 @@ const useSearchMathDocuments = (endpoint: string) => {
     const searchMathDocuments = useMutation(async (formData: SearchFormData) => {
         const token = session ? await session.getToken() : 'none';
 
-        const response = await fetch(endpoint, {
+        const response = await fetchInterceptor(endpoint, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

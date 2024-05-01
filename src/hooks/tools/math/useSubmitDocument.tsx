@@ -5,6 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useLanguage } from '../../../contexts/useLanguage';
 import { languageNames } from '../../../helpers/language';
 import { Document } from '../../../interfaces';
+import fetchInterceptor from '../../../helpers/fetchInterceptor';
 
 export interface MathFormData {
     id?: number;
@@ -36,7 +37,7 @@ const useSubmitDocument = (endpoint: string) => {
             const token = session ? await session.getToken() : 'none';
 
             const payload = humps.decamelizeKeys({ document: documentData.document, ...documentData.formData, ...options });
-            const response = await fetch(endpoint, {
+            const response = await fetchInterceptor(endpoint, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -67,7 +68,7 @@ const useSubmitDocument = (endpoint: string) => {
             const token = session ? await session.getToken() : 'none';
             const payload = humps.decamelizeKeys({ document: documentData.document, ...documentData.formData });
 
-            const response = await fetch(`${endpoint}${documentData.document.id}/`, {
+            const response = await fetchInterceptor(`${endpoint}${documentData.document.id}/`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
@@ -114,7 +115,7 @@ const useSubmitDocument = (endpoint: string) => {
         async ({ id, shared }) => {
             const token = session ? await session.getToken() : 'none';
 
-            const response = await fetch(`${endpoint}${id}/share/`, {
+            const response = await fetchInterceptor(`${endpoint}${id}/share/`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
@@ -143,7 +144,7 @@ const useSubmitDocument = (endpoint: string) => {
         async ({ id, title }) => {
             const token = session ? await session.getToken() : 'none';
 
-            const response = await fetch(`${endpoint}${id}/update_title/`, {
+            const response = await fetchInterceptor(`${endpoint}${id}/update_title/`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
@@ -176,7 +177,7 @@ const useSubmitDocument = (endpoint: string) => {
         async (document: Document) => {
             const token = session ? await session.getToken() : 'none';
 
-            const response = await fetch(`${endpoint}${document.id}/`, {
+            const response = await fetchInterceptor(`${endpoint}${document.id}/`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',

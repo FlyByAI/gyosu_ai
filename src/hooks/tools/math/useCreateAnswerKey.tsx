@@ -3,6 +3,7 @@ import { useClerk } from '@clerk/clerk-react';
 import { useLanguage } from '../../../contexts/useLanguage';
 import { languageNames } from '../../../helpers/language';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import fetchInterceptor from '../../../helpers/fetchInterceptor';
 
 interface AnswerKeyResponse {
     blobName: string;
@@ -19,7 +20,7 @@ const useCreateAnswerKey = (endpoint: string) => {
         async ({ id, blobName }) => {
             const token = session ? await session.getToken() : 'none';
             const payload = humps.decamelizeKeys({ id, blobName, ...options });
-            const response = await fetch(endpoint, {
+            const response = await fetchInterceptor(endpoint, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

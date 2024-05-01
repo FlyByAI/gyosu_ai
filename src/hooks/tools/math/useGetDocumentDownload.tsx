@@ -2,9 +2,10 @@ import { useClerk } from "@clerk/clerk-react";
 import { useMutation } from "@tanstack/react-query";
 import humps from "humps";
 import { DocumentDownload } from "../../../pages/Documents";
+import fetchInterceptor from "../../../helpers/fetchInterceptor";
 
 const fetchDocumentDownload = async (endpoint: string, blobName: string, token: string | null, documentOrAnswerKey: "document" | "answer_key"): Promise<DocumentDownload> => {
-    const response = await fetch(`${endpoint}/cloud_storage_document/${blobName}/${documentOrAnswerKey}/`, {
+    const response = await fetchInterceptor(`${endpoint}/cloud_storage_document/${blobName}/${documentOrAnswerKey}/`, {
         method: 'GET',
         headers: {
             'Authorization': token ? `Bearer ${token}` : '',
