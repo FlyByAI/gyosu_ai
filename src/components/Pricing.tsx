@@ -30,7 +30,7 @@ const Pricing = () => {
                         <div className="list-inside space-y-2 my-4">
                             <p className='font-bold'>Please consider supporting us so we can do this full time!</p>
                             <div className='my-2 py-2 rounded-xl font-bold bg-blue-200'>
-                                <p className='text-center mx-auto'>Current subscriber goal: 3/100</p>
+                                <p className='text-center mx-auto'>Current subscriber goal: 4/100</p>
                             </div>
                             <p className='mb-4 italic'>*If we reach our subcriber goal we will shave our heads</p>
                             <div className="w-full flex items-center pr-2"><div><CheckmarkIcon /></div><div>GyosuChat Assistant</div></div>
